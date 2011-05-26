@@ -1,0 +1,3 @@
+<apex:page standardController="ActionPlan__c" extensions="ActionPlansUtilities" action="{!deleteActionPlans}">
+
+</apex:page>

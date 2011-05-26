@@ -1,43 +1,17 @@
-<!-- 
-Copyright (c) 2011, salesforce.com, Inc.
-All rights reserved.
+<apex:page id="detailPage" tabStyle="ActionPlan__c" standardController="ActionPlan__c" extensions="ActionPlanDetailController">
 
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice, 
-    this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
-    and/or other materials provided with the distribution.
-    * Neither the name of the salesforce.com, Inc. nor the names of its contributors 
-    may be used to endorse or promote products derived from this software 
-    without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
-OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-<apex:page id="detailPage" tabStyle="Action_Plans__tab" standardController="ActionPlan__c" extensions="ActionPlanDetailController">
-    
+	<script type="text/javascript" src="{!$Resource.ActionPlan_Utilities}"></script>
     <script type="text/javascript" src="{!$Resource.ActionPlans_sortable}"></script>
-    
-	<script type="text/javascript" src="{!$Resource.ActionPlan_ActionPlanDetailScripts}"></script>    
+	<script type="text/javascript" src="{!$Resource.ActionPlan_ActionPlanDetailScripts}"></script>  
+	  
     <link href="{!$Resource.ActionPlan_ActionPlanDetailStyles}" rel="stylesheet" type="text/css"/>
    
     
-	<apex:sectionHeader title="{!$Label.ap_Action_Plan}" subtitle="{!actionPlan.Name}" help="" />
+	<apex:sectionHeader title="{!$Label.ap_Action_Plan}" subtitle="{!actionPlan.Name}" help="/help/doc/user_ed.jsp?loc=help" printUrl="/apex/ActionPlanPrint?id={!actionPlan.Id}"/>
     
     <apex:form id="apForm">
     
-        <apex:pageBlock id="detailBlock" title="{!$Label.ap_ActionDetail}" mode="detail">
+        <apex:pageBlock id="detailBlock" title="{!$Label.ap_ActionPlanDetails}" mode="detail">
         	
         	<!-- PAGE BUTTONS -->
             <apex:pageBlockButtons id="buttons">
@@ -107,25 +81,36 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                 </apex:panelGrid>
                  
                 <apex:dataTable value="{!tasks}" var="task" id="theTable" styleClass="sortable">
-                    <apex:column id="columnOne" headerValue="{!$ObjectType.APTaskTemplate__c.fields.Subject__c.label}" value="{!task.Subject__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.APTaskTemplate__c.label}" value="{!task.APTaskTemplate__r.Subject__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}" value="{!task.DaysFromStart__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.ActivityDate__c.label}" >
+                    <apex:column id="columnOne" headerValue="{!$ObjectType.APTaskTemplate__c.fields.Subject__c.label}" headerClass="subjectCol">
+                    	<apex:outputText id="subject">{!task.Subject__c}</apex:outputText>
+                    </apex:column>
+                    <apex:column id="dependency" headerValue="{!$ObjectType.APTaskTemplate__c.fields.APTaskTemplate__c.label}" headerClass="dependencyColumn">
+                    	<apex:outputText >{!task.APTaskTemplate__r.Subject__c}</apex:outputText>
+                    </apex:column>
+                    <apex:column value="{!task.DaysFromStart__c}" headerClass="daysCol">
+						<apex:facet name="header">{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}
+							<span id="daysAfterTtip_help" class="helpButton">
+								<img class="helpOrb" title="{!$Label.ap_days_after_msg}" src="/s.gif"/>
+							</span>
+						</apex:facet>
+                   </apex:column>
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.ActivityDate__c.label}" headerClass="dateCol">
                         <span style="color:#cc0000"><apex:outputField value="{!task.ActivityDate__c}" rendered="{!IF(task.ActivityDate__c < TODAY() && task.Status__c != 'Completed', true, false)}" /></span>
                         <apex:outputField value="{!task.ActivityDate__c}" rendered="{!IF(task.ActivityDate__c >= TODAY() || task.Status__c == 'Completed', true, false)}" />
                     </apex:column>
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}" value="{!task.User__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}" value="{!task.Type__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}" value="{!task.Status__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" value="{!task.Priority__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.SendEmail__c.label}" value="{!task.SendEmail__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Reminder__c.label}" >
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}" styleClass="assigned_to_field" >
+                    	<apex:outputField value="{!task.User__c}"  />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}" value="{!task.Type__c}" headerClass="typeCol"/>
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}" value="{!task.Status__c}" headerClass="statusCol"/>
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" value="{!task.Priority__c}" headerClass="priorityCol"/>
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Reminder__c.label}" headerClass="reminderCol" >
                     	<apex:outputPanel layout="block" >
                     		<apex:outputField value="{!task.Reminder__c}" />
                     		<apex:outputField value="{!task.Time_Reminder__c}" />
 						</apex:outputPanel>
                     </apex:column>
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}">
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}" headerClass="commentsCol">
                     	
                     	<apex:outputPanel id="commentPanel" style="display:none" >
                        		<div id="commentContainer" onmouseout="javascript:ActionPlanDetailScripts.hideComments('{!$Component.theTable.columnOne}');">
@@ -163,5 +148,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         </apex:pageBlock>        
         
     </apex:form>
+    
+    <script>
+        ActionPlanDetailScripts.formatFields();
+        ActionPlanDetailScripts.removeHover();
+    </script>
 
 </apex:page>

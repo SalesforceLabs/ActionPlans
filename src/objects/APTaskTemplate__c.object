@@ -32,7 +32,7 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <deploymentStatus>InDevelopment</deploymentStatus>
+    <deploymentStatus>Deployed</deploymentStatus>
     <description>Action Plan Task detail</description>
     <enableActivities>true</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>
@@ -76,7 +76,7 @@
     <fields>
         <fullName>DaysFromStart__c</fullName>
         <externalId>false</externalId>
-        <label>Days</label>
+        <label>Days After</label>
         <precision>3</precision>
         <required>true</required>
         <scale>0</scale>
@@ -134,7 +134,7 @@
         <defaultValue>true</defaultValue>
         <description>Send Email Notification of Task creation.</description>
         <externalId>false</externalId>
-        <label>SendEmail</label>
+        <label>Send Email</label>
         <type>Checkbox</type>
     </fields>
     <fields>

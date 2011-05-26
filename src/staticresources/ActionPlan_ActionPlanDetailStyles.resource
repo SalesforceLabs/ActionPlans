@@ -2,15 +2,25 @@
 	width:100% 
 }
 .sortable td { 
-	width:10%; 
+	/*width:10%;*/ 
 	padding:3px 0px 3px 0px; 
 	margin:0px; 
 }
 .sortable th { 
-	padding: 0px 0px 2px 0px; 
+	padding-bottom: 2px; 
 	border-bottom: 2px solid #ccc !important; 
 	margin:0px; 
 }
+
+.sortable th div{ 
+	float:left;
+}
+.sortable th span{ 
+ 	padding-left: 10%;
+    position: relative;
+}
+
+
 a { 
 	cursor: pointer; 
 }
@@ -30,6 +40,9 @@ a {
 }
 .dataCol2 { 
 	width:125px !important;  
+}
+.dependencyColumn {
+	padding-right: 40px;
 }
 #commentContainer { 
 	width:270px; 
@@ -63,4 +76,22 @@ a {
 }
 #apForm select { 
 	z-index:1; 
+}
+
+#daysAfterTtip_help.helpButton, #daysAfterTtip_help.helpButtonOn {
+    position: absolute;
+}
+.sortable th.subjectCol			{	width:15%;	}
+.sortable th.dependencyColumn	{	width:15%;	}
+.sortable th.daysCol			{	width:5%;	}
+.sortable th.dateCol			{	width:8%;	}
+.sortable th.assigned_to_field	{	width:15%;	}
+.sortable th.typeCol			{	width:9%;	}
+.sortable th.statusCol			{	width:9%;	}
+.sortable th.priorityCol 		{ 	width:9%;	}
+.sortable th.reminderCol 		{ 	width:9%;	}
+.sortable th.commentsCol 		{ 	width:6%;	} 	
+
+#daysAfterTtip_help img.helpOrb{
+	right: 50% !important;
 }

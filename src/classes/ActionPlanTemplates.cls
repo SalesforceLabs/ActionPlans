@@ -1,31 +1,8 @@
-/*
-Copyright (c) 2011, salesforce.com, Inc.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice, 
-    this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
-    and/or other materials provided with the distribution.
-    * Neither the name of the salesforce.com, Inc. nor the names of its contributors 
-    may be used to endorse or promote products derived from this software 
-    without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
-OF THE POSSIBILITY OF SUCH DAMAGE.
-
-*/
+/**
+ * This class methods related to action plan templates
+ * @author Oliver Cortinas
+ * @createdDate 04/29/2010   
+ */
  public with sharing class ActionPlanTemplates{
  	
  	public Double							taskIndexOrder			{ get; set; }
@@ -172,7 +149,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         }
         
         // Send the user to the detail page for the new account.
-        PageReference newPage = new PageReference( '/apex/ActionPlanTemplateList' );
+        PageReference newPage = new PageReference( '/' + Schema.ActionPlanTemplate__c.SObjectType.getDescribe().getKeyPrefix() );
         newPage.setRedirect( true );
         
         return newPage;
@@ -187,8 +164,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         PageReference newPage;
         
         if( this.actionPlanTemplate.Id == null ){
-             // Send the user to the detail page for the new account.
-            newPage = new PageReference( '/apex/ActionPlanTemplateList' );
+        	// Send the user to the list of templates.
+            newPage = new PageReference( '/' + Schema.ActionPlanTemplate__c.SObjectType.getDescribe().getKeyPrefix() );
             newPage.setRedirect( true );
         }
         else{
@@ -212,15 +189,14 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             if( TempApId != null ) {
                 aptTasks = [ select a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c, taskIndex__c,
             				 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, a.APTTaskTemplate__c,
-            				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c, a.Minutes_Reminder__c, a.Time_Reminder__c 
+            				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c
             				 From APTTaskTemplate__c a 
             				 where a.Action_Plan_Template__c =: TempApId  order by taskIndex__c ASC ];
             }
             else {
                 aptTasks 				= new List<APTTaskTemplate__c>();
                 APTTaskTemplate__c t 	= new APTTaskTemplate__c();
-                t.Reminder__c	 		= true;
-                t.Minutes_Reminder__c 	= '510';
+                t.Reminder__c	 		= false;
                 aptTasks.add( t );
             }
             
@@ -257,7 +233,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             } 
             else{
                 APTTaskTemplate__c t = new APTTaskTemplate__c();
-                t.Reminder__c 	= true;
+                t.Reminder__c 	= false;
                 t.taskIndex__c 	= this.taskIndexOrder;
                 
                 // validate user, priority, subject and days before adding another
@@ -365,24 +341,30 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     * @return exists
     */
     public Boolean checkCycleDependent(){
-    	
+
     	this.errorMsg 	= '';
     	Boolean exists 	= false;
     	Integer index 	= 0;
-    	
-    	for( APTTaskTemplate__c t : this.aptTasks ){
+        
+        for( APTTaskTemplate__c t : this.aptTasks ){
             if( t.Dependent__c != 'None' && t.Dependent__c != null ){
-                Integer tempIndex 		= Integer.valueOf( t.Dependent__c );
+                Integer tempIndex   	= Integer.valueOf( t.Dependent__c );
                 APTTaskTemplate__c link = this.aptTasks[tempIndex];
+                
+                //task can not depend on themselves
+                if(tempIndex == index){
+                	this.errorMsg = Label.ap_ItselfDependencyError;	
+                	return true;
+                }
+                
                 if( this.dependantCycle( t, link, index ) ){
                 	this.errorMsg = Label.ap_Errors_RemoveCyclicDependency;	
                 	return true;
                 }
             }
             index++;
-    	}
-    	
-    	return exists;
+        }
+        return exists;
     }
 	
 	/**
@@ -394,41 +376,55 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     */
 	private Boolean dependantCycle( APTTaskTemplate__c originTask, APTTaskTemplate__c destinyTask, Integer index ){
 		
-		Boolean hasDependency = false;
-		while( !hasDependency ){
-    		 if( destinyTask.Dependent__c != 'None' && destinyTask.Dependent__c != null  ){
-                Integer tempIndexDestiny 	= Integer.valueOf( destinyTask.Dependent__c );
-        		APTTaskTemplate__c link 	= this.aptTasks[ tempIndexDestiny ];
-        		if( link.Dependent__c != 'None' ){
-	        		if( Integer.valueOf( link.Dependent__c ) == index ){
-		        		hasDependency = true;
-		        		break;
-		        	}
-		        	else{
-		        		//gets Next task in dependency chain
-		        		Integer tempIndex 	= Integer.valueOf( destinyTask.Dependent__c );
-		        		destinyTask 		= this.aptTasks[ tempIndex ];
-		        	}	
+        Boolean hasDependency = false;
+        Set<Integer> visitedTasks = new Set<Integer>();
+        
+        while( !hasDependency ){
+        	
+        	if (destinyTask.Dependent__c != 'None'){
+        		if (visitedTasks.contains(Integer.valueOf( destinyTask.Dependent__c ))){
+        			hasDependency = true;
+	        		break;
+        		}else{
+        			visitedTasks.add(Integer.valueOf( destinyTask.Dependent__c ));
         		}
-        		else{
-        			break;
-        		}
-    		 }else{
-    		 	break;
-    		 }
+        	}
+        	
+			if( destinyTask.Dependent__c != 'None' && destinyTask.Dependent__c != null  ){
+				Integer tempIndexDestiny 	= Integer.valueOf( destinyTask.Dependent__c );
+				APTTaskTemplate__c link 		= this.aptTasks[ tempIndexDestiny ];
+	
+				if( link.Dependent__c != 'None' ){
+					if( Integer.valueOf( link.Dependent__c ) == index ){
+						hasDependency = true;
+    					break;
+    				}
+    				else{
+    					//get Next task in dependency chain
+    					Integer tempIndex 	= Integer.valueOf( destinyTask.Dependent__c );
+    					destinyTask 		= this.aptTasks[ tempIndex ];
+    				}	
+				}
+				else{
+					break;
+				}
+ 			}
+ 			else{
+ 				break;
+			}
     	}
-    	
+
     	return hasDependency;
 	} 
 	
 	/**
-    * Set the Hours for select box of Remainder Hour
-    * @return options
+    * Verifies that the user is able to add reminders.
+    * @return Boolean 
     */
-	public List<SelectOption> getHoursOption(){
-		ActionPlansUtilities apu = new ActionPlansUtilities();
-		return apu.getHoursOption();
-	}
+    public Boolean getDisplayReminder(){
+    	ActionPlansUtilities apu = new ActionPlansUtilities();
+		return apu.getDisplayReminder();
+    }
 	
 	/**
 	* Test Methods
@@ -616,7 +612,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		apTemplate.aptTasks = new List<APTTaskTemplate__c>();
 		apTemplate.aptTasks = [ select a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
                 				 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, 
-                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c, a.Minutes_Reminder__c 
+                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c 
                 				 From APTTaskTemplate__c a 
                 				 where a.Action_Plan_Template__c =: actionPlanTemplate2.Id ];
 		
@@ -643,7 +639,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		apTemplate.aptTasks = new List<APTTaskTemplate__c>();
 		apTemplate.aptTasks = [ select a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
                 				 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, 
-                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c , a.Minutes_Reminder__c
+                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c 
                 				 From APTTaskTemplate__c a 
                 				 where a.Action_Plan_Template__c =: actionPlanTemplate.Id ];
 		
@@ -669,7 +665,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		apTemplate.aptTasks = new List<APTTaskTemplate__c>();
 		apTemplate.aptTasks = [ select a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
                 				 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, 
-                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c , a.Minutes_Reminder__c
+                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c 
                 				 From APTTaskTemplate__c a 
                 				 where a.Action_Plan_Template__c =: actionPlanTemplate.Id ];
                 				 
@@ -695,7 +691,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		apTemplate.aptTasks = new List<APTTaskTemplate__c>();
 		apTemplate.aptTasks = [ select a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
                 				 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, 
-                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c , a.Minutes_Reminder__c
+                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c 
                 				 From APTTaskTemplate__c a 
                 				 where a.Action_Plan_Template__c =: actionPlanTemplate.Id ];
                 				 
@@ -722,7 +718,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		apTemplate.aptTasks = new List<APTTaskTemplate__c>();
 		apTemplate.aptTasks = [ select a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
                 				 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, 
-                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c, a.Minutes_Reminder__c 
+                				 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c 
                 				 From APTTaskTemplate__c a 
                 				 where a.Action_Plan_Template__c =: actionPlanTemplate.Id ];
 		

@@ -8,10 +8,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Minutes_Reminder__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
                 <field>Action_Plan_Template__c</field>
             </layoutItems>
             <layoutItems>
@@ -25,10 +21,6 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Name</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>taskIndex__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
@@ -63,7 +55,6 @@
         <style>CustomLinks</style>
     </layoutSections>
     <miniLayout>
-        <fields>Minutes_Reminder__c</fields>
         <fields>Action_Plan_Template__c</fields>
         <fields>DaysFromStart__c</fields>
         <fields>Subject__c</fields>

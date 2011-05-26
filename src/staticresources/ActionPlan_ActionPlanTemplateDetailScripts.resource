@@ -23,5 +23,19 @@ ActionPlanTemplateDetailScripts = {
 	    var rowSplit = row.split(":");
 		row = rowSplit[5];
 		document.getElementById('detailPage:detailForm:templateDetail:taskSection:theTable:'+row+':commentPanel').style.display = "none";
+	},
+	removeHover : function (){
+		var allTd = getElementsByClass('assigned_to_field',null,'td');
+		var selObj = null;
+		for(var i in allTd ){
+		    //get link
+		    if ( allTd [i].getElementsByTagName('a').length > 0 ){
+				selObj = allTd [i].getElementsByTagName('a')[0];
+				selObj.onmouseover  = null;
+				selObj.onmouseout	= null;
+				selObj.onfocus  	= null;
+				selObj.onblur  		= null;
+		    }
+		}
 	}
 }

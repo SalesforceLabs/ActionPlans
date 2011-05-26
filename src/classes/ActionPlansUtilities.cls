@@ -1,30 +1,6 @@
-/*
-Copyright (c) 2011, salesforce.com, Inc.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice, 
-    this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
-    and/or other materials provided with the distribution.
-    * Neither the name of the salesforce.com, Inc. nor the names of its contributors 
-    may be used to endorse or promote products derived from this software 
-    without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
-OF THE POSSIBILITY OF SUCH DAMAGE.
-
+/**
+* @author Matias Menafra
+* @createdate 04/29/2010
 */
 public with sharing class ActionPlansUtilities{
     
@@ -44,6 +20,17 @@ public with sharing class ActionPlansUtilities{
     
     /**
     * Constructor
+    */
+    public ActionPlansUtilities(){}
+    
+    /**
+    * Constructor
+    * @param StandardController
+    */
+    public ActionPlansUtilities( ApexPages.StandardController stdController ){}
+    
+    /**
+    * Constructor
     * @param action
     */
     public ActionPlansUtilities( ActionPlan__c action ){
@@ -54,11 +41,6 @@ public with sharing class ActionPlansUtilities{
         this.errorMsg	= null;
         this.relatedObjOwnerList = new Map<String, String>();
     }
-    
-    /**
-    * Constructor
-    */
-    public ActionPlansUtilities(){}
     
     /**
     * Gets the related Object Name
@@ -103,6 +85,14 @@ public with sharing class ActionPlansUtilities{
                 Integer tempIndex   	= Integer.valueOf( t.Dependent__c );
                 APTaskTemplate__c link 	= this.apTasks[tempIndex];
                 
+                
+                //task can not depend on themselves
+                if(tempIndex == index){
+                	this.errorMsg = Label.ap_ItselfDependencyError;	
+                	return true;
+                }
+                
+                
                 if( this.dependantCycle( t, link, index ) ){
                 	this.errorMsg = Label.ap_Errors_RemoveCyclicDependency;	
                 	return true;
@@ -123,19 +113,30 @@ public with sharing class ActionPlansUtilities{
     private Boolean dependantCycle( APTaskTemplate__c originTask, APTaskTemplate__c destinyTask, Integer index ){
         
         Boolean hasDependency = false;
+        Set<Integer> visitedTasks = new Set<Integer>();
         
         while( !hasDependency ){
+        	
+        	if (destinyTask.Dependent__c != 'None'){
+        		if (visitedTasks.contains(Integer.valueOf( destinyTask.Dependent__c ))){
+        			hasDependency = true;
+	        		break;
+        		}else{
+        			visitedTasks.add(Integer.valueOf( destinyTask.Dependent__c ));
+        		}
+        	}
+        	
     		 if( destinyTask.Dependent__c != 'None' && destinyTask.Dependent__c != null  ){
                 Integer tempIndexDestiny 	= Integer.valueOf( destinyTask.Dependent__c );
         		APTaskTemplate__c link 		= this.apTasks[ tempIndexDestiny ];
         		
         		if( link.Dependent__c != 'None' ){
 	        		if( Integer.valueOf( link.Dependent__c ) == index ){
-		        		hasDependency = true;
+	        			hasDependency = true;
 		        		break;
 		        	}
 		        	else{
-		        		//gets Next task in dependency chain
+		        		//get Next task in dependency chain
 		        		Integer tempIndex 	= Integer.valueOf( destinyTask.Dependent__c );
 		        		destinyTask 		= this.apTasks[ tempIndex ];
 		        	}	
@@ -147,231 +148,63 @@ public with sharing class ActionPlansUtilities{
     		 	break;
     		 }
     	}
-    	
+
     	return hasDependency;
     } 
     
-    /**
+   /**
     * Saves Action Plan Instance and task. Also creates all due dates for tasks, then redirects to the AP list
     */
-    public void saveAp(){
+    public String saveAp(){
 
-        Savepoint sp = Database.setSavepoint();
-        
-        //check for pendingDeletes
+
+		String actionPlanId ;
+		String objId;
+		String objName;
+		List<String> oIdsList 	= new List<String>();
+		Savepoint sp = Database.setSavepoint();	
+		if (ApexPages.currentPage().getParameters().get( 'refId' ) == null){
+			// the user selects the object using the Look Up	
+	    	if( this.actionPlan.Account__c != null ) 			{ objId = this.actionPlan.Account__c; 		objName = 'Account'; }
+	    	else if( this.actionPlan.Campaign__c != null ) 		{ objId = this.actionPlan.Campaign__c; 		objName = 'Campaign'; }
+	    	else if( this.actionPlan.Case__c != null ) 			{ objId = this.actionPlan.Case__c; 			objName = 'Case'; }
+	    	else if( this.actionPlan.Contract__c != null ) 		{ objId = this.actionPlan.Contract__c; 		objName = 'Contract'; }
+	    	else if( this.actionPlan.Opportunity__c != null ) 	{ objId = this.actionPlan.Opportunity__c; 	objName = 'Opportunity'; }
+	    	else if( this.actionPlan.Contact__c != null ) 		{ objId = this.actionPlan.Contact__c; 		objName = 'Contact'; }
+	    	else if( this.actionPlan.Lead__c != null ) 			{ objId = this.actionPlan.Lead__c; 			objName = 'Lead'; }
+
+			oIdsList.add(objId);
+		}else{
+			objName	= ApexPages.currentPage().getParameters().get( 'refType' );
+        	objId	= ApexPages.currentPage().getParameters().get( 'refId' );
+			oIdsList= objId.split(',');
+		}
+
+
+ 		//check for pendingDeletes
         this.checkPendingDeletes();
-        
-        ActionPlan__c ap = this.actionPlan;
-        
-        if( ApexPages.currentPage().getParameters().get( 'refType' ) != null ){
-            String oName 	= ApexPages.currentPage().getParameters().get( 'refType' );
-            String oId 		= ApexPages.currentPage().getParameters().get( 'refId' );
-            
-            if( 'Account'.equalsIgnoreCase( oName ) ){
-                ap.Account__c = oId;
-            }
-            if( 'Contact'.equalsIgnoreCase( oName ) ){
-                ap.Contact__c = oId;
-            }
-            if( 'Lead'.equalsIgnoreCase( oName ) ){
-                ap.Lead__c = oId;
-            }
-            if( 'Opportunity'.equalsIgnoreCase( oName ) ){
-                ap.Opportunity__c = oId;
-            }
-            
-            //Add new version Support to Cases , Contracts ans Campaigns
-            if( 'Case'.equalsIgnoreCase( oName ) ){
-                ap.Case__c = oId;
-            }
-            if( 'Contract'.equalsIgnoreCase( oName ) ){
-                ap.Contract__c = oId;
-            }
-            if( 'Campaign'.equalsIgnoreCase( oName ) ){
-                ap.Campaign__c = oId;
-            }
-        }
 
-        try{
-        	upsert ap;
-        }catch(DmlException e){
-        	if(e.getDmlStatusCode(0) == String.valueOf(Statuscode.FIELD_CUSTOM_VALIDATION_EXCEPTION)){
-        		throw new FieldCustomValidationException(e);
-        		
-        	}else{
-        		throw e;	
-        	}
-        	Database.rollback( sp );
-        }
-        
-        // save tasks to the template and attach relation to Action Plan
-        for( APTaskTemplate__c t : this.apTasks ){
-            if( t.Action_Plan__c == null ){
-                t.Action_Plan__c = ap.Id;
-            }
-            
-            if( t.User__c == null ){
-            	t.User__c = this.getRecordOwnerId( ap );
-           	}
-            t.Name = ap.Name + ' ' + Label.ap_DefaultTaskName;
-        }
-        
-        try {
-            upsert this.apTasks;
-        }
-        catch( exception e ) {
-        	throw e;
-            Database.rollback( sp );
-            
-        }
-        
-        // run through the tasks and take care of dependents - not done in the previous because we need the Ids
-        for( APTaskTemplate__c t : this.apTasks ){
-            if( t.Dependent__c != 'None' && t.Dependent__c != null ){ // setup dependency
-                Integer tempIndex   = Integer.valueOf( t.Dependent__c );
-                t.APTaskTemplate__c = apTasks[tempIndex].Id;
-            }
-            else{
-                t.APTaskTemplate__c = null;
-                // create due date
-                // calculate the due date of the tasks for skip weekends feature
-                if( t.Status__c == null ){
-                    t.Status__c = 'Not Started';
-                } 
-                
-                if( ap.SkipWeekends__c == true ){
-                    
-                    Date dueDate    = ap.StartDate__c.addDays( t.DaysFromStart__c.intValue() );
-                    Integer addDays = t.DaysFromStart__c.intValue();
-                    
-                    // find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
-                    Date refDate        = Date.newInstance( 1900, 1, 7 );  // Jan 7 1900 = Sun
-                    Integer dayOfWeek   = Math.mod(refDate.daysBetween( dueDate ), 7 ); // 0 = Sun ... 6 = Sat
-                    
-                    if( ap.SkipDay__c == Label.ap_Friday ){ 
-                        // push to friday
-                        if( dayOfWeek == 0 ) addDays = addDays - 2;
-                        if( dayOfWeek == 6 ) addDays--;
-                    } 
-                    else{ 
-                        // push to monday
-                        if( dayOfWeek == 0 ){
-                            addDays++;
-                        } 
-                        if( dayOfWeek == 6 ){
-                            addDays = addDays + 2;
-                        } 
-                    }
-                    
-                    t.ActivityDate__c = ap.StartDate__c.addDays( addDays );
-                } 
-                else{
-                    t.ActivityDate__c = ap.StartDate__c.addDays( t.DaysFromStart__c.intValue() );
-                }
-            }
-        }
-        
-        try{
-            upsert this.apTasks;
-        } 
-        catch( exception e ){
-            Database.rollback( sp );
-            throw e;
-        }
-        
-        List<Task> myTasksWithEmail         = new List<Task>();
-        List<Task> myTasksWithOutEmail      = new List<Task>();
-        
-        Map<Id,Task> tasksMap = getTasksFromAPTaskTemplates(this.apTasks);
-        
-        // run through tasks again and create actual tasks with due dates
-        for( APTaskTemplate__c apTask : this.apTasks ){
-            if( apTask.APTaskTemplate__c == null ){ 
-                // check for no dependency
-                if( apTask.Status__c != 'Completed' ){ 
-                    // if the task is competed already make no changes to it
-                    Task t = tasksMap.get(apTask.Id);
-                    
-                    // check if task exists already
-                    if(t == null){
-                        t = new Task();
-                    }
-                    
-                    t.Subject           = apTask.Subject__c;
-                    t.Priority          = apTask.Priority__c;
-                    t.OwnerId           = apTask.User__c;
-                    t.TaskTemplateId__c = apTask.Id; 
-                    
-                    // fake link to AP Task Template
-                    if( apTask.Comments__c != null ){
-                        t.Description = apTask.Comments__c;
-                    } 
+        if( ( objName != null || objName != '' ) && ( oIdsList.size() == 1 ) ){
+          try{  
 
-                    if( apTask.Reminder__c == true ){
-                        t.isReminderSet = apTask.Reminder__c;
-                        datetime dt = datetime.newInstance( apTask.ActivityDate__c.year(), apTask.ActivityDate__c.month(), apTask.ActivityDate__c.day(), 0, 0, 0 );
-                        t.ReminderDateTime = dt;
-                        t.ReminderDateTime = t.ReminderDateTime.addMinutes( Integer.valueOf( apTask.Minutes_Reminder__c ) );                         
-                    }               
-                    
-                    //link to Action Plan's Related To Object
-                    if( ap.Account__c != null ) { 
-                        t.WhatId = ap.Account__c;
-                    } 
-                    
-                    if( ap.Contact__c != null ){
-                        t.WhoId = ap.Contact__c;
-                    } 
-                    
-                    if( ap.Lead__c != null ){
-                        t.WhoId = ap.Lead__c;
-                    } 
-                    
-                    if( ap.Opportunity__c != null ){
-                        t.WhatId = ap.Opportunity__c;
-                    }
-                    
-                    if( ap.Case__c != null ){
-                        t.WhatId = ap.Case__c;
-                    }
-                    if( ap.Campaign__c != null ){
-                        t.WhatId = ap.Campaign__c;
-                    }
-                    if( ap.Contract__c != null ){
-                        t.WhatId = ap.Contract__c;
-                    }
-                    
-                    
-                    t.Type			= apTask.Type__c;
-                    t.Status        = 'Not Started';
-                    t.ActivityDate  = apTask.ActivityDate__c;
-
-                    // check for send email notification checkbox
-                    if( apTask.SendEmail__c && t.Id == null ){
-                        myTasksWithEmail.add( t );
-                    }
-                    else{
-                        myTasksWithOutEmail.add( t );
-                    }
-                }
-            }   
-            
-            try{                        
-                    if( myTasksWithEmail.size() > 0 ){
-                        Database.DMLOptions dmlo = new Database.DMLOptions();
-                        dmlo.EmailHeader.triggerUserEmail = true;
-                        database.insert( myTasksWithEmail, dmlo );
-                    }
-                    
-                    if( myTasksWithOutEmail.size() > 0 ){
-                        upsert( myTasksWithOutEmail );
-                    }
-                } 
-                catch( exception e ){
-                    Database.rollback( sp );   
-                    throw e;
-                }
+			//Now for each inserted AP we should run through tasks and create them
+            this.apTasksOrg = new List<APTaskTemplate__c>();
+            this.apTasksOrg.addAll( this.apTasks );
+            this.apTasks.clear();
+			if (actionPlan.Id == null){
+				ActionPlansBatchBuilder taskBatch = new ActionPlansBatchBuilder(this.actionPlan,this.apTasksOrg, objName,oIdsList);
+	            Database.ExecuteBatch( taskBatch );
+			}else{
+				ActionPlansBatchBuilderUtilities taskBatch = new ActionPlansBatchBuilderUtilities(this.actionPlan,this.apTasksOrg, objName,oIdsList);
+	            taskBatch.generateActionPlans();
+				actionPlanId = taskBatch.getNewActionPlanId(); 
+			}
+          }catch( exception e ){
+                Database.rollback( sp );   
+                throw e;
+            }
         }
+		return actionPlanId;
     }
     
     /**
@@ -386,30 +219,33 @@ public with sharing class ActionPlansUtilities{
             for( APTaskTemplate__c deleteAptt : this.pendingDeletes ){
                 deleteApttIds.add(deleteAptt.Id);
             }
-            
-            taskToDelete = [ select t.Id from Task t where t.TaskTemplateId__c IN : deleteApttIds ];
+            //do not delete completed tasks
+            taskToDelete = [ select t.Id from Task t where t.TaskTemplateId__c IN : deleteApttIds and t.Status !='Completed'];
             
             delete taskToDelete;
             delete pendingDeletes;
         }
     }
     
-    /**
+/**
     * Saves Action Plan Instance and tasks and redirects to that detail page
     * @return newPage
     */
     public PageReference save(){
     	
+    	String newApId	=	'';
+    	
        	try {
-        	saveAp();
+        	newApId	=	saveAp();
         }
         catch ( DmlException e ){
         	throw e;
         	return null;
         }
         
-        String oId	 = ApexPages.currentPage().getParameters().get( 'refId' );		
-		PageReference newPage = new PageReference( ( oId != null && oId != '' ) ? '/' + oId : '/apex/ActionPlanList' );
+       	//will always redirect to Action Plan list
+        String ap_list =  this.getObjectKeyPrefix( 'ActionPlan__c' ) ; 
+		PageReference newPage = new PageReference(  '/' + ap_list );
         newPage.setRedirect( true );
         
         return newPage;
@@ -435,6 +271,7 @@ public with sharing class ActionPlansUtilities{
     
     /**
     * Save Action Plans for Multiple Related Object Instances.
+    * Invokes batch process that creates : ActionPlan, ActionPlanTasksTemplate and Tasks 
     * @return Pagereference
     */
     public PageReference saveMultiple(){
@@ -443,38 +280,30 @@ public with sharing class ActionPlansUtilities{
         String oIds                     = ApexPages.currentPage().getParameters().get( 'refId' );
         List<ActionPlan__c> apList      = new List<ActionPlan__c>();
         List<APTaskTemplate__c> aptList = new List<APTaskTemplate__c>();
+      	Savepoint sp = Database.setSavepoint();
         
         if( ( oName != null || oName != '' ) && ( oIds != null || oIds != '' ) ){
-            
-            Savepoint sp = Database.setSavepoint();
-            List<String> oIdsList = oIds.split(',');
-
-            //Save all AP instance for the current Object and return a List of inserted ap
-            apList = this.saveActionPlanObj( oIdsList );
-            upsert apList;
-            //End of Save all Ap
-            
-            
-            //Now for each inserted AP we should run through tasks and create them
-            this.apTasksOrg = new List<APTaskTemplate__c>();
-            this.apTasksOrg.addAll( this.apTasks );
-            this.apTasks.clear();
-            
-            for( ActionPlan__c apl : apList ){ 
-                this.apTasks.addAll( this.saveAPTaskObj( apl, sp ) );
-            }
-            
-            Database.upsert( this.apTasks );
-
-            List<String> apTasksIds = new List<String>();
-            for( APTaskTemplate__c aptt : this.apTasks ){
-                apTasksIds.add( aptt.Id );
-            }
-            
-            ActionPlansBatchTaskBuilder taskBatch = new ActionPlansBatchTaskBuilder( apTasksIds );
-            Database.ExecuteBatch( taskBatch );
-            //End of Save all Task
+			try{
+	            //Savepoint sp = Database.setSavepoint();
+	             
+	            List<String> oIdsList = oIds.split(',');
+	
+				//Now for each inserted AP we should run through tasks and create them
+	            this.apTasksOrg = new List<APTaskTemplate__c>();
+	            this.apTasksOrg.addAll( this.apTasks );
+	            this.apTasks.clear();
+	              
+				ActionPlansBatchBuilder taskBatch = new ActionPlansBatchBuilder(this.actionPlan,this.apTasksOrg, oName,oIdsList);
+	            Database.ExecuteBatch( taskBatch );
+	            
+			}catch(Exception e){
+				
+				Database.rollback( sp );    
+				
+			}
         }
+	        
+       
         
         PageReference newPage = new PageReference( '/' + this.getObjectKeyPrefix( oName ) ); 
         newPage.setRedirect( true );
@@ -486,6 +315,7 @@ public with sharing class ActionPlansUtilities{
     * Saves Action Plan Instance.
     * @return List<APTaskTemplate__c>
     */
+    /*
     public List<APTaskTemplate__c> saveAPTaskObj( ActionPlan__c ap, Savepoint sp ){
         
         List<APTaskTemplate__c> aptList = new List<APTaskTemplate__c>();
@@ -528,11 +358,11 @@ public with sharing class ActionPlansUtilities{
                     if( ap.SkipDay__c.equalsIgnoreCase( Label.ap_Friday ) ){ 
                         // push to friday
                         addDays = ( dayOfWeek == 0 ) ? addDays - 2 : addDays ;
-                        addDays = ( dayOfWeek == 6 ) ? addDays-- : addDays ;
+                        addDays = ( dayOfWeek == 6 ) ? addDays - 1 : addDays ;
                     } 
                     else{ 
                         // push to monday
-                        addDays = ( dayOfWeek == 0 ) ? addDays++   : addDays ;
+                        addDays = ( dayOfWeek == 0 ) ? addDays + 1 : addDays ;
                         addDays = ( dayOfWeek == 6 ) ? addDays + 2 : addDays ; 
                     }
                     t.ActivityDate__c = ap.StartDate__c.addDays( addDays );
@@ -546,11 +376,13 @@ public with sharing class ActionPlansUtilities{
         //End dependents 
         return aptList;
     }
+    */
     
     /**
     * Saves Action Plan Instance.
     * @return List<ActionPlan__c>
     */
+    /*
     public List<ActionPlan__c> saveActionPlanObj( List<String> oIdsList ){
         
         List<ActionPlan__c> apAux = new List<ActionPlan__c>();
@@ -593,7 +425,7 @@ public with sharing class ActionPlansUtilities{
 
         return apAux;
     }
-     
+    */
     /**
     * Saves Action Plan Instance and tasks and returns to the creation page with the previous Action Plan's details.
     * @return newPage
@@ -605,23 +437,71 @@ public with sharing class ActionPlansUtilities{
         
         return newPage;
     }
+    
+    /**
+    * Forwards to previous page
+    * @return previousPage
+    */
+    public PageReference cancel(){
+    	String objectType	= ApexPages.currentPage().getParameters().get( 'refType' );
+        String objectIds	= ApexPages.currentPage().getParameters().get( 'refId' );
+    	String templateId	= ApexPages.currentPage().getParameters().get( 'templateId' );
+    	String retURL		= ApexPages.currentPage().getParameters().get( 'retURL' );
+    	String id			= ApexPages.currentPage().getParameters().get( 'id' );
+    	String pageRef;
+    	String aPlanListUrl;
+    	// Reference previous page if defined
+    	if( retURL != null){
+    		pageRef = retUrl;
+    	}
+    	// Reference action plans templates list
+    	else if( templateId != null ){
+    		aPlanListUrl = Schema.ActionPlanTemplate__c.SObjectType.getDescribe().getKeyPrefix();
+    		pageRef = '/' + aPlanListUrl;
+    	}
+    	else if( objectType != null && objectIds != null ){		
+    		List<String> oIdsList = objectIds.split(',');
+    		// Reference object list page
+    		if (oIdsList.size()>1){
+	    		pageRef = '/' + this.getObjectKeyPrefix( objectType );
+    		}
+    		// Reference object detail page
+    		else{
+    			pageRef = '/' + oIdsList.get(0);
+    		}	
+    	}
+    	// Reference action plan detail page
+    	else if( id != null ){
+    		pageRef = '/' + id;
+    	}
+    	// Reference action plans list by default
+    	else{
+    		aPlanListUrl = Schema.ActionPlan__c.SObjectType.getDescribe().getKeyPrefix();
+    		pageRef = '/' + aPlanListUrl;
+    	}
+    	
+    	PageReference previousPage = new PageReference( pageRef );
+        previousPage.setRedirect( true );
+        
+        return previousPage;
+    }
 
     /**
     * Gets Tasks related to an Action Plan
     * @return apTasks
     */
     public List<APTaskTemplate__c> getTasks(){
-        
+
         if( this.apTasks == null || this.apTasks.size() == 0 ) {
             if( ApexPages.currentPage().getParameters().get( 'templateId' ) != null ){
                 String tempApId = ApexPages.currentPage().getParameters().get( 'templateId' );
                  
                 aptTasks = [ select a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c, a.User__r.Name, a.Id, 
                                 a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, a.APTTaskTemplate__r.Subject__c, 
-                                a.Reminder__c, a.SendEmail__c, a.Comments__c, a.Minutes_Reminder__c, a.taskIndex__c, a.Time_Reminder__c
+                                a.Reminder__c, a.SendEmail__c, a.Comments__c, a.taskIndex__c
                                 From APTTaskTemplate__c a
                                 where a.Action_Plan_Template__c =: TempApId order by taskIndex__c ASC ];
-                
+
                 this.apTasks = new List<APTaskTemplate__c>();
                 
                 Action_Plans_Settings__c mySettings = this.getCustomSetting();
@@ -635,9 +515,9 @@ public with sharing class ActionPlansUtilities{
 						userId = UserInfo.getUserId();
 					}
 					else if( aptTask.User__c == null && ( mySettings != null &&  mySettings.Unassigned_Task_Default__c ) ) {
-						userId = null;
+						userId = UserInfo.getUserId();//null;
 					} 
-					
+
                     APTaskTemplate__c t 	= new APTaskTemplate__c();
                     t.Type__c           	= aptTask.Type__c;
                     t.Subject__c        	= aptTask.Subject__c;
@@ -646,22 +526,30 @@ public with sharing class ActionPlansUtilities{
                     t.taskIndex__c			= aptTask.taskIndex__c;
                     t.Name             	 	= aptTask.Name;
                     t.DaysFromStart__c  	= aptTask.DaysFromStart__c;
-					t.Minutes_Reminder__c 	= aptTask.Minutes_Reminder__c;
                     t.User__c           	= userId;
                     t.Reminder__c       	= aptTask.Reminder__c;
-                    t.SendEmail__c      	= aptTask.SendEmail__c;
+                    t.Minutes_Reminder__c	= this.getReminderDefaultTime();
+      			  	t.SendEmail__c      	= aptTask.SendEmail__c;
                     t.Comments__c       	= aptTask.Comments__c;
                     this.apTasks.add( t );
                 }
             }else if( ApexPages.currentPage().getParameters().get( 'Id' ) != null ){
             	String TempApId = ApexPages.currentPage().getParameters().get( 'Id' );
-                this.apTasks = this.retrieveTaskFromExistingActionPlan( TempApId );            
+                this.apTasks = this.retrieveTaskFromExistingActionPlan( TempApId );  
+                //check reminders and set 'send email' as false
+                String tmp_remainderDefaultTime = this.getReminderDefaultTime();
+                for( APTaskTemplate__c t : this.apTasks ){
+                	if (t.Reminder__c == null || t.Reminder__c == false){
+                		t.Minutes_Reminder__c	= tmp_remainderDefaultTime;
+                	}
+                	t.SendEmail__c = false;
+                }  
             }
             else{
                 this.apTasks        	= new List<APTaskTemplate__c>();
                 APTaskTemplate__c t 	= new APTaskTemplate__c();
-                t.Reminder__c 			= true;
-                t.Minutes_Reminder__c 	= '510';
+                t.Reminder__c 			= false;
+                t.Minutes_Reminder__c 	= this.getReminderDefaultTime();
                 this.apTasks.add( t );
             }
             
@@ -691,14 +579,16 @@ public with sharing class ActionPlansUtilities{
        		errorMsg = Label.ap_Errors_TaskLimitError;
        	}
        	else{
-       		APTaskTemplate__c t = new APTaskTemplate__c();
-            t.Reminder__c 		= true;
-            t.Name 				= null;
-            t.taskIndex__c 		= this.taskIndexOrder;
-            
+       		APTaskTemplate__c t 	= new APTaskTemplate__c();
+            t.Reminder__c 			= false;
+            t.Minutes_Reminder__c	= this.getReminderDefaultTime();
+            t.Name 					= null;
+            t.taskIndex__c 			= this.taskIndexOrder;
+           
             // validate user, priority, subject and days before adding another
             Action_Plans_Settings__c mySettings = this.getCustomSetting();
             for( APTaskTemplate__c apt : apTasks ) {
+            	
             	hasNoErrors = ( ( apt.User__c != null || mySettings.Unassigned_Task_Default__c ) && apt.Subject__c != null );
             	if( apt.DaysFromStart__c < 1 ) { apt.DaysFromStart__c = 1; }
             }
@@ -756,6 +646,7 @@ public with sharing class ActionPlansUtilities{
             removedTask = true;
         }
         
+        
         return removedTask;
     }
     
@@ -811,32 +702,23 @@ public with sharing class ActionPlansUtilities{
     */
     public PageReference deletePlan(){
         
-        Savepoint sp        = Database.setSavepoint();
-        ActionPlan__c ap    = actionPlan;
-        List<APTaskTemplate__c> aptts = [ select a.Id from APTaskTemplate__c a where a.Action_Plan__c =: ap.Id ];
-        
-        //delete tasks by cycling through aptts
-        for( APTaskTemplate__c aptt : aptts ){
-            Task[] testT = [ select t.Id from Task t where TaskTemplateId__c =: aptt.Id ];
-            
-            if( testT.size() > 0 ){
-                try{
-                    delete testT[0];
-                }catch( exception e ){
-                    Database.rollback( sp );
-                }
-            }
-        }
-        
+        Savepoint sp        	= Database.setSavepoint();
+        //ActionPlan__c ap    = actionPlan;
+        List<String> recordIds	= new List<String>{actionPlan.Id}; 
+       
         //delete ap, which will also delete aptts via master-detail relationship
         try{
-            delete ap;
+        	
+			ActionPlansBatchDeleteUtilities taskBatch = new ActionPlansBatchDeleteUtilities(recordIds, Userinfo.getUserId());
+            taskBatch.deleteActionPlans();
+            
         } catch( exception e ){
             Database.rollback( sp );
         }
         
         // Send the user to the detail page for the new account.
-        PageReference newPage = new PageReference( '/apex/ActionPlanList' );
+        String aPlanListUrl = Schema.ActionPlan__c.SObjectType.getDescribe().getKeyPrefix();
+        PageReference newPage = new PageReference( '/'+aPlanListUrl );
         newPage.setRedirect( true );
         
         return newPage;
@@ -893,23 +775,70 @@ public with sharing class ActionPlansUtilities{
     * @parm : ap
     * @return oFeed
     */
-    public FeedPost generateObjectFeed( ActionPlan__c ap ){
+    public void generateObjectFeed( String apId ){
     	
     	String objId;
     	String objName;
-    	if( ap.Account__c != null ) 			{ objId = ap.Account__c; objName = 'Account'; }
-    	else if( ap.Campaign__c != null ) 		{ objId = ap.Campaign__c; objName = 'Campaign'; }
-    	else if( ap.Case__c != null ) 			{ objId = ap.Case__c; objName = 'Case'; }
-    	else if( ap.Contract__c != null ) 		{ objId = ap.Contract__c; objName = 'Contract'; }
-    	else if( ap.Opportunity__c != null ) 	{ objId = ap.Opportunity__c; objName = 'Opportunity'; }
-    	else if( ap.Contact__c != null ) 		{ objId = ap.Contact__c; objName = 'Contact'; }
-    	else if( ap.Lead__c != null ) 			{ objId = ap.Lead__c; objName = 'Lead'; }
+    	Boolean chatter_enabled ;
+    	Schema.DescribeSObjectResult r;
     	
-    	FeedPost oFeed 	= new FeedPost();
-    	oFeed.Type 		= 'TextPost';
-		oFeed.ParentId 	= objId;
-		oFeed.Body		= this.getPostObjectBody( objName );
-    	return oFeed;
+    	ActionPlan__c ap = [Select Id,Account__c,Campaign__c,Case__c,Contract__c,Opportunity__c,Contact__c,Lead__c  from ActionPlan__c where Id =:apId  ];
+    	
+    	if( ap.Account__c != null ) 			{ 
+    		objId = ap.Account__c; 
+    		objName = 'Account'; 
+    		r = Account.sObjectType.getDescribe();
+    		chatter_enabled = 	r.IsFeedEnabled();
+    	}
+    	else if( ap.Campaign__c != null ) 		{ 
+    		objId = ap.Campaign__c; 
+    		objName = 'Campaign';  
+    		r = Campaign.sObjectType.getDescribe();
+    		chatter_enabled = 	r.IsFeedEnabled();
+    	
+    	}
+    	else if( ap.Case__c != null ) 			{ 
+    		objId = ap.Case__c; 
+    		objName = 'Case';  
+    		r = Case.sObjectType.getDescribe();
+    		chatter_enabled = 	r.IsFeedEnabled();
+    	}
+    	else if( ap.Contract__c != null ) 		{ 
+    		objId = ap.Contract__c; 
+    		objName = 'Contract';  
+    		r = Contract.sObjectType.getDescribe();
+    		chatter_enabled = 	r.IsFeedEnabled();
+    	}
+    	else if( ap.Opportunity__c != null ) 	{ 
+    		objId = ap.Opportunity__c; 
+    		objName = 'Opportunity';  
+    		r = Opportunity.sObjectType.getDescribe();
+    		chatter_enabled = 	r.IsFeedEnabled();
+    	}
+    	else if( ap.Contact__c != null ) 		{ 
+    		objId = ap.Contact__c; 
+    		objName = 'Contact';  
+    		r = Contact.sObjectType.getDescribe();
+    		chatter_enabled = 	r.IsFeedEnabled();
+    	}
+    	else if( ap.Lead__c != null ) 			{ 
+    		objId = ap.Lead__c; 
+    		objName = 'Lead';  
+    		r = Lead.sObjectType.getDescribe();
+    		chatter_enabled = 	r.IsFeedEnabled();
+    	}
+    	
+    	if (chatter_enabled){
+	    	
+	    	 SObjectType token = Schema.getGlobalDescribe().get('FeedPost');
+		     SObject objPost = token.newSObject();
+		     objPost.put('Type', 'TextPost');
+		     objPost.put('ParentId', objId); // m_oppty is an instance of an Opportunity object
+		     objPost.put('Body', this.getPostObjectBody( objName ));
+		     
+		     insert objPost;	
+			 
+    	}
     }
     
     
@@ -968,6 +897,7 @@ public with sharing class ActionPlansUtilities{
     * @param aptTasks	a list of APTaskTemplate__c custom object 
     * @return 			a map with key equals TaskTemplateId__c field an value the task associated.
     */
+    /*
     private Map<Id,Task> getTasksFromAPTaskTemplates( List<APTaskTemplate__c> aptTasks ){
     	
     	Set<Id> aPTTempIdsSet = new Set<Id>();
@@ -985,6 +915,7 @@ public with sharing class ActionPlansUtilities{
 		
 		return tasksRefTemplateMap; 
     }
+    */
     
      /**
     * Set the Hours for select box of Remainder Hour
@@ -993,6 +924,7 @@ public with sharing class ActionPlansUtilities{
     public List<SelectOption> getHoursOption() {
     	
  	 	List<SelectOption> options = new List<SelectOption>();
+ 	 	options.add( new SelectOption( '0'  , '12:00 AM' ) );
  	 	options.add( new SelectOption( '30' , '12:30 AM' ) );
 		options.add( new SelectOption( '60' , '1:00 AM'  ) );
 		options.add( new SelectOption( '90' , '1:30 AM'  ) );
@@ -1163,5 +1095,93 @@ public with sharing class ActionPlansUtilities{
 		}
 		
 		return result;
-	}	
+	}
+		
+	/**
+    * Validates if the given task can change it's status to in progress or completed.
+    * If the task : depends on another that is inprogress returns false
+    * @return dependsOnInProgressTask
+    */
+    public Boolean validateChangeStatus(String apTaskId){
+    	Boolean result = true;
+    	set<string> rejectStatus = new set<string>{'In progress','Not Started','Deferred','Waiting on someone else'};
+	
+    	List<APTaskTemplate__c> aptList =  [select  a.Status__c,a.APTaskTemplate__r.Id,a.APTaskTemplate__r.Status__c
+                         					 from APTaskTemplate__c a 
+                         					 where a.Id =: apTaskId  
+					 					];
+		if (aptList.size() > 0){
+			if (aptList[0].APTaskTemplate__c !=null ){
+				
+				if (rejectStatus.contains(aptList[0].APTaskTemplate__r.Status__c))
+					result = false;
+			}
+		
+		}
+		return result;	 					
+    }
+    
+    /**
+    * Verifies that the user is able to add reminders.
+    * Checks the existence of a reminder setting field of the user object.
+    * Mathod can be improved by asking for Reminder Options at Activity settings.
+    */
+    public Boolean getDisplayReminder(){
+    	Map<String, Schema.SObjectField> fieldsMap = Schema.SObjectType.User.fields.getMap();
+ 		return fieldsMap.containsKey('UserPreferencesTaskRemindersCheckboxDefault');
+    }
+    
+    /**
+    * Gets task reminder default time for current user
+    * @return String picklist value
+    */
+    public String getReminderDefaultTime(){
+    	Map<String, Schema.SObjectField> fieldsMap = Schema.SObjectType.User.fields.getMap();
+ 		String defaultTime = '0';
+ 		
+ 	   	List<UserPreference> uP = [	Select Value 
+                             		From UserPreference 
+                             		where userid =: Userinfo.getUserId() and Preference='58'
+                              		];
+        if (uP.size() > 0 ){
+            defaultTime = uP[0].Value;
+        }
+      
+        return defaultTime;
+    }
+    
+    /**
+    * Deletes a list of action plans and redirects to previous page
+    * @return Pagereference previous page
+    */
+    public Pagereference deleteActionPlans(){
+    	String retURL;
+    	List<String> recordIds;
+    	if(ApexPages.currentPage().getParameters().get('retURL') != null){
+    		retURL = ApexPages.currentPage().getParameters().get('retURL');
+    	}
+    	if(ApexPages.currentPage().getParameters().get('records') != null){
+    		String records = ApexPages.currentPage().getParameters().get('records');
+    		recordIds = records.split(',');
+    		if (recordIds.size() > 0){
+				ActionPlansBatchDelete aPBatch = new ActionPlansBatchDelete(recordIds, Userinfo.getUserId());
+				Database.ExecuteBatch( aPBatch );
+			}
+    	}
+    	
+    	PageReference pageRef = new PageReference(retURL);
+        pageRef.setRedirect(true);
+        return pageRef;
+    } 
+    
+    /**
+    * Calculates Action Plan name from template name
+    * @return ActionPlanName
+    * @param templateName
+    */
+    public String retrieveAPNameFromTemplate(ActionPlanTemplate__c actionPlanTemplate){
+    	
+    	String aPName = actionPlanTemplate.Name.substring(0, math.min(77, actionPlanTemplate.Name.length())) + ' - ';
+    	return APName;
+    }
 }

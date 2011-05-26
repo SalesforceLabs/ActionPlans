@@ -1,30 +1,7 @@
-/*
-Copyright (c) 2011, salesforce.com, Inc.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice, 
-    this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
-    and/or other materials provided with the distribution.
-    * Neither the name of the salesforce.com, Inc. nor the names of its contributors 
-    may be used to endorse or promote products derived from this software 
-    without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
-OF THE POSSIBILITY OF SUCH DAMAGE.
-
+/**
+* Generate the enviroment for the Unit Tests
+* @author Matias Menafra
+* @createddate 05/14/2010
 */
 public with sharing class ActionPlansTestUtilities{
 	
@@ -133,13 +110,54 @@ public with sharing class ActionPlansTestUtilities{
  	}
  	
  	/**
+ 	* Creates a new Campaign Object 
+ 	* @return newCampaign
+ 	*/
+ 	public Campaign createNewCampaign(){
+ 		
+ 		Campaign newCampaign 	= new Campaign();
+ 		newCampaign.Name		= this.createRandomWord();
+ 		
+ 		try{
+ 			insert newCampaign;
+ 		}
+ 		catch( Exception ex ){
+ 			System.assert( false ,'Pre deploy test failed, This may be because of custom validation rules in your Org. You '
+ 				+ 'can check ignore apex errors or temporarily deactivate your validation rules for Campaigns and try again.');
+ 		}
+ 		
+ 		return newCampaign;
+ 	}
+ 	
+ 	/**
+ 	* Creates a new Case Object 
+ 	* @return newCase
+ 	*/
+ 	public Case createNewCase(){
+ 		
+ 		Case newCase 	= new Case();
+ 		newCase.Status	= 'New';
+ 		newCase.Origin	= 'Email'; 
+ 		
+ 		try{
+ 			insert newCase;
+ 		}
+ 		catch( Exception ex ){
+ 			System.assert( false ,'Pre deploy test failed, This may be because of custom validation rules in your Org. You '
+ 				+ 'can check ignore apex errors or temporarily deactivate your validation rules for Cases and try again.');
+ 		}
+ 		
+ 		return newCase;
+ 	}
+ 	
+ 	/**
  	* Creates a new Contact Object
  	* @return newContact
  	*/
  	public Contact createNewContact(){
  		
- 		Contact newContact 		= new Contact();
- 		newContact.LastName 	= this.createRandomWord();
+ 		Contact newContact 	= new Contact();
+ 		newContact.LastName = this.createRandomWord();
  		
  		try{
  			insert newContact;
@@ -150,6 +168,29 @@ public with sharing class ActionPlansTestUtilities{
  		}
  		
  		return newContact;
+ 	}
+ 	
+ 	/**
+ 	* Creates a new Contract Object
+ 	* @return newContract
+ 	*/
+ 	public Contract createNewContract(){
+ 		
+ 		Contract newContract 		= new Contract();
+ 		Account a 					= this.createNewAccount();
+ 		newContract.AccountId	 	= a.Id;
+ 		newContract.StartDate		= Date.today();
+ 		newContract.ContractTerm 	= 1;
+ 		
+ 		try{
+ 			insert newContract;
+ 		}
+ 		catch( Exception ex ){
+ 			System.assert( false ,'Pre deploy test failed, This may be because of custom validation rules in your Org. You '
+ 				+ 'can check ignore apex errors or temporarily deactivate your validation rules for Contracts and try again.');
+ 		}
+ 		
+ 		return newContract;
  	}
  	
  	/**
@@ -211,8 +252,17 @@ public with sharing class ActionPlansTestUtilities{
  		if( 'accounts'.equalsIgnoreCase( relatedObject ) ){
  			newActionPlan.Account__c = this.createNewAccount().Id;
  		}
+ 		if( 'campaigns'.equalsIgnoreCase( relatedObject ) ){
+ 			newActionPlan.Campaign__c = this.createNewCampaign().Id;
+ 		}
+ 		if( 'cases'.equalsIgnoreCase( relatedObject ) ){
+ 			newActionPlan.Case__c = this.createNewCase().Id;
+ 		}
  		if( 'contacts'.equalsIgnoreCase( relatedObject ) ){
  			newActionPlan.Contact__c = this.createNewContact().Id;
+ 		}
+ 		if( 'contracts'.equalsIgnoreCase( relatedObject ) ){
+ 			newActionPlan.Contract__c = this.createNewContract().Id;
  		}
  		if( 'leads'.equalsIgnoreCase( relatedObject ) ){
  			newActionPlan.Lead__c = this.createNewLead().Id;
@@ -237,6 +287,8 @@ public with sharing class ActionPlansTestUtilities{
  		for( Integer i = 0; i < numTasks; i++ ){
  			auxTask = this.createNewActionPlanTask( newActionPlan, 1, user, 'Email', 'High' );
  		}
+ 		
+ 		
  		
  		return newActionPlan;
  	}
@@ -362,10 +414,41 @@ public with sharing class ActionPlansTestUtilities{
 	   		return apTasksIds;
  	}
 
-    static TestMethod void testRandomWord(){
+    static TestMethod void testbatchIds(){
+      
+      ActionPlansTestUtilities apTestUtil = new ActionPlansTestUtilities();
+      
+      System.assert( apTestUtil.batchIds('accounts') != null );
+    }
+    
+     static TestMethod void testRandomWord(){
       
       ActionPlansTestUtilities apTestUtil = new ActionPlansTestUtilities();
       
       System.assert( apTestUtil.createRandomWord() != apTestUtil.createRandomWord() );
     }
+    /*
+	static TestMethod void testcreateNewActionPlanTemplateTask(){
+    
+		test.startTest();
+			ActionPlansTestUtilities apTestUtil = new ActionPlansTestUtilities();	      
+			apTestUtil.createNewActionPlanTemplateTask( null,1,new User(),'EMAIL','LOW');
+		test.stopTest();
+    }   
+    
+	static TestMethod void testcreateNewActionPlanTask(){
+    
+		test.startTest();
+			ActionPlansTestUtilities apTestUtil = new ActionPlansTestUtilities();	      
+			apTestUtil.createNewActionPlanTask( null,1,new User(),'EMAIL','LOW');
+		test.stopTest();
+    }     
+
+   	static TestMethod void testcreateNewActionPlan(){
+    
+		test.startTest();
+			ActionPlansTestUtilities apTestUtil = new ActionPlansTestUtilities();	      
+			apTestUtil.createNewActionPlan( 'REL_OBJECT',0);
+		test.stopTest();
+    }  */
 }

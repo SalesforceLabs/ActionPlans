@@ -57,3 +57,12 @@ a.all-none {
 #templateForm select { 
 	z-index:1; 
 }
+#daysAfterTtip_help.helpButton, #daysAfterTtip_help.helpButtonOn {
+    position: absolute;
+}
+#tasksListLoader {
+	background-color:white;
+	opacity:0.9;
+	position:absolute;
+	z-index:500;
+}

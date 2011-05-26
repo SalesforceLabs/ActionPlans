@@ -14,7 +14,7 @@ var oName = &apos;Opportunity&apos;;
 var error = false;
 var msj = &apos;&apos;;
 
-if( records.length &gt; 20 ) { 
+if( records.length &gt; 40 ) { 
     error = true; 
     msj =&apos;{!$Label.ap_Errors_moreThan20records}&apos;;
 }
@@ -27,18 +27,7 @@ if( error ) {
        alert(msj);    
 }
 else{
-       location.href = &apos;/apex/ActionPlanSelect?refId=&apos;+records+&apos;&amp;refType=&apos;+oName;
+       location.href = &apos;/apex/ActionPlanCreation?refId=&apos;+records+&apos;&amp;refType=&apos;+oName;
 }</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Create_Opportunity_Action_Plan</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>url</linkType>
-        <masterLabel>Create Opportunity Action Plan</masterLabel>
-        <openType>sidebar</openType>
-        <protected>false</protected>
-        <url>/apex/ActionPlanSelect?refType=Opportunity&amp;refId={!Opportunity.Id}</url>
     </webLinks>
 </CustomObject>

@@ -72,7 +72,6 @@ body .btn.likeButton {
 }
 
 body .pbButton input, body .pbButtonb input {
-	margin:0;
 	float:left;
 	padding /*\**/: 3px 5px\9;
 }
@@ -81,7 +80,8 @@ body .pbTitle h2 {
 	*margin : 5px;
 }
 
-
-
+#daysAfterTtip_help.helpButton, #daysAfterTtip_help.helpButtonOn {
+    position: absolute;
+}
 
 

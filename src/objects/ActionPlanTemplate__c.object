@@ -19,8 +19,7 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>List</actionName>
-        <content>ActionPlanTemplateList</content>
-        <type>Visualforce</type>
+        <type>Default</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
@@ -97,6 +96,11 @@
         <unique>false</unique>
     </fields>
     <label>Action Plan Template</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Name</label>
         <type>Text</type>

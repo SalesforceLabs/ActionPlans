@@ -1,30 +1,3 @@
-<!-- 
-Copyright (c) 2011, salesforce.com, Inc.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice, 
-    this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
-    and/or other materials provided with the distribution.
-    * Neither the name of the salesforce.com, Inc. nor the names of its contributors 
-    may be used to endorse or promote products derived from this software 
-    without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
-OF THE POSSIBILITY OF SUCH DAMAGE.
--->
 <apex:page tabStyle="ActionPlansAbout__tab">
 	<apex:sectionHeader title="{!$Label.ap_ActionPlansSetup}"/>
 	<apex:pageBlock title="{!$Label.ap_About}">
@@ -53,18 +26,36 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 	
 	<apex:pageBlock title="{!$Label.ap_GettingStartedTitle}">
 		<p>{!$Label.ap_GettingStartedP1}</p>
-		<apex:outputText escape="false" value="{!$Label.ap_GettingStartedOL}{!$Label.ap_GettingStartedOL_2}"/>
+		<br/>
+		<br/>
+		<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1}"/>
+		<br/>
+		<br/>
+		<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_title}"/> 
+		<br/>
+		<br/>
+		<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub1P1}{!$Label.ap_GettingStarted_section2_sub1P2}"/> 
+		<br/>
+		<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub2}"/> 
+		<br/>
+		<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section3}"/> 
 		
-		<p><apex:outputText escape="false" value="{!$Label.ap_GettingStartedP2}"/></p>
-		<p><apex:outputText escape="false" value="{!$Label.ap_GettingStartedP2_2}{!$Label.ap_GettingStartedP2_3}"/></p>
+		<br/>
+		<br/>
+		<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}{!$Label.ap_GettingStarted_section4P2}"/> 
+
 	</apex:pageBlock>
+
+
 
 	<apex:pageBlock title="{!$Label.ap_CreateTemplateTitle}">
 		<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateP1andP2}" />
-		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/ActionPlanTemplate-Detail.png')}"  /></p>
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/Template-Creation.PNG')}"  /></p>
 		<ol>
 			<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart1}"/>
 			<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart2}"/>
+			<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart3}"/>
+			<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart4}"/>
 		</ol>	
 	</apex:pageBlock>
 	
@@ -72,19 +63,27 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 	
 		<p>{!$Label.ap_CreatesActionPlansP1}</p>
 		
-		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads1.png')}"  /></p>
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/Select-Accounts.PNG')}"  /></p>
 		
 		<p>{!$Label.ap_CreatesActionPlansP2}</p>
 		
-		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads2.png')}"  /></p>
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/Choose-template-step1.PNG')}"  /></p>
 		
 		<p>{!$Label.ap_CreatesActionPlansP3}</p>
 		
-		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads3.png')}"  /></p>
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/Choose-template-step2.PNG')}"  /></p>
+		
+		<apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP3_bottom_text}"/>
 		
 		<p>{!$Label.ap_CreatesActionPlansP4}</p>
+		<apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP4_note}"/>
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/ActionPlan-Detail.PNG')}"  /></p>
 		
-		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads4.png')}"  /></p>
+		<p>{!$Label.ap_CreatesActionPlansP5}</p>
+		<apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP5_note}"/>
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/AccountActionPlan-Detail.PNG')}"  /></p>
+		
+
 	</apex:pageBlock>
 	
 	<apex:pageBlock title="{!$Label.ap_ImportExport_Title}">
@@ -94,7 +93,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		<br/><br/>
 		<p><apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}"/></p>
 		<br/><br/>
-		<apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/ActionPlanTemplate-import-2.png')}" />
+		<apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/ActionPlanTemplate-import-2.png')}" width="80%" />
 		<br/><br/>
 		<p><apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}"/></p>
 	</apex:pageBlock>

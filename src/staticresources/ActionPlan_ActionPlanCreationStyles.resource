@@ -56,7 +56,54 @@ a.all-none {
 #apForm select { 
 	z-index:1; 
 }
+#tasksListLoader {
+	background-color:white;
+	opacity:0.9;
+	position:absolute;
+	z-index:500;
+}
 input.errorBorder{
 	border:2px solid #CC0000;
 }
 		
+#daysAfterTtip_help.helpButton, #daysAfterTtip_help.helpButtonOn {
+    position: absolute;
+}	
+
+.taskTable td.first , .taskTable th.first { 
+	width:3%;  
+}
+.taskTable th.secondN , .taskTable th.second	{	width:11%;	}/* 8*/
+.taskTable th.thirdN	{	width:10%;	}
+.taskTable th.fourthN 	{ 	width:8%;	}
+.taskTable th.fifthN 	{ 	width:11%;	}/* 8*/
+.taskTable th.sixthN 	{ 	width:8%;	}
+.taskTable th.septhN	{	width:8%;	}
+.taskTable th.eigthN	{	width:6%; 	}/* 12*/
+.taskTable th.ninthN 	{	width:12%;	}		
+.taskTable th.tenthN 	{ 	width:5%;	} 	
+
+
+table.sortable  th div{
+	float:left;
+}
+
+.taskTable td.sixth select , .taskTable td.septh select , .taskTable td.third select {
+	width:90%;
+}
+
+.taskTable td.ninth select {
+	width:60%;
+}
+
+.taskTable td.fourth  .days_input{
+	width: 75%;
+}
+.taskTable td.second .task_input_short{
+	width: 80%;
+}
+
+.taskTable td.fifth .task_input_short{
+	width: 70%;
+}
+ 
