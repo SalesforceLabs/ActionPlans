@@ -59,7 +59,7 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>Action_Plans</members>
+        <members>Action_Plan</members>
         <name>CustomApplication</name>
     </types>
     <types>
@@ -82,6 +82,7 @@
         <members>ActionPlanTemplate__c</members>
         <members>ActionPlan__c</members>
         <members>ActionPlansAbout</members>
+        <members>Action_Plans</members>
         <members>Action_Plans_Template_Import</members>
         <name>CustomTab</name>
     </types>
