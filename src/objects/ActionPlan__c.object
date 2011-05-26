@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>ActionPlanCreation</content>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <content>ActionPlanList</content>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>ActionPlanCreation</content>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>ActionPlanDetail</content>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Action Plan instance.</description>
+    <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <fields>
+        <fullName>Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Action Plans</relationshipLabel>
+        <relationshipName>Action_Plans</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Action_Plan_Template__c</fullName>
+        <externalId>false</externalId>
+        <label>Action Plan Template</label>
+        <referenceTo>ActionPlanTemplate__c</referenceTo>
+        <relationshipName>R00NR0000000VbUtMAK</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Action_Plan__c</fullName>
+        <externalId>false</externalId>
+        <label>Action Plan</label>
+        <referenceTo>ActionPlan__c</referenceTo>
+        <relationshipName>Action_Plans</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Campaign__c</fullName>
+        <externalId>false</externalId>
+        <label>Campaign</label>
+        <referenceTo>Campaign</referenceTo>
+        <relationshipLabel>Action Plans</relationshipLabel>
+        <relationshipName>Action_Plans</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Case__c</fullName>
+        <externalId>false</externalId>
+        <label>Case</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipLabel>Action Plans</relationshipLabel>
+        <relationshipName>Action_Plans</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Completed__c</fullName>
+        <description>The number of completed tasks of the Action Plan.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of completed tasks of the Action Plan.</inlineHelpText>
+        <label>Completed</label>
+        <summaryFilterItems>
+            <field>APTaskTemplate__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Completed</value>
+        </summaryFilterItems>
+        <summaryForeignKey>APTaskTemplate__c.Action_Plan__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>R00NR0000000VZZ8MAO</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Contract__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Action Plans</relationshipLabel>
+        <relationshipName>Action_Plans</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <description>The description of the Action Plan.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The description of the Action Plan.</inlineHelpText>
+        <label>Description</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Lead__c</fullName>
+        <externalId>false</externalId>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipName>R00NR0000000VZZDMA4</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipName>R00NR0000000VZZIMA4</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SkipDay__c</fullName>
+        <externalId>false</externalId>
+        <label>Skip Day</label>
+        <picklist>
+            <controllingField>SkipWeekends__c</controllingField>
+            <picklistValues>
+                <fullName>Friday</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Monday</fullName>
+                <controllingFieldValues>checked</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>SkipWeekends__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Skip weekends when calculation activity start dates.</description>
+        <externalId>false</externalId>
+        <label>Skip Weekends</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>StartDate__c</fullName>
+        <defaultValue>Today()</defaultValue>
+        <description>The Start Date of the Action Plan</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Start Date of the Action Plan</inlineHelpText>
+        <label>Start Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>TaskRecordTypeID__c</fullName>
+        <externalId>false</externalId>
+        <label>TaskRecordTypeID</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Task_Status_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Completed__c ) &amp; &quot; of &quot; &amp;  text(Total__c) &amp; &quot; Completed&quot;</formula>
+        <label>Overall Task Status</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total__c</fullName>
+        <description>The total number of tasks on the Action Plan.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The total number of tasks on the Action Plan.</inlineHelpText>
+        <label>Step Total</label>
+        <summaryForeignKey>APTaskTemplate__c.Action_Plan__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>WhatId__c</fullName>
+        <description>The Id of the Lookup Relationship.</description>
+        <externalId>false</externalId>
+        <label>WhatId</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Action Plan</label>
+    <listViews>
+        <fullName>All_Action_Plans</fullName>
+        <columns>NAME</columns>
+        <columns>Action_Plan_Template__c</columns>
+        <columns>StartDate__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Action Plans</label>
+    </listViews>
+    <nameField>
+        <label>Action Plan Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Action Plans</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Reference_Object_Can_not_be_null</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(  
+OR( Lead__c == null,  Lead__c == &apos;&apos; ),
+OR( Account__c == null,  Account__c == &apos;&apos; ),
+OR( Contact__c == null,  Contact__c == &apos;&apos; ),
+OR( Opportunity__c == null,  Opportunity__c == &apos;&apos; ),
+OR( Case__c == null,  Case__c == &apos;&apos; ),
+OR( Contract__c == null,  Contract__c == &apos;&apos; ),
+OR( Campaign__c == null,  Campaign__c == &apos;&apos; )
+ )</errorConditionFormula>
+        <errorMessage>You must relate the Action Plan to an object.  Select the type and the object, then save again.</errorMessage>
+    </validationRules>
+</CustomObject>

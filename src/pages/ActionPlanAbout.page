@@ -1,0 +1,102 @@
+<!-- 
+Copyright (c) 2011, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, 
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, 
+    this list of conditions and the following disclaimer in the documentation 
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors 
+    may be used to endorse or promote products derived from this software 
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page tabStyle="ActionPlansAbout__tab">
+	<apex:sectionHeader title="{!$Label.ap_ActionPlansSetup}"/>
+	<apex:pageBlock title="{!$Label.ap_About}">
+		<table>
+			<tr>
+				<td>
+					<p>
+						<apex:outputText value="{!$Label.ap_AboutP1}" escape="false" />
+						<apex:outputText value="{!$Label.ap_AboutP1_2}" escape="false" />
+					</p>
+				</td>
+				<td>
+					<object width="480" height="385">
+						<param name="movie" value="http://www.youtube.com/v/IkL2ylZLdz4&amp;hl=en_US&amp;fs=1"></param>
+						<param name="allowFullScreen" value="true"></param>
+						<param name="allowscriptaccess" value="always"></param>
+						<embed 	src="http://www.youtube.com/v/IkL2ylZLdz4&amp;hl=en_US&amp;fs=1" 
+								type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" 
+								width="480" height="385">
+						</embed>
+					</object>
+				</td>
+			</tr>
+		</table>
+	</apex:pageBlock>
+	
+	<apex:pageBlock title="{!$Label.ap_GettingStartedTitle}">
+		<p>{!$Label.ap_GettingStartedP1}</p>
+		<apex:outputText escape="false" value="{!$Label.ap_GettingStartedOL}{!$Label.ap_GettingStartedOL_2}"/>
+		
+		<p><apex:outputText escape="false" value="{!$Label.ap_GettingStartedP2}"/></p>
+		<p><apex:outputText escape="false" value="{!$Label.ap_GettingStartedP2_2}{!$Label.ap_GettingStartedP2_3}"/></p>
+	</apex:pageBlock>
+
+	<apex:pageBlock title="{!$Label.ap_CreateTemplateTitle}">
+		<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateP1andP2}" />
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/ActionPlanTemplate-Detail.png')}"  /></p>
+		<ol>
+			<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart1}"/>
+			<apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart2}"/>
+		</ol>	
+	</apex:pageBlock>
+	
+	<apex:pageBlock title="{!$Label.ap_CreatesActionPlans}">
+	
+		<p>{!$Label.ap_CreatesActionPlansP1}</p>
+		
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads1.png')}"  /></p>
+		
+		<p>{!$Label.ap_CreatesActionPlansP2}</p>
+		
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads2.png')}"  /></p>
+		
+		<p>{!$Label.ap_CreatesActionPlansP3}</p>
+		
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads3.png')}"  /></p>
+		
+		<p>{!$Label.ap_CreatesActionPlansP4}</p>
+		
+		<p><apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/leads4.png')}"  /></p>
+	</apex:pageBlock>
+	
+	<apex:pageBlock title="{!$Label.ap_ImportExport_Title}">
+		<p><apex:outputText escape="false" value="{!$Label.ap_ImportExport_1}"/></p>
+		<br/><br/>
+		<apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/ActionPlanTemplate-import-1.png')}" />
+		<br/><br/>
+		<p><apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}"/></p>
+		<br/><br/>
+		<apex:image url="{!URLFOR($Resource.ActionPlans_General, 'resourceBundle/ActionPlanTemplate-import-2.png')}" />
+		<br/><br/>
+		<p><apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}"/></p>
+	</apex:pageBlock>
+	
+</apex:page>
