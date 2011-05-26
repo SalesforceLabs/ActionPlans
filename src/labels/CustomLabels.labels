@@ -187,6 +187,14 @@
         <value>Tasks depending on the one you are about to delete lose their dependency.\n\nAre you sure you want to delete this task?</value>
     </labels>
     <labels>
+        <fullName>ap_CreateNewAPT</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ap_CreateNewAPT</shortDescription>
+        <value>ap_CreateNewAPT</value>
+    </labels>
+    <labels>
         <fullName>ap_CreateTemplateOlpart1</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -649,6 +657,14 @@
 		&lt;p&gt;&lt;b&gt;Enabled Visualforce Page Access:&lt;/b&gt; All Visualforce pages from the Action Plans AppExchange package must be enabled.&lt;/p&gt;</value>
     </labels>
     <labels>
+        <fullName>ap_Home</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Home</shortDescription>
+        <value>Home</value>
+    </labels>
+    <labels>
         <fullName>ap_Import</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -840,6 +856,14 @@
         <value>Save</value>
     </labels>
     <labels>
+        <fullName>ap_SelectAPT</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Select APT</shortDescription>
+        <value>Select APT</value>
+    </labels>
+    <labels>
         <fullName>ap_Sharing</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -901,6 +925,14 @@
         <protected>true</protected>
         <shortDescription>ap_days_after_msg</shortDescription>
         <value>This value determines the due date of the task. For tasks with no dependency, the task&apos;s due date will be offset from the plan start date. For tasks with a dependency, the due date will be offset from the expected due date of the task on which it depends on.</value>
+    </labels>
+    <labels>
+        <fullName>ap_empty_template_list</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No templates</shortDescription>
+        <value>No templates</value>
     </labels>
     <labels>
         <fullName>ap_import_Note</fullName>

@@ -25,7 +25,7 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
 OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<apex:page id="actionPlanList" tabStyle="Action_Plans__tab" recordSetVar="action" standardController="ActionPlan__c">
+<apex:page id="actionPlanList" recordSetVar="action" standardController="ActionPlan__c">
 
 	<apex:sectionHeader title="{!$ObjectType.ActionPlan__c.LabelPlural}" subtitle="{!$Label.ap_Home}" help=""/>
     

@@ -5,12 +5,5 @@
     <tab>ActionPlan__c</tab>
     <tab>ActionPlanTemplate__c</tab>
     <tab>Action_Plans_Template_Import</tab>
-    <tab>standard-Campaign</tab>
-    <tab>standard-Lead</tab>
-    <tab>standard-Account</tab>
-    <tab>standard-Contact</tab>
-    <tab>standard-Opportunity</tab>
-    <tab>standard-Contract</tab>
-    <tab>standard-Case</tab>
     <tab>ActionPlansAbout</tab>
 </CustomApplication>
