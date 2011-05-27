@@ -315,9 +315,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		                        <!--  Tasks Assigned TO  -->			                        
 								<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}"  headerClass="fifthN" >
 									<apex:outputPanel id="ownerRecordPanel" style="">
-	                             		<apex:pageBlockSectionItem rendered="{!IF(wrapTask.displayLookUp,true,false)}"><apex:inputField required="{!wrapTask.userRequired}" value="{!wrapTask.task.User__c}"  styleClass="task_input_short" /></apex:pageBlockSectionItem>
+	                             		<apex:pageBlockSectionItem rendered="{!wrapTask.displayLookUp}"><apex:inputField required="{!wrapTask.userRequired}" value="{!wrapTask.task.User__c}"  styleClass="task_input_short" /></apex:pageBlockSectionItem>
+	                             		<apex:pageBlockSectionItem rendered="{!!wrapTask.displayLookUp}">[ {!$Label.ap_RecordOwner} ]</apex:pageBlockSectionItem>
 									</apex:outputPanel>
-	                        	</apex:column>
+	                        	</apex:column> 
 		                        
 		                        <!--  Tasks type  -->			                        
 		                        <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}"  headerClass="sixthN">

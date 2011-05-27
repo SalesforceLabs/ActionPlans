@@ -295,6 +295,11 @@ public with sharing class ActionPlanCreationController{
                     tmpAptask = this.mapTasksListBkp.get(aptTaskTemplate.Name);
                 }
                 
+                /*
+                RSC //TODO trouble spot here on "user Required"
+                getUnassignedDefaultsToRecordOwner
+                */
+                /*
                 if (tmpAptask == null){
                     displayLookUp   = aptTaskTemplate.User__c != null || (aptTaskTemplate.Name == null && aptTaskTemplate.Name !='');
                     userRequired    = aptTaskTemplate.Name == null || (aptTaskTemplate.Name != null && aptTaskTemplate.Name !='' && aptTaskTemplate.User__c != null);
@@ -302,8 +307,16 @@ public with sharing class ActionPlanCreationController{
                     displayLookUp   = tmpAptask.displayLookUp;
                     userRequired    = tmpAptask.userRequired;
                 }
+				*/
+                if (tmpAptask == null){
+                    displayLookUp   = aptTaskTemplate.User__c != null || (aptTaskTemplate.User__c == null && !getUnassignedDefaultsToRecordOwner());
+                    userRequired    = !getUnassignedDefaultsToRecordOwner();
+                }else{
+                    displayLookUp   = tmpAptask.displayLookUp;
+                    userRequired    = tmpAptask.userRequired;
+                }
                 
-                apTaskWrapper = new ApTaskWrapper( aptTaskTemplate, i , true,userRequired);
+                apTaskWrapper = new ApTaskWrapper( aptTaskTemplate, i , displayLookup,userRequired);
                 tasksList.add( apTaskWrapper );
                 if (aptTaskTemplate.Name != null  && aptTaskTemplate.Name !=''){
                     this.mapTasksListBkp.put(aptTaskTemplate.Name,apTaskWrapper);
@@ -322,8 +335,9 @@ public with sharing class ActionPlanCreationController{
     /**
     * Get Settings 
     * @return mySetings
+    * 2011-05-27 was getShowUserLookup() - now getUnassignedDefaultsToRecordOwner()
     */
-    public Boolean getShowUserLookup(){
+    public Boolean getUnassignedDefaultsToRecordOwner(){
         Action_Plans_Settings__c settings = new Action_Plans_Settings__c();
         settings = this.actionPlans.getCustomSetting();
         return settings.Unassigned_Task_Default__c;

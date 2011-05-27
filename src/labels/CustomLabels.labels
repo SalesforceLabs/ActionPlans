@@ -824,6 +824,14 @@
         <value>Print</value>
     </labels>
     <labels>
+        <fullName>ap_RecordOwner</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ap_RecordOwner</shortDescription>
+        <value>Assigned to owner.</value>
+    </labels>
+    <labels>
         <fullName>ap_RelatedObject</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>

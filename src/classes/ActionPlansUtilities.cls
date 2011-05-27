@@ -543,7 +543,10 @@ public with sharing class ActionPlansUtilities{
 						userId = UserInfo.getUserId();
 					}
 					else if( aptTask.User__c == null && ( mySettings != null &&  mySettings.Unassigned_Task_Default__c ) ) {
-						userId = UserInfo.getUserId();//null;
+						//RSC 2011-05-27 This appears to be in error 
+						//results in an emtpy assign to field being populate with the current user's info
+						//userId = UserInfo.getUserId();//null;
+						userId = null;
 					} 
 
                     APTaskTemplate__c t 	= new APTaskTemplate__c();
