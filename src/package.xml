@@ -59,7 +59,7 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>Action_Plan</members>
+        <members>Action_Plans</members>
         <name>CustomApplication</name>
     </types>
     <types>
@@ -120,12 +120,19 @@
         <name>StaticResource</name>
     </types>
     <types>
+        <members>Account.Create_Action_Plan</members>
         <members>Account.Create_Action_Plans</members>
+        <members>Campaign.Create_Action_Plan</members>
         <members>Campaign.Create_Action_Plans</members>
+        <members>Case.Create_Action_Plan</members>
         <members>Case.Create_Action_Plans</members>
+        <members>Contact.Create_Action_Plan</members>
         <members>Contact.Create_Action_Plans</members>
+        <members>Contract.Create_Action_Plan</members>
         <members>Contract.Create_Action_Plans</members>
+        <members>Lead.Create_Action_Plan</members>
         <members>Lead.Create_Action_Plans</members>
+        <members>Opportunity.Create_Action_Plan</members>
         <members>Opportunity.Create_Action_Plans</members>
         <name>WebLink</name>
     </types>
