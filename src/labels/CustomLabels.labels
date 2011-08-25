@@ -33,7 +33,13 @@
 				&lt;li&gt;Contracts (EE, UE, DE)&lt;/li&gt;
 				&lt;li&gt;Cases (EE, UE, DE)&lt;/li&gt;
 				&lt;li&gt;Person Accounts (EE, UE, DE)&lt;/li&gt;
-			&lt;/ul&gt;</value>
+			&lt;/ul&gt;
+		
+			&lt;p&gt;Getting Help&lt;/p&gt;
+			&lt;p&gt;Action Plans is Unsupported. For community assistance with Action Plans, please visit &lt;a href=&quot;http://success.salesforce.com/answers&quot;&gt;Salesforce Answers&lt;/a&gt;.  
+    To submit ideas or issues, please visit &lt;a href=&quot;https://github.com/ForceDotComLabs/ActionPlans&quot;&gt;Action Plans on Github&lt;/a&gt;.
+    Action Plans is Open Source software.  We welcome your feedback and your contributions.&lt;/p&gt;
+    &lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
     </labels>
     <labels>
         <fullName>ap_AboutP1_2</fullName>
