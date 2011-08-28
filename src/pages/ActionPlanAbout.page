@@ -33,15 +33,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 <apex:page tabStyle="ActionPlansAbout__tab">
 	<apex:sectionHeader title="{!$Label.ap_ActionPlansSetup}"/>
 	<apex:pageBlock title="{!$Label.ap_About}">
-		<table>
-			<tr>
-				<td>
-					<p>
+		<div style="float: left; ">
 						<apex:outputText value="{!$Label.ap_AboutP1}" escape="false" />
-						<apex:outputText value="{!$Label.ap_AboutP1_2}" escape="false" />
-					</p>
-				</td>
-				<td>
+						<apex:outputText value="{!$Label.ap_AboutP1a}" escape="false" />
+						<apex:outputText value="{!$Label.ap_AboutP1b}" escape="false" />
+		</div>
+		<div style="float: right; ">
 					<object width="480" height="385">
 						<param name="movie" value="http://www.youtube.com/v/IkL2ylZLdz4&amp;hl=en_US&amp;fs=1"></param>
 						<param name="allowFullScreen" value="true"></param>
@@ -51,9 +48,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 								width="480" height="385">
 						</embed>
 					</object>
-				</td>
-			</tr>
-		</table>
+		</div>
+		<div style="clear: both;" />
 	</apex:pageBlock>
 	
 	<apex:pageBlock title="{!$Label.ap_GettingStartedTitle}">
