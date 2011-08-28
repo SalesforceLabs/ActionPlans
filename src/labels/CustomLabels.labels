@@ -34,11 +34,16 @@
 				&lt;li&gt;Cases (EE, UE, DE)&lt;/li&gt;
 				&lt;li&gt;Person Accounts (EE, UE, DE)&lt;/li&gt;
 			&lt;/ul&gt;
-		
-			&lt;p&gt;Getting Help&lt;/p&gt;
+			&lt;p&gt;&amp;nbsp;&lt;/p&gt;		
+			&lt;h2&gt;Getting Help&lt;/h2&gt;
 			&lt;p&gt;Action Plans is Unsupported. For community assistance with Action Plans, please visit &lt;a href=&quot;http://success.salesforce.com/answers&quot;&gt;Salesforce Answers&lt;/a&gt;.  
     To submit ideas or issues, please visit &lt;a href=&quot;https://github.com/ForceDotComLabs/ActionPlans&quot;&gt;Action Plans on Github&lt;/a&gt;.
-    Action Plans is Open Source software.  We welcome your feedback and your contributions.&lt;/p&gt;
+    &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+	&lt;h2&gt;Community&lt;/h2&gt;
+
+    &lt;p&gt;Action Plans is Open Source software.  We welcome your issue reports, ideas, documentation, code tweaks and all other participation.  
+    &lt;a href="http://blogs.developerforce.com/labs/2011/08/howto-contribute-to-milestones-pm-code-not-required-opensource.html"&gt;Learn more&lt;/a&gt;.&lt;/p&gt;
+
     &lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
     </labels>
     <labels>
