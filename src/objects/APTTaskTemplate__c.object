@@ -46,6 +46,7 @@
         <referenceTo>APTTaskTemplate__c</referenceTo>
         <relationshipLabel>APT Task Templates</relationshipLabel>
         <relationshipName>R00NR0000000VaVDMA0</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -182,6 +183,7 @@
         <label>Assigned To</label>
         <referenceTo>User</referenceTo>
         <relationshipName>R00NR0000000Vd65MAC</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
