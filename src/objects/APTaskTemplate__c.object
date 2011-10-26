@@ -46,6 +46,7 @@
         <referenceTo>APTaskTemplate__c</referenceTo>
         <relationshipLabel>AP Tasks</relationshipLabel>
         <relationshipName>R00NR0000000VcWbMAK</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -216,6 +217,7 @@
         <label>Assigned To</label>
         <referenceTo>User</referenceTo>
         <relationshipName>R00NR0000000Vd7NMAS</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
