@@ -49,6 +49,7 @@
         <referenceTo>Account</referenceTo>
         <relationshipLabel>Action Plans</relationshipLabel>
         <relationshipName>Action_Plans</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -57,6 +58,7 @@
         <label>Action Plan Template</label>
         <referenceTo>ActionPlanTemplate__c</referenceTo>
         <relationshipName>R00NR0000000VbUtMAK</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -65,6 +67,7 @@
         <label>Action Plan</label>
         <referenceTo>ActionPlan__c</referenceTo>
         <relationshipName>Action_Plans</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -74,6 +77,7 @@
         <referenceTo>Campaign</referenceTo>
         <relationshipLabel>Action Plans</relationshipLabel>
         <relationshipName>Action_Plans</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -83,6 +87,7 @@
         <referenceTo>Case</referenceTo>
         <relationshipLabel>Action Plans</relationshipLabel>
         <relationshipName>Action_Plans</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -106,6 +111,7 @@
         <label>Contact</label>
         <referenceTo>Contact</referenceTo>
         <relationshipName>R00NR0000000VZZ8MAO</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -115,6 +121,7 @@
         <referenceTo>Contract</referenceTo>
         <relationshipLabel>Action Plans</relationshipLabel>
         <relationshipName>Action_Plans</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -132,6 +139,7 @@
         <label>Lead</label>
         <referenceTo>Lead</referenceTo>
         <relationshipName>R00NR0000000VZZDMA4</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -140,6 +148,7 @@
         <label>Opportunity</label>
         <referenceTo>Opportunity</referenceTo>
         <relationshipName>R00NR0000000VZZIMA4</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -255,6 +264,90 @@ OR( Campaign__c == null,  Campaign__c == &apos;&apos; )
  )</errorConditionFormula>
         <errorMessage>You must relate the Action Plan to an object.  Select the type and the object, then save again.</errorMessage>
     </validationRules>
+    <webLinks>
+        <fullName>Create_Account_Action_Plan</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Account Action Plan</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/ActionPlanCreation?refType=Account&amp;refId={!Account.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Campaign_Action_Plan</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Campaign Action Plan</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/ActionPlanCreation?refType=Campaign&amp;refId={!Campaign.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Campaign_Contact_Action_Plan</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Contact Action Plan</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/ActionPlanCreation?refType=Contact&amp;refId={!Contact.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Case_Action_Plan</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Case Action Plan</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/ActionPlanCreation?refType=Case&amp;refId={!Case.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Contract_Action_Plan</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Contract Action Plan</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/ActionPlanCreation?refType=Contract&amp;refId={!Contract.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Lead_Action_Plan</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Lead Action Plan</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/ActionPlanCreation?refType=Lead&amp;refId={!Lead.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Opportunity_Action_Plan</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Opportunity Action Plan</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/ActionPlanCreation?refType=Opportunity&amp;refId={!Opportunity.Id}</url>
+    </webLinks>
     <webLinks>
         <fullName>Delete_Action_Plans</fullName>
         <availability>online</availability>
