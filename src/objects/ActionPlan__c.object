@@ -265,88 +265,92 @@ OR( Campaign__c == null,  Campaign__c == &apos;&apos; )
         <errorMessage>You must relate the Action Plan to an object.  Select the type and the object, then save again.</errorMessage>
     </validationRules>
     <webLinks>
+        <fullName>Action_Plans_Delete_VF</fullName>
+        <availability>online</availability>
+        <description>DO NOT ADD to any layouts. This is referenced from &apos;Delete Action Plans&apos; button to enable access to VF with namespace in Managed package .</description>
+        <displayType>link</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Action Plans Delete (VF)</masterLabel>
+        <openType>replace</openType>
+        <page>ActionPlansDelete</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
         <fullName>Create_Account_Action_Plan</fullName>
         <availability>online</availability>
         <displayType>massActionButton</displayType>
-        <height>600</height>
         <linkType>url</linkType>
         <masterLabel>Create Account Action Plan</masterLabel>
-        <openType>sidebar</openType>
+        <openType>replace</openType>
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
-        <url>/apex/ActionPlanCreation?refType=Account&amp;refId={!Account.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Account&quot;, refId=Account.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Campaign_Action_Plan</fullName>
         <availability>online</availability>
         <displayType>massActionButton</displayType>
-        <height>600</height>
         <linkType>url</linkType>
         <masterLabel>Create Campaign Action Plan</masterLabel>
-        <openType>sidebar</openType>
+        <openType>replace</openType>
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
-        <url>/apex/ActionPlanCreation?refType=Campaign&amp;refId={!Campaign.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Campaign&quot;, refId=Campaign.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Campaign_Contact_Action_Plan</fullName>
         <availability>online</availability>
         <displayType>massActionButton</displayType>
-        <height>600</height>
         <linkType>url</linkType>
         <masterLabel>Create Contact Action Plan</masterLabel>
-        <openType>sidebar</openType>
+        <openType>replace</openType>
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
-        <url>/apex/ActionPlanCreation?refType=Contact&amp;refId={!Contact.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Contact&quot;, refId=Contact.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Case_Action_Plan</fullName>
         <availability>online</availability>
         <displayType>massActionButton</displayType>
-        <height>600</height>
         <linkType>url</linkType>
         <masterLabel>Create Case Action Plan</masterLabel>
-        <openType>sidebar</openType>
+        <openType>replace</openType>
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
-        <url>/apex/ActionPlanCreation?refType=Case&amp;refId={!Case.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Case&quot;, refId=Case.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Contract_Action_Plan</fullName>
         <availability>online</availability>
         <displayType>massActionButton</displayType>
-        <height>600</height>
         <linkType>url</linkType>
         <masterLabel>Create Contract Action Plan</masterLabel>
-        <openType>sidebar</openType>
+        <openType>replace</openType>
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
-        <url>/apex/ActionPlanCreation?refType=Contract&amp;refId={!Contract.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Contract&quot;, refId=Contract.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Lead_Action_Plan</fullName>
         <availability>online</availability>
         <displayType>massActionButton</displayType>
-        <height>600</height>
         <linkType>url</linkType>
         <masterLabel>Create Lead Action Plan</masterLabel>
-        <openType>sidebar</openType>
+        <openType>replace</openType>
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
-        <url>/apex/ActionPlanCreation?refType=Lead&amp;refId={!Lead.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Lead&quot;, refId=Lead.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Opportunity_Action_Plan</fullName>
         <availability>online</availability>
         <displayType>massActionButton</displayType>
-        <height>600</height>
         <linkType>url</linkType>
         <masterLabel>Create Opportunity Action Plan</masterLabel>
-        <openType>sidebar</openType>
+        <openType>replace</openType>
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
-        <url>/apex/ActionPlanCreation?refType=Opportunity&amp;refId={!Opportunity.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Opportunity&quot;, refId=Opportunity.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Delete_Action_Plans</fullName>
@@ -378,7 +382,7 @@ OR( Campaign__c == null,  Campaign__c == &apos;&apos; )
 			if(confirm(&apos;{!$Label.ap_Confirm_Action_Plan_Deletion}&apos;)){
 				// Deletion should be done with ajax toolkit. 
 				// connection.js was not included correctly always getting the error: sforce is undefined
-				location.href = &apos;/apex/ActionPlansDelete?records=&apos;+records+&apos;&amp;retURL=&apos;+window.location;
+				location.href =&apos;{!URLFOR($Action.ActionPlan__c.Action_Plans_Delete_VF , null)}&apos; + &apos;&amp;records=&apos;+records;
 			}
 		}</url>
     </webLinks>

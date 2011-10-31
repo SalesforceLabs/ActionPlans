@@ -4,7 +4,7 @@
         <fullName>ap_APModifyError</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>APModifyError</shortDescription>
         <value>Action Plan Template has be modified since Plan creation.</value>
     </labels>
@@ -12,7 +12,7 @@
         <fullName>ap_About</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_About</shortDescription>
         <value>Welcome to Action Plans</value>
     </labels>
@@ -20,7 +20,7 @@
         <fullName>ap_AboutP1</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_AboutP1</shortDescription>
         <value>&lt;p&gt;Action Plans helps your organization encapsulate best practices into easily sharable, reusable task templates.&lt;br/&gt;&lt;br/&gt;
         	You can create Action Plans for the following objects (varies by edition):&lt;/p&gt;
@@ -40,7 +40,7 @@
         <fullName>ap_AboutP1a</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_AboutP1a</shortDescription>
         <value>&lt;h2&gt;Getting Help&lt;/h2&gt;
 			&lt;p&gt;Action Plans is Unsupported. For community assistance with Action Plans, please visit &lt;a href=&quot;http://success.salesforce.com/answers&quot;&gt;Salesforce Answers&lt;/a&gt;.  
@@ -57,7 +57,7 @@
         <fullName>ap_AboutP1b</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_AboutP1b</shortDescription>
         <value>&lt;p&gt;Considerations :&lt;/p&gt;
 			&lt;ul&gt;
@@ -73,7 +73,7 @@
         <fullName>ap_ActionPlanDetails</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Action Plan Details</shortDescription>
         <value>Action Plan Detail</value>
     </labels>
@@ -81,7 +81,7 @@
         <fullName>ap_ActionPlanTemplateDetail</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Action Plan Template Detail</shortDescription>
         <value>Action Plan Template Detail</value>
     </labels>
@@ -89,7 +89,7 @@
         <fullName>ap_ActionPlanTemplates</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Action Plan Templates</shortDescription>
         <value>Action Plan Templates</value>
     </labels>
@@ -97,7 +97,7 @@
         <fullName>ap_ActionPlansSetup</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_ActionPlansSetup</shortDescription>
         <value>Action Plans Setup</value>
     </labels>
@@ -105,7 +105,7 @@
         <fullName>ap_Action_Plan</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Action Plan</shortDescription>
         <value>Action Plan</value>
     </labels>
@@ -113,7 +113,7 @@
         <fullName>ap_Action_Plan_Template</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Action Plan Template</shortDescription>
         <value>Action Plan Template</value>
     </labels>
@@ -121,7 +121,7 @@
         <fullName>ap_Add</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Add</shortDescription>
         <value>Add</value>
     </labels>
@@ -129,7 +129,7 @@
         <fullName>ap_AddNewTask</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>AddNewTask</shortDescription>
         <value>Add New Task</value>
     </labels>
@@ -137,7 +137,7 @@
         <fullName>ap_All</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>All</shortDescription>
         <value>All</value>
     </labels>
@@ -145,7 +145,7 @@
         <fullName>ap_AreYouSureAsk</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>AreYouSureAsk</shortDescription>
         <value>Are you sure?</value>
     </labels>
@@ -153,7 +153,7 @@
         <fullName>ap_Cancel</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Cancel</shortDescription>
         <value>Cancel</value>
     </labels>
@@ -161,7 +161,7 @@
         <fullName>ap_Change</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Change text</shortDescription>
         <value>Change</value>
     </labels>
@@ -169,7 +169,7 @@
         <fullName>ap_Clone</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Clone</shortDescription>
         <value>Clone</value>
     </labels>
@@ -177,7 +177,7 @@
         <fullName>ap_Close</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Close</shortDescription>
         <value>Close</value>
     </labels>
@@ -185,14 +185,14 @@
         <fullName>ap_Comments</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Comments</shortDescription>
         <value>Comments</value>
     </labels>
     <labels>
         <fullName>ap_Confirm_Action_Plan_Deletion</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap Confirm Action Plan Deletion</shortDescription>
         <value>The selected Action Plans will be deleted. Since the Delete process will run in the background, the Action Plans selected for Delete may not be removed from the list immediately.\n\nAre you sure you want to delete selected Action Plans?</value>
     </labels>
@@ -200,7 +200,7 @@
         <fullName>ap_Confirm_Tasks_Deletion</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap Confirm Tasks Deletion</shortDescription>
         <value>Tasks depending on the one you are about to delete lose their dependency.\n\nAre you sure you want to delete this task?</value>
     </labels>
@@ -208,7 +208,7 @@
         <fullName>ap_CreateNewAPT</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreateNewAPT</shortDescription>
         <value>ap_CreateNewAPT</value>
     </labels>
@@ -216,7 +216,7 @@
         <fullName>ap_CreateTemplateOlpart1</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreateTemplateOlpart1</shortDescription>
         <value>&lt;li&gt;Name - Template Name.&lt;/li&gt;
 			&lt;li&gt;Description - An explanation of how the template should be used.&lt;/li&gt;
@@ -231,7 +231,7 @@
         <fullName>ap_CreateTemplateOlpart2</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreateTemplateOlpart2</shortDescription>
         <value>&lt;li&gt;Days After-  This value determines the due date of the task.
         		&lt;ol&gt;
@@ -253,7 +253,7 @@
         <fullName>ap_CreateTemplateOlpart3</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreateTemplateOlpart3</shortDescription>
         <value>&lt;li&gt;Reminder – This check box will define the default behaviour for reminders when applying the template to create an Action plan .
 				&lt;ol&gt;
@@ -275,7 +275,7 @@
         <fullName>ap_CreateTemplateOlpart4</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreateTemplateOlpart4</shortDescription>
         <value>&lt;li&gt;Comments - Comments supporting a task.&lt;/li&gt;
 			&lt;li&gt;Add New Task - Adds an additional row to the tasks grid.&lt;/li&gt;
@@ -285,7 +285,7 @@
         <fullName>ap_CreateTemplateP1andP2</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreateTemplateP1andP2</shortDescription>
         <value>&lt;p&gt;Now you&apos;re ready to create your first template.  Navigate to the Action Plans Templates tab.  Click on the &quot;New Action Plan Template&quot; button.&lt;/p&gt;
 		
@@ -295,7 +295,7 @@
         <fullName>ap_CreateTemplateTitle</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreateTemplateTitle</shortDescription>
         <value>Create a Template</value>
     </labels>
@@ -303,7 +303,7 @@
         <fullName>ap_CreatedBy</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Created By</shortDescription>
         <value>Created By</value>
     </labels>
@@ -311,7 +311,7 @@
         <fullName>ap_CreatesActionPlans</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlans</shortDescription>
         <value>Create Action Plans for Several Leads</value>
     </labels>
@@ -319,7 +319,7 @@
         <fullName>ap_CreatesActionPlansP1</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP1</shortDescription>
         <value>Step 1: Navigate to a accounts list view.  Select the accounts you want to create Action Plans for.  Click on the &quot;Create Account Action Plans&quot; button.</value>
     </labels>
@@ -327,7 +327,7 @@
         <fullName>ap_CreatesActionPlansP2</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP2</shortDescription>
         <value>Step 2: Select the template you want to use by  typing the name on the lookup and clicking on it.</value>
     </labels>
@@ -335,7 +335,7 @@
         <fullName>ap_CreatesActionPlansP3</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP3</shortDescription>
         <value>Step 3: Enter the information specific to this plan.  Note that the accounts you selected earlier are visible and that the &quot;Assign To&quot; has been completed using the current user.</value>
     </labels>
@@ -343,7 +343,7 @@
         <fullName>ap_CreatesActionPlansP3_bottom_text</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP3BottomText</shortDescription>
         <value>Considerations : When hovering the calendar icon (1.) next to the Days After field a calendar is displayed (2.) This calendar has two dates highlighted :&lt;br/&gt;&lt;br/&gt;
 			&lt;ul&gt;
@@ -355,7 +355,7 @@
         <fullName>ap_CreatesActionPlansP4</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP4</shortDescription>
         <value>Step 4: Save the Action Plan.</value>
     </labels>
@@ -363,7 +363,7 @@
         <fullName>ap_CreatesActionPlansP4_note</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP4Note</shortDescription>
         <value>Note: Action Plan creation is handled by a batch process , it can take a couple of minutes to be able to view all created objects.</value>
     </labels>
@@ -371,7 +371,7 @@
         <fullName>ap_CreatesActionPlansP5</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP5</shortDescription>
         <value>Step 5: Verify the Action Plan and the tasks.</value>
     </labels>
@@ -379,7 +379,7 @@
         <fullName>ap_CreatesActionPlansP5_note</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_CreatesActionPlansP5Note</shortDescription>
         <value>Note that the Action Plan is now in the correct related list and that this account has two open activities.  The third activity in the template is dependent and will be created only when it&apos;s predecessor is complete.</value>
     </labels>
@@ -387,7 +387,7 @@
         <fullName>ap_DefaultTaskName</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_DefaultTaskName</shortDescription>
         <value>- Task Template</value>
     </labels>
@@ -395,7 +395,7 @@
         <fullName>ap_DefaultWeekendDueDates</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>DefaultWeekendDueDates</shortDescription>
         <value>Default weekend due dates to</value>
     </labels>
@@ -403,7 +403,7 @@
         <fullName>ap_Delete</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Delete</shortDescription>
         <value>Delete</value>
     </labels>
@@ -411,7 +411,7 @@
         <fullName>ap_Edit</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Edit</shortDescription>
         <value>Edit</value>
     </labels>
@@ -419,21 +419,21 @@
         <fullName>ap_Error</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Error</shortDescription>
         <value>Error</value>
     </labels>
     <labels>
         <fullName>ap_Error_Cyclic_Dependency_Found</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap Error Cyclic Dependency Found</shortDescription>
         <value>A cyclic dependency on tasks has been found</value>
     </labels>
     <labels>
         <fullName>ap_Errors_Day_Number_Too_Large</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap Errors Day Number Too Large</shortDescription>
         <value>Number is too large</value>
     </labels>
@@ -441,14 +441,14 @@
         <fullName>ap_Errors_ImportingXMLTask</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_ImportingXMLTask</shortDescription>
         <value>There was a problem importing your Action Plans Template Tasks, review your Template XML or try exporting it again.</value>
     </labels>
     <labels>
         <fullName>ap_Errors_ImportingXMLTemplate</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_ImportingXMLTemplate</shortDescription>
         <value>There was a problem importing your Action Plans Template, review your Template XML or try exporting it again.</value>
     </labels>
@@ -456,7 +456,7 @@
         <fullName>ap_Errors_InvalidXMLTemplate</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_InvalidXMLTemplate</shortDescription>
         <value>This is an invalid XML template, please export a new Action Plans Template and try again.</value>
     </labels>
@@ -464,14 +464,14 @@
         <fullName>ap_Errors_RemoveCyclicDependency</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_RemoveCyclicDependency</shortDescription>
         <value>Remove cyclic dependency on tasks and try again.</value>
     </labels>
     <labels>
         <fullName>ap_Errors_Review_Errors</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap Errors Review Errors</shortDescription>
         <value>Review all error messages above to correct your data.</value>
     </labels>
@@ -479,7 +479,7 @@
         <fullName>ap_Errors_SelectCorrectXMLExtension</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_SelectCorrectXMLExtension</shortDescription>
         <value>Please select a file with the correct extension - xml</value>
     </labels>
@@ -487,7 +487,7 @@
         <fullName>ap_Errors_SelectXML</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_SelectXML</shortDescription>
         <value>Please select a XML document to import</value>
     </labels>
@@ -495,14 +495,14 @@
         <fullName>ap_Errors_TaskLimitError</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_TaskLimitError</shortDescription>
         <value>Task limit reached.</value>
     </labels>
     <labels>
         <fullName>ap_Errors_moreThan200records</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap Errors moreThan200records</shortDescription>
         <value>You can not select more than 65 records</value>
     </labels>
@@ -510,7 +510,7 @@
         <fullName>ap_Errors_moreThan20records</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_moreThan20records</shortDescription>
         <value>You can not select more than 40 records</value>
     </labels>
@@ -518,7 +518,7 @@
         <fullName>ap_Errors_selectOneRecord</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_selectOneRecord</shortDescription>
         <value>You must select at least one record.</value>
     </labels>
@@ -526,7 +526,7 @@
         <fullName>ap_Errors_xmlMetaData</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_xmlMetaData</shortDescription>
         <value>Meta Data Information is incorrect!</value>
     </labels>
@@ -534,7 +534,7 @@
         <fullName>ap_Errors_xmlRead</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Errors_xmlRead</shortDescription>
         <value>An error has occurred while trying to read you XML document!</value>
     </labels>
@@ -542,7 +542,7 @@
         <fullName>ap_Export</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Export</shortDescription>
         <value>Export</value>
     </labels>
@@ -550,7 +550,7 @@
         <fullName>ap_Friday</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Friday</shortDescription>
         <value>Friday</value>
     </labels>
@@ -558,7 +558,7 @@
         <fullName>ap_GettingStartedP1</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_GettingStartedP1</shortDescription>
         <value>Getting started is easy. For each object, you need to add a button to the list view, 
         		add a button to the detail page. For Accounts, follow these steps:</value>
@@ -567,7 +567,7 @@
         <fullName>ap_GettingStartedTitle</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_GettingStartedTitle</shortDescription>
         <value>Post Install Configuration</value>
     </labels>
@@ -678,7 +678,7 @@
         <fullName>ap_Home</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Home</shortDescription>
         <value>Home</value>
     </labels>
@@ -686,7 +686,7 @@
         <fullName>ap_Import</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_Import_Template</shortDescription>
         <value>Import Template</value>
     </labels>
@@ -694,7 +694,7 @@
         <fullName>ap_ImportExport_1</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_ImportExport_1</shortDescription>
         <value>Action Plans now supports the sharing and discovery of best practices using Template Export and Template Import.  
 			&lt;br/&gt;&lt;br/&gt;
@@ -706,7 +706,7 @@
         <fullName>ap_ImportExport_2</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_ImportExport_2</shortDescription>
         <value>Export creates a simple XML file containing template header and task information.  
         	It also includes information about who created the template.  
@@ -727,7 +727,7 @@
         <fullName>ap_ImportExport_SubTitle</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_ImportExport_SubTitle</shortDescription>
         <value>Import Template</value>
     </labels>
@@ -735,7 +735,7 @@
         <fullName>ap_ImportExport_Title</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_ImportExport_Title</shortDescription>
         <value>Share Your Templates and Discover Best Practices using Template Export and Template Import</value>
     </labels>
@@ -743,7 +743,7 @@
         <fullName>ap_Information</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Information</shortDescription>
         <value>Information</value>
     </labels>
@@ -751,7 +751,7 @@
         <fullName>ap_ItselfDependencyError</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_ItselfDependencyError</shortDescription>
         <value>A task cannot be dependent of itself.</value>
     </labels>
@@ -759,7 +759,7 @@
         <fullName>ap_LastModifiedBy</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Last Modified By</shortDescription>
         <value>Last Modified By</value>
     </labels>
@@ -767,7 +767,7 @@
         <fullName>ap_Name</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Name</shortDescription>
         <value>Name</value>
     </labels>
@@ -775,7 +775,7 @@
         <fullName>ap_New</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>New</shortDescription>
         <value>New</value>
     </labels>
@@ -783,14 +783,14 @@
         <fullName>ap_NewActionPlan</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>New Action Plan</shortDescription>
         <value>New Action Plan</value>
     </labels>
     <labels>
         <fullName>ap_NoTemplatesError</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Message for action plans when there are no templates</shortDescription>
         <value>You must create an Action Plan Template</value>
     </labels>
@@ -798,7 +798,7 @@
         <fullName>ap_None</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>None</shortDescription>
         <value>None</value>
     </labels>
@@ -806,7 +806,7 @@
         <fullName>ap_Note</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Note</shortDescription>
         <value>Note</value>
     </labels>
@@ -814,7 +814,7 @@
         <fullName>ap_Owner</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Owner</shortDescription>
         <value>Owner</value>
     </labels>
@@ -822,7 +822,7 @@
         <fullName>ap_PlanStartDate</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Plan Start Date</shortDescription>
         <value>Plan Start Date</value>
     </labels>
@@ -830,14 +830,14 @@
         <fullName>ap_PostMessage</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_PostMessage</shortDescription>
         <value>has created a new Action Plan for this</value>
     </labels>
     <labels>
         <fullName>ap_Print</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap Print</shortDescription>
         <value>Print</value>
     </labels>
@@ -845,7 +845,7 @@
         <fullName>ap_RecordOwner</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_RecordOwner</shortDescription>
         <value>Assigned to owner.</value>
     </labels>
@@ -853,7 +853,7 @@
         <fullName>ap_RelatedObject</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>RelatedObject</shortDescription>
         <value>Related Object</value>
     </labels>
@@ -861,7 +861,7 @@
         <fullName>ap_Related_To</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Related To</shortDescription>
         <value>Related To</value>
     </labels>
@@ -869,7 +869,7 @@
         <fullName>ap_Remove</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Remove</shortDescription>
         <value>Remove</value>
     </labels>
@@ -877,7 +877,7 @@
         <fullName>ap_Save</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Save</shortDescription>
         <value>Save</value>
     </labels>
@@ -885,7 +885,7 @@
         <fullName>ap_SelectAPT</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Select APT</shortDescription>
         <value>Select APT</value>
     </labels>
@@ -893,7 +893,7 @@
         <fullName>ap_Sharing</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Sharing</shortDescription>
         <value>Sharing</value>
     </labels>
@@ -901,7 +901,7 @@
         <fullName>ap_SkipWeekendsWhen</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>SkipWeekendsWhen</shortDescription>
         <value>Skip weekends when generating task due dates</value>
     </labels>
@@ -909,7 +909,7 @@
         <fullName>ap_Status</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Status</shortDescription>
         <value>Status</value>
     </labels>
@@ -917,7 +917,7 @@
         <fullName>ap_TaskHeaderSortable</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>TaskHeaderSortable</shortDescription>
         <value>Tasks (Task headers are sortable)</value>
     </labels>
@@ -925,7 +925,7 @@
         <fullName>ap_Tasks</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Tasks</shortDescription>
         <value>Tasks</value>
     </labels>
@@ -933,14 +933,14 @@
         <fullName>ap_TasksComplete</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Tasks Complete</shortDescription>
         <value>Tasks Complete</value>
     </labels>
     <labels>
         <fullName>ap_UpdateStatusError</fullName>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_UpdateStatusError</shortDescription>
         <value>This task is part of an Action Plan and it depends on a task that is not completed yet.</value>
     </labels>
@@ -948,7 +948,7 @@
         <fullName>ap_days_after_msg</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_days_after_msg</shortDescription>
         <value>This value determines the due date of the task. For tasks with no dependency, the task&apos;s due date will be offset from the plan start date. For tasks with a dependency, the due date will be offset from the expected due date of the task on which it depends on.</value>
     </labels>
@@ -956,7 +956,7 @@
         <fullName>ap_empty_template_list</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>No templates</shortDescription>
         <value>No templates</value>
     </labels>
@@ -964,7 +964,7 @@
         <fullName>ap_import_Note</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_import Note</shortDescription>
         <value>Are you looking for Best Practices Templates? 
 	    	Please visit the 
@@ -975,7 +975,7 @@
         <fullName>ap_import_file</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>ap_import file</shortDescription>
         <value>Select the file you want to import:</value>
     </labels>
@@ -983,7 +983,7 @@
         <fullName>ap_of</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>of</shortDescription>
         <value>of</value>
     </labels>

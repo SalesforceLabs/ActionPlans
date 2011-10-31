@@ -9,7 +9,7 @@
         <masterLabel>Create Action Plan</masterLabel>
         <openType>sidebar</openType>
         <protected>false</protected>
-        <url>/apex/ActionPlanCreation?refType=Contact&amp;refId={!Contact.Id}</url>
+        <url>{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Contact&quot;, refId=Contact.Id])}</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Action_Plans</fullName>
@@ -37,7 +37,7 @@ if( error ) {
        alert(msj);    
 }
 else{
-       location.href = &apos;/apex/ActionPlanCreation?refId=&apos;+records+&apos;&amp;refType=&apos;+oName;
+       location.href = &apos;{!URLFOR(  $Action.ActionPlan__c.New, null, [refType=&quot;Contact&quot;])}&apos; + &apos;&amp;refId=&apos;+records;
 }</url>
     </webLinks>
 </CustomObject>

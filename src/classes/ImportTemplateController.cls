@@ -52,7 +52,11 @@ public with sharing class ImportTemplateController{
 		try{
 			String templateId = importUtil.processImportedDocument( this.attachment );
     		
-    		return new Pagereference( '/apex/ActionPlanTemplateDetail?id=' + templateId );
+	        PageReference newPage = Page.ActionPlanTemplateDetail;
+	        newPage.getParameters().put('Id', templateId); 
+	            		
+    		return newPage ;
+    		
     	}catch( Exception ex ){
     		//we initialize again the attachment when an error ocurres to prevent viewstate size errors
     		this.attachment = new Attachment();

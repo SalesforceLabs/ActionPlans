@@ -267,6 +267,15 @@
         <name>ListView</name>
     </types>
     <types>
+        <members>Action_Plan_Reports</members>
+        <members>Action_Plan_Reports/Orphan_Action_Plans</members>
+        <name>Report</name>
+    </types>
+    <types>
+        <members>Action_Plans_Orphan</members>
+        <name>ReportType</name>
+    </types>
+    <types>
         <members>ActionPlan_ActionPlanCreationScripts</members>
         <members>ActionPlan_ActionPlanCreationStyles</members>
         <members>ActionPlan_ActionPlanDetailScripts</members>
@@ -292,6 +301,7 @@
     <types>
         <members>Account.Create_Action_Plan</members>
         <members>Account.Create_Action_Plans</members>
+        <members>ActionPlan__c.Action_Plans_Delete_VF</members>
         <members>ActionPlan__c.Create_Account_Action_Plan</members>
         <members>ActionPlan__c.Create_Campaign_Action_Plan</members>
         <members>ActionPlan__c.Create_Campaign_Contact_Action_Plan</members>
