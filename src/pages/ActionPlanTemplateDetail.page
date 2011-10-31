@@ -47,12 +47,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         <apex:pageBlock id="templateDetail" title="{!$Label.ap_ActionPlanTemplateDetail}" mode="detail">
         
             <apex:pageBlockButtons id="buttons">
-                <apex:commandButton id="edit" action="/apex/ActionPlanTemplateCreation?id={!actionPlanTemplate.Id}" value="{!$Label.ap_Edit}"/>
+                <apex:commandButton id="edit" action="{!$Page.ActionPlanTemplateCreation}?id={!actionPlanTemplate.Id}" value="{!$Label.ap_Edit}"/>
                 <apex:commandButton id="delete" action="{!deleteTemplate}" value="Delete" onclick="return confirm('{!$Label.ap_AreYouSureAsk}');" />
-                <apex:commandButton id="clone" action="/apex/ActionPlanTemplateCreation?clone=1&Id={!actionPlanTemplate.Id}" value="{!$Label.ap_Clone}"/>
+                <apex:commandButton id="clone" action="{!$Page.ActionPlanTemplateCreation}?clone=1&Id={!actionPlanTemplate.Id}" value="{!$Label.ap_Clone}"/>
                 <apex:commandButton id="share" action="/p/share/CustomObjectSharingDetail?parentId={!actionPlanTemplate.Id}" value="{!$Label.ap_Sharing}"/>
-                <apex:commandButton id="newActionPlan" action="/apex/ActionPlanCreation?templateId={!actionPlanTemplate.Id}" value="{!$Label.ap_New} {!$Label.ap_Action_Plan}"/>
-                <apex:commandButton id="export" action="/apex/ActionPlanTemplateExport?Id={!actionPlanTemplate.Id}" value="{!$Label.ap_Export}"/>
+                <apex:commandButton id="newActionPlan" action="{!$Page.ActionPlanCreation}?templateId={!actionPlanTemplate.Id}" value="{!$Label.ap_New} {!$Label.ap_Action_Plan}"/>
+                <apex:commandButton id="export" action="{!$Page.ActionPlanTemplateExport}?Id={!actionPlanTemplate.Id}" value="{!$Label.ap_Export}"/>
             </apex:pageBlockButtons>
           
             <apex:pageBlockSection title="{!$Label.ap_Information}" columns="1">

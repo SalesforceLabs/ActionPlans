@@ -39,7 +39,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <link href="{!$Resource.ActionPlan_ActionPlanDetailStyles}" rel="stylesheet" type="text/css"/>
    
     
-	<apex:sectionHeader title="{!$Label.ap_Action_Plan}" subtitle="{!actionPlan.Name}" help="/help/doc/user_ed.jsp?loc=help" printUrl="/apex/ActionPlanPrint?id={!actionPlan.Id}"/>
+	<apex:sectionHeader title="{!$Label.ap_Action_Plan}" subtitle="{!actionPlan.Name}" help="/help/doc/user_ed.jsp?loc=help" printUrl="{!$Page.ActionPlanPrint}?id={!actionPlan.Id}"/>
     
     <apex:form id="apForm">
     
@@ -47,7 +47,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         	
         	<!-- PAGE BUTTONS -->
             <apex:pageBlockButtons id="buttons">
-                <apex:commandButton id="edit" action="/apex/ActionPlanCreation?id={!actionPlan.Id}" value="{!$Label.ap_Edit}"/>
+                <apex:commandButton id="edit" action="{!$Page.ActionPlanCreation}?id={!actionPlan.Id}" value="{!$Label.ap_Edit}"/>
                 <apex:commandButton id="delete" action="{!deletePlan}" value="{!$Label.ap_Delete}" onclick="return confirm('{!$Label.ap_AreYouSureAsk}');" />
                 <apex:commandButton id="share" action="/p/share/CustomObjectSharingDetail?parentId={!actionPlan.Id}" value="{!$Label.ap_Sharing}"/>
             </apex:pageBlockButtons>
@@ -102,7 +102,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                     <apex:outputText ></apex:outputText>
                     <apex:outputText value="{!$Label.ap_Action_Plan_Template}" rendered="{!(ActionPlan.Action_Plan_Template__c != null)}"/>
                     <apex:outputText rendered="{!(ActionPlan.Action_Plan_Template__c != null)}">
-                        <apex:outputLink value="/apex/ActionPlanTemplateDetail?Id={!ActionPlan.Action_Plan_Template__c}">{!ActionPlan.Action_Plan_Template__r.Name}</apex:outputLink>
+                        <apex:outputLink value="{!$Page.ActionPlanTemplateDetail}?Id={!ActionPlan.Action_Plan_Template__c}">{!ActionPlan.Action_Plan_Template__r.Name}</apex:outputLink>
                         <apex:outputText rendered="{!IF(Version == true, true, false)}"><br/><span style="color:#cc0000"><strong>{!$Label.ap_Note}:</strong> {!$Label.ap_APModifyError}</span></apex:outputText>
                     </apex:outputText>
                 </apex:panelGrid>

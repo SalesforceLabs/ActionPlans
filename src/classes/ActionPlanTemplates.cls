@@ -158,7 +158,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         }   
         
         // Send the user to the detail page for the new account.
-        PageReference newPage = new PageReference( '/apex/ActionPlanTemplateDetail?Id=' + apt.Id );
+        PageReference newPage = Page.ActionPlanTemplateDetail;
+        newPage.getParameters().put('Id', apt.Id);         
         newPage.setRedirect( true );
         return newPage;
     }
@@ -197,7 +198,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         }
         else{
             // Send the user to the detail page for the new account.
-            newPage = new PageReference( '/apex/ActionPlanTemplateDetail?Id=' + actionPlanTemplate.Id );
+	        newPage = Page.ActionPlanTemplateDetail;
+	        newPage.getParameters().put('Id', actionPlanTemplate.Id);              
             newPage.setRedirect( true );  
         }
         

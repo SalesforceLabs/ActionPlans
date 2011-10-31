@@ -460,7 +460,7 @@ public with sharing class ActionPlansUtilities{
     */
     public PageReference saveAndNew(){
         saveAp();
-        PageReference newPage = new PageReference( '/apex/ActionPlanCreation?' + 'clone=1' );
+        PageReference newPage = new PageReference( Page.ActionPlanCreation + '?clone=1' );
         newPage.setRedirect( true );
         
         return newPage;

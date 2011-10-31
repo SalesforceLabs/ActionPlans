@@ -46,10 +46,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <td width="15%">
                         <apex:outputPanel rendered="{!$CurrentPage.parameters.refType != null}">
-                            <apex:outputLink value="/apex/ActionPlanCreation?templateId={!actionPlan.Id}&refId={!$CurrentPage.parameters.refId}&refType={!$CurrentPage.parameters.refType}" style="font-weight:bold">{!actionPlan.Name}</apex:outputLink>
+                            <apex:outputLink value="{!$Page.ActionPlanCreation}?templateId={!actionPlan.Id}&refId={!$CurrentPage.parameters.refId}&refType={!$CurrentPage.parameters.refType}" style="font-weight:bold">{!actionPlan.Name}</apex:outputLink>
                         </apex:outputPanel>
-                        <apex:outputPanel rendered="!$CurrentPage.parameters.refType == null}">
-                            <apex:outputLink value="/apex/ActionPlanCreation?templateId={!actionPlan.Id}" style="font-weight:bold">{!actionPlan.Name}</apex:outputLink>
+                        <apex:outputPanel rendered="{!$CurrentPage.parameters.refType == null}">
+                            <apex:outputLink value="{!$Page.ActionPlanCreation}?templateId={!actionPlan.Id}" style="font-weight:bold">{!actionPlan.Name}</apex:outputLink>
                         </apex:outputPanel>
                     </td>
                     <td>{!actionPlan.Description__c}</td>
@@ -63,7 +63,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
         <apex:outputpanel rendered="{!actionPlanTemplates.size == 0}" layout="block" style="padding: 15px; text-align: center;">
         
             <apex:outputText value="{!$Label.ap_empty_template_list}" styleClass="errorMsg"/><br/><br/>
-            <button onclick="location.href='/apex/ActionPlanTemplateCreation'" class="btn">{!$Label.ap_CreateNewAPT}</button>
+            <button onclick="location.href='{!$Page.ActionPlanTemplateCreation}'" class="btn">{!$Label.ap_CreateNewAPT}</button>
         
         </apex:outputpanel>
         

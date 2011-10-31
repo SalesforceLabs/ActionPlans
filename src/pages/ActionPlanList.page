@@ -34,10 +34,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             <div class="miniTab secondaryPalette">
                 <ul class="miniTabList">
                     <li class="currentTab">
-                    	<apex:outputLink id="minitab_0" value="/apex/ActionPlanList">{!$ObjectType.ActionPlan__c.LabelPlural}</apex:outputLink>
+                    	<apex:outputLink id="minitab_0" value="{!$Page.ActionPlanList}">{!$ObjectType.ActionPlan__c.LabelPlural}</apex:outputLink>
                     </li>
                     <li class="secondaryPalette">
-                    	<apex:outputLink id="minitab_1" value="/apex/ActionPlanTemplateList">{!$ObjectType.ActionPlanTemplate__c.LabelPlural}</apex:outputLink>
+                    	<apex:outputLink id="minitab_1" value="{!$Page.ActionPlanTemplateList}">{!$ObjectType.ActionPlanTemplate__c.LabelPlural}</apex:outputLink>
                     </li>
                 </ul>
             </div>

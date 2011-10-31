@@ -39,7 +39,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             <div class="miniTab secondaryPalette">
                 <ul class="miniTabList">
                     <li class="currentTab">
-                    	<apex:outputLink id="minitab_2" value="/apex/ActionPlanTemplateImport">{!$Label.ap_Import}</apex:outputLink>
+                    	<apex:outputLink id="minitab_2" value="{!$Page.ActionPlanTemplateImport}">{!$Label.ap_Import}</apex:outputLink>
                     </li>
                 </ul>
             </div>
