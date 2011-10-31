@@ -2,19 +2,61 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Action Plans V3 Unmanaged %28EE%2C UE%2C DE%29</fullName>
     <types>
-        <members>*</members>
+        <members>ActionPlanCreationController</members>
+        <members>ActionPlanDetailController</members>
+        <members>ActionPlanObjectTriggerTest</members>
+        <members>ActionPlanSelectController</members>
+        <members>ActionPlanTemplateCreationController</members>
+        <members>ActionPlanTemplateDetailController</members>
+        <members>ActionPlanTemplates</members>
+        <members>ActionPlansBatchBuilder</members>
+        <members>ActionPlansBatchBuilderTest</members>
+        <members>ActionPlansBatchBuilderUtilities</members>
+        <members>ActionPlansBatchDelete</members>
+        <members>ActionPlansBatchDeleteTest</members>
+        <members>ActionPlansBatchDeleteUtilities</members>
+        <members>ActionPlansBatchTaskBuilder</members>
+        <members>ActionPlansBatchTaskBuilderTest</members>
+        <members>ActionPlansConstants</members>
+        <members>ActionPlansTaskTriggerUtilities</members>
+        <members>ActionPlansTaskTriggerUtilitiesTest</members>
+        <members>ActionPlansTestUtilities</members>
+        <members>ActionPlansUtilities</members>
+        <members>ActionPlansUtilitiesTest</members>
+        <members>ExportActionPlanTemplate</members>
+        <members>FieldCustomValidationException</members>
+        <members>ImportActionPlanTemplate</members>
+        <members>ImportException</members>
+        <members>ImportTemplateController</members>
+        <members>ProcessorControl</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>ActionPlanAbout</members>
+        <members>ActionPlanCreation</members>
+        <members>ActionPlanDetail</members>
+        <members>ActionPlanList</members>
+        <members>ActionPlanPrint</members>
+        <members>ActionPlanSelect</members>
+        <members>ActionPlanTemplateCreation</members>
+        <members>ActionPlanTemplateDetail</members>
+        <members>ActionPlanTemplateExport</members>
+        <members>ActionPlanTemplateImport</members>
+        <members>ActionPlanTemplateList</members>
+        <members>ActionPlansDelete</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
+        <members>AccountTrigger</members>
+        <members>ActionPlanTaskTemplateTrigger</members>
+        <members>ActionPlanTaskTrigger</members>
+        <members>ActionPlanTrigger</members>
+        <members>CampaignTrigger</members>
+        <members>CaseTrigger</members>
+        <members>ContactTrigger</members>
+        <members>ContractTrigger</members>
+        <members>LeadTrigger</members>
+        <members>OpportunityTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
@@ -225,7 +267,29 @@
         <name>ListView</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Action_Plan_Reports</members>
+        <members>Action_Plan_Reports/Orphan_Action_Plans</members>
+        <name>Report</name>
+    </types>
+    <types>
+        <members>Action_Plans_Orphan</members>
+        <name>ReportType</name>
+    </types>
+    <types>
+        <members>ActionPlan_ActionPlanCreationScripts</members>
+        <members>ActionPlan_ActionPlanCreationStyles</members>
+        <members>ActionPlan_ActionPlanDetailScripts</members>
+        <members>ActionPlan_ActionPlanDetailStyles</members>
+        <members>ActionPlan_ActionPlanPrintScripts</members>
+        <members>ActionPlan_ActionPlanSelectStyles</members>
+        <members>ActionPlan_ActionPlanTemplateCreationScripts</members>
+        <members>ActionPlan_ActionPlanTemplateCreationStyles</members>
+        <members>ActionPlan_ActionPlanTemplateDetailScripts</members>
+        <members>ActionPlan_ActionPlanTemplateDetailStyles</members>
+        <members>ActionPlan_Utilities</members>
+        <members>ActionPlans_General</members>
+        <members>ActionPlans_cross</members>
+        <members>ActionPlans_sortable</members>
         <name>StaticResource</name>
     </types>
     <types>
@@ -237,6 +301,7 @@
     <types>
         <members>Account.Create_Action_Plan</members>
         <members>Account.Create_Action_Plans</members>
+        <members>ActionPlan__c.Action_Plans_Delete_VF</members>
         <members>ActionPlan__c.Create_Account_Action_Plan</members>
         <members>ActionPlan__c.Create_Campaign_Action_Plan</members>
         <members>ActionPlan__c.Create_Campaign_Contact_Action_Plan</members>

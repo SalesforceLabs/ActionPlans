@@ -54,7 +54,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
                 <td><br/></td>
             </tr>
             <tr>
-                <td><a href="/apex/ActionPlanTemplateDetail?Id={!actionPlanTemplate.Id}">Click here</a> to return to the template.</td>
+                <td><a href="{!$Page.ActionPlanTemplateDetail}?Id={!actionPlanTemplate.Id}">Click here</a> to return to the template.</td>
             </tr>
             <tr>
                 <td>
