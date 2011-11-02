@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>ActionPlanTemplate</value>
+    </caseValues>
+    <fields>
+        <label>説明</label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label>インポートID</label>
+        <name>ImportId__c</name>
+    </fields>
+    <fields>
+        <label>スキップ曜日</label>
+        <name>SkipDay__c</name>
+        <picklistValues>
+            <masterLabel>Friday</masterLabel>
+            <translation>金曜日</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Monday</masterLabel>
+            <translation>月曜日</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>選択すると、アクションプラン内のタスクは週末を期日に設定できない。</help>
+        <label>スキップ週末</label>
+        <name>SkipWeekends__c</name>
+    </fields>
+    <fields>
+        <label>タスクレコードタイプID</label>
+        <name>TaskRecordTypeID__c</name>
+    </fields>
+</CustomObjectTranslation>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <name>Status</name>
+        <picklistValues>
+            <masterLabel>Activated</masterLabel>
+            <translation><!-- Activated --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>In Approval Process</masterLabel>
+            <translation><!-- In Approval Process --></translation>
+        </picklistValues>
+    </fields>
+    <webLinks>
+        <label>アクションプラン作成</label>
+        <name>Create_Action_Plan</name>
+    </webLinks>
+    <webLinks>
+        <label>契約アクションプラン作成</label>
+        <name>Create_Action_Plans</name>
+    </webLinks>
+</CustomObjectTranslation>

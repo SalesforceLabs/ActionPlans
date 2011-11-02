@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>ClickHere</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Click here</shortDescription>
+        <value>Click here</value>
+    </labels>
+    <labels>
+        <fullName>DoYouWantToShare</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Do you want to share this template with others on the Action Plans Template page</shortDescription>
+        <value>Do you want to share this template with others on the Action Plans Template page? Simply email it to &lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;</value>
+    </labels>
+    <labels>
+        <fullName>TheXMLFileForYourTemplate</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>The XML file for your template has been successfully created, and can be found i</shortDescription>
+        <value>The XML file for your template has been successfully created, and can be found in your Salesforce documents folder.</value>
+    </labels>
+    <labels>
+        <fullName>ToReturnToTheTemplate</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>to return to the template.</shortDescription>
+        <value>to return to the template.</value>
+    </labels>
+    <labels>
+        <fullName>ToViewTheXMLFile</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>to view the XML file in your Salesforce documents folder.</shortDescription>
+        <value>to view the XML file in your Salesforce documents folder.</value>
+    </labels>
+    <labels>
+        <fullName>YourTemplateCouldNotSuccessfully</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Your template could not successfully be exported to an XML document.</shortDescription>
+        <value>Your template could not successfully be exported to an XML document.</value>
+    </labels>
+    <labels>
         <fullName>ap_APModifyError</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>

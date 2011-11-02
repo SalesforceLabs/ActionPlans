@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customApplications>
+        <label>アクションプラン</label>
+        <name>Action_Plans</name>
+    </customApplications>
+    <customLabels>
+        <label>ここをクリック</label>
+        <name>ClickHere</name>
+    </customLabels>
+    <customLabels>
+        <label>このテンプレートを公開したい場合は、Force.com Labsまでメールを下さい。 &lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;</label>
+        <name>DoYouWantToShare</name>
+    </customLabels>
+    <customLabels>
+        <label>テンプレートのXMLファイルが生成されました。ドキュメントフォルダを参照してください。</label>
+        <name>TheXMLFileForYourTemplate</name>
+    </customLabels>
+    <customLabels>
+        <label>テンプレートに戻る。</label>
+        <name>ToReturnToTheTemplate</name>
+    </customLabels>
+    <customLabels>
+        <label>ドキュメントフォルダでXMLファイルを参照します。</label>
+        <name>ToViewTheXMLFile</name>
+    </customLabels>
+    <customLabels>
+        <label>テンプレートはXMLとして生成できませんでした。</label>
+        <name>YourTemplateCouldNotSuccessfully</name>
+    </customLabels>
+    <customLabels>
+        <label>プランが作成された後にテンプレートが変更されています。</label>
+        <name>ap_APModifyError</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランへようこそ</label>
+        <name>ap_About</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;p&gt;アクションプランは再利用可能なタスクテンプレートを使ったベストプラクティスを提供します。&lt;br/&gt;&lt;br/&gt; 
+アクションプランは以下のオブジェクトで利用できます。(エディションで異なります。):&lt;/p&gt; 
+&lt;ul&gt; 
+&lt;li&gt;取引先 (PE, EE, UE, DE)&lt;/li&gt; 
+&lt;li&gt;取引先責任者 (PE, EE, UE, DE)&lt;/li&gt; 
+&lt;li&gt;リード (PE, EE, UE, DE)&lt;/li&gt; 
+&lt;li&gt;商談 (PE, EE, UE, DE)&lt;/li&gt; 
+&lt;li&gt;キャンペーン (EE, UE, DE)&lt;/li&gt; 
+&lt;li&gt;契約 (EE, UE, DE)&lt;/li&gt; 
+&lt;li&gt;ケース (EE, UE, DE)&lt;/li&gt; 
+&lt;li&gt;個人取引先 (EE, UE, DE)&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;</label>
+        <name>ap_AboutP1</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;h2&gt;サポートについて&lt;/h2&gt; 
+&lt;p&gt;アクションサポートには公式サポートはありません。コミュニティがありますのでそちらを参照して下さい。&lt;br /&gt;&lt;a href=&quot;http://success.salesforce.com/answers&quot;&gt;Salesforce アンサーズ&lt;/a&gt;&lt;br /&gt;
+ アイディアや問題を報告する場合はこちらへ。&lt;br /&gt;&lt;a href=&quot;https://github.com/ForceDotComLabs/ActionPlans&quot;&gt;Action Plans on Github&lt;/a&gt;.
+ &lt;p&gt;&amp;nbsp;&lt;/p&gt; 
+&lt;h2&gt;コミュニティ&lt;/h2&gt; 
+
+&lt;p&gt;アクションプランはオープンソースソフトウェアです。是非参加してバグ報告、アイディア、ドキュメント、コード改修など様々な形で協力して下さい。 
+&lt;a href=&quot;http://blogs.developerforce.com/labs/2011/08/howto-contribute-to-milestones-pm-code-not-required-opensource.html&quot;&gt;詳細について&lt;/a&gt;.&lt;/p&gt;
+ &lt;p&gt;&amp;nbsp;&lt;/p&gt;</label>
+        <name>ap_AboutP1a</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;p&gt;その他 :&lt;/p&gt; 
+&lt;ul&gt; 
+&lt;li&gt;75までのタスクと40までのプランを一度に含むことができます。&lt;/li&gt; 
+&lt;li&gt;アクションプランテンプレートをエクスポートして、他の組織で再利用することができます。&lt;/li&gt; 
+&lt;li&gt;別途作成したアクションプランテンプレートをインポートすることができます。&lt;/li&gt; 
+&lt;li&gt;タスクのリマインド回数を設定できます。&lt;/li&gt; 
+&lt;li&gt;アクションプランの設定からChatter Brag機能とタスク割当機能を制御できます。&lt;/li&gt; 
+&lt;li&gt;一度に65までのアクションプランを削除できます。&lt;/li&gt; 
+&lt;/ul&gt;</label>
+        <name>ap_AboutP1b</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプラン詳細</label>
+        <name>ap_ActionPlanDetails</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランテンプレート詳細</label>
+        <name>ap_ActionPlanTemplateDetail</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランテンプレート</label>
+        <name>ap_ActionPlanTemplates</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプラン設定</label>
+        <name>ap_ActionPlansSetup</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプラン</label>
+        <name>ap_Action_Plan</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランテンプレート</label>
+        <name>ap_Action_Plan_Template</name>
+    </customLabels>
+    <customLabels>
+        <label>追加</label>
+        <name>ap_Add</name>
+    </customLabels>
+    <customLabels>
+        <label>タスク追加</label>
+        <name>ap_AddNewTask</name>
+    </customLabels>
+    <customLabels>
+        <label>全て</label>
+        <name>ap_All</name>
+    </customLabels>
+    <customLabels>
+        <label>いいですか？</label>
+        <name>ap_AreYouSureAsk</name>
+    </customLabels>
+    <customLabels>
+        <label>キャンセル</label>
+        <name>ap_Cancel</name>
+    </customLabels>
+    <customLabels>
+        <label>変更</label>
+        <name>ap_Change</name>
+    </customLabels>
+    <customLabels>
+        <label>複製</label>
+        <name>ap_Clone</name>
+    </customLabels>
+    <customLabels>
+        <label>終了</label>
+        <name>ap_Close</name>
+    </customLabels>
+    <customLabels>
+        <label>コメント</label>
+        <name>ap_Comments</name>
+    </customLabels>
+    <customLabels>
+        <label>選択したアクションプランは削除されます。削除プロセスが実行中の間は、アクションプランはリストからはすぐに削除されません。本当に選択したアクションプランを削除しますか？</label>
+        <name>ap_Confirm_Action_Plan_Deletion</name>
+    </customLabels>
+    <customLabels>
+        <label>削除しようとしているタスクに依存関係のあるタスクがあります。削除を実行すると依存関係が無くなります。本当にこのタスクを削除しますか？</label>
+        <name>ap_Confirm_Tasks_Deletion</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランテンプレートの作成</label>
+        <name>ap_CreateNewAPT</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;li&gt;名前 - テンプレート名&lt;/li&gt; 
+&lt;li&gt;説明 - テンプレートの説明&lt;/li&gt; 
+&lt;li&gt;週末をスキップ - 土曜日曜のタスクを自動的に月曜か金曜にリスケジュールします。チェックを入れた場合どの日を選ぶかの選択ボックスが表示されるようになります。&lt;/li&gt;
+ &lt;li&gt;アクション - &quot;X&quot;をクリックしてタスクの削除ができます&lt;/li&gt; 
+&lt;li&gt;タイトル - タスク名です&lt;/li&gt; 
+&lt;li&gt;タスク依存関係 - 上位のタスクを作成した後に下位のタスクを作成できます。&lt;/li&gt;</label>
+        <name>ap_CreateTemplateOlpart1</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;li&gt;期限日- タスクの期限日を日数で指定します 
+&lt;ol&gt; 
+&lt;li&gt;依存関係の無いタスクの期限日は、タスクの開始日から起算されます。&lt;/li&gt; 
+&lt;li&gt;依存関係のあるタスク,の期限日は、依存先タスクの期限日から起算されます。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+割当 – ユーザを割当ます。自動割当を使う場合は空白にしてください。 
+空白の場合デフォルトでは実行中のユーザに割当られます。 
+アクションプランの設定で自動割当先をレコード所有者にすることもできます。 
+詳細は「インストール後の設定」を参照してください。 
+&lt;/li&gt; 
+&lt;li&gt;カテゴリ - タスクのカテゴリを設定します。&lt;/li&gt; 
+&lt;li&gt;優先度 - 低、中、高&lt;/li&gt; 
+&lt;li&gt;メール - チェックを入れるとタスクのメールを送信します。依存関係にあるタスクの場合はタスクが作成された時にメールが送信されます。&lt;/li&gt;</label>
+        <name>ap_CreateTemplateOlpart2</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;li&gt;リマインド – アクションプランを作成するテンプレートが適用されたときのリマインド設定をします。 
+&lt;ol&gt; 
+&lt;li&gt; チェックが無い場合、アクションプラン作成ページでリマインダーが無効になります。&lt;/li&gt; 
+&lt;li&gt; チェックが有る場合、リマインダーが利用可能です。&lt;/li&gt; 
+&lt;/ol&gt; 
+※アラーム設定について. 
+&lt;ul&gt; 
+&lt;li&gt; 組織のアラーム設定 : 
+個人設定 &gt; 私の個人情報 &gt; アラームから「ToDoのデフォルトのアラーム設定」にチェックを入れます。 
+これでここに設定された時刻がタスクテンプレートのリマインダのデフォルト値になります。 
+&lt;/li&gt; 
+&lt;li&gt; 活動オブジェクト設定 : 
+設定&gt; カスタマイズ &gt; 活動 &gt; 活動設定から、「活動アラームの有効化」にチェックが無い場合は、アクションプラン作成ページでリマインダの設定が表示されません。
+ 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt;</label>
+        <name>ap_CreateTemplateOlpart3</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;li&gt;コメント- タスクのコメントです。&lt;/li&gt; 
+&lt;li&gt;タスク追加 - タスクを追加します。&lt;/li&gt; 
+&lt;li&gt;保存 - テンプレートを保存します。&lt;/li&gt;</label>
+        <name>ap_CreateTemplateOlpart4</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;p&gt;これでテンプレートを作成する準備ができました。アクションプランテンプレートタブをクリックして、「アクションプランテンプレート作成」ボタンをクリックして下さい。&lt;/p&gt;
+ 
+&lt;p&gt;画面は以下のようになります。:&lt;/p&gt;</label>
+        <name>ap_CreateTemplateP1andP2</name>
+    </customLabels>
+    <customLabels>
+        <label>テンプレート作成</label>
+        <name>ap_CreateTemplateTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>作成者</label>
+        <name>ap_CreatedBy</name>
+    </customLabels>
+    <customLabels>
+        <label>複数取引先へのアクションプラン作成</label>
+        <name>ap_CreatesActionPlans</name>
+    </customLabels>
+    <customLabels>
+        <label>ステップ1：取引先リストビューへ移動して、アクションプランを作成したい取引先レコードを選択し、「取引先アクションプラン作成」ボタンをクリックします。</label>
+        <name>ap_CreatesActionPlansP1</name>
+    </customLabels>
+    <customLabels>
+        <label>ステップ2：利用したいテンプレートを選択します。</label>
+        <name>ap_CreatesActionPlansP2</name>
+    </customLabels>
+    <customLabels>
+        <label>ステップ3：その他の情報を入力します。設定対象の取引先が参照できて、ユーザ割当は現在実行中ユーザが入力されていることに気をつけて下さい。</label>
+        <name>ap_CreatesActionPlansP3</name>
+    </customLabels>
+    <customLabels>
+        <label>注意：1のカレンダーアイコンにマウスを乗せたとき、2のカレンダーが表示されますが、この中で2つの日付がハイライトされています。:&lt;br/&gt;&lt;br/&gt; 
+&lt;ul&gt; 
+&lt;li&gt;アクションプランの開始日はダークブルー。&lt;/li&gt; 
+&lt;li&gt;タスクの開始日はライトブルー。&lt;/li&gt; 
+&lt;/ul&gt;</label>
+        <name>ap_CreatesActionPlansP3_bottom_text</name>
+    </customLabels>
+    <customLabels>
+        <label>ステップ4：アクションプランの保存</label>
+        <name>ap_CreatesActionPlansP4</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランの作成はバッチプロセスで行われるので、実際にレコードが作成されるまで数分かかる場合があります。</label>
+        <name>ap_CreatesActionPlansP4_note</name>
+    </customLabels>
+    <customLabels>
+        <label>ステップ5：アクションプランとタスクの確認</label>
+        <name>ap_CreatesActionPlansP5</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランは関連リストに表示され、ここには二つの進行中タスクがあります。3つめのタスクは依存関係にあるので依存先のタスクが完了次第作成がされることになります。</label>
+        <name>ap_CreatesActionPlansP5_note</name>
+    </customLabels>
+    <customLabels>
+        <label>- タスクテンプレート</label>
+        <name>ap_DefaultTaskName</name>
+    </customLabels>
+    <customLabels>
+        <label>デフォルトの週末期限日</label>
+        <name>ap_DefaultWeekendDueDates</name>
+    </customLabels>
+    <customLabels>
+        <label>削除</label>
+        <name>ap_Delete</name>
+    </customLabels>
+    <customLabels>
+        <label>編集</label>
+        <name>ap_Edit</name>
+    </customLabels>
+    <customLabels>
+        <label>エラー</label>
+        <name>ap_Error</name>
+    </customLabels>
+    <customLabels>
+        <label>タスクの相互依存関係があります。</label>
+        <name>ap_Error_Cyclic_Dependency_Found</name>
+    </customLabels>
+    <customLabels>
+        <label>日付の数字が大きすぎます。</label>
+        <name>ap_Errors_Day_Number_Too_Large</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランテンプレートタスクの読み込み時に問題が起きました。テンプレートXMLの内容を確認しなおすか、再度エクスポートをしてみてください。</label>
+        <name>ap_Errors_ImportingXMLTask</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランテンプレートの読み込み時に問題が起きました。テンプレートXMLの内容を見直すか、再度エクスポートをしてみて下さい。</label>
+        <name>ap_Errors_ImportingXMLTemplate</name>
+    </customLabels>
+    <customLabels>
+        <label>XML内容が不正です。再度エクスポートを実行してみてください。</label>
+        <name>ap_Errors_InvalidXMLTemplate</name>
+    </customLabels>
+    <customLabels>
+        <label>相互依存しているタスクを削除してください。</label>
+        <name>ap_Errors_RemoveCyclicDependency</name>
+    </customLabels>
+    <customLabels>
+        <label>上記エラーを確認して、データの修正を行って下さい。</label>
+        <name>ap_Errors_Review_Errors</name>
+    </customLabels>
+    <customLabels>
+        <label>XMLファイルを選択して下さい。</label>
+        <name>ap_Errors_SelectCorrectXMLExtension</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ap_Errors_SelectXML --></label>
+        <name>ap_Errors_SelectXML</name>
+    </customLabels>
+    <customLabels>
+        <label>タスク制限に到達しました。</label>
+        <name>ap_Errors_TaskLimitError</name>
+    </customLabels>
+    <customLabels>
+        <label>選択できるのは65レコードまでです。</label>
+        <name>ap_Errors_moreThan200records</name>
+    </customLabels>
+    <customLabels>
+        <label>選択できるのは40レコードまでです。</label>
+        <name>ap_Errors_moreThan20records</name>
+    </customLabels>
+    <customLabels>
+        <label>1つ以上のレコードを選択して下さい。</label>
+        <name>ap_Errors_selectOneRecord</name>
+    </customLabels>
+    <customLabels>
+        <label>メタデータ情報が不正です。</label>
+        <name>ap_Errors_xmlMetaData</name>
+    </customLabels>
+    <customLabels>
+        <label>XMLファイル読み込み中に問題が発生しました。</label>
+        <name>ap_Errors_xmlRead</name>
+    </customLabels>
+    <customLabels>
+        <label>エクスポート</label>
+        <name>ap_Export</name>
+    </customLabels>
+    <customLabels>
+        <label>金曜日</label>
+        <name>ap_Friday</name>
+    </customLabels>
+    <customLabels>
+        <label>設定はとても簡単です。必要な作業は、アクションプランを利用したいそれぞれのオブジェクトに対して、リストビュー画面とレコード詳細画面にボタンを設置するだけです。例えば取引先オブジェクトの場合は以下の流れになります。</label>
+        <name>ap_GettingStartedP1</name>
+    </customLabels>
+    <customLabels>
+        <label>インストール後の設定</label>
+        <name>ap_GettingStartedTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;h3&gt;アクションプラン設定をします。&lt;/h3&gt; 
+&lt;p&gt;設定 &gt; 開発 &gt; カスタム設定から「管理」「Action Plans Setting」へ進みます. 「Action Plan Setting」横の「管理」をクリックします。「デフォルトの組織レベルの値」近くの「新規」ボタンをクリックします。内容を確認して自分の好みに設定値をチェックします;&lt;/p&gt;
+ &lt;p&gt;Enable Chatter Object にチェックを入れると &apos;[Username] has created an Action Plan&apos; というChatter投稿を関連するオブジェクトに対して行います。チェックを入れない場合はChatter投稿は作成されません。;&lt;/p&gt;
+ &lt;p&gt;&apos;Unassigned Task Defaults to Record Owner&apos; は、もしアクションプランテンプレートタスクが割当先がブランクになっている場合はレコード所有者に割当を行う設定です。チェックを入れない場合は、実行中のユーザに割当されます。&lt;/p&gt;</label>
+        <name>ap_GettingStarted_section1</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;h4&gt;アクションプランボタンの作成&lt;/h4&gt; 
+&lt;p&gt;設置したいそれぞれのオブジェクトに対してリストビューにボタンを設置する必要があります。例えば取引先オブジェクトの場合は以下の流れになります。&lt;/p&gt; 
+&lt;ol&gt; 
+&lt;li&gt;設定 &gt; カスタマイズ &gt; 取引先 &gt; 検索レイアウト&lt;/li&gt; 
+&lt;li&gt;「取引先リストビュー」の「編集」をクリック&lt;/li&gt; 
+&lt;li&gt;&quot;取引先アクションプラン作成&quot;を選択したボタンリストへ移動します。&lt;/li&gt; 
+&lt;li&gt;保存をクリック。&lt;/li&gt; 
+&lt;li&gt;設定 &gt; カスタマイズ &gt; 取引先 &gt; ページレイアウト&lt;/li&gt;</label>
+        <name>ap_GettingStarted_section2_sub1P1</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;li&gt;※もしパッケージ内に標準の「アクションプランレイアウト」が含まれていても、これは使う必要はありません。&lt;/li&gt; 
+&lt;li&gt;標準のAccout Layoutの編集をクリックします。&lt;/li&gt; 
+&lt;li&gt;関連リストの「アクションプラン」をページ上に配置します。&lt;/li&gt; 
+&lt;li&gt;関連リスト上部の設定ボタンからプロパティを設定します。&lt;/li&gt; 
+&lt;li&gt;ボタンセクションに移動して、「新規」のチェックボックスを外します。 また、「取引先アクションプラン作成」のボタンを選択したボタンリストへ移動します。&lt;/li&gt;
+ &lt;li&gt;関連リストに表示する値をお好みで設定します。「開始日」「タスク状況」「所有者名(姓)」「所有者名(名)」の選択を推奨します。&lt;/li&gt; 
+&lt;li&gt;保存します。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;この作業を設定したいそれぞれのオブジェクト、取引先責任者、リード、商談などに行って下さい。&lt;/p&gt;</label>
+        <name>ap_GettingStarted_section2_sub1P2</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;h4&gt;アクションプランの削除ボタン&lt;/h4&gt; 
+&lt;p&gt;以下の流れになります。&lt;/p&gt; 
+&lt;ol&gt; 
+&lt;li&gt;設定 &gt; 作成&gt; オブジェクト &gt; アクションプラン &gt; ページレイアウト&lt;/li&gt; 
+&lt;li&gt;アクションプランリストビューの編集ボタンをクリック&lt;/li&gt; 
+&lt;li&gt;利用可能なボタンから選択したボタンへ、「アクションプランの削除」ボタンを移動します。&lt;/li&gt; 
+&lt;li&gt;保存をクリック&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;この作業を設定したいそれぞれのオブジェクト、取引先責任者、リード、商談などに行って下さい。&lt;/p&gt;</label>
+        <name>ap_GettingStarted_section2_sub2</name>
+    </customLabels>
+    <customLabels>
+        <label>ページレイアウトと検索レイアウトの設定</label>
+        <name>ap_GettingStarted_section2_title</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;h3&gt;共有設定&lt;/h3&gt; 
+&lt;br/&gt; 
+&lt;p&gt;アクションプランは以下の4つのオブジェクトをインストールします。「アクションプラン」「アクションプランテンプレート」「タスク」「テンプレートタスク」。 共有設定は自分の組織に合う形で自由に行って頂くことになります。&lt;/p&gt;
+ &lt;p&gt;もし誰でもアクションプランとテンプレートを作成/参照可能にしたい場合は、「アクションプラン」「アクションプランテンプレート」に対して共有設定で作成/参照を設定して下さい。&lt;/p&gt;
+ &lt;p&gt;もしアクションプランとテンプレートについて参照は可能で更新を禁止したい場合は、共有設定で参照のみを設定して下さい。&lt;/p&gt; 
+&lt;/br&gt; 
+&lt;p&gt;※もしアクションプランテンプレートを非公開に設定した場合、テンプレートは公開対象になっていない領域からは参照できなくなり、テンプレートの再利用性を損なうことになります。&lt;/p&gt;</label>
+        <name>ap_GettingStarted_section3</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;h3&gt;プロフィール&lt;/h3&gt; 
+&lt;br/&gt;&lt;br/&gt; 
+&lt;h4&gt;アクションプランを利用するユーザは以下の権限をプロフィールに適用する必要があります。&lt;/h4&gt; 
+&lt;p&gt;&lt;b&gt;カスタムオブジェクトの権限:&lt;/b&gt; アクションプラン、アクションプランテンプレート、タスク、テンプレートタスクに対して、参照、作成、編集、削除。 
+&lt;/br&gt;※もし参照のみ編集/作成権限無しのプロファイルのテンプレートをもっている場合は、 
+アクションプランテンプレートとテンプレートタスクに対して参照のみの権限を付与できます。&lt;/p&gt;</label>
+        <name>ap_GettingStarted_section4P1</name>
+    </customLabels>
+    <customLabels>
+        <label>&lt;p&gt;&lt;b&gt;タブ設定:&lt;/b&gt; 「アクションプランについて」「アクションプラン」「インポートテンプレート」は標準でタブに表示されます。もしテンプレートのインポートを行わないユーザがいる場合は、インポートテンプレートタブを非表示にしてください。&lt;/p&gt;
+ &lt;p&gt;&lt;b&gt;カスタムアプリケーション設定:&lt;/b&gt; アクションプランを参照可能にします。&lt;/p&gt; 
+&lt;p&gt;&lt;b&gt;APEXクラスの有効化:&lt;/b&gt;アクションプランアプリケーションに含まれる全てのAPEXクラスが動作可能な状態になっている必要があります。&lt;/p&gt; 
+&lt;p&gt;&lt;b&gt;Visualforceページのアクセス:&lt;/b&gt;アクションプランアプリケーションに含まれる全てのVisualforceページが動作可能な状態になっている必要があります。&lt;/p&gt;</label>
+        <name>ap_GettingStarted_section4P2</name>
+    </customLabels>
+    <customLabels>
+        <label>ホーム</label>
+        <name>ap_Home</name>
+    </customLabels>
+    <customLabels>
+        <label>インポートテンプレート</label>
+        <name>ap_Import</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランはテンプレートのインポートエクスポート機能を実装しており、利用者のベストプラクティスの発見をサポートしています。 
+&lt;br/&gt;&lt;br/&gt; 
+テンプレートの共有方法 
+&lt;br/&gt;&lt;br/&gt; 
+エクスポートはとても簡単です。エクスポートしたいテンプレートの画面を表示して、エクスポートボタンをクリックするだけです。</label>
+        <name>ap_ImportExport_1</name>
+    </customLabels>
+    <customLabels>
+        <label>エクスポートをすることにより、テンプレートのヘッダーとタスク情報を含むXMLファイルが生成されます。 
+またテンプレートの作者情報も含まれています。 
+※ユーザの個人情報やオブジェクトの重要情報などは含まれません。 
+&lt;br/&gt;&lt;br/&gt; 
+このファイルの共有方法も単純で、このXMLファイルをメールなどで送るだけで済みます。 
+もっと広く公開したい場合は、Force.com Labsまでメールを下さい。 
+&lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;. 
+&lt;br/&gt;&lt;br/&gt; 
+
+インポート方法 
+&lt;br/&gt;&lt;br/&gt; 
+インポートも同様にシンプルです。インポートテンプレートタブに移動して、参照ボタンをクリックしインポート対象のファイルを選択して、インポートテンプレートボタンをクリックします。
+ &lt;br/&gt;&lt;br/&gt;</label>
+        <name>ap_ImportExport_2</name>
+    </customLabels>
+    <customLabels>
+        <label>インポートテンプレート</label>
+        <name>ap_ImportExport_SubTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>テンプレートのインポートエクスポートを利用してテンプレートの共有を行い、自分のベストプラクティスを探しましょう</label>
+        <name>ap_ImportExport_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>インフォメーション</label>
+        <name>ap_Information</name>
+    </customLabels>
+    <customLabels>
+        <label>自分自身を依存先に指定することはできません。</label>
+        <name>ap_ItselfDependencyError</name>
+    </customLabels>
+    <customLabels>
+        <label>最終更新者</label>
+        <name>ap_LastModifiedBy</name>
+    </customLabels>
+    <customLabels>
+        <label>名前</label>
+        <name>ap_Name</name>
+    </customLabels>
+    <customLabels>
+        <label>新規</label>
+        <name>ap_New</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプラン追加</label>
+        <name>ap_NewActionPlan</name>
+    </customLabels>
+    <customLabels>
+        <label>アクションプランテンプレートを作成してください。</label>
+        <name>ap_NoTemplatesError</name>
+    </customLabels>
+    <customLabels>
+        <label>無</label>
+        <name>ap_None</name>
+    </customLabels>
+    <customLabels>
+        <label>注意</label>
+        <name>ap_Note</name>
+    </customLabels>
+    <customLabels>
+        <label>所有者</label>
+        <name>ap_Owner</name>
+    </customLabels>
+    <customLabels>
+        <label>開始日</label>
+        <name>ap_PlanStartDate</name>
+    </customLabels>
+    <customLabels>
+        <label>新しいアクションプランを作成しました。</label>
+        <name>ap_PostMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>印刷</label>
+        <name>ap_Print</name>
+    </customLabels>
+    <customLabels>
+        <label>所有者の割当</label>
+        <name>ap_RecordOwner</name>
+    </customLabels>
+    <customLabels>
+        <label>関連オブジェクト</label>
+        <name>ap_RelatedObject</name>
+    </customLabels>
+    <customLabels>
+        <label>関連先</label>
+        <name>ap_Related_To</name>
+    </customLabels>
+    <customLabels>
+        <label>削除</label>
+        <name>ap_Remove</name>
+    </customLabels>
+    <customLabels>
+        <label>保存</label>
+        <name>ap_Save</name>
+    </customLabels>
+    <customLabels>
+        <label>テンプレート選択</label>
+        <name>ap_SelectAPT</name>
+    </customLabels>
+    <customLabels>
+        <label>共有</label>
+        <name>ap_Sharing</name>
+    </customLabels>
+    <customLabels>
+        <label>タスク期限日の週末をスキップ</label>
+        <name>ap_SkipWeekendsWhen</name>
+    </customLabels>
+    <customLabels>
+        <label>状態</label>
+        <name>ap_Status</name>
+    </customLabels>
+    <customLabels>
+        <label>タスク（タスクのヘッダーでソート可能）</label>
+        <name>ap_TaskHeaderSortable</name>
+    </customLabels>
+    <customLabels>
+        <label>タスク</label>
+        <name>ap_Tasks</name>
+    </customLabels>
+    <customLabels>
+        <label>タスク完了</label>
+        <name>ap_TasksComplete</name>
+    </customLabels>
+    <customLabels>
+        <label>このタスクはまだ完了していないアクションプランのタスクの一度です。</label>
+        <name>ap_UpdateStatusError</name>
+    </customLabels>
+    <customLabels>
+        <label>この値はタスクの期限日を設定します。依存関係の無いタスクの場合はタスクの開始日から起算されます。依存関係の有るタスクの場合は、依存先のタスクの期限日から起算されます。</label>
+        <name>ap_days_after_msg</name>
+    </customLabels>
+    <customLabels>
+        <label>テンプレート無</label>
+        <name>ap_empty_template_list</name>
+    </customLabels>
+    <customLabels>
+        <label>自分に合うベストプラクティスのテンプレートを探している場合は、
+&lt;a href=&quot;http://labs.force.com/templates&quot;&gt;アクションプランテンプレート&lt;/a&gt;
+こちらのAppExchangeページにアクセスして下さい。</label>
+        <name>ap_import_Note</name>
+    </customLabels>
+    <customLabels>
+        <label>インポートファイルを選択してください。</label>
+        <name>ap_import_file</name>
+    </customLabels>
+    <customLabels>
+        <label>の</label>
+        <name>ap_of</name>
+    </customLabels>
+    <customTabs>
+        <label>アクションプランについて</label>
+        <name>ActionPlansAbout</name>
+    </customTabs>
+    <customTabs>
+        <label>アクションプラン</label>
+        <name>Action_Plans</name>
+    </customTabs>
+    <customTabs>
+        <label>インポートテンプレート</label>
+        <name>Action_Plans_Template_Import</name>
+    </customTabs>
+    <reportTypes>
+        <description>アクションプランレポート</description>
+        <label>アクションプランレポート</label>
+        <name>Action_Plans_Orphan</name>
+        <sections>
+            <label>アクションプラン</label>
+            <name>Action Plans</name>
+        </sections>
+    </reportTypes>
+</Translations>

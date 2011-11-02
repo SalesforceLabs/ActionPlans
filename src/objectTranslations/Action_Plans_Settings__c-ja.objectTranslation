@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Action_Plans_Settings</value>
+    </caseValues>
+    <fields>
+        <help>このオブジェクトのアクションプランが作成された時にChatter連携を有効にします。</help>
+        <label>Chatter連携を有効にする</label>
+        <name>Chatter_Object_Brag__c</name>
+    </fields>
+    <fields>
+        <help>テンプレート内のタスクの割当先が未指定の場合、レコード所有者が割当先になります。この設定が向こうの場合は、現在のログインユーザが割当先になります。</help>
+        <label>指定の無いタスクの割当先をデフォルトでレコード所有者にする</label>
+        <name>Unassigned_Task_Default__c</name>
+    </fields>
+</CustomObjectTranslation>
