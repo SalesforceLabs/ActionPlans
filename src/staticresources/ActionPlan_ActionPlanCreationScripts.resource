@@ -257,7 +257,8 @@ ActionPlanCreationScripts = {
 		else{
 			startDate = document.getElementById( 'editPage:apForm:editBlock:informationSection:nameSection:StartDateReadonlySection:StartDateReadonly' ).innerHTML;
 		}
-		var new_date 	= new Date(startDate);
+		
+    	var new_date  = DateUtil.getDateFromUserLocale(startDate);   
 		
 		if(new_date != 'Invalid Date'){
 			
@@ -339,12 +340,8 @@ ActionPlanCreationScripts = {
 		var dependence	= document.getElementById( 'editPage:apForm:editBlock:taskSection:taskTable:' + rowIndex + ':dependent' );
 		var days;
 		
-		// Set start date
-		var splitDate 	= startDate.split("/");
-		var dueDate = new Date();
-		dueDate.setMonth	( parseInt( splitDate[0] ) - 1 );
-		dueDate.setDate		( splitDate[1] );
-		dueDate.setFullYear	( splitDate[2] );
+	
+    var dueDate = DateUtil.getDateFromUserLocale(startDate);	
 	
 		// Add all dependent tasks to a list
 		var dependentTasks = new Array();
@@ -366,7 +363,8 @@ ActionPlanCreationScripts = {
 		dueDate = this.calculateDueDate(dueDate, days);
 		
 		// Sets date of current task 
-		var stringDate = (dueDate.getMonth() + 1) + '/' + dueDate.getDate() + '/' + dueDate.getFullYear();
+		var stringDate = DateUtil.formatDate( dueDate, UserContext.dateFormat);
+		
 	    document.getElementById('editPage:apForm:editBlock:taskSection:taskTable:' + rowIndex + ':activityDate').value = stringDate;
 	},
 	
