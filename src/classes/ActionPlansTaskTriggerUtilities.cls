@@ -62,9 +62,6 @@ public with sharing class ActionPlansTaskTriggerUtilities {
         if( !apUtils.closedTasks.isEmpty() ){
             
             
-            //Mark all APTask as 'Completed' 
-            apUtils.updateActionPlansTemplateTask('Completed');
-            
             //Get all dependent APTask
             apUtils.dependentActionPlansTemplateTask();
             
@@ -90,24 +87,7 @@ public with sharing class ActionPlansTaskTriggerUtilities {
         }
     }
  
-    /**
-     * Update associated aptt of completed task to completed as well
-     */
-    private void updateActionPlansTemplateTask(String newStatus){
-        
-        
-        List<String>  tasksId = (newStatus=='Completed')? this.closedTasks : this.inProgressTasks;
-        
-        List<APTaskTemplate__c> closeApttList = new List<APTaskTemplate__c>();
-        APTaskTemplate__c[] tempApttList = [ select ap.Status__c from APTaskTemplate__c ap where ap.Id IN : tasksId ];
-        
-        for ( APTaskTemplate__c aptt : tempApttList ){
-            aptt.Status__c = newStatus;
-            closeApttList.add( aptt );
-        }
-        
-        update closeApttList ;
-    }
+ 
     
     /**
      * Get list of dependent Action Plans Template Task
@@ -312,24 +292,6 @@ public with sharing class ActionPlansTaskTriggerUtilities {
 		}
 		return userPrefbyUserMap; 
     }
-    
-    /**
-    * Update APTasks status to InProgress 
-    * @parms cTasks
-    */
-    @future
-    public static void updateAPTasksStatus( List<String> cTasks ) {
-    	
-    	ActionPlansTaskTriggerUtilities apUtils = new ActionPlansTaskTriggerUtilities();
-    	apUtils.inProgressTasks = cTasks;
-    	
-        if( !apUtils.inProgressTasks.isEmpty() ){
-            
-            //Mark all APTask as 'Completed' 
-            apUtils.updateActionPlansTemplateTask('In Progress');
-            
-        }
-    }    
     
     /**
     * Delete Action Plan Tasks

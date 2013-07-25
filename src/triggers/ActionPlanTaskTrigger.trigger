@@ -16,13 +16,13 @@ trigger ActionPlanTaskTrigger on Task ( after update, after delete , before dele
 	    		//store APTasks Id in a list to obtain all asociated APTasks objects
 	    		APTasksIds.add(t.TaskTemplateId__c);
 	    		
-		    	if( t.Status == 'Completed' || t.Status == 'In Progress'){
+		    	if( t.Status != null ){
 		    		//check that the task does not depent on another task with status = In Progress
 		        	if (apUtil.validateChangeStatus(t.TaskTemplateId__c)){
-		        		 if( t.Status == 'In Progress' ){
-							inProgressTasks.add( t.TaskTemplateId__c );
+		        		 if( t.isClosed  )
+							closedTasks.add( t.TaskTemplateId__c );
 		        		}else{
-		        			closedTasks.add( t.TaskTemplateId__c );
+		        			inProgressTasks.add( t.TaskTemplateId__c );
 		        		}
 		        	}else{
 		        		//throw exception
@@ -36,10 +36,6 @@ trigger ActionPlanTaskTrigger on Task ( after update, after delete , before dele
 		//Call to ActionPlansUtilities in order to proceed with creation of dependent Task
 	    if( !closedTasks.isEmpty() ) {
 	        ActionPlansTaskTriggerUtilities.initDependentTaskWork( closedTasks);
-	    }
-	    //update status to in progress for AP Tasks
-	     if( !inProgressTasks.isEmpty() ) {
-	        ActionPlansTaskTriggerUtilities.updateAPTasksStatus( inProgressTasks );
 	    }
 	    
 	       //Query APTaskTemplate__c objects to update fields
@@ -63,6 +59,7 @@ trigger ActionPlanTaskTrigger on Task ( after update, after delete , before dele
 					tmp.Comments__c = t.Description;
 					tmp.Priority__c = t.Priority;
 					tmp.User__c		= t.OwnerId; 
+                    tmp.Status__c   = t.Status;
 					lUpsert.add(tmp);	
 				}
 			}
