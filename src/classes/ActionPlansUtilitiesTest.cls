@@ -145,50 +145,50 @@ public with sharing class ActionPlansUtilitiesTest {
 	}	
 	
 	
-	private static testMethod void APUtestSaveMasiveMethodPart1() {
+	private static testMethod void APUtestSaveMasiveMethodCase() {
 		
 		Map<String,String> objectDetails = new Map<String,String>();
 		objectDetails.put('cases','Case');
+		APUtestSaveMasiveMethod(objectDetails);
+	}
+
+	private static testMethod void APUtestSaveMasiveMethodContact() {
+		Map<String,String> objectDetails = new Map<String,String>();
 		objectDetails.put('contacts','Contact');
-		objectDetails.put('leads','Lead');//
-		test.startTest();
+		APUtestSaveMasiveMethod(objectDetails);
+	}
+
+	private static testMethod void APUtestSaveMasiveMethodLead() {
+		Map<String,String> objectDetails = new Map<String,String>();
 		
-		ActionPlansTestUtilities ge =  new ActionPlansTestUtilities();
-		ActionPlan__c ap = null;		
-		for(String k : objectDetails.keySet()){
-			ap = ge.createNewActionPlan( k, 0 );
-			ap.SkipWeekends__c 	= true;
-			ap.SkipDay__c = 'Monday';
-			update ap;
-			
-			ApexPages.currentPage().getParameters().put( 'refType', objectDetails.get(k) );
-			
-			
-			ActionPlansUtilities apu = new ActionPlansUtilities( ap );
-	   		apu.apTasks = new List<APTaskTemplate__c>();
-	   		apu.apTasks.add( ActionPlansUtilitiesTest.apptask( ap ) );
-	
-			apu.save();
-			
-			ActionPlanTemplate__c apt = ge.createNewActionPlanTemplate( 5 );
-			ApexPages.currentPage().getParameters().put( 'templateId', apt.Id );
-			apu = new ActionPlansUtilities( new ActionPlan__c() );
-			apu.apTasks = apu.getTasks();
-			
-			System.assert( !apu.apTasks.isEmpty() );
-		}		
-				
-		test.stopTest();		
+		objectDetails.put('leads','Lead');
+		APUtestSaveMasiveMethod(objectDetails);
 	}
 	
-	private static testMethod void APUtestSaveMasiveMethodPart2() {
+	private static testMethod void APUtestSaveMasiveMethodContract() {
 		
 		Map<String,String> objectDetails = new Map<String,String>();
 		objectDetails.put('contracts','Contract');
+		APUtestSaveMasiveMethod(objectDetails);
+	}
+
+	private static testMethod void APUtestSaveMasiveMethodCampaign() {
+		Map<String,String> objectDetails = new Map<String,String>();
+
 		objectDetails.put('campaigns','Campaign');
+		APUtestSaveMasiveMethod(objectDetails);
+	}
+
+	private static testMethod void APUtestSaveMasiveMethodOpportunity() {
+		Map<String,String> objectDetails = new Map<String,String>();
+
 		objectDetails.put('opportunitys','Opportunity');
-		test.startTest();
+		APUtestSaveMasiveMethod(objectDetails);
+	}
+
+	private static void APUtestSaveMasiveMethod(Map<String,String> objectDetails) {
 		
+		test.startTest();
 		ActionPlansTestUtilities ge =  new ActionPlansTestUtilities();
 		ActionPlan__c ap = null;		
 		for(String k : objectDetails.keySet()){
@@ -217,76 +217,150 @@ public with sharing class ActionPlansUtilitiesTest {
 		test.stopTest();		
 	}
 	
-	
-	private static testMethod void APUtestCancel() {
+	private static testMethod void APUtestCancelNothing() {
 		Test.startTest();
 		ActionPlansUtilities apu = new ActionPlansUtilities();
 		PageReference page = apu.cancel();
 		System.assert( page!= null );
-		
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestCancelAccount() {
+		Test.startTest();
+		ActionPlansUtilities apu = new ActionPlansUtilities();
 		ActionPlansTestUtilities ge =  new ActionPlansTestUtilities();
 		
 		ActionPlan__c ap = ge.createNewActionPlan( 'accounts', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
 		ApexPages.currentPage().getParameters().put( 'refId' ,  ap.Account__c + ',' + ge.createNewAccount().id);
-		page = apu.cancel();
+		PageReference page = apu.cancel();
 		System.assert( page!= null );
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestCancelContact() {
+		Test.startTest();
+		ActionPlansUtilities apu = new ActionPlansUtilities();
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
 		
-		ge.createNewActionPlan( 'contacts', 0 );
+		ActionPlan__c ap = ge.createNewActionPlan( 'contacts', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Contact' );
 		ApexPages.currentPage().getParameters().put( 'refId' ,  ap.Contact__c + ',' + ge.createNewContact().id);
-		page = apu.cancel();
+		PageReference page = apu.cancel();
 		System.assert( page!= null );
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestCancelLead() {
+		Test.startTest();
+		ActionPlansUtilities apu = new ActionPlansUtilities();
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
 		
-		ge.createNewActionPlan( 'leads', 0 );
+		ActionPlan__c ap = ge.createNewActionPlan( 'leads', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Lead' );
 		ApexPages.currentPage().getParameters().put( 'refId' ,  ap.Lead__c + ',' + ge.createNewLead().id);
-		page = apu.cancel();
+		PageReference page = apu.cancel();
 		System.assert( page!= null );
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestCancelOpportunity() {
+		Test.startTest();
+		ActionPlansUtilities apu = new ActionPlansUtilities();
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
 		
-		ge.createNewActionPlan( 'opportunitys', 0 );
+		ActionPlan__c ap = ge.createNewActionPlan( 'opportunitys', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Opportunity' );
 		ApexPages.currentPage().getParameters().put( 'refId' ,  ap.Opportunity__c + ',' + ge.createNewOpportunity().id);
-		page = apu.cancel();
+		PageReference page = apu.cancel();
 		System.assert( page!= null );
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestCancelCase() {
+		Test.startTest();
+		ActionPlansUtilities apu = new ActionPlansUtilities();
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
 		
-		ge.createNewActionPlan( 'accounts', 0 );
-		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
-		ApexPages.currentPage().getParameters().put( 'refId' ,  ap.Account__c);
-		page = apu.cancel();
+		ActionPlan__c ap = ge.createNewActionPlan( 'cases', 0 );
+		ApexPages.currentPage().getParameters().put( 'refType', 'Case' );
+		ApexPages.currentPage().getParameters().put( 'refId' , ap.Case__c + ',' + ge.createNewCase().id);
+		PageReference page = apu.cancel();
 		System.assert( page!= null );
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestCancelContract() {
+		Test.startTest();
+		ActionPlansUtilities apu = new ActionPlansUtilities();
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
+
+		ActionPlan__c ap = ge.createNewActionPlan( 'contracts', 0 );
+		ApexPages.currentPage().getParameters().put( 'refType', 'Contract' );
+		ApexPages.currentPage().getParameters().put( 'refId' , ap.Contract__c + ',' + ge.createNewContract().id);
+		PageReference page = apu.cancel();
+		System.assert( page!= null );
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestCancelTemplate() {
+		Test.startTest();
+		ActionPlansUtilities apu = new ActionPlansUtilities();
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
 		
 		ActionPlanTemplate__c apt = ge.createNewActionPlanTemplate( 0 );
 		ApexPages.currentPage().getParameters().put( 'templateId', apt.Id );
-		page = apu.cancel();
+		PageReference page = apu.cancel();
 		System.assert( page!= null );
 		Test.stopTest();
 	}
 	
-	private static testMethod void APUtestRelatedObjectId() {
-		test.startTest();
-				
+	private static Map<String, ActionPlan__c> APUtestRelatedObjectId(String planType) {
 		ActionPlansTestUtilities ge =  new ActionPlansTestUtilities();
 		
-		ActionPlan__c ap = ge.createNewActionPlan( 'accounts', 0 );
+		ActionPlan__c ap = ge.createNewActionPlan( planType, 0 );
 		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
 		String id = apu.relatedObjectId();
-		System.assert( ap.Account__c == id);
-		
-		ap = ge.createNewActionPlan( 'contacts', 0 );
-		apu = new ActionPlansUtilities(ap);
-		id = apu.relatedObjectId();
-		System.assert( ap.Contact__c == id);
-		
-		ap = ge.createNewActionPlan( 'leads', 0 );
-		apu = new ActionPlansUtilities(ap);
-		id = apu.relatedObjectId();
-		System.assert( ap.Lead__c == id);
-		
-		ap = ge.createNewActionPlan( 'opportunitys', 0 );
-		apu = new ActionPlansUtilities(ap);
-		id = apu.relatedObjectId();
-		System.assert( ap.Opportunity__c == id);
+
+		Map<String, ActionPlan__c> m = new Map<String, ActionPlan__c>();
+		m.put(id, ap);
+		return m;
+	}
+
+	public static testMethod void APUtestRelatedObjectIdAccounts() {
+		test.startTest();
+		Map<String, ActionPlan__c> m = APUtestRelatedObjectId('accounts');
+		for(String id : m.keySet()) {
+			System.assertEquals( m.get(id).Account__c, id);
+		}
+		test.stopTest();
+	}
+
+	public static testMethod void APUtestRelatedObjectIdContacts() {
+		test.startTest();
+		Map<String, ActionPlan__c> m = APUtestRelatedObjectId('contacts');
+		for(String id : m.keySet()) {
+			System.assertEquals( m.get(id).Contact__c, id);
+		}
+		test.stopTest();
+	}
+
+	public static testMethod void APUtestRelatedObjectIdLeads() {
+		test.startTest();
+		Map<String, ActionPlan__c> m = APUtestRelatedObjectId('leads');
+		for(String id : m.keySet()) {
+			System.assertEquals( m.get(id).Lead__c, id);
+		}
+		test.stopTest();
+	}
+
+	public static testMethod void APUtestRelatedObjectIdOpportunitys() {
+		test.startTest();
+		Map<String, ActionPlan__c> m = APUtestRelatedObjectId('opportunitys');
+		for(String id : m.keySet()) {
+			System.assertEquals( m.get(id).Opportunity__c, id);
+		}
+		test.stopTest();
 	}
 	
 	private static testMethod void APUtestHoursOption() {
@@ -301,12 +375,12 @@ public with sharing class ActionPlansUtilitiesTest {
 		test.stopTest();
 	}    
 
-	private static testMethod void APUtestGetRecordOwnerId() {
+	private static testMethod void APUtestGetRecordOwnerIdAccounts() {
 		
 		test.startTest();
 		
 		ActionPlansTestUtilities ge =  new ActionPlansTestUtilities();
-		List<String>oIds = new List<String>();
+		List<String> oIds = new List<String>();
 		
 		ActionPlan__c ap = ge.createNewActionPlan( 'accounts', 0 );
 		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
@@ -315,95 +389,127 @@ public with sharing class ActionPlansUtilitiesTest {
 		apu.retrieveOwnersDataRelatedObject(oIds, 'Account');
 		String owner = apu.getRecordOwnerId(ap);
 		System.assertEquals(a.OwnerId, owner);
+		test.stopTest();
+	}
+
+
+	private static testMethod void APUtestGetRecordOwnerIdCases() {
+
+		test.startTest();
 		
-		ap = ge.createNewActionPlan( 'cases', 0 );
-		apu = new ActionPlansUtilities(ap);
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
+		List<String> oIds = new List<String>();
+
+		ActionPlan__c ap = ge.createNewActionPlan( 'cases', 0 );
+		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
 		Case c = [select Id, OwnerId from Case where id =:ap.Case__c];
-		oIds = new List<String>(); 
 		oIds.add(c.Id);
 		apu.retrieveOwnersDataRelatedObject(oIds, 'Case');
-		owner = apu.getRecordOwnerId(ap);
+		String owner = apu.getRecordOwnerId(ap);
 		System.assertEquals(c.OwnerId, owner);
+		test.stopTest();
+	}
+
+	private static testMethod void APUtestGetRecordOwnerIdContacts() {
 		
-		ap = ge.createNewActionPlan( 'contacts', 0 );
-		apu = new ActionPlansUtilities(ap);
+		test.startTest();
+
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
+		List<String> oIds = new List<String>();
+
+		ActionPlan__c ap = ge.createNewActionPlan( 'contacts', 0 );
+		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
 		Contact contact = [select Id, OwnerId from Contact where id =:ap.Contact__c];
-		oIds = new List<String>(); 
 		oIds.add(contact.Id);
 		apu.retrieveOwnersDataRelatedObject(oIds, 'Contact');
-		owner = apu.getRecordOwnerId(ap);
+		String owner = apu.getRecordOwnerId(ap);
 		System.assertEquals(contact.OwnerId, owner);
+		test.stopTest();
+	}
 		
-		ap = ge.createNewActionPlan( 'contracts', 0 );
-		apu = new ActionPlansUtilities(ap);
+	private static testMethod void APUtestGetRecordOwnerIdContracts() {
+
+		test.startTest();
+
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
+		List<String> oIds = new List<String>();
+
+		ActionPlan__c ap = ge.createNewActionPlan( 'contracts', 0 );
+		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
 		Contract contract = [select Id, OwnerId from Contract where id =:ap.Contract__c];
-		oIds = new List<String>(); 
 		oIds.add(contract.Id);
 		apu.retrieveOwnersDataRelatedObject(oIds, 'Contract');
-		owner = apu.getRecordOwnerId(ap);
+		String owner = apu.getRecordOwnerId(ap);
 		System.assertEquals(contract.OwnerId, owner);
+		test.stopTest();
+	}
+
+	private static testMethod void APUtestGetRecordOwnerIdLeads() {
 		
-		ap = ge.createNewActionPlan( 'leads', 0 );
-		apu = new ActionPlansUtilities(ap);
+		test.startTest();
+
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
+		List<String> oIds = new List<String>();
+
+		ActionPlan__c ap = ge.createNewActionPlan( 'leads', 0 );
+		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
 		Lead l = [select Id, OwnerId from Lead where id =:ap.Lead__c];
-		oIds = new List<String>(); 
 		oIds.add(l.Id);
 		apu.retrieveOwnersDataRelatedObject(oIds, 'Lead');
-		owner = apu.getRecordOwnerId(ap);
+		String owner = apu.getRecordOwnerId(ap);
 		System.assertEquals(l.OwnerId, owner);
+		test.stopTest();
+	}
+
+	private static testMethod void APUtestGetRecordOwnerIdOpportunitys() {
 		
-		ap = ge.createNewActionPlan( 'opportunitys', 0 );
-		apu = new ActionPlansUtilities(ap);
+		test.startTest();
+
+		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
+		List<String> oIds = new List<String>();
+
+		ActionPlan__c ap = ge.createNewActionPlan( 'opportunitys', 0 );
+		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
 		Opportunity o = [select Id, OwnerId from Opportunity where id =:ap.Opportunity__c];
-		oIds = new List<String>(); 
 		oIds.add(o.Id);
 		apu.retrieveOwnersDataRelatedObject(oIds, 'Opportunity');
-		owner = apu.getRecordOwnerId(ap);
+		String owner = apu.getRecordOwnerId(ap);
 		System.assertEquals(o.OwnerId, owner);
 		
 		test.stopTest();
 	}
-
-	private static testMethod void APUtestGenerateObjectFeed() {
+	private static void APUtestGenerateObjectFeed(String planType) {
 
 		test.startTest();
 				
 		ActionPlansTestUtilities ge =  new ActionPlansTestUtilities();
 
-		ActionPlan__c ap = ge.createNewActionPlan( 'accounts', 0 );
+		ActionPlan__c ap = ge.createNewActionPlan( planType, 0 );
 		ActionPlansUtilities apu = new ActionPlansUtilities(ap);
 		apu.generateObjectFeed(ap.Id);
-		
-		ap = ge.createNewActionPlan( 'campaigns', 0 );
-		apu = new ActionPlansUtilities(ap);
-		apu.generateObjectFeed(ap.Id);
-		
-		
-		ap = ge.createNewActionPlan( 'cases', 0 );
-		apu = new ActionPlansUtilities(ap);
-		apu.generateObjectFeed(ap.Id);
-		
-		
-		ap = ge.createNewActionPlan( 'contacts', 0 );
-		apu = new ActionPlansUtilities(ap);
-		apu.generateObjectFeed(ap.Id);
-		
-		
-		ap = ge.createNewActionPlan( 'contracts', 0 );
-		apu = new ActionPlansUtilities(ap);
-		apu.generateObjectFeed(ap.Id);
-		
-		
-		ap = ge.createNewActionPlan( 'leads', 0 );
-		apu = new ActionPlansUtilities(ap);
-		apu.generateObjectFeed(ap.Id);
-		
-		
-		ap = ge.createNewActionPlan( 'opportunitys', 0 );
-		apu = new ActionPlansUtilities(ap);
-		apu.generateObjectFeed(ap.Id);
-		
-		test.stopTest();
+		Test.stopTest();
+	}
+
+	private static testMethod void APUtestGenerateObjectFeedAccounts() {
+		APUtestGenerateObjectFeed( 'accounts' );
+	}
+	private static testMethod void APUtestGenerateObjectFeedCampaigns() {
+		APUtestGenerateObjectFeed( 'campaigns' );
+	}
+	private static testMethod void APUtestGenerateObjectFeedCases() {
+		APUtestGenerateObjectFeed( 'cases' );
+	}
+	private static testMethod void APUtestGenerateObjectFeedContacts() {
+		APUtestGenerateObjectFeed( 'contacts' );
+	}
+	private static testMethod void APUtestGenerateObjectFeedContracts() {
+		APUtestGenerateObjectFeed( 'contracts' );
+	}
+	private static testMethod void APUtestGenerateObjectFeedLeads() {
+		APUtestGenerateObjectFeed( 'leads' );
+	}
+	private static testMethod void APUtestGenerateObjectFeedOpportunitys() {
+		APUtestGenerateObjectFeed( 'opportunitys' );
 	}
 	
 	public static testMethod void APUtestDeleteActionPlans() {

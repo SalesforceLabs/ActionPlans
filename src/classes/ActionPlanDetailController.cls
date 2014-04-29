@@ -270,51 +270,35 @@ public with sharing class ActionPlanDetailController{
         
         Test.StopTest();
     }
-    
-    public static testMethod void checkGetRelatedObjectName(){
-        
+
+    private static void checkGetRelatedObjectName(String planType) {
         ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
         
-        ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'accounts', 0 );
+        ActionPlan__c actionPlan = testUtil.createNewActionPlan( planType, 0 );
+
         System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
         ActionPlanDetailController APDC = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) ); 
         String name = APDC.getRelatedObjectName();
         System.assert(name != null);
-        
-        actionPlan = testUtil.createNewActionPlan( 'campaigns', 0 );
-        System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-        APDC = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) ); 
-        name = APDC.getRelatedObjectName();
-        System.assert(name != null);
-        
-        actionPlan = testUtil.createNewActionPlan( 'cases', 0 );
-        System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-        APDC = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) ); 
-        name = APDC.getRelatedObjectName();
-        System.assert(name != null);
-        
-        actionPlan = testUtil.createNewActionPlan( 'contacts', 0 );
-        System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-        APDC = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) ); 
-        name = APDC.getRelatedObjectName();
-        System.assert(name != null);
-        
-        actionPlan = testUtil.createNewActionPlan( 'contracts', 0 );
-        System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-        APDC = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) ); 
-        name = APDC.getRelatedObjectName();
-        System.assert(name != null);
-        
-        actionPlan = testUtil.createNewActionPlan( 'leads', 0 );
-        System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-        APDC = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) ); 
-        name = APDC.getRelatedObjectName();
-        System.assert(name != null);
-        
-        actionPlan = testUtil.createNewActionPlan( 'opportunitys', 0 );
-        System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-        APDC = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) ); 
-        name = APDC.getRelatedObjectName();
-        System.assert(name != null);
     }
+
+    public static testMethod void checkGetRelatedObjectNameCampaigns(){
+        checkGetRelatedObjectName('campaigns');
+    }
+    public static testMethod void checkGetRelatedObjectNameCases(){
+        checkGetRelatedObjectName('cases');
+    }
+    public static testMethod void checkGetRelatedObjectNameContacts(){
+        checkGetRelatedObjectName('contacts');
+    }
+    public static testMethod void checkGetRelatedObjectNameContracts(){
+        checkGetRelatedObjectName('contracts');
+    }
+    public static testMethod void checkGetRelatedObjectNameLeads(){
+        checkGetRelatedObjectName('leads');
+    }
+    public static testMethod void checkGetRelatedObjectNameOpportunitys(){
+        checkGetRelatedObjectName('opportunitys');
+    }
+
 }

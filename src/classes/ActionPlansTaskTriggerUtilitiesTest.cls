@@ -49,13 +49,14 @@ private class ActionPlansTaskTriggerUtilitiesTest {
     	List<Id> apTTaskIds 		= new List<Id>();
     	List<Task> apTask 			= new List<Task>();
     	List<APTaskTemplate__c> aptt = new List<APTaskTemplate__c>();
+      List<User> users       = ge.createTestUser(4);
     	
 		Test.startTest();
 		   	for( Integer i = 0; i < 4; i++ ){
 		   		APTaskTemplate__c at = new APTaskTemplate__c();
 		   		at.Action_Plan__c 	 = ap.Id;
 		   		at.DaysFromStart__c  = 2.0;
-		   		at.User__c			 = ge.createTestUser().Id;
+	        at.User__c			 = users[i].Id;
 		   		if (i == 0){
 		   			at.SendEmail__c		 = true;
 		   		}else{
@@ -104,13 +105,14 @@ private class ActionPlansTaskTriggerUtilitiesTest {
     	List<Id> apTTaskIds 		= new List<Id>();
     	List<Task> apTask 			= new List<Task>();
     	List<APTaskTemplate__c> aptt = new List<APTaskTemplate__c>();
+      List<User> users			= ge.createTestUser(4);
 		
 		Test.startTest();
 		   	for( Integer i = 0; i < 4; i++ ){
 		   		APTaskTemplate__c at = new APTaskTemplate__c();
 		   		at.Action_Plan__c 	 = ap.Id;
 		   		at.DaysFromStart__c  = 2.0;
-		   		at.User__c			 = ge.createTestUser().Id;
+		      at.User__c			 = users[i].Id;
 		   		at.SendEmail__c		 = false;
 		   		at.Subject__c		 = 'Test '+ i;
 		   		at.Type__c			 = 'Email';
@@ -152,13 +154,14 @@ private class ActionPlansTaskTriggerUtilitiesTest {
     	List<Id> apTTaskIds 		= new List<Id>();
     	List<Task> apTask 			= new List<Task>();
     	List<APTaskTemplate__c> aptt = new List<APTaskTemplate__c>();
-		
+     List<User> users			= ge.createTestUser(4);
+
 		Test.startTest();
 		   	for( Integer i = 0; i < 4; i++ ){
 		   		APTaskTemplate__c at = new APTaskTemplate__c();
 		   		at.Action_Plan__c 	 = ap.Id;
 		   		at.DaysFromStart__c  = 2.0;
-		   		at.User__c			 = ge.createTestUser().Id;
+		      at.User__c			 = users[i].Id;
 		   		at.SendEmail__c		 = false;
 		   		at.Subject__c		 = 'Test '+ i;
 		   		at.Type__c			 = 'Email';
@@ -301,13 +304,14 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		List<Id> apTTaskIds 		= new List<Id>();
 		List<Task> apTask 			= new List<Task>();
 		List<APTaskTemplate__c> aptt = new List<APTaskTemplate__c>();
+    List<User> users			= ge.createTestUser(4);
 		
 		Test.startTest();
 		   	for( Integer i = 0; i < 4; i++ ){
 		   		APTaskTemplate__c at = new APTaskTemplate__c();
 		   		at.Action_Plan__c 	 = ap.Id;
 		   		at.DaysFromStart__c  = 2.0;
-		   		at.User__c			 = ge.createTestUser().Id;
+		      at.User__c			 = users[i].Id;
 		   		if (i == 0){
 		   			at.SendEmail__c		 = true;
 		   		}else{
@@ -353,12 +357,13 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		test.startTest();
 		ActionPlansTestUtilities ge = new ActionPlansTestUtilities();
 		ActionPlan__c ap 			= ge.createNewActionPlan( 'accounts', 0 );
+    List<User> users			= ge.createTestUser(2);
 				
 		//Task Template 1
 		APTaskTemplate__c at = new APTaskTemplate__c();
 		at.Action_Plan__c 	 = ap.Id;
 		at.DaysFromStart__c  = 2.0;
-		at.User__c				= ge.createTestUser().Id;
+		at.User__c				= users[0].Id;
 		at.SendEmail__c			= true;
 		at.Subject__c			= 'Test ';
 		at.Type__c				= 'Email';
@@ -370,7 +375,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		APTaskTemplate__c at2 = new APTaskTemplate__c();
 		at2.Action_Plan__c		= ap.Id;
 		at2.DaysFromStart__c	= 2.0;
-		at2.User__c				= ge.createTestUser().Id;
+		at2.User__c				= users[1].Id;
 		at2.SendEmail__c		= true;
 		at2.Subject__c			= 'Test2' ;
 		at2.Type__c				= 'Email';
