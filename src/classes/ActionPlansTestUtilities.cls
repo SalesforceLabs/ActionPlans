@@ -83,13 +83,29 @@ public with sharing class ActionPlansTestUtilities{
     * sure that you are able to see data across posts regardless
     * of follow status.
   	*/
-  	public User createTestUser() {
+    public User createTestUser() {
+        return createTestUser(1)[0];
+    }
+
+   public List<User> createTestUser(Integer numberOfUsers) {
+        Profile prof = null;
     	for( Profile p : [ Select Id, PermissionsModifyAllData, Name from Profile limit 100 ] ){
     		if( p.PermissionsModifyAllData ){
-    			return this.createTestUser( p );
+         prof = p;
     		}
     	}
-    	return new User();
+
+      List<User> users = new List<User>();
+
+      for(Integer i = 0; i < numberOfUsers; i++) {
+          if(prof != null) {
+              users.add(this.createTestUser( prof ));
+          } else {
+              users.add(new User());
+          }
+      }
+      insert users;
+      return users;
   	}
   
   	/**
@@ -110,9 +126,7 @@ public with sharing class ActionPlansTestUtilities{
     	testUser.LocaleSidKey 		= 'en_US';
     	testUser.TimeZoneSidKey 	= 'America/Chicago';
     	testUser.EmailEncodingKey 	= 'UTF-8';
-    	
-    	insert testUser;
-    	
+
     	return testUser;
   	}
  	
@@ -306,15 +320,16 @@ public with sharing class ActionPlansTestUtilities{
  		catch( Exception ex ){
  			System.assert( false ,' Inserting Action Plan failed,' + ex );
  		}
- 		
+
  		APTaskTemplate__c auxTask = new APTaskTemplate__c();
  		User user = this.createTestUser();
 
+        List<APTaskTemplate__c> objs = new List<APTaskTemplate__c>();
  		//Creates default tasks for Action Plan
  		for( Integer i = 0; i < numTasks; i++ ){
- 			auxTask = this.createNewActionPlanTask( newActionPlan, 1, user, 'Email', 'High' );
+				objs.add(this.createNewActionPlanTask( newActionPlan, 1, user, 'Email', 'High' ));
  		}
- 		
+			insert objs;
  		
  		
  		return newActionPlan;
@@ -334,13 +349,6 @@ public with sharing class ActionPlansTestUtilities{
  		newAPTask.Type__c 			= category;
  		newAPTask.Priority__c 		= priority;
  		newAPTask.Minutes_Reminder__c = '510';
- 		
- 		try{
- 			insert newAPTask;
- 		}
- 		catch( Exception ex ){
- 			System.assert( false ,' Inserting Action Plan task failed,' + ex );
- 		}
  				
  		return newAPTask;
  	}
@@ -406,13 +414,15 @@ public with sharing class ActionPlansTestUtilities{
  	public List<String> batchIds( String ref ){
  		
 	 		ActionPlan__c ap = this.createNewActionPlan( ref ,0);
+            List<User> users = this.createTestUser(2);
+            List<APTaskTemplate__c> templates = new List<APTaskTemplate__c>();
 			List<String> apTasksIds = new List<String>();
 		
 			APTaskTemplate__c at = new APTaskTemplate__c();
 	   		at.Action_Plan__c 	 = ap.Id;
 	   		at.Dependent__c		 = 'None';
 	   		at.DaysFromStart__c  = 2.0;
-	   		at.User__c			 = this.createTestUser().Id;
+	      at.User__c			 = users[0].Id;
 	   		at.SendEmail__c		 = false;
 	   		at.Subject__c		 = 'Test ';
 	   		at.Type__c			 = 'Email';
@@ -420,23 +430,25 @@ public with sharing class ActionPlansTestUtilities{
 	   		at.Comments__c		 = 'Test';
 	   		at.Reminder__c		 = true;
 	   		at.Minutes_Reminder__c = '510';
-	   		insert at;
-	   		apTasksIds.add(at.Id);
+	      templates.add(at);
 	   		
-	   		at = new APTaskTemplate__c();
-	   		at.Action_Plan__c 	 = ap.Id;
-	   		at.Dependent__c		 = 'None';
-	   		at.DaysFromStart__c  = 2.0;
-	   		at.User__c			 = this.createTestUser().Id;
-	   		at.SendEmail__c		 = true;
-	   		at.Subject__c		 = 'Test ';
-	   		at.Type__c			 = 'Email';
-	   		at.Priority__c		 = 'Low';
-	   		at.Comments__c		 = 'Test';
-	   		at.Reminder__c		 = true;
-	   		at.Minutes_Reminder__c = '510';
-	   		insert at;
-	   		apTasksIds.add(at.Id);
+	      APTaskTemplate__c at2 = new APTaskTemplate__c();
+	      at2.Action_Plan__c 	 = ap.Id;
+	      at2.Dependent__c		 = 'None';
+	      at2.DaysFromStart__c = 2.0;
+	      at2.User__c			 = users[1].Id;
+	      at2.SendEmail__c		 = true;
+	      at2.Subject__c		 = 'Test ';
+	      at2.Type__c			 = 'Email';
+	      at2.Priority__c		 = 'Low';
+	      at2.Comments__c		 = 'Test';
+	      at2.Reminder__c		 = true;
+	      at2.Minutes_Reminder__c = '510';
+	      templates.add(at2);
+       insert(templates);
+
+       apTasksIds.add(templates[0].Id);
+       apTasksIds.add(templates[1].Id);
 	   		
 	   		return apTasksIds;
  	}
