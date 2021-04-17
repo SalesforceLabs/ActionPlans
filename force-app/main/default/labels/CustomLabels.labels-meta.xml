@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ap_APModifyError</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>APModifyError</shortDescription>
+        <value>Action Plan Template has been modified since this Plan creation.</value>
+    </labels>
+    <labels>
+        <fullName>ap_About</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>About</shortDescription>
+        <value>Welcome to Action Plans</value>
+    </labels>
+    <labels>
+        <fullName>ap_AboutP1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutP1</shortDescription>
+        <value>&lt;p&gt;Action Plans helps your organization encapsulate best practices into easily sharable, reusable task templates.&lt;br/&gt;&lt;br/&gt;
+        	You can create Action Plans for the following objects (varies by edition):&lt;/p&gt;
+	        &lt;ul&gt;
+				&lt;li&gt;Accounts (PE, EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Contacts (PE, EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Leads (PE, EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Opportunities (PE, EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Campaigns (EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Contracts (EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Cases (EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Person Accounts (EE, UE, DE)&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_AboutP1a</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutP1a</shortDescription>
+        <value>&lt;h2&gt;Getting Help&lt;/h2&gt;
+			&lt;p&gt;Action Plans is Unsupported. For community assistance with Action Plans, please visit &lt;a href=&quot;https://trailblazers.salesforce.com/&quot;&gt;Salesforce Trailblazer Community&lt;/a&gt;.  
+    To submit ideas or issues, please visit &lt;a href=&quot;https://github.com/SalesforceLabs/ActionPlans&quot;&gt;Action Plans on Github&lt;/a&gt;.
+    &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+	&lt;h2&gt;Community&lt;/h2&gt;
+
+    &lt;p&gt;Action Plans is Open Source software.  We welcome your issue reports, ideas, documentation, code tweaks and all other participation.  
+    &lt;a href=&quot;http://blogs.developerforce.com/labs/2011/08/howto-contribute-to-milestones-pm-code-not-required-opensource.html&quot;&gt;Learn more&lt;/a&gt;.&lt;/p&gt;
+&lt;p/&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_AboutP1b</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutP1b</shortDescription>
+        <value>&lt;p&gt;Considerations :&lt;/p&gt;
+			&lt;ul&gt;
+				&lt;li&gt;Action Plans can include up to 75 tasks and you can create up to 40 plans at a time.&lt;/li&gt;
+				&lt;li&gt;Export and share your Action Plan Templates with other orgs.&lt;/li&gt;
+				&lt;li&gt;Import Action Plan Templates provided by colleagues and vendors.&lt;/li&gt;
+				&lt;li&gt;Supports task reminder times.&lt;/li&gt;
+				&lt;li&gt;Action Plans Settings controls behavior around Chatter Brag and default task assignment behavior&lt;/li&gt;
+				&lt;li&gt;Ability to delete up to 65 Action Plans at a time.&lt;/li&gt;
+			&lt;/ul&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_ActionPlansSetup</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ActionPlansSetup</shortDescription>
+        <value>Action Plans Setup</value>
+    </labels>
+    <labels>
+        <fullName>ap_Add</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add</shortDescription>
+        <value>Add</value>
+    </labels>
+    <labels>
+        <fullName>ap_AddNewTask</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AddNewTask</shortDescription>
+        <value>Add New Task</value>
+    </labels>
+    <labels>
+        <fullName>ap_All</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>All</shortDescription>
+        <value>All</value>
+    </labels>
+    <labels>
+        <fullName>ap_AreYouSureAsk</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AreYouSureAsk</shortDescription>
+        <value>Are you sure?</value>
+    </labels>
+    <labels>
+        <fullName>ap_Cancel</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>ap_Change</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Change</shortDescription>
+        <value>Change</value>
+    </labels>
+    <labels>
+        <fullName>ap_Clone</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Clone</shortDescription>
+        <value>Clone</value>
+    </labels>
+    <labels>
+        <fullName>ap_Close</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Close</shortDescription>
+        <value>Close</value>
+    </labels>
+    <labels>
+        <fullName>ap_Confirm_Tasks_Deletion</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Confirm Tasks Deletion</shortDescription>
+        <value>Tasks depending on the one you are about to delete will lose their dependency.\n\nAre you sure you want to delete this task?</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreateTemplateOlpart1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateTemplateP1</shortDescription>
+        <value>&lt;li&gt;Name - Template Name.&lt;/li&gt;
+			&lt;li&gt;Description - An explanation of how the template should be used.&lt;/li&gt;
+			&lt;li&gt;Skip weekends - Allows you to automatically reschedule a task that would fall on 
+				a Saturday or a Sunday to either a Monday or Friday.  When checked, a drop down box
+				appears allowing you to select the day.&lt;/li&gt;
+			&lt;li&gt;Action - Click &quot;X&quot; to eliminate a step in a template.&lt;/li&gt;
+			&lt;li&gt;Subject - What the task is to do.&lt;/li&gt;
+			&lt;li&gt;Task Dependency -  The depended task will only be created once the controlling task is completed.&lt;/li&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreateTemplateOlpart2</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateTemplateP2</shortDescription>
+        <value>&lt;li&gt;Days After-  This value determines the due date of the task.
+        		&lt;ol&gt;
+        		&lt;li&gt;For tasks with no dependency, the task’s due date will be offset from the plan start date.&lt;/li&gt;
+        		&lt;li&gt; For tasks with a dependency, the due date will be offset from the expected due date of the task on which it depends on.&lt;/li&gt;
+        		&lt;/ol&gt;  
+        		&lt;/li&gt;
+			&lt;li&gt;
+				Assigned To – Looks up to user.  Leave blank if you want to assign the task dynamically.  
+				When assigning dynamically, the default behavior will be to assign the task to the running user.  
+				You can also have the system assign it to the record owner by changing your Action Plan Settings.  
+				See &quot;Post Install Configuration&quot; guide above. 
+			&lt;/li&gt;
+			&lt;li&gt;Category - What type of activity.&lt;/li&gt;
+			&lt;li&gt;Priority - Low, medium or high.&lt;/li&gt;
+			&lt;li&gt;Email - Send a standard New Task email when checked. For Tasks depending on others, the email will be sent when the task is created.&lt;/li&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreateTemplateOlpart3</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateTemplateP3</shortDescription>
+        <value>&lt;li&gt;Reminder – This check box will define the default behaviour for reminders when applying the template to create an Action plan .
+				&lt;ol&gt;
+	        		&lt;li&gt;If it’s left unchecked, in the Action Plan Creation page the reminders will be  initially disabled&lt;/li&gt;
+	        		&lt;li&gt;If it’s checked the reminders will be available.&lt;/li&gt;
+        		&lt;/ol&gt; 
+				Note:Reminders take in consideration.
+			&lt;ul&gt;
+	        		&lt;li&gt;User org Reminder settings: 
+	        			Go Personal Setup &gt; My Personal Information &gt; Reminders, if the option &quot;By default, set reminder on Tasks to:&quot; is checked then the selected time will be the default option for task template reminders.
+	        		&lt;/li&gt;
+	        		&lt;li&gt;User setting for Activity Object : 
+	        		 Go App Setup&gt; Customize &gt; Activities &gt; Activity Settings, If option &quot;Enable Activity Reminders&quot; is not checked, then reminders column will not be displayed in the Action Plan creation page.
+	        		&lt;/li&gt;
+        		&lt;/ul&gt;
+			&lt;/li&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreateTemplateOlpart4</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateTemplateP4</shortDescription>
+        <value>&lt;li&gt;Comments - Comments supporting a task.&lt;/li&gt;
+			&lt;li&gt;Add New Task - Adds an additional row to the tasks grid.&lt;/li&gt;
+			&lt;li&gt;Save - Saves the template.&lt;/li&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreateTemplateP1andP2</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateTemplateP1andP2</shortDescription>
+        <value>&lt;p&gt;Now you&apos;re ready to create your first template.  Navigate to the Action Plans Templates tab.  Click on the &quot;New Action Plan Template&quot; button.&lt;/p&gt;
+		
+		&lt;p&gt;The template screen looks like this:&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreateTemplateTitle</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CreateTemplateTitle</shortDescription>
+        <value>Create a Template</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatedBy</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CreatedBy</shortDescription>
+        <value>Created By</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlans</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreate</shortDescription>
+        <value>Create Action Plans for Several Leads</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP1</shortDescription>
+        <value>Step 1: Navigate to a accounts list view.  Select the accounts you want to create Action Plans for.  Click on the &quot;Create Account Action Plans&quot; button.</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP2</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP2</shortDescription>
+        <value>Step 2: Select the template you want to use by  typing the name on the lookup and clicking on it.</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP3</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP3</shortDescription>
+        <value>Step 3: Enter the information specific to this plan.  Note that the accounts you selected earlier are visible and that the &quot;Assign To&quot; has been completed using the current user.</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP3_bottom_text</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP3BottomText</shortDescription>
+        <value>Considerations : When hovering the calendar icon (1.) next to the Days After field a calendar is displayed (2.) This calendar has two dates highlighted :&lt;br/&gt;&lt;br/&gt;
+			&lt;ul&gt;
+				&lt;li&gt;the Action Plan start Date displayed in dark blue.&lt;/li&gt;
+				&lt;li&gt;the expected date for the beginning of the current task  in light blue.&lt;/li&gt;
+			&lt;/ul&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP4</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP4</shortDescription>
+        <value>Step 4: Save the Action Plan.</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP4_note</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP4Note</shortDescription>
+        <value>Note: Action Plan creation is handled by a batch process, it can take a couple of minutes to be able to view all created objects.</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP5</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP5</shortDescription>
+        <value>Step 5: Verify the Action Plan and the tasks.</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP5_note</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP5Note</shortDescription>
+        <value>Note that the Action Plan is now in the correct related list and that this account has two open activities.  The third activity in the template is dependent and will be created only when it&apos;s predecessor is complete.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Delete</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ap_Edit</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Edit</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>ap_Error</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ap_Error_Cyclic_Dependency_Found</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: Cyclic Dependency Found</shortDescription>
+        <value>A cyclic dependency on tasks has been found</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_ImportingXMLTask</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: ImportingXMLTask</shortDescription>
+        <value>There was a problem importing your Action Plans Template Tasks. Review your Template XML or try exporting it again.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_ImportingXMLTemplate</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: ImportingXMLTemplate</shortDescription>
+        <value>There was a problem importing your Action Plans Template. Review your Template XML or try exporting it again.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_InvalidXMLTemplate</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: InvalidXMLTemplate</shortDescription>
+        <value>This is an invalid XML template, please export a new Action Plans Template and try again.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_RemoveCyclicDependency</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: RemoveCyclicDependency</shortDescription>
+        <value>Remove cyclic dependency on tasks and try again.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_Review_Errors</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: Review Errors</shortDescription>
+        <value>Review all error messages above to correct your data.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_SelectCorrectXMLExtension</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: SelectCorrectXMLExtension</shortDescription>
+        <value>Please select a file with the correct extension - xml</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_SelectXML</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: SelectXML</shortDescription>
+        <value>Please select a XML document to import</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_TaskLimitError</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: TaskLimitError</shortDescription>
+        <value>Task limit reached.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_selectOneRecord</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: selectOneRecord</shortDescription>
+        <value>You must select at least one record.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_xmlMetaData</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: xmlMetaData</shortDescription>
+        <value>Meta Data Information is incorrect!</value>
+    </labels>
+    <labels>
+        <fullName>ap_Errors_xmlRead</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error: xmlRead</shortDescription>
+        <value>An error has occurred while trying to read your XML document</value>
+    </labels>
+    <labels>
+        <fullName>ap_Export</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Export</shortDescription>
+        <value>Export</value>
+    </labels>
+    <labels>
+        <fullName>ap_ExportTitle</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ExportTitle</shortDescription>
+        <value>Template XML Export</value>
+    </labels>
+    <labels>
+        <fullName>ap_Friday</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Friday</shortDescription>
+        <value>Friday</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStartedP1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedP1</shortDescription>
+        <value>Getting started is easy. For each object, you need to add a button to the list view, 
+        		add a button to the detail page. For Accounts, follow these steps:</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStartedTitle</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedTitle</shortDescription>
+        <value>Post Install Configuration</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS1</shortDescription>
+        <value>&lt;h3&gt;Update Your Action Plans Settings &lt;/h3&gt;
+			&lt;p&gt;Navigate to Setup &gt; Develop &gt; Custom Settings. Click on &apos;Manage&apos; next to &apos;Action Plans Settings&apos;. Click the &apos;New&apos; button near &apos;Default Organizational Level Value&apos;. Check the values that you want to enable.;&lt;/p&gt;	
+			&lt;p&gt;Enable Chatter Object places a &apos;[Username] has created an Action Plan&apos; in the related objects Chatter Feed. If unchecked, Action Plans does not create a Feed Post.;&lt;/p&gt;
+			&lt;p&gt;&apos;Unassigned Task Defaults to Record Owner&apos; ensure that Action Plan Template tasks with a blank &apos;Assigned To&apos; goes to the related record&apos;s owner. If unchecked, tasks with a blank &apos;Assigned To&apos; are assigned to the running user.&quot;&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section2_sub1P1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS2_sub1P1</shortDescription>
+        <value>&lt;h4&gt;Create Action Plans Button&lt;/h4&gt;
+		&lt;p&gt;For each object, you need to add a button to the list view, For Accounts, follow these steps:&lt;/p&gt;
+		&lt;ol&gt;
+			&lt;li&gt;Navigate to Setup &gt; Customize &gt; Accounts &gt; Search Layouts.&lt;/li&gt;
+			&lt;li&gt;Click on &quot;Edit&quot; near &quot;Accounts List View&quot;.&lt;/li&gt;
+			&lt;li&gt;Move the &quot;Create Account Action Plans&quot; button from &quot;Available Buttons&quot; to &quot;Selected Buttons&quot;.&lt;/li&gt;
+			&lt;li&gt;Click &quot;Save&quot;.&lt;/li&gt;
+			&lt;li&gt;Navigate to Setup &gt; Customize &gt; Accounts &gt; Page Layouts.&lt;/li&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section2_sub1P2</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS2_sub1P2</shortDescription>
+        <value>&lt;li&gt;Note: the package includes a default &quot;Action Plan Layout&quot; for your reference. You do not need to use it.&lt;/li&gt;
+			&lt;li&gt;Click on &quot;Edit&quot; near one of your standard Account Page Layouts.&lt;/li&gt;
+			&lt;li&gt;Add &quot;Action Plans&quot; related list to the page.&lt;/li&gt;
+			&lt;li&gt;Edit the properties of the related list by clicking the configuration button above it.&lt;/li&gt; 
+			&lt;li&gt;Expand &quot;Buttons&quot; section, unmark &quot;New&quot; checkbox and move &quot;Create Account Action Plan&quot; to the Selected buttons. &lt;/li&gt;
+			&lt;li&gt;Update the fields in the related list to meet your needs. Recommended fields include Start Date, Overall Task Status, Owner First Name, Owner Last Name.&lt;/li&gt;
+			&lt;li&gt;Click &quot;Save&quot;.&lt;/li&gt;
+		&lt;/ol&gt;
+		&lt;p&gt;Repeat these steps for the other objects Action Plans supports: Contacts, Leads, Opportunities, etc.&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section2_sub2</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS2_sub2</shortDescription>
+        <value>&lt;h4&gt;Delete Action Plans Button&lt;/h4&gt;
+		&lt;p&gt;Follow this steps for Action Plan Object:&lt;/p&gt;
+		&lt;ol&gt;
+			&lt;li&gt;Navigate to Setup &gt; Create&gt; Objects &gt; Action Plans &gt; Page Layouts.&lt;/li&gt;
+			&lt;li&gt;Click on &quot;Edit&quot; near &quot;Action Plans List View&quot;.&lt;/li&gt;
+			&lt;li&gt;Move the &quot;Delete Action Plans&quot; button from &quot;Available Buttons&quot; to &quot;Selected Buttons&quot;.&lt;/li&gt;
+			&lt;li&gt;Click &quot;Save&quot;.&lt;/li&gt;
+		&lt;/ol&gt;
+		&lt;p&gt;Repeat these steps for the other objects Action Plans supports: Contacts, Leads, Opportunities, etc.&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section2_title</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS2_title</shortDescription>
+        <value>&lt;h3&gt;Update Your Page &amp; Search Layout Configuration&lt;/h3&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section3</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS3</shortDescription>
+        <value>&lt;h3&gt;Update Your Sharing Settings&lt;/h3&gt;
+		&lt;br/&gt;
+		&lt;p&gt;Action Plans includes four objects: Action Plan, Action Plan Template, AP Task and APT Task. You can configure your sharing settings in whatever way works for your organization.&lt;/p&gt;
+		&lt;p&gt;If you want anyone to be able to create and see plans and their templates, use Public Read/Write for Action Plan and Action Plan Template.&lt;/p&gt;
+		&lt;p&gt;If you want people to be able to see Action Plans and Templates without being able to change them, select &quot;Public Read Only&quot;.&lt;/p&gt;
+		&lt;/br&gt;
+		&lt;p&gt;Please note that if you set your Action Plan Template object to private, templates will not be visible outside of other sharing rules you might set up. This may make Action Plans somewhat less useful.&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section4P1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS4P1</shortDescription>
+        <value>&lt;h3&gt;Update Your Profiles&lt;/h3&gt;
+		&lt;br/&gt;
+		&lt;h4&gt;Users who will use Action Plans require the following permissions on their profile:&lt;/h4&gt;
+		&lt;p&gt;&lt;b&gt;Custom Object Permissions:&lt;/b&gt; Read, Create, Edit and Delete for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.
+		&lt;/br&gt;Note that if you have a profile that will &quot;read&quot; but not &quot;edit&quot; or &quot;create&quot; templates, you can make Action Plan Templates and APT Tasks Templates read only.&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section4P2</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS4P2</shortDescription>
+        <value>&lt;p&gt;&lt;b&gt;Tab Settings:&lt;/b&gt; About Action Plans, Action Plans and Import Template should be &quot;Default On&quot;. Note that if you have a set of users who should not import templates, &quot;Import Template&quot; can be set to &quot;Tab Hidden&quot;.&lt;/p&gt;
+		&lt;p&gt;&lt;b&gt;Custom App Settings:&lt;/b&gt; Action Plans should be visible.&lt;/p&gt;
+		&lt;p&gt;&lt;b&gt;Enabled Apex Class Access:&lt;/b&gt; All Apex classes from the Action Plans AppExchange package must be enabled.&lt;/p&gt;
+		&lt;p&gt;&lt;b&gt;Enabled Visualforce Page Access:&lt;/b&gt; All Visualforce pages from the Action Plans AppExchange package must be enabled.&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_Import</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Import_Template</shortDescription>
+        <value>Import Template</value>
+    </labels>
+    <labels>
+        <fullName>ap_ImportExport_1</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ImportExport_1</shortDescription>
+        <value>Action Plans now supports the sharing and discovery of best practices using Template Export and Template Import.  
+			&lt;br/&gt;&lt;br/&gt;
+			How to Share Your Template
+			&lt;br/&gt;&lt;br/&gt;
+			Export is simple.  Simply navigate to the Template you wish to export.  Click on the &quot;Export&quot; button.</value>
+    </labels>
+    <labels>
+        <fullName>ap_ImportExport_2</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ImportExport_2</shortDescription>
+        <value>Export creates a simple XML file containing template header and task information.  
+        	It also includes information about who created the template.  
+        	Note: it does not include user information or sensitive data about what objects you might use this template with.
+			&lt;br/&gt;&lt;br/&gt;
+			Sharing the file is easy.  Simply email the file to whomever you want to share it with.  
+			Do you want to share it with a broader audience?  
+			Email the file to Force.com Labs at &lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;. 
+        	&lt;br/&gt;&lt;br/&gt;
+        	
+        	How to Import Best Practices
+			&lt;br/&gt;&lt;br/&gt;
+			Import is also simple.  Simply navigate to the &quot;Import Template&quot; tab.  
+			Select the file you want to import using &quot;Browse&quot; and once you’ve found it click on &quot;Import Template.&quot;
+        	&lt;br/&gt;&lt;br/&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_ImportExport_Title</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ImportExport_Title</shortDescription>
+        <value>Share Your Templates and Discover Best Practices using Template Export and Template Import</value>
+    </labels>
+    <labels>
+        <fullName>ap_Information</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Information</shortDescription>
+        <value>Information</value>
+    </labels>
+    <labels>
+        <fullName>ap_ItselfDependencyError</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ItselfDependencyError</shortDescription>
+        <value>A task cannot be dependent on itself.</value>
+    </labels>
+    <labels>
+        <fullName>ap_LastModifiedBy</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>LastModifiedBy</shortDescription>
+        <value>Last Modified By</value>
+    </labels>
+    <labels>
+        <fullName>ap_New</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>New</shortDescription>
+        <value>New</value>
+    </labels>
+    <labels>
+        <fullName>ap_None</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>None</shortDescription>
+        <value>None</value>
+    </labels>
+    <labels>
+        <fullName>ap_Note</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Note</shortDescription>
+        <value>Note</value>
+    </labels>
+    <labels>
+        <fullName>ap_Owner</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Owner</shortDescription>
+        <value>Owner</value>
+    </labels>
+    <labels>
+        <fullName>ap_PostMessage</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>PostMessage</shortDescription>
+        <value>has created a new Action Plan for this</value>
+    </labels>
+    <labels>
+        <fullName>ap_PreDeployError</fullName>
+        <categories>Action PLans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>PreDeployError</shortDescription>
+        <value>Pre deploy test failed, This may be because of custom validation rules in your Org. You can temporarily deactivate your validation rules for {0} and try again.</value>
+    </labels>
+    <labels>
+        <fullName>ap_Print</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Print</shortDescription>
+        <value>Print</value>
+    </labels>
+    <labels>
+        <fullName>ap_RelObjUndeleteError</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RelObjUndeleteError</shortDescription>
+        <value>You can not undelete an action plan whose related object is deleted.</value>
+    </labels>
+    <labels>
+        <fullName>ap_RelatedCount</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RelatedCount</shortDescription>
+        <value>You must relate an Action Plan to a single object</value>
+    </labels>
+    <labels>
+        <fullName>ap_RelatedObject</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RelatedObject</shortDescription>
+        <value>Related Object</value>
+    </labels>
+    <labels>
+        <fullName>ap_Remove</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Remove</shortDescription>
+        <value>Remove</value>
+    </labels>
+    <labels>
+        <fullName>ap_Save</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>ap_Search</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>ap_Sharing</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Sharing</shortDescription>
+        <value>Sharing</value>
+    </labels>
+    <labels>
+        <fullName>ap_TaskHeaderSortable</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TaskHeaderSortable</shortDescription>
+        <value>(Task headers are sortable)</value>
+    </labels>
+    <labels>
+        <fullName>ap_TasksComplete</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Tasks Complete</shortDescription>
+        <value>Tasks Complete</value>
+    </labels>
+    <labels>
+        <fullName>ap_UpdateStatusError</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>UpdateStatusError</shortDescription>
+        <value>This task is part of an Action Plan and it depends on a task that is not completed yet.</value>
+    </labels>
+    <labels>
+        <fullName>ap_import_file</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>import file</shortDescription>
+        <value>Select the file you want to import:</value>
+    </labels>
+    <labels>
+        <fullName>ap_of</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>of</shortDescription>
+        <value>of</value>
+    </labels>
+</CustomLabels>

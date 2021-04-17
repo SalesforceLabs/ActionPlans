@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>End-users who can access and work with Action Plans but cannot modify the Action Plan Tasks</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Action Plan User</label>
+</PermissionSet>

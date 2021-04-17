@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Users can manually create Action Plans from templates</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Action Plan Creator</label>
+</PermissionSet>

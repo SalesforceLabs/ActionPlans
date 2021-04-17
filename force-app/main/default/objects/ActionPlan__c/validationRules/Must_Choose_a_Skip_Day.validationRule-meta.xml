@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Must_Choose_a_Skip_Day</fullName>
+    <active>true</active>
+    <description>If Skip Weekends is selected, you must choose a skip day</description>
+    <errorConditionFormula>SkipWeekends__c &amp;&amp; ISPICKVAL( SkipDay__c , &quot;&quot;)</errorConditionFormula>
+    <errorDisplayField>SkipDay__c</errorDisplayField>
+    <errorMessage>If Skip Weekends is selected, you must choose a skip day</errorMessage>
+</ValidationRule>
