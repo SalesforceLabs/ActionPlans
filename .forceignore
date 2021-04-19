@@ -17,5 +17,6 @@ package.xml
 **/default/profiles
 
 /src*
-/.settings**
 src.zip
+**settings
+**profiles
