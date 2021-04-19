@@ -8,3 +8,8 @@
 .vscode
 
 coverage/
+docs/
+force-app/main/default/prompts/*.prompt-meta.xml
+# Exclude project config
+sfdx-project.json
+dependencies.json
