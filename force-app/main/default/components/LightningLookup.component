@@ -12,42 +12,31 @@
 <apex:variable var="customObject" value="{!$ObjectType[sObjType].custom}" />
 
 <div class="slds-scope" id="{!for}sldsscopediv">
-<div class="slds-combobox_container" id="searchInputContainer">
+	<div class="slds-combobox_container" id="searchInputContainer">
+		<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+			<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none" >
+				<div class="{!IF(required==true,'requiredInput','')}">
+					<div class="{!IF(required==true,'requiredBlock','')}">
 
-	<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" aria-expanded="true" aria-haspopup="listbox"
-	role="combobox">
-
-	<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none" >
-
-
-<div class="{!IF(required==true,'requiredInput','')}">
-	<div class="{!IF(required==true,'requiredBlock','')}">
-
-		<apex:inputField id="searchInput" styleclass="slds-input slds-combobox__input {!fieldClass}" style="{!fieldStyle}" type="text" html-autocomplete="off"
-			onkeyup="LightningLookupScripts{!for}.searchRecords(j$(this), '{!sObjType}', '{!customObject}');"
-			html-aria-autocomplete="list" html-role="combobox" html-aria-expanded="true" html-aria-controls="SrchDrpDwn{!for}" html-placeholder="{!$Label.ap_Search}"
-			html-aria-activedescendant="SrchDrpDwn{!for}" required="{!IF(required == true, 'true', '')}" value="{!sObj[field]}">
-			<apex:componentBody />
-		</apex:inputField>
-
-	<!-- <input id="searchInput" class="slds-input slds-combobox__input {!fieldClass}" style="{!fieldStyle}" type="text" autocomplete="off"
-		 onkeyup="LightningLookupScripts{!for}.searchRecords(j$(this), '{!sObjType}', '{!customObject}');"
-		 aria-autocomplete="list" role="combobox" aria-expanded="true" aria-controls="SrchDrpDwn{!for}" placeholder="{!$Label.ap_Search}"
-		 aria-activedescendant="SrchDrpDwn{!for}"/> -->
-</div></div>
-		<!-- <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
-			<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-				<use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#search')}"></use>
-			</svg>
-		</span> -->
-
-	</div>
-		<div id="SrchDrpDwn{!for}" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid datePicker" role="listbox"
-		style="display:none;">
-			<ul class="slds-listbox slds-listbox_vertical" role="presentation" id="searchResultsUL{!for}"></ul>
+						<apex:inputField id="searchInput" styleclass="slds-input slds-combobox__input {!fieldClass}" style="{!fieldStyle}" type="text" html-autocomplete="off"
+							onkeyup="LightningLookupScripts{!for}.searchRecords(j$(this), '{!sObjType}', '{!customObject}');"
+							html-aria-autocomplete="list" html-role="combobox" html-aria-expanded="true" html-aria-controls="SrchDrpDwn{!for}" html-placeholder="{!$Label.ap_Search}"
+							html-aria-activedescendant="SrchDrpDwn{!for}" required="{!IF(required == true, 'true', '')}" value="{!sObj[field]}">
+							<apex:componentBody />
+						</apex:inputField>
+					<!-- <input id="searchInput" class="slds-input slds-combobox__input {!fieldClass}" style="{!fieldStyle}" type="text" autocomplete="off"
+						onkeyup="LightningLookupScripts{!for}.searchRecords(j$(this), '{!sObjType}', '{!customObject}');"
+						aria-autocomplete="list" role="combobox" aria-expanded="true" aria-controls="SrchDrpDwn{!for}" placeholder="{!$Label.ap_Search}"
+						aria-activedescendant="SrchDrpDwn{!for}"/> -->
+				</div>
+			</div>
+		</div>
+			<div id="SrchDrpDwn{!for}" class="slds-dropdown slds-dropdown_length-with-icon-5 slds-dropdown_fluid" role="listbox"
+			style="display:none;" onblur="javascript:j$('#SrchDrpDwn{!for}').hide();">
+				<ul class="slds-listbox slds-listbox_vertical" role="presentation" id="searchResultsUL{!for}"></ul>
+			</div>
 		</div>
 	</div>
-</div>
 </div>
 
 <script>
@@ -60,8 +49,6 @@
 	LightningLookupScripts{!for} =  {
 		//Function To Get Record's Details on Record Click
 		recInfo: function (recId, sObjType) {
-			//j$('[id$=HiddenInput]').val(recId);
-			console.log('assigning input to {!$Component.HiddenInput}');
 			var recInfoIdInput = document.getElementById('{!$Component.HiddenInput}');
 			j$(recInfoIdInput).val(recId);
 			j$('[id$=SrchDrpDwn{!for}]').fadeOut();
@@ -69,7 +56,6 @@
 			result = sforce.connection.retrieve("Name,Id", sObjType, [recId]);
 			j$('#{!for}sldsscopediv [id$=searchInput]').val(result[0].Name);
 		},
-		/* var sObjType = {!sObjType}; var cObject = {!customObject}; */
 		searchRecords: function  (key, sObjType, cObject) {
 
 			var sObjTypeLower = sObjType.toLowerCase();
@@ -81,9 +67,8 @@
 			if (searchKey == '') {
 				j$('#' + key.attr('aria-activedescendant')).hide();
 			}
-			//j$('#searchText').text(searchKey);
 			//Querying For Records In Objects Name Matching The Input in The Text Field
-			var queryText = "SELECT Id, Name FROM " + sObjType + " WHERE Name LIKE '%" + searchKey + "%' {!where} ORDER BY Name ASC LIMIT 10";
+			var queryText = "SELECT Id, Name FROM " + sObjType + " WHERE Name LIKE '%" + searchKey + "%' {!where} ORDER BY Name ASC LIMIT 8";
 			result = sforce.connection.query(queryText);
 			records = result.getArray("records");
 			var searchList = "";
@@ -105,71 +90,29 @@
 
 				for (var i = 0; i < records.length; i++) {
 					//List Elements With Onclick and ID Attributes
-					searchList += '<li onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item">';
-
-					if (cObject == 'true') {
-						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/custom-sprite/svg/symbols.svg#' + iconTag  +'")}';
-					} else {
-						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/standard-sprite/svg/symbols.svg#' + iconTag + '")}';
-					}
-					searchList += '<a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon ' + iconStyle + ' slds-icon_small">'
-						+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].Name + '</a>';
-					searchList += '</li>';
-				}
-
-
-				/* for (var i = 0; i < records.length; i++) {
-					var j = i + 1;
 					if (cObject == 'true') {
 						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/custom-sprite/svg/symbols.svg#' + iconTag + '")}';
 					} else {
 						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/standard-sprite/svg/symbols.svg#' + iconTag + '")}';
 					}
-					//List Elements With Onclick and ID Attributes
-					searchList += '<li role="presentation" onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item">';
-					searchList += '<a id="' + records[i].Id + '" href="#" role="option" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta">'
-							+ '<span class="slds-media__figure slds-listbox__option-icon">'
-							+ '<svg aria-hidden="true" class="slds-icon ' + iconStyle + ' slds-icon_small">'
-							+ '<use xlink:href="' + objectIcon + '"></use></svg>';
 
-					searchList += records[i].Name + '</a ></li>';
-
-
-
-				} */
-				/* searchList += '<li role="presentation" class="slds-listbox__item" onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');">'
-					+ '<div id="option' + j + '" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">'
-					+ '<span class="slds-media__figure slds-listbox__option-icon"><span class="slds-icon_container ' + iconStyle + '">'
-					+ '<svg class="slds-icon slds-icon_small" aria-hidden="true"><use xlink:href="' + objectIcon + '"></use></svg>'
-					+ '</span></span>'
-					+ '<span><span class="slds-media__body"><span class="slds-listbox__option-text slds-listbox__option-text_entity"><span>'
-					  + records[i].Name
-					+ '</span></span>'
-					+ '</div></li >';
-					console.log(searchList); */
-
-
-
-
-
+					searchList += '<li onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item">';
+					searchList += '<a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon ' + iconStyle + ' slds-icon_small">'
+						+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].Name + '</a>';
+					searchList += '</li>';
+				}
 			} else {
 				//searchList += '<li class="slds-lookup__item">{!$Label.ap_NoRecords}</li>';
 
 				searchList += '<li role="presentation" class="slds-listbox__item">'+
 					'<div aria-selected="true" id="norecords" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term" role="option">'+
-					'<span class="slds-media__body"><span class="slds-listbox__option-text slds-listbox__option-text_entity">{!$Label.ap_NoRecords}</span></span>'+
-              '</div></li >';
-
+					'<span class="slds-media__body"><span class="slds-listbox__option-text slds-listbox__option-text_entity">{!$Label.ap_NoRecords}</span></span></div></li>';
 			}
 			//Appending All The Created Result List Elements To the UL Tag
 			j$('[id$=searchResultsUL{!for}]').html(searchList);
-			//j$(li).html(function(){return j$(this).text().replace(key, '<mark>' + searchKey + '</mark>');});
 		}
 	}
 	checkinput();
 </script>
-
-
-
 <apex:inputhidden value="{!sObj[field]}" id="HiddenInput" />
 </apex:component>

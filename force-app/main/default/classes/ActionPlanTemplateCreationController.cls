@@ -99,7 +99,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	*/
 	public PageReference saveTemplate(){
 
-		Savepoint sp = Database.setSavepoint();
+		//Savepoint sp = Database.setSavepoint();
 
 		// check for pendingDeletes, if something is pending send it to delete
 		if( pendingTemplateDeletes != null ){
@@ -112,7 +112,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			upsert actionPlanTemplate;
 		} catch( Exception e ){
 			ApexPages.addMessages(e);
-			Database.rollback( sp );
+			//Database.rollback( sp );
 			return null;
 		}
 
@@ -128,7 +128,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		try{
 			upsert aptTasks;
 		} catch( Exception e ){
-			Database.rollback( sp );
+			//Database.rollback( sp );
 			ApexPages.addMessages(e);
 			return null;
 		}
@@ -146,7 +146,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		try{
 			update aptTasks;
 		} catch( Exception e ){
-			Database.rollback( sp );
+			//Database.rollback( sp );
 			ApexPages.addMessages(e);
 			return null;
 		}
@@ -198,7 +198,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	/**
 	 * Call method addTemplateTask()
 	 */
-	public Boolean addTemplateTask(){
+	public PageReference addTemplateTask(){
 		System.debug('in addTemplateTask');
 
 		this.taskIndex++;
@@ -212,7 +212,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 				this.errorMsg = System.Label.ap_Errors_TaskLimitError;
 			}
 			else {
-				APTTaskTemplate__c t = (APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
+				APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
 				t.Reminder__c 	= false;
 				t.TaskIndex__c 	= this.taskIndex;
 				t.Priority__c   = (String)Task.Priority.getDescribe().getDefaultValue();
@@ -250,7 +250,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 
 		this.addedTask =  hasNoErrors;
 
-		return hasNoErrors;
+		return null;
 	}
 
 	/**
@@ -344,7 +344,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			}
 			else {
 				aptTasks 				= new List<APTTaskTemplate__c>();
-				APTTaskTemplate__c t 	= (APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
+				APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
 				t.Reminder__c	 		= false;
 				t.Priority__c           = (String)Task.Priority.getDescribe().getDefaultValue();
 				aptTasks.add( t );
@@ -566,8 +566,10 @@ public inherited sharing class ActionPlanTemplateCreationController{
 				System.debug('passing RTID ' + defaultTaskRTId);
 				if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
 					task.Priority__c = ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
+					task.Type__c = ActionPlansMetadataUtility.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
 				} else {
 					task.Priority__c = ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues().get(null);
+					task.Type__c = ActionPlansMetadataUtility.getTaskRecordTypeTypeDefaultValues().get(null);
 				}
 			}
 		}

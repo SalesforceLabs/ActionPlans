@@ -44,7 +44,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/jquery-3.6.0.min.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_Utilities.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_EditScripts.js')}" />
-	<!-- <apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_ActionPlanTemplateCreationScripts.js')}" /> -->
 	<script>
 		var j$ = jQuery.noConflict();
 		j$(document).ready(function () {
@@ -79,7 +78,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:commandButton id="save" action="{!checkCycleDependent}" value="{!$Label.ap_Save}" reRender="pageMessages" />
 				<apex:commandButton id="saveandnew" action="{!saveAndNew}" value="{!$Label.ap_Save} {!$Label.ap_New}" reRender="pageMessages" />
 				<apex:actionRegion >
-				<apex:commandButton id="cancel" action="{!cancelTemplate}" value="{!$Label.ap_Cancel}" html-formnovalidate="novalidate"/>
+					<apex:commandButton id="cancel" action="{!cancelTemplate}" value="{!$Label.ap_Cancel}" html-formnovalidate="novalidate"/>
 				</apex:actionRegion>
 			</apex:pageBlockButtons>
 
@@ -101,16 +100,20 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			<!-- Tasks Section -->
 			<apex:pageBlockSection title="{!$ObjectType.Task.labelPlural}" columns="2" collapsible="false" id="taskDetails">
-				<apex:pageBlockSectionItem >
+				<!-- <apex:pageBlockSectionItem >
 					<apex:outputLabel >{!$ObjectType.ActionPlanTemplate__c.fields.SkipWeekends__c.inlineHelpText}&nbsp;</apex:outputLabel>
 					<apex:inputField value="{!ActionPlanTemplate__c.SkipWeekends__c}" id="skipWeekendCheckbox" onclick="checkSkipWeekend('{!$Component.skipWeekendCheckbox}','{!$Component.taskDetails.skipDayPicklist}');" />
-				</apex:pageBlockSectionItem>
+				</apex:pageBlockSectionItem> -->
+				<apex:inputField value="{!ActionPlanTemplate__c.SkipWeekends__c}" id="skipWeekendCheckbox" onclick="checkSkipWeekend('{!$Component.skipWeekendCheckbox}','{!$Component.taskDetails.skipDayPicklist}');" />
 
 				<apex:pageBlockSectionItem rendered="{!taskHasRecordType}" >
 					<apex:outputLabel >{!$ObjectType.Task.Label}&nbsp;{!$ObjectType.RecordType.Label}&nbsp;</apex:outputLabel>
+					<apex:actionRegion>
 					<apex:selectList value="{!ActionPlanTemplate__c.TaskRecordTypeID__c}" required="{!taskHasRecordType}" size="1" disabled="{!!$ObjectType.ActionPlanTemplate__c.updateable}">
+						<apex:actionSupport event="onchange" reRender="taskSection" />
 						<apex:selectOptions value="{!TaskRTPicklistValues}" />
 					</apex:selectList>
+					</apex:actionRegion>
 				</apex:pageBlockSectionItem>
 				<apex:outputPanel rendered="{!!taskHasRecordType}" />
 
@@ -140,9 +143,11 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 						<!--  Tasks subject  -->
 						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Subject__c.label}" style="padding-right:20px;">
+
 							<apex:pageBlockSectionItem >
 								<apex:inputField id="subject" required="true" value="{!wrapTask.task.Subject__c}" />
 							</apex:pageBlockSectionItem>
+
 						</apex:column>
 
 						<!--  Tasks depending status  -->
@@ -159,7 +164,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 								{!$ObjectType.APTTaskTemplate__c.fields.DaysFromStart__c.label}
 								<img class="helpOrb" title="{!$ObjectType.APTTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" />
 							</apex:facet>
-							<apex:inputField required="true" value="{!wrapTask.task.DaysFromStart__c}" id="daysInput" style="width:50px" />
+
+							<apex:inputField value="{!wrapTask.task.DaysFromStart__c}" required="true" id="daysInput" style="width:50px" />
 
 						</apex:column>
 
@@ -221,9 +227,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 							</a> )
 							</div>
 						</apex:column>
-
-
-
 					</apex:pageBlockTable>
 				</apex:outputPanel>
 
@@ -243,7 +246,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:actionStatus id="taskStatus">
 							<apex:facet name="start">
 								<div class="slds-scope">
-									<div class="slds-spinner_container" style="position:fixed;">
+									<div class="slds-spinner_container slds-is-fixed" style="position:fixed;">
 										<div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
 											<span class="slds-assistive-text">Loading</span>
 											<div class="slds-spinner__dot-a"></div>
@@ -266,7 +269,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				<span class="pbError">{!$Label.ap_Errors_Review_Errors}</span>
 			</div>
 		</apex:pageBlock>
-
 	</apex:form>
 </body>
 </html>

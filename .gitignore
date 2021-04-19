@@ -41,6 +41,8 @@ $RECYCLE.BIN/
 **/default/quickActions
 **Custom_Object__c***
 **/default/profiles
+force-app/main/default/objects/Task/recordTypes
+force-app/main/default/standardValueSets
 
 # temporary files
 src.zip

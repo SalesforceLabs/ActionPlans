@@ -111,7 +111,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			<apex:pageBlockButtons id="buttons" >
 
-				<apex:commandButton id="save" action="{!save}" value="{!$Label.ap_Save}" reRender="pageMessages" /> <!-- onclick="setTimeout('disableActions();', 50);" -->
+				<apex:commandButton id="save" value="{!$Label.ap_Save}" action="{!save}" reRender="pageMessages, error" status="taskStatus" /> <!--  onclick="setTimeout('disableActions();', 50);" -->
 				<apex:commandButton id="saveandnew" action="{!saveAndNew}" value="{!$Label.ap_Save} {!$Label.ap_New}" reRender="pageMessages" />
 				<apex:commandButton id="cancel" value="{!$Label.ap_Cancel}" action="{!cancel}" reRender="pageMessages" immediate="false" /> <!-- onclick="setTimeout('disableActions();', 50);" oncomplete="enableActions();" -->
 
@@ -140,22 +140,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				</apex:pageBlockSectionItem>
 				<apex:pageBlockSectionItem rendered="{!lex}">
 					<apex:outputLabel value="{!$ObjectType.ActionPlanTemplate__c.label}" />
-
-					<!-- <apex:inputField id="templateLookup" required="false" styleClass="{!IF(throwError != null,'errorBorder','')}" value="{!ActionPlan__c.Action_Plan_Template__c}"
-					onchange="javascript:reloadActionPlan('{!JSINHTMLENCODE(ActionPlan__c.Action_Plan_Template__c)}', document.getElementById('{!$Component.templateLookup}' + '_lkid').value);">
-						<script>
-							var templateLKP_path = "{!$Component.templateLookup}";
-							var fieldId = templateLKP_path + '_lkid';
-							if (document.getElementById(fieldId) != null && document.getElementById(fieldId).type == "hidden") {
-								var selectedTmplId = document.getElementById(fieldId).value;
-								reloadActionPlan("{!JSENCODE(ActionPlan__c.Action_Plan_Template__c)}')}", selectedTmplId);
-							} else {
-								if (document.getElementById(fieldId).type == "select-one") {
-									document.getElementById(fieldId).selectedIndex = 0;
-								}
-							}
-						</script>
-					</apex:inputField> -->
 					<apex:outputPanel layout="none">
 						<div class="slds-scope" id="sldsscopediv">
 							<div class="slds-combobox_container" id="searchInputContainer">
@@ -167,7 +151,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 										html-aria-controls="SrchTmpltDrpDwn" html-placeholder="{!$Label.ap_Search}" html-aria-activedescendant="SrchTmpltDrpDwn"
 										required="false" value="{!ActionPlan__c.Action_Plan_Template__c}" >
 										</apex:inputField>
-										<!-- onchange="javascript:" -->
 									</div>
 									<div id="SrchTmpltDrpDwn" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid datePicker" role="listbox"
 									style="display:none;">
@@ -182,10 +165,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 								j$('[id$=searchtemplateinput_lkwgt]').hide();
 							}
 							LightningLookupScripts = {
-								//Function To Get Account Record's Details on Record Click
+								//Function To Get Template Record's Details on Record Click
 								recInfo: function (recId) {
 									//j$('[id$=TemplateHiddenInput]').val(recId);
-									console.log('assigning input to {!$Component.TemplateHiddenInput}');
+									//console.log('assigning input to {!$Component.TemplateHiddenInput}');
 									var recInfoIdInput = document.getElementById('{!$Component.TemplateHiddenInput}');
 									var oldTemplateId = j$(recInfoIdInput).val();
 									j$(recInfoIdInput).val(recId);
@@ -193,8 +176,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 									//ID Based Retrieval Instead Of Query to Get Record Details Of The Selected Record
 									result = sforce.connection.retrieve("Name,Id", 'ActionPlanTemplate__c', [recId]);
 									j$('#sldsscopediv [id$=searchtemplateinput]').val(result[0].Name);
-									console.log('templateId parameter is {!$currentpage.parameters.templateid}');
-									console.log('NEW templateId from result is ' + result[0].Id);
+									//console.log('templateId parameter is {!$currentpage.parameters.templateid}');
+									//console.log('NEW templateId from result is ' + result[0].Id);
 									//reloadActionPlan('{!JSINHTMLENCODE(ActionPlan__c.Action_Plan_template__c)}', recId);
 									reloadActionPlan(oldTemplateId, result[0].Id);
 								},
@@ -216,14 +199,13 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 									if (records.length > 0) {
 										for (var i = 0; i < records.length; i++) {
 											//List Elements With Onclick and ID Attributes
-											var objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/standard-sprite/svg/symbols.svg#record")}';
-											searchList += '<li onclick="LightningLookupScripts.recInfo(\'' + records[i].Id + '\');" class="slds-lookup__item"><a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon slds-icon-standard-record slds-icon_small">'
+											var objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/custom-sprite/svg/symbols.svg#custom39")}';
+											searchList += '<li onclick="LightningLookupScripts.recInfo(\'' + records[i].Id + '\');" class="slds-lookup__item"><a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon slds-icon-custom-custom39 slds-icon_small">'
 												+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].Name + '</a></li>';
 										}
 									} else {
 										searchList += '<li class="slds-lookup__item">No Records Found</li>';
 									}
-									//Appending All The Created Result List Elements To the UL Tag
 									j$('[id$=searchResultsUL]').html(searchList);
 								}
 							}
@@ -292,7 +274,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 						<apex:facet name="start">
 							<div class="slds-scope">
-								<div class="slds-spinner_container" style="position:fixed;">
+								<div class="slds-spinner_container slds-is-fixed" style="position:fixed;">
 									<div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
 										<span class="slds-assistive-text">Loading</span>
 										<div class="slds-spinner__dot-a"></div>
@@ -350,13 +332,13 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 						</apex:facet>
 					</apex:actionStatus>
 				</apex:pageBlockSectionItem>
-				<apex:outputField value="{!ActionPlan__c.Account__c}"     rendered="{!(ActionPlan__c.Account__c != null && hasRelatedObject)}" />
+				<!-- <apex:outputField value="{!ActionPlan__c.Account__c}"     rendered="{!(ActionPlan__c.Account__c != null && hasRelatedObject)}" />
 				<apex:outputField value="{!ActionPlan__c.Contact__c}"     rendered="{!(ActionPlan__c.Contact__c != null && hasRelatedObject)}" />
 				<apex:outputField value="{!ActionPlan__c.Lead__c}"        rendered="{!(ActionPlan__c.Lead__c != null && hasRelatedObject)}" />
 				<apex:outputField value="{!ActionPlan__c.Opportunity__c}" rendered="{!(ActionPlan__c.Opportunity__c != null && hasRelatedObject)}" />
 				<apex:outputField value="{!ActionPlan__c.Case__c}"        rendered="{!(ActionPlan__c.Case__c != null && hasRelatedObject)}" />
 				<apex:outputField value="{!ActionPlan__c.Contract__c}"    rendered="{!(ActionPlan__c.Contract__c != null && hasRelatedObject)}" />
-				<apex:outputField value="{!ActionPlan__c.Campaign__c}"    rendered="{!(ActionPlan__c.Campaign__c != null && hasRelatedObject)}" />
+				<apex:outputField value="{!ActionPlan__c.Campaign__c}"    rendered="{!(ActionPlan__c.Campaign__c != null && hasRelatedObject)}" /> -->
 
 				<apex:repeat value="{!$ObjectType.ActionPlan__c.FieldSets.Related_Objects}" var="f">
 					<apex:outputField value="{!ActionPlan__c[f.FieldPath]}" rendered="{!(ActionPlan__c[f.FieldPath] != null && hasRelatedObject)}" />
@@ -449,14 +431,15 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 							<apex:inputField id="activityDate" value="{!wrapTask.task.ActivityDate__c}" rendered="false" />
 					</apex:column>
 
-					<!--  Tasks Assigned TO  -->
+					<!--  Tasks Assigned To  -->
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}" style="" styleClass="userColumn">
 						<apex:outputPanel id="userPanel" layout="block" rendered="{!!wrapTask.task.IsClosed__c}">
 							<apex:outputPanel rendered="{!wrapTask.displayLookUp && $ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userLookup">
 								<apex:inputField required="{!wrapTask.userRequired}" value="{!wrapTask.task.User__c}" rendered="{!!lex}" />
 								<c:LightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" where="AND IsActive = true AND ProfileId != null" fieldStyle="width:100%" required="{!wrapTask.userRequired}" rendered="{!lex}" />
 							</apex:outputPanel>
-							<apex:pageBlockSectionItem rendered="{!!wrapTask.displayLookUp || !$ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userDisplay">[ {!$ObjectType.APTaskTemplate__c.fields.User__c.label} ]</apex:pageBlockSectionItem>
+							<apex:outputText rendered="{!!wrapTask.displayLookUp || !$ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userDisplay">[ {!$ObjectType.APTaskTemplate__c.fields.User__c.label} ]</apex:outputText>
+							<!-- TODO: Show a placeholder if the template has no set user and the running user cannot edit this field -->
 						</apex:outputPanel>
 						<apex:outputField value="{!wrapTask.task.User__c}" rendered="{!wrapTask.task.IsClosed__c}" />
 					</apex:column>
@@ -546,7 +529,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 							<apex:actionStatus id="taskStatus">
 								<apex:facet name="start">
 									<div class="slds-scope">
-									<div class="slds-spinner_container" style="position:fixed;">
+									<div class="slds-spinner_container slds-is-fixed" style="position:fixed;">
 										<div role="status" class="slds-spinner slds-spinner_large slds-spinner_brand">
 											<span class="slds-assistive-text">Loading</span>
 											<div class="slds-spinner__dot-a"></div>
