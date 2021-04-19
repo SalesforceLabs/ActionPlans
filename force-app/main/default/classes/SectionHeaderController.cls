@@ -39,6 +39,18 @@ global inherited sharing class SectionHeaderController {
 		List<Schema.DescribeTabResult>    tabDesc         = new List<Schema.DescribeTabResult>();
 		List<Schema.DescribeIconResult>   iconDesc        = new List<Schema.DescribeIconResult>();
 
+		if(!sObjectName.endsWithIgnoreCase('__c')){
+			iconStyle = 'slds-icon-standard-' + sObjectName.toLowerCase();
+			iconURL   = '/img/icon/t4v35/standard/' + sObjectName.toLowerCase() + '_120.png';
+			iconTag   = sObjectName.toLowerCase();
+
+			iconPropertyMap.put('iconStyle', iconStyle);
+			iconPropertyMap.put('iconURL',  iconURL);
+			iconPropertyMap.put('iconTag', iconTag);
+
+			return iconPropertyMap;
+		}
+
 		for(Schema.DescribeTabSetResult tsr : tabSetDesc){
 			tabDesc.addAll(tsr.getTabs());
 		}
