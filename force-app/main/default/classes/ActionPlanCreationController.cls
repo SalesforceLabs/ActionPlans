@@ -92,7 +92,6 @@ public inherited sharing class ActionPlanCreationController{
 		else if ( this.templateId != null )                                 {initNewActionPlanFromTemplate(this.inVisualforceContext);}
 		else                                                                {initNewActionPlan();}
 
-		//this.defaultSettings    = ActionPlansMetadataUtility.getCustomSetting();
 		this.canDisplayReminder    = ActionPlansMetadataUtility.getCanDisplayReminder();
 		this.taskHasRecordType = ActionPlansMetadataUtility.HAS_RECORD_TYPE;
 		if(this.refType != null){
@@ -105,49 +104,6 @@ public inherited sharing class ActionPlanCreationController{
 		ActionPlansTestUtilities.debugParameters();
 
 	}
-
-	// For calling from non-Visualforce contexts
-
-	/* public ActionPlanCreationController(Id paramRefId, Id paramTemplateId){
-		setupNonVisualforce(paramRefId, paramTemplateId, null);
-	}
-	public ActionPlanCreationController(Id paramRefId, ActionPlanTemplate__c apt){
-		setupNonVisualforce(paramRefId, null, apt);
-	}
-
-	private void setupNonVisualforce(Id paramRefId, Id paramTemplateId, ActionPlanTemplate__c apt){
-		this.inVisualforceContext = false;
-		this.taskIndex          = 0;
-		this.addedTask          = false;
-		this.hasRelated         = false;
-		this.hasRelatedObject   = false;
-		this.relatedObjNameList = new List<String>();
-		this.relatedObjIds      = new Set<Id>();
-		this.mapTasksListBkp    = new Map<Id, ApTaskWrapper>();
-		this.actionPlan         = new ActionPlan__c();
-
-		String cloneParam            = '0';
-
-		//ApexPages.currentPage().getParameters().put( 'templateId', templateId );
-		//ApexPages.currentPage().getParameters().put( 'refId', refId );
-
-		if(apt != null){
-			this.templateId = apt.Id;
-		}
-		else if(paramTemplateId != null){
-			this.templateId = paramTemplateId;
-		}
-
-		this.refId = paramRefId;
-		Schema.SObjectType token = paramRefId.getSObjectType();
-		this.refType = token.getDescribe().getName();
-		if(this.templateId != null){ initNewActionPlanFromTemplate(this.inVisualforceContext, apt); }
-
-		//this.defaultSettings    = ActionPlansMetadataUtility.getCustomSetting();
-		this.canDisplayReminder    = ActionPlansMetadataUtility.getCanDisplayReminder();
-
-		this.taskHasRecordType = ActionPlansMetadataUtility.HAS_RECORD_TYPE;
-	} */
 
 	/**
 	* Initalize controller for editing an Action Plan
