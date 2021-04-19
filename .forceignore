@@ -12,4 +12,5 @@ package.xml
 **/__tests__/**
 
 /src*
-/.settings**
+**settings
+**profiles
