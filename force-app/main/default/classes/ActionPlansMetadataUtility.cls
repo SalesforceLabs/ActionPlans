@@ -104,6 +104,28 @@ public inherited sharing class ActionPlansMetadataUtility {
 	private static Map<Id, String> taskRecordTypeStatusDefaultValues;
 
 	/**
+	 * Generate Map of Record Type Id to default Task Type
+	 * @since 4
+	 */
+	public static Map<Id, String> getTaskRecordTypeTypeDefaultValues(){
+		if(taskRecordTypeTypeDefaultValues == null){
+			taskRecordTypeTypeDefaultValues = new Map<Id, String>();
+			if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+				for( SObject rt : getTaskRecordTypes() ){
+					Task t = (Task)Task.sObjectType.newSObject((Id)rt.get('Id'), true);
+					taskRecordTypeTypeDefaultValues.put((Id)rt.get('Id'), t.Type);
+				}
+			} else {
+				Task t = (Task)Task.sObjectType.newSObject(null, true);
+				taskRecordTypeTypeDefaultValues.put(null, t.Type);
+			}
+		}
+		return taskRecordTypeTypeDefaultValues;
+	}
+	private static Map<Id, String> taskRecordTypeTypeDefaultValues;
+
+
+	/**
 	 * Generate Map of Record Type Id to default Task Priority
 	 * @since 4
 	 */
