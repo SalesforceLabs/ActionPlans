@@ -1,7 +1,7 @@
-<apex:component id="lightninglookupcomponent">
+<apex:component id="lightninglookupcomponent" controller="SectionHeaderController">
 <apex:attribute name="sObj" type="sObject" description="The record the field belongs to." required="true" />
 <apex:attribute name="field" type="String" description="The lookup field to put the Id into" required="true" />
-<apex:attribute name="sObjType" type="String" description="The sObject type." required="true" />
+<apex:attribute name="sObjType" type="String" description="The sObject type." assignTo="{!objectName}" required="true" />
 <apex:attribute name="for" type="String" description="Unique ID of the input field" required="false" default="" />
 <apex:attribute name="where" type="String" description="WHERE clause for SOQL (if desired)" required="false" default=""/>
 <apex:attribute name="required" type="Boolean" description="Is this field required?" default="false" required="false" />
@@ -51,18 +51,14 @@
 </div>
 
 <script>
-
 	function checkinput(){
 		if({!required} == true){
-			/* var sldsdiv = j$('#{!for}sldsscopediv');
-			var inputBox = sldsdiv.children('[id$=searchInput]'); */
-			//var inputBox = j$('#{!for}sldsscopediv [id$=searchInput]');
 			j$('#{!for}sldsscopediv [id$=searchInput]').prop('required', true);
 		}
 		j$('[id$=searchInput_lkwgt]').hide();
 	}
 	LightningLookupScripts{!for} =  {
-		//Function To Get Account Record's Details on Record Click
+		//Function To Get Record's Details on Record Click
 		recInfo: function (recId, sObjType) {
 			//j$('[id$=HiddenInput]').val(recId);
 			console.log('assigning input to {!$Component.HiddenInput}');
@@ -92,32 +88,88 @@
 			records = result.getArray("records");
 			var searchList = "";
 			//Creating List Elements Based on Query Results
+			var searchIcon = '{!URLFOR($Asset.SLDS, "assets/icons/utility-sprite/svg/symbols.svg#search")}';
+			searchList += '<li role="presentation" class="slds-listbox__item">' +
+				'<div aria-selected="true" id="option0" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term slds-has-focus" role="option">' +
+				'<span class="slds-media__figure slds-listbox__option-icon">' +
+				'<span class="slds-icon_container slds-icon-utility-search" title="{!$Label.ap_Search}:">' +
+				'<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true"><use xlink:href="' + searchIcon + '"></use></svg>' +
+				'<span class="slds-assistive-text">{!$Label.ap_Search}:</span></span></span>' +
+				'<span class="slds-media__body"><span class="slds-listbox__option-text slds-listbox__option-text_entity">' + searchKey + '</span></span></div > ' +
+				'</li>';
 			if (records.length > 0) {
+
+				var iconTag = "{!ObjectIconInfo['iconTag']}";
+				var objectIcon = "{!ObjectIconInfo['iconURL']}";
+				var iconStyle = "{!ObjectIconInfo['iconStyle']}";
+
 				for (var i = 0; i < records.length; i++) {
 					//List Elements With Onclick and ID Attributes
+					searchList += '<li onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item">';
 
 					if (cObject == 'true') {
-						var objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/standard-sprite/svg/symbols.svg#record")}';
-						searchList += '<li onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item"><a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon slds-icon-standard-record slds-icon_small">'
-							+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].Name + '</a></li>';
-
+						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/custom-sprite/svg/symbols.svg#' + iconTag  +'")}';
 					} else {
-						var objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/standard-sprite/svg/symbols.svg#' + sObjTypeLower + '")}';
-						searchList += '<li onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item"><a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon slds-icon-standard-' + sObjType.toLowerCase() + ' slds-icon_small">'
-							+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].Name + '</a></li>';
-
+						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/standard-sprite/svg/symbols.svg#' + iconTag + '")}';
 					}
+					searchList += '<a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon ' + iconStyle + ' slds-icon_small">'
+						+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].Name + '</a>';
+					searchList += '</li>';
 				}
+
+
+				/* for (var i = 0; i < records.length; i++) {
+					var j = i + 1;
+					if (cObject == 'true') {
+						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/custom-sprite/svg/symbols.svg#' + iconTag + '")}';
+					} else {
+						objectIcon = '{!URLFOR($Asset.SLDS, "assets/icons/standard-sprite/svg/symbols.svg#' + iconTag + '")}';
+					}
+					//List Elements With Onclick and ID Attributes
+					searchList += '<li role="presentation" onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item">';
+					searchList += '<a id="' + records[i].Id + '" href="#" role="option" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta">'
+							+ '<span class="slds-media__figure slds-listbox__option-icon">'
+							+ '<svg aria-hidden="true" class="slds-icon ' + iconStyle + ' slds-icon_small">'
+							+ '<use xlink:href="' + objectIcon + '"></use></svg>';
+
+					searchList += records[i].Name + '</a ></li>';
+
+
+
+				} */
+				/* searchList += '<li role="presentation" class="slds-listbox__item" onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');">'
+					+ '<div id="option' + j + '" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">'
+					+ '<span class="slds-media__figure slds-listbox__option-icon"><span class="slds-icon_container ' + iconStyle + '">'
+					+ '<svg class="slds-icon slds-icon_small" aria-hidden="true"><use xlink:href="' + objectIcon + '"></use></svg>'
+					+ '</span></span>'
+					+ '<span><span class="slds-media__body"><span class="slds-listbox__option-text slds-listbox__option-text_entity"><span>'
+					  + records[i].Name
+					+ '</span></span>'
+					+ '</div></li >';
+					console.log(searchList); */
+
+
+
+
+
 			} else {
-				searchList += '<li class="slds-lookup__item">No Records Found</li>';
+				//searchList += '<li class="slds-lookup__item">{!$Label.ap_NoRecords}</li>';
+
+				searchList += '<li role="presentation" class="slds-listbox__item">'+
+					'<div aria-selected="true" id="norecords" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term" role="option">'+
+					'<span class="slds-media__body"><span class="slds-listbox__option-text slds-listbox__option-text_entity">{!$Label.ap_NoRecords}</span></span>'+
+              '</div></li >';
+
 			}
 			//Appending All The Created Result List Elements To the UL Tag
 			j$('[id$=searchResultsUL{!for}]').html(searchList);
-
+			//j$(li).html(function(){return j$(this).text().replace(key, '<mark>' + searchKey + '</mark>');});
 		}
 	}
 	checkinput();
 </script>
+
+
 
 <apex:inputhidden value="{!sObj[field]}" id="HiddenInput" />
 </apex:component>

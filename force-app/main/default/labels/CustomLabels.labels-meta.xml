@@ -23,16 +23,17 @@
         <protected>true</protected>
         <shortDescription>AboutP1</shortDescription>
         <value>&lt;p&gt;Action Plans helps your organization encapsulate best practices into easily sharable, reusable task templates.&lt;br/&gt;&lt;br/&gt;
-        	You can create Action Plans for the following objects (varies by edition):&lt;/p&gt;
+        	You can create Action Plans for the following objects:&lt;/p&gt;
 	        &lt;ul&gt;
-				&lt;li&gt;Accounts (PE, EE, UE, DE)&lt;/li&gt;
-				&lt;li&gt;Contacts (PE, EE, UE, DE)&lt;/li&gt;
-				&lt;li&gt;Leads (PE, EE, UE, DE)&lt;/li&gt;
-				&lt;li&gt;Opportunities (PE, EE, UE, DE)&lt;/li&gt;
-				&lt;li&gt;Campaigns (EE, UE, DE)&lt;/li&gt;
-				&lt;li&gt;Contracts (EE, UE, DE)&lt;/li&gt;
-				&lt;li&gt;Cases (EE, UE, DE)&lt;/li&gt;
-				&lt;li&gt;Person Accounts (EE, UE, DE)&lt;/li&gt;
+				&lt;li&gt;Accounts&lt;/li&gt;
+				&lt;li&gt;Contacts&lt;/li&gt;
+				&lt;li&gt;Leads&lt;/li&gt;
+				&lt;li&gt;Opportunities&lt;/li&gt;
+				&lt;li&gt;Campaigns&lt;/li&gt;
+				&lt;li&gt;Contracts&lt;/li&gt;
+				&lt;li&gt;Cases&lt;/li&gt;
+				&lt;li&gt;Person Accounts&lt;/li&gt;
+				&lt;li&gt;Custom Objects&lt;/li&gt;
 			&lt;/ul&gt;
 			&lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
     </labels>
@@ -60,12 +61,11 @@
         <shortDescription>AboutP1b</shortDescription>
         <value>&lt;p&gt;Considerations :&lt;/p&gt;
 			&lt;ul&gt;
-				&lt;li&gt;Action Plans can include up to 75 tasks and you can create up to 40 plans at a time.&lt;/li&gt;
+				
 				&lt;li&gt;Export and share your Action Plan Templates with other orgs.&lt;/li&gt;
-				&lt;li&gt;Import Action Plan Templates provided by colleagues and vendors.&lt;/li&gt;
-				&lt;li&gt;Supports task reminder times.&lt;/li&gt;
-				&lt;li&gt;Action Plans Settings controls behavior around Chatter Brag and default task assignment behavior&lt;/li&gt;
-				&lt;li&gt;Ability to delete up to 65 Action Plans at a time.&lt;/li&gt;
+				&lt;li&gt;Import Action Plan Templates.&lt;/li&gt;
+				&lt;li&gt;Supports Task reminder times.&lt;/li&gt;
+				&lt;li&gt;Action Plans Settings controls behavior around Chatter Notifications, actions when a Lead is converted, and default Task assignment behavior&lt;/li&gt;
 			&lt;/ul&gt;</value>
     </labels>
     <labels>
@@ -156,12 +156,12 @@
         <shortDescription>AboutCreateTemplateP1</shortDescription>
         <value>&lt;li&gt;Name - Template Name.&lt;/li&gt;
 			&lt;li&gt;Description - An explanation of how the template should be used.&lt;/li&gt;
-			&lt;li&gt;Skip weekends - Allows you to automatically reschedule a task that would fall on 
+			&lt;li&gt;Skip Weekends - Allows you to automatically reschedule a task that would fall on 
 				a Saturday or a Sunday to either a Monday or Friday.  When checked, a drop down box
 				appears allowing you to select the day.&lt;/li&gt;
 			&lt;li&gt;Action - Click &quot;X&quot; to eliminate a step in a template.&lt;/li&gt;
 			&lt;li&gt;Subject - What the task is to do.&lt;/li&gt;
-			&lt;li&gt;Task Dependency -  The depended task will only be created once the controlling task is completed.&lt;/li&gt;</value>
+			&lt;li&gt;Task Dependency - The dependent task will only be created once the controlling task is completed.&lt;/li&gt;</value>
     </labels>
     <labels>
         <fullName>ap_CreateTemplateOlpart2</fullName>
@@ -663,6 +663,14 @@
         <protected>true</protected>
         <shortDescription>New</shortDescription>
         <value>New</value>
+    </labels>
+    <labels>
+        <fullName>ap_NoRecords</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>NoRecordsFound</shortDescription>
+        <value>No Records Found</value>
     </labels>
     <labels>
         <fullName>ap_None</fullName>

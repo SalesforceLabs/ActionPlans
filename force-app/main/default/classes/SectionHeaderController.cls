@@ -87,6 +87,7 @@ global inherited sharing class SectionHeaderController {
 		//return a map with our properties for the front end
 		iconPropertyMap.put('iconStyle', iconStyle);
 		iconPropertyMap.put('iconURL',  iconURL);
+		iconPropertyMap.put('iconTag', iconTag);
 
 		return iconPropertyMap;
 	}

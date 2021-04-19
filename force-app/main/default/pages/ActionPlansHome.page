@@ -59,7 +59,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 				<c:SectionHeader sObjType="ActionPlan__c" title="{!$ObjectType.ActionPlan__c.LabelPlural}" subtitle="" />
 
-
 				<div class="slds-tabs_default">
 					<ul class="slds-tabs_default__nav" role="tablist">
 						<li class="slds-tabs_default__item slds-is-active" title="{!$ObjectType.ActionPlan__c.LabelPlural}" role="presentation">
@@ -84,7 +83,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 	<div class="slds-scope">
 		<article class="slds-card">
 			<div class="slds-card__body slds-card__body_inner">
+
 				<c:SectionHeader sObjType="ActionPlanTemplate__c" title="{!$ObjectType.ActionPlanTemplate__c.LabelPlural}" subtitle="" />
+
 				<div class="slds-tabs_default">
 					<ul class="slds-tabs_default__nav" role="tablist">
 						<li class="slds-tabs_default__item" title="{!$ObjectType.ActionPlan__c.LabelPlural}" role="presentation">

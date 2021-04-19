@@ -66,7 +66,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 					<apex:outputText value="{!ActionPlan__c.Owner.Name}" />
 
                     <apex:outputText value="{!RelatedObjectLabel}" />
-                    <apex:outputText >{!RelatedObjectName}</apex:outputText>
+                    <apex:outputText >{!relatedRecordName}</apex:outputText>
                     <apex:outputText >&nbsp;</apex:outputText>
 					<apex:outputText value="{!$ObjectType.ActionPlan__c.fields.StartDate__c.label}" />
 					<apex:outputField value="{!ActionPlan__c.StartDate__c}" />

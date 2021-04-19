@@ -40,11 +40,12 @@ public inherited sharing class ActionPlanCreationController{
 	private Id                      templateId;
 	//public String                   templateName            { get; private set; }
 	public Set<Id>                  relatedObjIds           { get; set; }
-	public String                   relatedObjNamePlural          { get; set; }
+	public String                   relatedObjLabelPlural          { get; set; }
 	public List<String>             relatedObjNameList      { get; set; }
 	public Boolean                  hasRelated              { get; set; }
 	public Boolean                  hasRelatedObject        { get; set; }
-	public String                   relatedObjectSelected   { get; set; }
+
+	public String                   relatedObjectName       { get; private set; }
 	//private Action_Plans_Settings__c defaultSettings
 	public String                   throwError              { get; set; }
 	public Boolean                  addedTask;
@@ -95,9 +96,9 @@ public inherited sharing class ActionPlanCreationController{
 		this.canDisplayReminder    = ActionPlansMetadataUtility.getCanDisplayReminder();
 		this.taskHasRecordType = ActionPlansMetadataUtility.HAS_RECORD_TYPE;
 		if(this.refType != null){
-			this.relatedObjectSelected = refType;
+			this.relatedFieldName = refType;
 		} else {
-			this.relatedObjectSelected = getRelatedObjectOptions()[0].getValue();
+			this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
 		}
 
 		ActionPlansTestUtilities.showDebugParameters = true;
@@ -240,8 +241,23 @@ public inherited sharing class ActionPlanCreationController{
 			this.hasRelated = true;
 			this.referedObjectInit();
 		}
-		//this.relatedObjectSelected = getRelatedObjectOptions()[0].getValue();
+		//this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
 		this.subtitle = System.Label.ap_New + ' ' + Schema.getGlobalDescribe().get( 'ActionPlan__c' ).getDescribe().getLabel();
+	}
+
+	public String relatedFieldName {
+		get {
+			return relatedFieldName;
+		}
+		set {
+			relatedFieldName = value;
+			Schema.DescribeFieldResult dfr = Schema.sObjectType.ActionPlan__c.fields.getMap().get(relatedFieldName).getDescribe();
+			Schema.SObjectType sot = dfr.getReferenceTo()[0];
+			Schema.DescribeSObjectResult dsr = sot.getDescribe();
+			this.relatedObjectName = dsr.getName();
+
+			System.debug('Setting object name ' + dsr.getName() + ' from field ' + relatedFieldName);
+		}
 	}
 
 	/**
@@ -263,7 +279,7 @@ public inherited sharing class ActionPlanCreationController{
 		get{
 			if( refType == null && refId != null){
 				Id shortId = refId.left(15);
-				refType = shortId.getSobjectType().getDescribe().getLabel();
+				refType = shortId.getSobjectType().getDescribe().getName();
 			} else if(refId == null) {
 				refType = ApexPages.currentPage().getParameters().get( 'refType' );
 			}
@@ -926,7 +942,7 @@ public inherited sharing class ActionPlanCreationController{
 
 		Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
 		Schema.SObjectType sot = gd.get(objectlower);
-		relatedObjNamePlural = sot.getDescribe().getLabelPlural();
+		relatedObjLabelPlural = sot.getDescribe().getLabelPlural();
 
 		switch on objectlower{
 
@@ -941,7 +957,7 @@ public inherited sharing class ActionPlanCreationController{
 				}
 			}
 			when else {
-					String relNameQuery = 'SELECT Id, Name FROM ' + objectlower + ' WHERE Id IN :relatedObjIds';
+					String relNameQuery = 'SELECT Id, Name FROM ' + relatedObjectName + ' WHERE Id IN :relatedObjIds';
 					System.debug('relNameQuery ' + relNameQuery);
 					for(SObject so : Database.query(relNameQuery)){
 						this.relatedObjNameList.add( (String)so.get('Name'));
@@ -1081,26 +1097,76 @@ public inherited sharing class ActionPlanCreationController{
 	public List<SelectOption> getRelatedObjectOptions(){
 
 		List<SelectOption> options = new List<SelectOption>();
-
+/* 		if(Schema.sObjectType.Account.isAccessible() && Schema.sObjectType.ActionPlan__c.fields.Account__c.isCreateable()) {options.add( new SelectOption( 'Account', Schema.sObjectType.Account.getLabel() ) );}
+		if(Schema.sObjectType.Campaign.isAccessible() && Schema.sObjectType.ActionPlan__c.fields.Campaign__c.isCreateable()) {options.add( new SelectOption( 'Campaign', Schema.sObjectType.Campaign.getLabel() ) );}
+		if(Schema.sObjectType.Case.isAccessible() && Schema.sObjectType.ActionPlan__c.fields.Case__c.isCreateable()) {options.add( new SelectOption( 'Case', Schema.sObjectType.Case.getLabel() ) );}
+		if(Schema.sObjectType.Contact.isAccessible() && Schema.sObjectType.ActionPlan__c.fields.Contact__c.isCreateable()) {options.add( new SelectOption( 'Contact', Schema.sObjectType.Contact.getLabel() ) );}
+		if(Schema.sObjectType.Contract.isAccessible() && Schema.sObjectType.ActionPlan__c.fields.Contract__c.isCreateable()) {options.add( new SelectOption( 'Contract', Schema.sObjectType.Contract.getLabel() ) );}
+		if(Schema.sObjectType.Lead.isAccessible() && Schema.sObjectType.ActionPlan__c.fields.Lead__c.isCreateable()) {options.add( new SelectOption( 'Lead', Schema.sObjectType.Lead.getLabel() ) );}
+		if(Schema.sObjectType.Opportunity.isAccessible() && Schema.sObjectType.ActionPlan__c.fields.Opportunity__c.isCreateable()) {options.add( new SelectOption( 'Opportunity', Schema.sObjectType.Opportunity.getLabel() ) );}
+ */
 		Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
 
-		for(String s : ActionPlansMetadataUtility.getCustomRelationshipFields()){
-			String value = s;
-			if(s.endsWithIgnoreCase('__c')){
-				s = s.removeEndIgnoreCase('__c');
+		// Describe the fieldSet so we can make sure that we only add SelectOptions for desired records
+		Schema.FieldSet fs = Schema.SObjectType.ActionPlan__c.fieldSets.Related_Objects;
+
+		for(Schema.FieldSetMember fsm : fs.getFields()){
+
+			String s = fsm.getFieldPath();
+			Schema.DisplayType dt = fsm.getType();
+			if(!dt.name().equalsIgnoreCase('Reference') || !s.endsWithIgnoreCase('__c')){
+				continue; // only look at  custom references
 			}
-			Schema.SObjectType sot = gd.get(s.toLowerCase());
-			String label = sot.getDescribe().getLabel();
-			options.add( new SelectOption( label, label ));
+
+			Schema.SObjectField sof = fsm.getSObjectField();
+			Schema.DescribeFieldResult dfr = sof.getDescribe();
+			Schema.SObjectType sot = dfr.getReferenceTo()[0];
+			Schema.DescribeSObjectResult dsr = sot.getDescribe();
+			Boolean canSeeRelatedObject = dsr.isAccessible();
+			Boolean canUpdateLookupField = dfr.isUpdateable();
+			System.debug('Checking object name ' + dsr.getName() + ' from field ' + s);
+
+			if(canSeeRelatedObject && canUpdateLookupField){
+				String value = dfr.getName();
+				String label = dsr.getLabel();
+				options.add( new SelectOption( value, label ));
+			}
+
+
+
+			/* if(gd.containsKey(s.toLowerCase())){
+				Schema.DescribeSObjectResult sor = gd.get(s).getDescribe();
+
+				Schema.DescribeFieldResult dfr = Schema.sObjectType.ActionPlan__c.fields.getMap().get(s).getDescribe();
+
+				if(sor.isCreateable() && dfr.isAccessible()){
+					String value = s; //.toLowerCase()
+					String label = sor.getLabel();
+					options.add( new SelectOption( value, label ));
+				}
+			} */
 		}
 
-		/* options.add( new SelectOption( 'Account', Schema.sObjectType.Account.getlabel() ) );
-		options.add( new SelectOption( 'Campaign', Schema.sObjectType.Campaign.getlabel() ) );
-		options.add( new SelectOption( 'Case', Schema.sObjectType.Case.getlabel() ) );
-		options.add( new SelectOption( 'Contact', Schema.sObjectType.Contact.getlabel() ) );
-		options.add( new SelectOption( 'Contract', Schema.sObjectType.Contract.getlabel() ) );
-		options.add( new SelectOption( 'Lead', Schema.sObjectType.Lead.getlabel() ) );
-		options.add( new SelectOption( 'Opportunity', Schema.sObjectType.Opportunity.getlabel() ) ); */
+		/* for(String s : ActionPlansMetadataUtility.getCustomRelationshipFields()){
+
+			S//tring label = s;
+			//if(s.endsWithIgnoreCase('__c')){
+			//	label = s.removeEndIgnoreCase('__c');
+			//}
+			System.debug('Checking object name ' + s);
+			if(gd.containsKey(s.toLowerCase())){
+				Schema.DescribeSObjectResult sor = gd.get(s).getDescribe();
+
+				Schema.DescribeFieldResult dfr = Schema.sObjectType.ActionPlan__c.fields.getMap().get(s).getDescribe();
+
+				if(sor.isCreateable() && dfr.isAccessible()){
+					String value = s; //.toLowerCase()
+					String label = sor.getLabel();
+					options.add( new SelectOption( value, label ));
+				}
+			}
+		} */
+
 		options.sort();
 		return options;
 	}
@@ -1110,14 +1176,17 @@ public inherited sharing class ActionPlanCreationController{
 	* @return the default option
 	*/
 	/* public SelectOption getDefaultRelatedObjectOption(){
-		return	new SelectOption( 'Account', Schema.sObjectType.Account.getlabel() );
+		return	new SelectOption( 'Account', Schema.sObjectType.Account.getLabel() );
 	} */
 
 	/**
 	* Refresh the related object lookup field.
 	*/
 	public PageReference refreshRelatedObjectsLookUp(){
-		relatedObjectSelected = Apexpages.currentPage().getParameters().get( 'relatedObjectSelected' );
+		relatedFieldName = Apexpages.currentPage().getParameters().get( 'relatedFieldName' );
+
+
+
 		return null;
 	}
 

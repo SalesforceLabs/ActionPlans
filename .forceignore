@@ -11,5 +11,11 @@ package.xml
 # LWC Jest
 **/__tests__/**
 
+# Org Metadata
+**/default/quickActions
+**default/Custom_Object__c***
+**/default/profiles
+
 /src*
 /.settings**
+src.zip

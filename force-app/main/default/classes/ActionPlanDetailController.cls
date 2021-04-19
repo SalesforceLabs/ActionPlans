@@ -154,7 +154,7 @@ public inherited sharing class ActionPlanDetailController{
 	}
 
 
-	public String getRelatedObjectName(){
+	public String getrelatedRecordName(){
 
 		System.debug(actionPlan);
 

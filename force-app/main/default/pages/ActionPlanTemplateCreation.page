@@ -29,7 +29,7 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<apex:page id="thePage" tabStyle="ActionPlanTemplate__c" standardController="ActionPlanTemplate__c" extensions="ActionPlanTemplateCreationController" lightningStylesheets="true" docType="html-5.0" contentType="text/html" applyBodyTag="false">
+<apex:page id="thePage" tabStyle="ActionPlanTemplate__c" standardController="ActionPlanTemplate__c" extensions="ActionPlanTemplateCreationController" lightningStylesheets="true" docType="html-5.0" contentType="text/html" applyBodyTag="false" >
 <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
 
 <head>
@@ -108,7 +108,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 				<apex:pageBlockSectionItem rendered="{!taskHasRecordType}" >
 					<apex:outputLabel >{!$ObjectType.Task.Label}&nbsp;{!$ObjectType.RecordType.Label}&nbsp;</apex:outputLabel>
-					<apex:selectList value="{!ActionPlanTemplate__c.TaskRecordTypeID__c}" required="{!taskHasRecordType}" size="1">
+					<apex:selectList value="{!ActionPlanTemplate__c.TaskRecordTypeID__c}" required="{!taskHasRecordType}" size="1" disabled="{!!$ObjectType.ActionPlanTemplate__c.updateable}">
 						<apex:selectOptions value="{!TaskRTPicklistValues}" />
 					</apex:selectList>
 				</apex:pageBlockSectionItem>
@@ -123,7 +123,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:outputPanel id="taskList" >
 					<apex:pageBlockTable value="{!TemplateWrappers}" var="wrapTask" id="taskTable" rules="none" style="table-layout: auto;width:100%" styleClass="taskTable" > <!-- columnClasses="first,second,third,fourth,fifth,sixth, seventh, eighth" styleClass="taskTable cardTable noBump pullTable" -->
 						<!--  Tasks delete actions  -->
-						<apex:column style="width:0px;vertical-align:middle;" headerValue="" id="columnOne" rendered="{!TemplateWrappers.size > 1}">
+						<apex:column style="width:0px;vertical-align:middle;" headerValue="" id="columnOne" rendered="{!TemplateWrappers.size > 1 && $ObjectType.ActionPlanTemplate__c.deletable}">
 
 							<apex:commandLink id="deleteLink"
 								rerender="taskList, pageMessages"
@@ -131,7 +131,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 								immediate="{!wrapTask.isLast}"
 								action="{!removeTemplateTask}"
 								onclick="if (confirmTaskDeletion('{!$Component.taskTable.dependent}', '{!$Label.ap_Confirm_Tasks_Deletion}')) return false;"
-								oncomplete="showErrors();">
+								oncomplete="showErrors();"
+								rendered="{!(wrapTask.task.Id != null && $ObjectType.APTTaskTemplate__c.deletable) || wrapTask.task.Id == null}">
 								<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'ActionPlans_cross.gif')}" alt="{!$Label.ap_Remove}" title="{!$Label.ap_Remove}" />
 								<apex:param name="remove" value="{!wrapTask.position}" />
 							</apex:commandLink>
@@ -146,7 +147,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 						<!--  Tasks depending status  -->
 						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.APTTaskTemplate__c.label}" rendered="{!TemplateTaskSize > 1}" styleClass="third">
-							<apex:selectList id="dependent" value="{!wrapTask.task.Dependent__c}" multiselect="false" size="1" style="width:85px;" onchange="checkDependent('{!$Component.taskTable.dependent}','{!$Label.ap_ItselfDependencyError}','{!$Label.ap_Error_Cyclic_Dependency_Found}');" styleClass="selectDepending">
+							<apex:selectList id="dependent" value="{!wrapTask.task.Dependent__c}" multiselect="false" size="1" style="width:85px;"
+							onchange="checkDependent('{!$Component.taskTable.dependent}','{!$Label.ap_ItselfDependencyError}','{!$Label.ap_Error_Cyclic_Dependency_Found}');" styleClass="selectDepending">
 								<apex:selectOptions value="{!TemplateSubjectItems}" />
 							</apex:selectList>
 							<apex:inputHidden value="{!wrapTask.task.TaskIndex__c}" id="theHiddenInput" />
@@ -226,18 +228,17 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				</apex:outputPanel>
 
 				<apex:panelGrid columns="2">
-					<apex:outputPanel >
 							<apex:commandLink action="{!addTemplateTask}"
 								rerender="taskList, pageMessages"
 								status="taskStatus"
 								style="font-weight:bold"
 								onclick="console.log('onclick');"
 								html-formnovalidate="novalidate"
-								oncomplete="console.log('oncomplete');javascript:showErrors();checkAllDependent();">
+								oncomplete="console.log('oncomplete');javascript:showErrors();checkAllDependent();"
+								rendered="{!$ObjectType.APTTaskTemplate__c.createable}">
 							<apex:outputText value="{!$Label.ap_AddNewTask}" />
 							<apex:param name="add" value="1" />
 						</apex:commandLink>
-					</apex:outputPanel>
 					<div class="slds-scope">
 						<apex:actionStatus id="taskStatus">
 							<apex:facet name="start">

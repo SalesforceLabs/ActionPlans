@@ -42,7 +42,7 @@ private class ActionPlanDetailControllerTest {
 
 		Test.StopTest();
 
-		System.assertEquals([SELECT Name FROM Account LIMIT 1].Name, apDetailController2.getRelatedObjectName());
+		System.assertEquals([SELECT Name FROM Account LIMIT 1].Name, apDetailController2.getrelatedRecordName());
 		System.assertEquals('Account', apDetailController2.getRelatedObjectLabel());
 
 	}
@@ -159,50 +159,50 @@ private class ActionPlanDetailControllerTest {
 	}
 
 	@IsTest
-	private static void checkGetRelatedObjectName(){
+	private static void checkGetrelatedRecordName(){
 		PageReference pageRef = Page.ActionPlanDetail;
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 
 		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanDetailController APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		String name = APDC.getRelatedObjectName();
+		String name = APDC.getrelatedRecordName();
 		System.assert(name != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'campaign', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getRelatedObjectName();
+		name = APDC.getrelatedRecordName();
 		System.assert(name != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'case', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getRelatedObjectName();
+		name = APDC.getrelatedRecordName();
 		System.assert(name != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'contact', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getRelatedObjectName();
+		name = APDC.getrelatedRecordName();
 		System.assert(name != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'contract', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getRelatedObjectName();
+		name = APDC.getrelatedRecordName();
 		System.assert(name != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'lead', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getRelatedObjectName();
+		name = APDC.getrelatedRecordName();
 		System.assert(name != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'opportunity', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getRelatedObjectName();
+		name = APDC.getrelatedRecordName();
 		System.assert(name != null);
 	}
 

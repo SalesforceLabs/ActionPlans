@@ -58,10 +58,10 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 	//constructor
 	public ActionPlansBatchBuilderUtilities (ActionPlan__c baseObj, List<APTaskTemplate__c> aPTListparam, String refType, Set<Id> oIdsLIst){
 
-		baseAPTaskList = aPTListparam;
-		relActionPlans = new List<ActionPlan__c>();
-		relatedObjectName  = refType;
-		relatedRecordIDs = oIdsLIst;
+		this.baseAPTaskList = aPTListparam;
+		this.relActionPlans = new List<ActionPlan__c>();
+		this.relatedObjectName  = refType;
+		this.relatedRecordIDs = oIdsLIst;
 
 		// if the actionPlan has already an Id, then we are editing an AP and not creating a new one
 		if (baseObj.id != null){
@@ -106,7 +106,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 	public Id generateActionPlans() {
 
-		List<APTaskTemplate__c> aptList = new List<APTaskTemplate__c>();
+		List<APTaskTemplate__c> aptList         = new List<APTaskTemplate__c>();
 		List<Id> aptTOTALListId                 = new List<Id>();
 		Map<Id,APTaskTemplate__c> mapAP         = new Map<Id,APTaskTemplate__c>();
 		Map<Id,ActionPlan__c> mapIDAP           = new Map<Id,ActionPlan__c>();
@@ -119,7 +119,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		this.myTasksWithOutEmail    = new List<Task>();
 		this.relAPTaskList          = new List<APTaskTemplate__c>();
 
-		Map<Id,Id> objectOwnersMap = retrieveOwnersDataRelatedObject( relatedRecordIDs, relatedObjectName );
+		Map<Id,Id> objectOwnersMap = retrieveOwnersDataRelatedObject( this.relatedRecordIDs, this.relatedObjectName );
 
 		//insert Action Plans to DB
 		System.debug('about to upsert ' + relActionPlans.size() + ' action plans');

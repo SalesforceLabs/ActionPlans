@@ -32,8 +32,16 @@ node_modules/
 .DS_Store
 
 # Windows system files
-Thumbs.db
+Thumbs.
 ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 
+# Salesforce Metadata
+**/default/quickActions
+**Custom_Object__c***
+**/default/profiles
+
+# temporary files
+src.zip
+src/**
