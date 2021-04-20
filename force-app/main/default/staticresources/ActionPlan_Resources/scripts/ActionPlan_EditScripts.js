@@ -27,7 +27,6 @@ function checkSkipWeekend(checkboxId, skipDayTableId) {
 function checkDependent (dependent, dependentErrorText, cyclicErrorText){
 	//var index = ( dependent.split( ":" ) );
 	var currentDependentPicklist = document.getElementById( dependent );
-	//console.log(currentDependentPicklist);
 	var cycle = false;
 	var visitedTasks = new Array();
 
@@ -61,13 +60,10 @@ function checkDependent (dependent, dependentErrorText, cyclicErrorText){
 }
 
 function getRowFromVisualforceId( elementId ){
-	//console.log('elementId ' + elementId);
 	var index = ( elementId.split( ":" ) );
-	//console.log(index);
 	var rowNum;
 	for(var i = 0; i < index.length; i++ ){
 		if(Number.isInteger( parseInt(index[i]) ) ) {
-	//console.log('number ' + index[i]);
 			rowNum = parseInt(index[i]);
 			return rowNum;
 		}
@@ -119,15 +115,10 @@ function checkReminderPicklists () {
 }
 
 function reloadActionPlan(templateId, selectedTemplateId) {
-	//console.log('in reloadActionPlan');
-	//console.log('old templateId = ' + templateId);
-	//console.log('new templateId = ' + selectedTemplateId);
 	var new_location    = window.location.href;
 	var reload          = 0;
 	var refObjType = j$(".hidden_refOBjtype").val(); //getElementsByClassAP('hidden_refOBjtype', null, 'input');
 	var objIds = j$('.hidden_refID').val(); //getElementsByClassAP('hidden_refID', null, 'input');
-	//console.log('refObjType ' + refObjType);
-	//console.log(objIds);
 
 
 	// There is a template selected and different from previous one
@@ -177,7 +168,6 @@ function reloadActionPlan(templateId, selectedTemplateId) {
 					new_location = new_location + '&refId=' + objIds;
 				}
 			}
-	//console.log('in second else');
 			reload = 1;
 		}
 

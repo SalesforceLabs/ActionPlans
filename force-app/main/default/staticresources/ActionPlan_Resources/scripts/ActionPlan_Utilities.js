@@ -1,7 +1,6 @@
 function toggleComments(commentDiv, commentLink, addText, editText, closeText) {
 	var theDiv = document.getElementById(commentDiv);
 	var theLink = document.getElementById(commentLink);
-	//console.log('called toggle for ' + commentDiv);
 
 	j$(theDiv).toggle();
 	if(j$(theDiv).is(':visible')){
@@ -21,7 +20,6 @@ function getElementsByClassAP(searchClass,node,tag) {
 		node = 'body';
 	}
 	var theTags = j$('[id$=' + node.valueOf() + '] ' + tag.valueOf() + ' .' + searchClass.valueOf() + '');
-	//console.log(theTags);
 	return theTags;
 }
 
