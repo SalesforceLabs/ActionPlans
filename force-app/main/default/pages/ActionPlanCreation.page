@@ -51,7 +51,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 			checkSkipWeekend(j$("[id$=skipWeekendCheckbox]").attr('id'), j$("[id$=skipDayPicklist]").attr('id'));
 			checkReminderPicklists();
 			checkAllDependent('{!$Label.ap_ItselfDependencyError}', '{!$Label.ap_Error_Cyclic_Dependency_Found}');
-
+			j$('.helpOrb').css({ 'width': '12px', 'height': '12px' });
 			showErrors();
 			initSelectors();
 			j$('td')
@@ -61,15 +61,23 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		});
 
 		function setSelectWidth() {
-			var yardstick = j$('<select><option>' + j$(this).val() + '</option></select>')
+			var yardstick = j$('<select><option>' + j$(this).val() + '</option></select>');
+			if(j$(this).val() == null){
+				yardstick = '<select><option>' + '--' + {!$Label.ap_None} + '--' + '</option></select>';
+			}
 			yardstick.css({ display: 'none' }).appendTo('body');
-			var fudge = 1.2; // need a little more to avoid clipping for some reason
+			var fudge = 1.03; // need a little more to avoid clipping for some reason
 			j$(this).width(fudge * yardstick.width());
 			yardstick.remove();
 		}
 
 		function initSelectors() {
-			j$("[Id$=typeLookup]").each(function () {
+			j$("[Id$=relatedObjLookup]").each(function () {
+				setSelectWidth.apply(this);
+			}).on('change', function () {
+				setSelectWidth.apply(this);
+			});
+			j$(".resize").each(function () {
 				setSelectWidth.apply(this);
 			}).on('change', function () {
 				setSelectWidth.apply(this);
@@ -168,7 +176,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 								//Function To Get Template Record's Details on Record Click
 								recInfo: function (recId) {
 									//j$('[id$=TemplateHiddenInput]').val(recId);
-									//console.log('assigning input to {!$Component.TemplateHiddenInput}');
 									var recInfoIdInput = document.getElementById('{!$Component.TemplateHiddenInput}');
 									var oldTemplateId = j$(recInfoIdInput).val();
 									j$(recInfoIdInput).val(recId);
@@ -176,13 +183,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 									//ID Based Retrieval Instead Of Query to Get Record Details Of The Selected Record
 									result = sforce.connection.retrieve("Name,Id", 'ActionPlanTemplate__c', [recId]);
 									j$('#sldsscopediv [id$=searchtemplateinput]').val(result[0].Name);
-									//console.log('templateId parameter is {!$currentpage.parameters.templateid}');
-									//console.log('NEW templateId from result is ' + result[0].Id);
 									//reloadActionPlan('{!JSINHTMLENCODE(ActionPlan__c.Action_Plan_template__c)}', recId);
 									reloadActionPlan(oldTemplateId, result[0].Id);
 								},
 								searchRecords: function (key) {
-									//console.log('in searchRecords  and key ' + key.attr('id'));
 									j$('#' + key.attr('aria-activedescendant')).show();
 									//Grabbing The Input Field Value
 									var searchKey = key.val();
@@ -193,7 +197,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 									var queryText = "SELECT Id, Name FROM ActionPlanTemplate__c WHERE Name LIKE '%" + searchKey + "%' ORDER BY Name ASC LIMIT 10";
 									result = sforce.connection.query(queryText);
 									records = result.getArray("records");
-									console.log('results ' + records);
 									var searchList = "";
 									//Creating List Elements Based on Query Results
 									if (records.length > 0) {
@@ -257,7 +260,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:pageBlockSectionItem rendered="{!!hasRelatedObject}">
 					<apex:outputPanel layout="block" styleClass="slds-scope" style="align:right;">
 
-						<apex:selectList id="typeLookup"
+						<apex:selectList id="relatedObjLookup"
 							styleclass="slds-input slds-select resize"
 							value="{!relatedFieldName}"
 							multiselect="false"
@@ -290,7 +293,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 								<!-- <div class="slds-scope">
 									<abbr class="slds-required" title="required">*</abbr>
 								</div> -->
-								<apex:outputText value="{!relatedObjectName}.{!relatedFieldName}" />
+								<!-- <apex:outputText value="{!relatedObjectName}.{!relatedFieldName}" /> -->
 								<c:LightningLookup sObj="{!ActionPlan__c}" field="{!relatedFieldName}" sObjType="{!relatedObjectName}" required="true" for="{!relatedFieldName}lookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" />
 
 								<!-- <c:LightningLookup sObj="{!ActionPlan__c}" field="Account__c" sObjType="account" required="true" for="accountlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}"  rendered="{!relatedFieldName == 'Account' && $ObjectType.Account.accessible}" />
@@ -308,22 +311,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 								<apex:outputPanel layout="none" rendered="{!!lex}">
 
 									<apex:inputField id="classicRelated" required="true" value="{!ActionPlan__c[relatedFieldName]}" styleClass="{!IF(throwError !=null,'errorBorder','')}" />
-
-									<!-- <apex:inputField id="acName" required="true" value="{!ActionPlan__c.Account__c}" styleClass="{!IF(throwError !=null,'errorBorder','')}" rendered="{!relatedFieldName == 'Account'}" />
-									<apex:inputField id="leName" required="true" styleClass="{!IF(throwError !=null,'errorBorder','')}" value="{!ActionPlan__c.Lead__c}" rendered="{!relatedFieldName == 'Lead'}" />
-									<apex:inputField id="contaName" required="true" styleClass="{!IF(throwError !=null,'errorBorder','')}" value="{!ActionPlan__c.Contact__c}" rendered="{!relatedFieldName == 'Contact'}" />
-									<apex:inputField id="oppName" required="true" styleClass="{!IF(throwError !=null,'errorBorder','')}" value="{!ActionPlan__c.Opportunity__c}" rendered="{!relatedFieldName == 'Opportunity'}"	/>
-									<apex:inputField id="caName" required="true" styleClass="{!IF(throwError !=null,'errorBorder','')}" value="{!ActionPlan__c.Campaign__c}" rendered="{!relatedFieldName == 'Campaign'}" />
-									<apex:inputField id="casName" required="true" styleClass="{!IF(throwError !=null,'errorBorder','')}" value="{!ActionPlan__c.Case__c}" rendered="{!relatedFieldName == 'Case'}" />
-									<apex:inputField id="contrName" required="true" styleClass="{!IF(throwError !=null,'errorBorder','')}" value="{!ActionPlan__c.Contract__c}" rendered="{!relatedFieldName == 'Contract'}" />
-
-									<apex:repeat value="{!$ObjectType.ActionPlan__c.FieldSets.Related_Objects}" var="f">
-										<apex:inputField required="true" styleClass="{!IF(throwError != null,'errorBorder','')}" value="{!ActionPlan__c[f.FieldPath]}" rendered="{!LOWER(relatedFieldName) == LOWER(f.FieldPath)}" />
-									</apex:repeat> -->
-
-								<!-- Customization Area: Lookup -->
-								<!-- <apex:inputField id="oName" styleClass="{!IF(throwError !=null,'errorBorder','')}" value="{!ActionPlan__c.CustomObject__c}"  rendered="{!relatedFieldName == 'CustomObject'}" /> -->
-								<!-- End of customization Area  -->
 								</apex:outputPanel>
 								<apex:outputPanel id="errorDivLookUp" layout="block" styleclass="errorMsg" rendered="{!throwError != null}" >
 									<apex:outputText ><b>{!$Label.ap_Error}:</b> {!throwError}</apex:outputText>
@@ -361,30 +348,49 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 			</apex:pageBlockSection>
 			<!--  End Related Section -->
 
-			<apex:pageBlockSection title="{!$ObjectType.Task.labelPlural}" columns="2" collapsible="false" id="taskDetails">
+			<apex:pageBlockSection title="{!$ObjectType.Task.labelPlural}" columns="2" collapsible="false" id="taskDetails" >
 
 				<!-- <apex:pageBlockSectionItem >
 					<apex:outputLabel value="{!$ObjectType.ActionPlanTemplate__c.fields.SkipWeekends__c.inlineHelpText}" />
 					<apex:inputField value="{!ActionPlan__c.SkipWeekends__c}" id="skipWeekendCheckbox" onclick="checkSkipWeekend('{!$Component.skipWeekendCheckbox}','{!$Component.taskDetails.skipDayPicklist}');" />
 				</apex:pageBlockSectionItem> -->
-				<apex:inputField value="{!ActionPlan__c.SkipWeekends__c}" id="skipWeekendCheckbox" onclick="checkSkipWeekend('{!$Component.skipWeekendCheckbox}','{!$Component.taskDetails.skipDayPicklist}');" />
+				<apex:pageBlockSectionItem>
+					<apex:outputPanel layout="none">
+						<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.label}" />
+					<img class="helpOrb" title="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.inlineHelpText}" src="/s.gif" style="vertical-align: top;"/>
+					</apex:outputPanel>
+					<apex:inputField value="{!ActionPlan__c.SkipWeekends__c}" id="skipWeekendCheckbox" onclick="checkSkipWeekend('{!$Component.skipWeekendCheckbox}','{!$Component.taskDetails.skipDayPicklist}');" />
+				</apex:pageBlockSectionItem>
+
 
 				<apex:pageBlockSectionItem rendered="{!taskHasRecordType}">
 					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.TaskRecordTypeID__c.label}" />
-					<apex:outputPanel >
-					<apex:selectList value="{!ActionPlan__c.TaskRecordTypeID__c}" required="true" size="1" rendered="{!ActionPlan__c.Id == null}">
+					<apex:outputPanel styleClass="slds-scope">
+					<apex:selectList value="{!ActionPlan__c.TaskRecordTypeID__c}" rendered="{!ActionPlan__c.Id == null}"
+							styleclass="slds-input slds-select resize"
+							multiselect="false"
+							size="1"
+							style="font-size:14px;"
+							required="true">
 						<apex:selectOptions value="{!TaskRTPicklistValues}" />
 					</apex:selectList>
 					<apex:outputText value="{!recordTypeName}" rendered="{!ActionPlan__c.Id != null}" />
 					</apex:outputPanel>
 				</apex:pageBlockSectionItem>
 
-				<apex:inputField id="skipDayPicklist" value="{!ActionPlan__c.SkipDay__c}" styleClass="resize" />
+				<apex:pageBlockSectionItem>
+					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipDay__c.label}" />
+					<apex:outputPanel layout="block" styleClass="slds-scope">
+						<apex:inputField id="skipDayPicklist" value="{!ActionPlan__c.SkipDay__c}" styleclass="slds-input slds-select resize" style="font-size:14px;" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+
+				<!-- <apex:inputField id="skipDayPicklist" value="{!ActionPlan__c.SkipDay__c}" styleclass="slds-scope slds-input slds-select resize" style="font-size:14px;" /> -->
 			</apex:pageBlockSection>
 			<!-- Tasks Section -->
 			<apex:pageBlockSection id="taskSection" columns="1" collapsible="false">
 
-				<apex:outputPanel id="taskList">
+				<apex:outputPanel id="taskList" styleClass="slds-scope">
 					<apex:pageBlockTable value="{!Tasks}" var="wrapTask" id="taskTable" styleClass="taskTable" style="table-layout: auto;width:100%" rules="none"> <!-- columnClasses="first,second,third,fourth,fifth,sixth,septh,eight,ninth,tenth" styleClass="taskTable cardTable noBump pullTable" -->
 					<!--  Tasks delete actions  -->
 					<apex:column style="width:0px;vertical-align:middle;" headerValue="" id="columnOne" rendered="{!Tasks.size > 1 && $ObjectType.ActionPlan__c.deletable}">
@@ -421,10 +427,11 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 					<!--  Tasks Days After  -->
 					<apex:column style="" styleclass="daysColumn" >
 						<apex:facet name="header">
-							<apex:outputPanel layout="none">
-								<apex:outputText value="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}" />
-								<img class="helpOrb" title="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" />
-							</apex:outputPanel>
+							<span>
+								{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}
+								<!-- <apex:image styleclass="helpOrb" style="vertical-align: top;" url="/apexpages/slds/latest/assets/icons/utility/info_60.png" height="12px" width="12px" title="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" /> -->
+								<img class="helpOrb" title="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" style="vertical-align: top;" />
+							</span>
 						</apex:facet>
 							<apex:inputField id="daysFromStart" value="{!wrapTask.task.DaysFromStart__c}" styleClass="daysInput" style="width:50%" rendered="{!!wrapTask.task.IsClosed__c}" />
 							<apex:outputField value="{!wrapTask.task.DaysFromStart__c}" styleClass="daysInput" style="width:50%" rendered="{!wrapTask.task.IsClosed__c}" />
@@ -447,7 +454,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 					<!--  Tasks type  -->
 					<apex:column headerValue="{!$ObjectType.Task.fields.Type.label}" rendered="{!$ObjectType.Task.fields.Type.accessible}">
 						<apex:outputPanel rendered="{!$ObjectType.Task.fields.Type.updateable}">
-							<apex:selectList value="{!wrapTask.task.Type__c}" size="1" disabled="{!wrapTask.task.IsClosed__c}" >
+							<apex:selectList value="{!wrapTask.task.Type__c}" size="1" disabled="{!wrapTask.task.IsClosed__c}" styleclass="slds-input slds-select resize">
 								<apex:selectOptions value="{!TaskTypes}" />
 							</apex:selectList>
 							<apex:outputField value="{!wrapTask.task.Type__c}" rendered="{!!$ObjectType.Task.fields.Type.updateable}" />
@@ -456,7 +463,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 					<!--  Tasks priority  -->
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" >
-						<apex:selectList required="true" value="{!wrapTask.task.Priority__c}" size="1" disabled="{!wrapTask.task.IsClosed__c}">
+						<apex:selectList required="true" value="{!wrapTask.task.Priority__c}" size="1" disabled="{!wrapTask.task.IsClosed__c}" styleclass="slds-input slds-select resize">
 							<apex:selectOptions value="{!TaskPriorities}" />
 						</apex:selectList>
 					</apex:column>

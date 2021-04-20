@@ -4,8 +4,8 @@
     <defaultValue>false</defaultValue>
     <description>If selected, tasks included in an Action Plan will not be given a Due Date that falls on a weekend.</description>
     <externalId>false</externalId>
-    <inlineHelpText>Allows you to automatically reschedule a task that would fall on a Saturday or a Sunday to either a Monday or Friday so you can skip weekends when calculating activity start dates. When checked, a drop down box appears, allowing you to select the day.</inlineHelpText>
-    <label>Skip Weekends</label>
+	<inlineHelpText>Automatically reschedules a task that would fall on a Saturday or a Sunday to either a Monday or Friday so you can skip weekends when calculating activity start dates.</inlineHelpText>
+	<label>Avoid Weekends For Due Dates</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>
 </CustomField>

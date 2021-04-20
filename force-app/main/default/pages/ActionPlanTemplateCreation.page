@@ -109,7 +109,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:pageBlockSectionItem rendered="{!taskHasRecordType}" >
 					<apex:outputLabel >{!$ObjectType.Task.Label}&nbsp;{!$ObjectType.RecordType.Label}&nbsp;</apex:outputLabel>
 					<apex:actionRegion>
-					<apex:selectList value="{!ActionPlanTemplate__c.TaskRecordTypeID__c}" required="{!taskHasRecordType}" size="1" disabled="{!!$ObjectType.ActionPlanTemplate__c.updateable}">
+					<apex:selectList value="{!ActionPlanTemplate__c.TaskRecordTypeID__c}" styleclass="slds-select" required="{!taskHasRecordType}" size="1" disabled="{!!$ObjectType.ActionPlanTemplate__c.updateable}">
 						<apex:actionSupport event="onchange" reRender="taskSection" />
 						<apex:selectOptions value="{!TaskRTPicklistValues}" />
 					</apex:selectList>
@@ -117,7 +117,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				</apex:pageBlockSectionItem>
 				<apex:outputPanel rendered="{!!taskHasRecordType}" />
 
-				<apex:inputField id="skipDayPicklist" value="{!ActionPlanTemplate__c.SkipDay__c}" />
+				<apex:inputField id="skipDayPicklist" styleclass="slds-select" value="{!ActionPlanTemplate__c.SkipDay__c}" />
 			</apex:pageBlockSection>
 
 
@@ -172,7 +172,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:column id="userLookup" headerValue="{!$ObjectType.APTTaskTemplate__c.fields.User__c.label}" >
 						<apex:outputPanel layout="block" id="userPanel">
 							<apex:inputField value="{!wrapTask.task.User__c}" rendered="{!!lex}" />
-							<c:LightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" required="false" where="AND IsActive = true AND ProfileId != null" rendered="{!lex}" />
+							<c:LightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" required="false" where="AND IsActive = true AND ProfileId != null" rendered="{!lex}" fieldStyle="width:100%;" />
 						</apex:outputPanel>
 						</apex:column>
 

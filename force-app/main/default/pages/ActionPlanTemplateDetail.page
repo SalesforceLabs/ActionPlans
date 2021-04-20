@@ -94,7 +94,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 					<apex:variable value="{!task.TaskIndex__c + 1}" var="row" />
 					<apex:outputText value="{!row}" />
 				</apex:column>
-				<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.APTTaskTemplate__c.label}" value="{!task.APTTaskTemplate__r.Subject__c}"   />
+				<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.APTTaskTemplate__c.label}" value="{!task.APTTaskTemplate__r.Subject__c}" rendered="{!TemplateTasks.size > 1}"  />
 				<apex:column value="{!task.DaysFromStart__c}" >
 					<apex:facet name="header">{!$ObjectType.APTTaskTemplate__c.fields.DaysFromStart__c.label}
 						<img class="helpOrb" title="{!$ObjectType.APTTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" />

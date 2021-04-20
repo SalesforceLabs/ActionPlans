@@ -93,8 +93,8 @@ public inherited sharing class ActionPlansMetadataUtility {
 					//System.debug(rt.Name + ' has default status ' + t.Status);
 				}
 			} else {
-				String firstStatus = [SELECT Id, MasterLabel FROM TaskStatus WHERE IsClosed = false ORDER BY SortOrder LIMIT 1].MasterLabel;
-				taskRecordTypeStatusDefaultValues.put(null, firstStatus);
+				//String firstStatus = [SELECT Id, ApiName FROM TaskStatus WHERE IsDefault = true LIMIT 1].MasterLabel;
+				taskRecordTypeStatusDefaultValues.put(null, (String)Task.Status.getDescribe().getDefaultValue());
 				//taskRecordTypeStatusDefaultValues.put('', firstStatus);
 			}
 

@@ -42,6 +42,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		var j$ = jQuery.noConflict();
 		j$(document).ready(function () {
 			j$("[Id$=theTable]").tablesorter();
+			j$('.helpOrb').css({ 'width': '12px', 'height': '12px' });
 		});
 
 	</script>
@@ -75,38 +76,43 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:outputLink value="/{!ActionPlan__c.Id}/a?retURL={!$CurrentPage.URL}">{!$Label.ap_Change}</apex:outputLink>]</apex:outputText>
 				</apex:pageBlockSectionItem>
 
-				<apex:outputField value="{!ActionPlan__c.Account__c}" rendered="{!(ActionPlan__c.Account__c != null)}" />
+				<apex:repeat value="{!$ObjectType.ActionPlan__c.FieldSets.Related_Objects}" var="f">
+					<apex:outputField value="{!ActionPlan__c[f.FieldPath]}" rendered="{!(ActionPlan__c[f.FieldPath] != null)}" />
+				</apex:repeat>
+				<!-- <apex:outputField value="{!ActionPlan__c.Account__c}" rendered="{!(ActionPlan__c.Account__c != null)}" />
 				<apex:outputField value="{!ActionPlan__c.Contact__c}" rendered="{!(ActionPlan__c.Contact__c != null)}" />
 				<apex:outputField value="{!ActionPlan__c.Lead__c}" rendered="{!(ActionPlan__c.Lead__c != null)}" />
 				<apex:outputField value="{!ActionPlan__c.Opportunity__c}" rendered="{!(ActionPlan__c.Opportunity__c != null)}" />
 				<apex:outputField value="{!ActionPlan__c.Campaign__c}" rendered="{!(ActionPlan__c.Campaign__c != null)}" />
 				<apex:outputField value="{!ActionPlan__c.Contract__c}" rendered="{!(ActionPlan__c.Contract__c != null)}" />
-				<apex:outputField value="{!ActionPlan__c.Case__c}" rendered="{!(ActionPlan__c.Case__c != null)}" />
+				<apex:outputField value="{!ActionPlan__c.Case__c}" rendered="{!(ActionPlan__c.Case__c != null)}" /> -->
 				<!-- Customization Area : Add here your custom Objects -->
 				<!-- <apex:outputField value="{!ActionPlan__c.CustomObject__c}" 	rendered="{!(ActionPlan__c.CustomObject__c != null)}" /> -->
 				<!-- End of Customization Area -->
-				<apex:pageBlockSectionItem rendered="false">
-				<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.StartDate__c.label}" />
+
+				<!-- <apex:pageBlockSectionItem>
+					<apex:outputPanel style="vertical-align: top;">
+						<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.StartDate__c.label}"/>&nbsp;
+						<apex:image style="vertical-align: top;" url="/apexpages/slds/latest/assets/icons/utility/info_120.png" height="12px" width="12px" title="{!$ObjectType.ActionPlan__c.fields.StartDate__c.inlineHelpText}"/>
+					</apex:outputPanel>
+					<apex:outputField value="{!ActionPlan__c.StartDate__c}" />
+				</apex:pageBlockSectionItem> -->
 				<apex:outputField value="{!ActionPlan__c.StartDate__c}" />
-				</apex:pageBlockSectionItem>
-				<apex:outputField value="{!ActionPlan__c.StartDate__c}" />
+
 				<apex:outputField value="{!ActionPlan__c.Description__c}" />
 				<apex:pageBlockSectionItem rendered="false" >
 					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.Task_Status_Formula__c.label}" for="planstatus" />
 					<apex:outputText id="planstatus">{!ActionPlan__c.Task_Status_Formula__c}</apex:outputText>
 				</apex:pageBlockSectionItem>
 				<apex:outputField value="{!ActionPlan__c.Task_Status_Formula__c}" />
-
-			<!-- </apex:pageBlockSection> -->
 			<!-- END INFORMATION SECTION -->
 
 			<!-- TASKS SECTION -->
-			<!-- <apex:pageBlockSection id="skipDetail" columns="2" collapsible="false"> -->
-				<!-- new row -->
-				<!-- <apex:pageBlockSectionItem rendered="false">
-				<apex:outputPanel >
-					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.label}"/>
-						<apex:image styleclass="helpOrb" title="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.inlineHelpText}" url="/s.gif" />
+				<!-- <apex:pageBlockSectionItem>
+					<apex:outputPanel layout="block" style="vertical-align: top;">
+
+						<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.label} " style="float:left;"/>
+						<apex:image style="vertical-align: top;float:right;" url="/apexpages/slds/latest/assets/icons/utility/info_60.png" height="12px" width="12px" title="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.inlineHelpText}" />
 					</apex:outputPanel>
 					<apex:outputField value="{!ActionPlan__c.SkipWeekends__c}" />
 				</apex:pageBlockSectionItem> -->
@@ -140,7 +146,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 				</apex:pageBlockSectionItem>
 			</apex:pageBlockSection>
 
-			<apex:pageBlockSection id="taskSection" title="{!$ObjectType.Task.labelPlural} {!$Label.ap_TaskHeaderSortable}" columns="1" collapsible="false">
+			<apex:pageBlockSection id="taskSection" columns="1" collapsible="false">
 				<apex:facet name="header">
 					<apex:outputPanel >
 						<apex:outputText value="{!$ObjectType.Task.labelPlural}" />&nbsp;
@@ -164,8 +170,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:outputField value="{!task.APTaskTemplate__r.Subject__c}" />
 					</apex:column>
 					<apex:column value="{!task.DaysFromStart__c}">
-						<apex:facet name="header">{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}
-							<img class="helpOrb" title="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" />
+						<apex:facet name="header">
+							<span style="vertical-align: top;" >{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}
+							<img class="helpOrb" title="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" style="vertical-align: top;"/>
+							</span>
 						</apex:facet>
 					</apex:column>
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.ActivityDate__c.label}">

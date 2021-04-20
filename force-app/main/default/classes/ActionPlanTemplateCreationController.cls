@@ -118,7 +118,9 @@ public inherited sharing class ActionPlanTemplateCreationController{
 
 		// save tasks to the template and attach relation to Action Plan
 		for( APTTaskTemplate__c t : aptTasks ){
+			if(t.Action_Plan_Template__c == null){
 				t.Action_Plan_Template__c = actionPlanTemplate.Id;
+			}
 			if( t.DaysFromStart__c < 0 ){
 				 t.DaysFromStart__c = 0;
 		   	}
