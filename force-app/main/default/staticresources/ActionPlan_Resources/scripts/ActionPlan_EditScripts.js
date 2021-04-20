@@ -48,11 +48,8 @@ function checkDependent (dependent, dependentErrorText, cyclicErrorText){
 			row = getRowFromVisualforceId(dependent);
 			if(!visitedTasks[row]){
 				visitedTasks[row] = true;
-				//console.log('about to find element from ' + dependent + ' ending in ' + document.getElementById( dependent ).value + ':dependent');
 				var nextRowNum = document.getElementById( dependent ).value;
 				dependent = j$("select[id$=" + nextRowNum + "\\:dependent]").attr('id');
-				//dependent = 'thePage:apForm:editBlock:taskSection:taskTable:' + document.getElementById( dependent ).value + ':dependent';
-				//console.log('dependent ' + dependent);
 			}
 			else{
 				cycle = true;
@@ -69,15 +66,13 @@ function getRowFromVisualforceId( elementId ){
 	//console.log(index);
 	var rowNum;
 	for(var i = 0; i < index.length; i++ ){
-		//console.log('evaluating ' + index[i]);
 		if(Number.isInteger( parseInt(index[i]) ) ) {
-			//console.log('number ' + index[i]);
+	//console.log('number ' + index[i]);
 			rowNum = parseInt(index[i]);
 			return rowNum;
 		}
 	}
 	if(Number.isNaN(rowNum)){
-		console.log('it is null');
 		return null;
 	}
 }
@@ -100,7 +95,6 @@ function checkEmail (type){
 }
 
 function enableDisableReminderPicklist ( reminder, reminderPicklistId ){
-	//var reminderCheckbox = document.getElementById( reminderId );
 	var reminderCheckbox = reminder;
 	var reminderPicklist = document.getElementById( reminderPicklistId );
 
@@ -124,27 +118,20 @@ function checkReminderPicklists () {
 	);
 }
 
-/* function clearAPName (ev, newName){
-	if (window.event && window.event.keyCode == 13 || ev.which == 13) {
-		j$("#APName").val(newName + " - ");
-	}
-} */
-
 function reloadActionPlan(templateId, selectedTemplateId) {
-	console.log('in reloadActionPlan');
-	console.log('old templateId = ' + templateId);
-	console.log('new templateId = ' + selectedTemplateId);
+	//console.log('in reloadActionPlan');
+	//console.log('old templateId = ' + templateId);
+	//console.log('new templateId = ' + selectedTemplateId);
 	var new_location    = window.location.href;
 	var reload          = 0;
 	var refObjType = j$(".hidden_refOBjtype").val(); //getElementsByClassAP('hidden_refOBjtype', null, 'input');
 	var objIds = j$('.hidden_refID').val(); //getElementsByClassAP('hidden_refID', null, 'input');
-	console.log('refObjType ' + refObjType);
-	console.log(objIds);
+	//console.log('refObjType ' + refObjType);
+	//console.log(objIds);
 
 
 	// There is a template selected and different from previous one
 	if ( selectedTemplateId != '000000000000000' && templateId.match(selectedTemplateId ) == null){
-		console.log('template changed');
 		if( templateId != "" ){
 			// Replaces current selected template id into the URL
 			if (new_location.match('templateId')){
@@ -153,14 +140,12 @@ function reloadActionPlan(templateId, selectedTemplateId) {
 				new_location = '/apex/ActionPlanCreation?templateId=' + selectedTemplateId;
 
 				reload = 1;
-				console.log('matched newlocation');
 			// Adds current selected template id into the URL
 			} else {
 
 				var patt1 = /\?/gi;
 				var txt = new String(location);
 				var concat_with = "&";
-				//var obj_ids_str = "";
 
 				if (txt.match(patt1) == null){
 					concat_with = "?";
@@ -168,8 +153,6 @@ function reloadActionPlan(templateId, selectedTemplateId) {
 
 				new_location += concat_with + "templateId=" + selectedTemplateId;
 
-
-				console.log('in first else');
 				reload = 1;
 			}
 
@@ -194,7 +177,7 @@ function reloadActionPlan(templateId, selectedTemplateId) {
 					new_location = new_location + '&refId=' + objIds;
 				}
 			}
-			console.log('in second else');
+	//console.log('in second else');
 			reload = 1;
 		}
 
@@ -212,7 +195,6 @@ function reloadActionPlan(templateId, selectedTemplateId) {
 			if (UITheme.getUITheme() === 'Theme4d' || UITheme.getUITheme() === 'Theme4u'){
 				sforce.one.navigateToURL(new_location);
 			} else {
-				console.log(new_location);
 				window.location.href = new_location;
 			}
 
@@ -220,7 +202,6 @@ function reloadActionPlan(templateId, selectedTemplateId) {
 
 	} else {
 		//manage invalid template ID
-		console.log('invalid templateId');
 	}
 }
 

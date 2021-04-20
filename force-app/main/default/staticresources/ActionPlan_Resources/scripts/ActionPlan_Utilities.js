@@ -5,10 +5,8 @@ function toggleComments(commentDiv, commentLink, addText, editText, closeText) {
 
 	j$(theDiv).toggle();
 	if(j$(theDiv).is(':visible')){
-		//console.log('VISIBLE');
 		j$(theLink).html(closeText);
 	} else {
-		//console.log('HIDDEN');
 		if(theDiv.value == null || theDiv.value == ''){
 			j$(theLink).html(addText);
 		} else {
