@@ -9,7 +9,7 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		apTemplate = [SELECT Id, TaskRecordTypeId__c FROM ActionPlanTemplate__c WHERE Id = :apTemplate.Id LIMIT 1];
 
-		if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+		if(ActionPlansUtilities.HAS_RECORD_TYPE){
 
 			System.assertNotEquals(null, apTemplate.TaskRecordTypeID__c);
 		}

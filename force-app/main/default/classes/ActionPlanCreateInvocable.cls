@@ -3,12 +3,12 @@ Action Plans v4
 Updated by David Schach 2021
 
 Action Plans v3
-Force.com Labs
+Force.com Labs 2011
 http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
 
 BSD 3-Clause License
 
-Copyright (c) 2021, salesforce.com
+Copyright (c) 2021, salesforce.com, inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -84,7 +84,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 		Map<Id, ActionPlan__c> actionPlansToInsert = new Map<Id, ActionPlan__c>();
 		List<APTaskTemplate__c> aptasksToInsert = new List<APTaskTemplate__c>();
 
-		Action_Plans_Settings__c mySettings = ActionPlansMetadataUtility.getCustomSetting();
+		Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 
 		Map<Id, Id> relatedObjectOwners = ActionPlansBatchBuilderUtilities.retrieveOwnersDataRelatedObject(relatedIDs, relatedObjectName);
 
@@ -93,7 +93,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 			ActionPlanTemplate__c actionPlanTemplate = templateNameOrIdToTemplate.get(r.templateNameOrID);
 
 			ActionPlan__c ap = new ActionPlan__c();
-			ap.Name                         = ActionPlansMetadataUtility.actionPlanSubjectToName(actionPlanTemplate.Name);
+			ap.Name                         = ActionPlansUtilities.actionPlanSubjectToName(actionPlanTemplate.Name);
 			ap.Description__c               = actionPlanTemplate.Description__c;
 			ap.SkipWeekends__c              = actionPlanTemplate.SkipWeekends__c;
 			ap.SkipDay__c                   = actionPlanTemplate.SkipDay__c;
@@ -101,7 +101,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 			ap.TaskRecordTypeID__c          = actionPlanTemplate.TaskRecordTypeID__c;
 			ap.StartDate__c                 = Date.today().addDays(r.daysToActionPlanStart == null ? 0 : r.daysToActionPlanStart);
 
-			for(String s : ActionPlansMetadataUtility.getCustomRelationshipFields()){
+			for(String s : ActionPlansUtilities.getCustomRelationshipFields()){
 				ap.put(s, null);
 			}
 
@@ -163,17 +163,17 @@ global inherited sharing class ActionPlanCreateInvocable {
 				apTask.Comments__c           = aptTask.Comments__c;
 
 				apTask.Reminder__c           = aptTask.Reminder__c;
-				apTask.Minutes_Reminder__c   = ActionPlansMetadataUtility.getDefaultReminderMinutes();
+				apTask.Minutes_Reminder__c   = ActionPlansUtilities.getDefaultReminderMinutes();
 				apTask.SendEmail__c          = aptTask.SendEmail__c;
 
 				apTask.Action_Plan__c        = ap.Id;
 
 				System.debug('SETTING AP.ID to ' + ap.id);
 
-				if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
-					apTask.Status__c = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(ActionPlansMetadataUtility.getDefaultTaskRecordTypeId());
+				if(ActionPlansUtilities.HAS_RECORD_TYPE){
+					apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
 				} else {
-					apTask.Status__c = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(null);
+					apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
 				}
 
 				if( apTask.Dependent__c != null && apTask.Dependent__c != 'None' ){
@@ -197,10 +197,10 @@ global inherited sharing class ActionPlanCreateInvocable {
 						//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
 						//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
 
-						String dayName = ActionPlansMetadataUtility.getDayOfWeek( dueDate );
+						String dayName = ActionPlansUtilities.getDayOfWeek( dueDate );
 						System.debug('Task is originally due on a ' + dayName);
 
-						Weekend_Day__mdt cmdt = ActionPlansMetadataUtility.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
+						Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
 
 						System.debug('cmdt: ' + cmdt);
 
@@ -219,7 +219,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 							addDays = addDays + daysToAdjust;
 						}
 						if(addDays != 0){
-							System.debug('Task is now due on a ' + ActionPlansMetadataUtility.getDayOfWeek( dueDate.addDays( addDays ) ));
+							System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
 						}
 						apTask.ActivityDate__c = dueDate.addDays( addDays );
 					}
@@ -305,7 +305,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 			}
 
 			//link to Action Plan's Related To Object
-			for( String s : ActionPlansMetadataUtility.getCustomRelationshipFields() ){
+			for( String s : ActionPlansUtilities.getCustomRelationshipFields() ){
 				String f = s;
 				if(!f.equalsIgnoreCase('Contact__c') && !f.equalsIgnoreCase('Lead__c') && apAux.get(f) != null){
 					t.WhatId = (Id)apAux.get(f);
@@ -354,7 +354,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 		//We need to check first if the Related Object is Enabled to FeedPost
 		//Just need the first Object of list to know the Related Object.
-		//Boolean isEnabledForFeed = ActionPlansMetadataUtility.isObjectEnabledFeed( actionPlansToInsert.values()[0]);
+		//Boolean isEnabledForFeed = ActionPlansUtilities.isObjectEnabledFeed( actionPlansToInsert.values()[0]);
 
 		Set<Id> relObjectIDs = new Set<Id>();
 		for(ActionPlan__c ap : actionPlansToInsert.values()){

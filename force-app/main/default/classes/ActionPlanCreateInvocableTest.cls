@@ -3,12 +3,12 @@ Action Plans v4
 Updated by David Schach 2021
 
 Action Plans v3
-Force.com Labs
+Force.com Labs 2011
 http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
 
 BSD 3-Clause License
 
-Copyright (c) 2021, salesforce.com
+Copyright (c) 2021, salesforce.com, inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -259,7 +259,7 @@ private class ActionPlanCreateInvocableTest {
 	private static void checkWeekendDueDate(){
 
 
-		Weekend_Day__mdt saturday = ActionPlansMetadataUtility.getWeekendDay('Saturday', 1, 2);
+		Weekend_Day__mdt saturday = ActionPlansUtilities.getWeekendDay('Saturday', 1, 2);
 		if(saturday.Id == null){
 			// We need to find a way to insert our custom metadata record
 		}
@@ -270,7 +270,7 @@ private class ActionPlanCreateInvocableTest {
 		Integer daysToSaturday = 0;
 		for(daysToSaturday = 0; daysToSaturday < 8; daysToSaturday++){
 			upcomingSaturday = Date.today().addDays(daysToSaturday);
-			if( ActionPlansMetadataUtility.getDayOfWeek(upcomingSaturday) == 'Saturday' ){
+			if( ActionPlansUtilities.getDayOfWeek(upcomingSaturday) == 'Saturday' ){
 				break;
 			}
 		}
@@ -322,7 +322,7 @@ private class ActionPlanCreateInvocableTest {
 		System.assertEquals(1, resultIDs.size());
 		System.assertEquals(TASK_COUNT, [SELECT Count() FROM Task]);
 		for(Task t : [SELECT Id, ActivityDate FROM Task]){
-			System.debug('Task is due on ' + t.ActivityDate + ' which is a ' + ActionPlansMetadataUtility.getDayOfWeek(t.ActivityDate));
+			System.debug('Task is due on ' + t.ActivityDate + ' which is a ' + ActionPlansUtilities.getDayOfWeek(t.ActivityDate));
 		}
 		System.assertEquals(0, [SELECT Count() FROM Task WHERE ActivityDate = :upcomingSaturday]);
 	}

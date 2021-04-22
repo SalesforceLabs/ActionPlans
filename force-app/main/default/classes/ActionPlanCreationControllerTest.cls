@@ -3,12 +3,12 @@ Action Plans v4
 Updated by David Schach 2021
 
 Action Plans v3
-Force.com Labs
+Force.com Labs 2011
 http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
 
 BSD 3-Clause License
 
-Copyright (c) 2021, salesforce.com
+Copyright (c) 2021, salesforce.com, inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -325,8 +325,8 @@ private with sharing class ActionPlanCreationControllerTest {
 		apt.task.Subject__c = testUtil.createRandomWord();
 		apt.task.DaysFromStart__c = 3;
 		apt.task.User__c = ownerUser.Id;
-		apt.task.Priority__c = ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
-		System.debug('Priority is set to ' + ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId));
+		apt.task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
+		System.debug('Priority is set to ' + ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId));
 		apCreateController.save();
 
 		Test.StopTest();
@@ -604,13 +604,13 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		Test.stopTest();
 
-		if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+		if(ActionPlansUtilities.HAS_RECORD_TYPE){
 			if(ActionPlansTestUtilities.getNonDefaultAvailableTaskRecordType() != null){
 				String taskQuery = 'SELECT Id, RecordTypeId FROM Task';
 
 				for(SObject t : Database.query(taskQuery)){
 					System.debug([SELECT Id, Name FROM RecordType WHERE Id = :(Id)t.get('RecordTypeId')].Name);
-					System.assertNotEquals(ActionPlansMetadataUtility.getDefaultTaskRecordTypeId(), t.get('RecordTypeId'), 'Record Type is default');
+					System.assertNotEquals(ActionPlansUtilities.getDefaultTaskRecordTypeId(), t.get('RecordTypeId'), 'Record Type is default');
 				}
 			}
 		}
@@ -620,10 +620,10 @@ private with sharing class ActionPlanCreationControllerTest {
 	private static void testForceNoRecordTypes(){
 		ActionPlansTestUtilities.forceHasRecordType = false;
 
-		System.debug('hasrt: ' + ActionPlansMetadataUtility.HAS_RECORD_TYPE);
+		System.debug('hasrt: ' + ActionPlansUtilities.HAS_RECORD_TYPE);
 
-		ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues();
-		ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues();
+		ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues();
+		ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues();
 
 		Test.startTest();
 
@@ -639,7 +639,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		Test.stopTest();
 		System.assertEquals(null, apCreateController.getDefaultTaskRecordTypeId());
 
-		System.assert(!ActionPlansMetadataUtility.HAS_RECORD_TYPE);
+		System.assert(!ActionPlansUtilities.HAS_RECORD_TYPE);
 
 	}
 

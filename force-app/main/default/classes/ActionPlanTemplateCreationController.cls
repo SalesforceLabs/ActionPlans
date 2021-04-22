@@ -3,34 +3,38 @@ Action Plans v4
 Updated by David Schach 2021
 
 Action Plans v3
-Force.com Labs
+Force.com Labs 2011
 http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
 
-Copyright (c) 2011, salesforce.com, inc.
+BSD 3-Clause License
+
+Copyright (c) 2021, salesforce.com, inc.
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
-	* Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-	* Neither the name of the salesforce.com, inc. nor the names of its contributors
-	may be used to endorse or promote products derived from this software
-	without specific prior written permission.
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
-OF THE POSSIBILITY OF SUCH DAMAGE.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 public inherited sharing class ActionPlanTemplateCreationController{
@@ -72,8 +76,8 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			//System.debug('did not clone');
 		}
 
-		this.canDisplayReminder = ActionPlansMetadataUtility.getCanDisplayReminder();
-		this.taskHasRecordType = ActionPlansMetadataUtility.HAS_RECORD_TYPE;
+		this.canDisplayReminder = ActionPlansUtilities.getCanDisplayReminder();
+		this.taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 
 		if( actionPlanTemplate.Id != null ){
 			taskIndex = calculateTaskIndexValue();
@@ -523,14 +527,14 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 * Find user default recordtype
 	 */
 	public Id getDefaultTaskRecordTypeId(){
-		return ActionPlansMetadataUtility.getDefaultTaskRecordTypeId();
+		return ActionPlansUtilities.getDefaultTaskRecordTypeId();
 	}
 
 	/**
 	 * Generate picklist of Task Record Types
 	 */
 	public List<SelectOption> getTaskRTPicklistValues(){
-		return ActionPlansMetadataUtility.getTaskRTPicklistValues();
+		return ActionPlansUtilities.getTaskRTPicklistValues();
 	}
 
 	/**
@@ -538,7 +542,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 */
 	public List<SelectOption> getTaskTypes(){
 		Boolean hasDefaultValue = String.isNotBlank((String)Task.Type.getDescribe().getDefaultValue());
-		return ActionPlansMetadataUtility.getFieldOptions('Task', 'Type', hasDefaultValue);
+		return ActionPlansUtilities.getFieldOptions('Task', 'Type', hasDefaultValue);
 	}
 
 	/**
@@ -546,7 +550,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 */
 	public List<SelectOption> getTaskPriorities(){
 		Boolean hasDefaultValue = String.isNotBlank((String)Task.Priority.getDescribe().getDefaultValue());
-		return ActionPlansMetadataUtility.getFieldOptions('Task', 'Priority', hasDefaultValue);
+		return ActionPlansUtilities.getFieldOptions('Task', 'Priority', hasDefaultValue);
 	}
 
 	/**
@@ -566,12 +570,12 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			isLast		= false;
 			if(task.Id == null){
 				System.debug('passing RTID ' + defaultTaskRTId);
-				if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
-					task.Priority__c = ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
-					task.Type__c = ActionPlansMetadataUtility.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
+				if(ActionPlansUtilities.HAS_RECORD_TYPE){
+					task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
+					task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
 				} else {
-					task.Priority__c = ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues().get(null);
-					task.Type__c = ActionPlansMetadataUtility.getTaskRecordTypeTypeDefaultValues().get(null);
+					task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(null);
+					task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(null);
 				}
 			}
 		}

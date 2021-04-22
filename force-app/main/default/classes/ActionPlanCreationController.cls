@@ -3,34 +3,38 @@ Action Plans v4
 Updated by David Schach 2021
 
 Action Plans v3
-Force.com Labs
+Force.com Labs 2011
 http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
 
-Copyright (c) 2011, salesforce.com, inc.
+BSD 3-Clause License
+
+Copyright (c) 2021, salesforce.com, inc.
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-* Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation
-and/or other materials provided with the distribution.
-* Neither the name of the salesforce.com, inc. nor the names of its contributors
-may be used to endorse or promote products derived from this software
-without specific prior written permission.
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
-OF THE POSSIBILITY OF SUCH DAMAGE.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 public inherited sharing class ActionPlanCreationController{
@@ -88,8 +92,8 @@ public inherited sharing class ActionPlanCreationController{
 		else if ( this.templateId != null )                                 {initNewActionPlanFromTemplate(this.inVisualforceContext);}
 		else                                                                {initNewActionPlan();}
 
-		this.canDisplayReminder    = ActionPlansMetadataUtility.getCanDisplayReminder();
-		this.taskHasRecordType = ActionPlansMetadataUtility.HAS_RECORD_TYPE;
+		this.canDisplayReminder    = ActionPlansUtilities.getCanDisplayReminder();
+		this.taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 		if(this.refType != null){
 			this.relatedFieldName = refType;
 		} else {
@@ -131,7 +135,7 @@ public inherited sharing class ActionPlanCreationController{
 			t.Action_Plan__c = null;
 		}
 
-		for(String s : ActionPlansMetadataUtility.getCustomRelationshipFields()){
+		for(String s : ActionPlansUtilities.getCustomRelationshipFields()){
 			this.actionPlan.put( s, null );
 		}
 
@@ -160,7 +164,7 @@ public inherited sharing class ActionPlanCreationController{
 			actionPlanTemplate = apt;
 		}
 
-		this.actionPlan.Name                         = ActionPlansMetadataUtility.actionPlanSubjectToName(actionPlanTemplate.Name);
+		this.actionPlan.Name                         = ActionPlansUtilities.actionPlanSubjectToName(actionPlanTemplate.Name);
 		this.actionPlan.Description__c               = actionPlanTemplate.Description__c;
 		this.actionPlan.SkipWeekends__c              = actionPlanTemplate.SkipWeekends__c;
 		this.actionPlan.SkipDay__c                   = actionPlanTemplate.SkipDay__c;
@@ -181,7 +185,7 @@ public inherited sharing class ActionPlanCreationController{
 
 		this.actionPlan.StartDate__c    = Date.today();
 		this.actionPlan.SkipWeekends__c = false;
-		if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+		if(ActionPlansUtilities.HAS_RECORD_TYPE){
 			//System.debug('set default action plan task record type id');
 			this.actionPlan.TaskRecordTypeID__c = getDefaultTaskRecordTypeId();
 		}
@@ -243,7 +247,7 @@ public inherited sharing class ActionPlanCreationController{
 	*/
 	public Id relatedObjectId(){
 		Id currentId;
-		for(String s : ActionPlansMetadataUtility.getCustomRelationshipFields()){
+		for(String s : ActionPlansUtilities.getCustomRelationshipFields()){
 			if(actionPlan.get(s) != null){
 				currentId = (Id)actionPlan.get(s);
 				break;
@@ -259,7 +263,7 @@ public inherited sharing class ActionPlanCreationController{
 	*/
 	public Boolean hasRelatedObject(){
 
-		for( String f : ActionPlansMetadataUtility.getCustomRelationshipFields() ){
+		for( String f : ActionPlansUtilities.getCustomRelationshipFields() ){
 
 			if(actionPlan.get(f) != null){
 				return true;
@@ -330,7 +334,7 @@ public inherited sharing class ActionPlanCreationController{
 		List<Id> oIdsList     = new List<Id>();
 		Savepoint sp = Database.setSavepoint();
 		if (refId == null){
-			for(String s : ActionPlansMetadataUtility.getCustomRelationshipFields()){
+			for(String s : ActionPlansUtilities.getCustomRelationshipFields()){
 				if(actionPlan.get(s) != null){
 					objId = (Id)actionPlan.get(s);
 					Schema.DescribeSObjectResult dsr = objId.getSObjectType().getDescribe();
@@ -425,7 +429,7 @@ public inherited sharing class ActionPlanCreationController{
 			}
 		}
 
-		PageReference newPage = new PageReference( '/' + ActionPlansMetadataUtility.getObjectKeyPrefix( oName ) + '/o' );
+		PageReference newPage = new PageReference( '/' + ActionPlansUtilities.getObjectKeyPrefix( oName ) + '/o' );
 		newPage.setRedirect( true );
 		return newPage;
 	}
@@ -469,7 +473,7 @@ public inherited sharing class ActionPlanCreationController{
 			return null;
 		}
 
-		ap_Prefix =  ActionPlansMetadataUtility.getObjectKeyPrefix( 'ActionPlan__c' ) ;
+		ap_Prefix =  ActionPlansUtilities.getObjectKeyPrefix( 'ActionPlan__c' ) ;
 		if(newApId != null){
 			ap_Prefix = newApId;
 		}
@@ -513,7 +517,7 @@ public inherited sharing class ActionPlanCreationController{
 			List<String> oIdsList = objectIds.split(',');
 			// Reference object list page
 			if (oIdsList.size()>1){
-				pageRef = '/' + ActionPlansMetadataUtility.getObjectKeyPrefix( objectType );
+				pageRef = '/' + ActionPlansUtilities.getObjectKeyPrefix( objectType );
 			}
 			// Reference object detail page
 			else {
@@ -546,7 +550,7 @@ public inherited sharing class ActionPlanCreationController{
 
 		List<APTaskTemplate__c> ts = [SELECT t.Id
 			FROM APTaskTemplate__c t
-			WHERE t.Status__c IN :ActionPlansMetadataUtility.getClosedTaskStatuses()
+			WHERE t.Status__c IN :ActionPlansUtilities.getClosedTaskStatuses()
 			AND t.ActivityDate__c != null AND t.Action_Plan__c = :actionPlan.Id];
 
 		return ( ts != null ) ? ts.size() : 0;
@@ -566,8 +570,8 @@ public inherited sharing class ActionPlanCreationController{
 		}
 		else {
 			APTaskTemplate__c t     = new APTaskTemplate__c();
-			t.Reminder__c             = ActionPlansMetadataUtility.getCheckReminderByDefault();
-			t.Minutes_Reminder__c    = ActionPlansMetadataUtility.getDefaultReminderMinutes();
+			t.Reminder__c             = ActionPlansUtilities.getCheckReminderByDefault();
+			t.Minutes_Reminder__c    = ActionPlansUtilities.getDefaultReminderMinutes();
 			t.Name                  = null;
 			t.TaskIndex__c             = this.taskIndex;
 			//t.Action_Plan__c        = this.actionPlan.Id;
@@ -577,7 +581,7 @@ public inherited sharing class ActionPlanCreationController{
 			//System.debug('apTasks: ' + apTasks);
 
 			// validate user, priority, subject and days before adding another
-			Action_Plans_Settings__c mySettings = ActionPlansMetadataUtility.getCustomSetting();
+			Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 			for( APTaskTemplate__c apt : apTasks ) {
 
 				//System.debug('apt.User: ' + apt.User__c);
@@ -722,7 +726,7 @@ public inherited sharing class ActionPlanCreationController{
 
 				this.apTasks = new List<APTaskTemplate__c>();
 
-				Action_Plans_Settings__c mySettings = ActionPlansMetadataUtility.getCustomSetting();
+				Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 				Id userId;
 				for( APTTaskTemplate__c aptTask : aptTasks ){
 					//Read the Custom Settings in order to asign the User to that Task
@@ -752,7 +756,7 @@ public inherited sharing class ActionPlanCreationController{
 					t.DaysFromStart__c      = aptTask.DaysFromStart__c;
 					t.User__c               = userId;
 					t.Reminder__c           = aptTask.Reminder__c;
-					t.Minutes_Reminder__c   = ActionPlansMetadataUtility.getDefaultReminderMinutes();
+					t.Minutes_Reminder__c   = ActionPlansUtilities.getDefaultReminderMinutes();
 
 					t.SendEmail__c          = aptTask.SendEmail__c;
 					t.Comments__c           = aptTask.Comments__c;
@@ -762,7 +766,7 @@ public inherited sharing class ActionPlanCreationController{
 				//System.debug('paramId != null');
 				this.apTasks = retrieveTaskFromExistingActionPlan( actionPlan.Id );
 				//check reminders and set 'send email' as false
-				String tmp_reminderDefaultTime = ActionPlansMetadataUtility.getDefaultReminderMinutes();
+				String tmp_reminderDefaultTime = ActionPlansUtilities.getDefaultReminderMinutes();
 				for( APTaskTemplate__c t : this.apTasks ){
 					if (t.Reminder__c == null || t.Reminder__c == false){
 						t.Minutes_Reminder__c    = tmp_reminderDefaultTime;
@@ -774,8 +778,8 @@ public inherited sharing class ActionPlanCreationController{
 				//System.debug('getTasks.else');
 				this.apTasks             = new List<APTaskTemplate__c>();
 				APTaskTemplate__c t      = new APTaskTemplate__c();
-				t.Reminder__c            = ActionPlansMetadataUtility.getCheckReminderByDefault();
-				t.Minutes_Reminder__c    = ActionPlansMetadataUtility.getDefaultReminderMinutes();
+				t.Reminder__c            = ActionPlansUtilities.getCheckReminderByDefault();
+				t.Minutes_Reminder__c    = ActionPlansUtilities.getDefaultReminderMinutes();
 				this.apTasks.add( t );
 			}
 
@@ -1068,7 +1072,7 @@ public inherited sharing class ActionPlanCreationController{
 	@return default task record type
 	*/
 	public Id getDefaultTaskRecordTypeId(){
-		return ActionPlansMetadataUtility.getDefaultTaskRecordTypeId();
+		return ActionPlansUtilities.getDefaultTaskRecordTypeId();
 	}
 
 	/**
@@ -1077,7 +1081,7 @@ public inherited sharing class ActionPlanCreationController{
 	 */
 	public String getRecordTypeName(){
 		String toReturn = '';
-		if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+		if(ActionPlansUtilities.HAS_RECORD_TYPE){
 			Map<Id,Schema.RecordTypeInfo> rtMapById = Task.SObjectType.getDescribe().getRecordTypeInfosById();
 			if(!rtMapById.isEmpty() && rtMapById.containsKey(actionPlan.TaskRecordTypeID__c)){
 				return rtMapById.get(actionPlan.TaskRecordTypeID__c).getName();
@@ -1090,7 +1094,7 @@ public inherited sharing class ActionPlanCreationController{
 	* Generate picklist of Task Record Types
 	*/
 	public List<SelectOption> getTaskRTPicklistValues(){
-		return ActionPlansMetadataUtility.getTaskRTPicklistValues();
+		return ActionPlansUtilities.getTaskRTPicklistValues();
 	}
 
 	/**
@@ -1098,7 +1102,7 @@ public inherited sharing class ActionPlanCreationController{
 	*/
 	public List<SelectOption> getTaskTypes(){
 		Boolean hasDefaultValue = String.isNotBlank((String)Task.Type.getDescribe().getDefaultValue());
-		return ActionPlansMetadataUtility.getFieldOptions('Task', 'Type', hasDefaultValue);
+		return ActionPlansUtilities.getFieldOptions('Task', 'Type', hasDefaultValue);
 	}
 
 	/**
@@ -1106,11 +1110,11 @@ public inherited sharing class ActionPlanCreationController{
 	*/
 	public List<SelectOption> getTaskPriorities(){
 		Boolean hasDefaultValue = String.isNotBlank((String)Task.Priority.getDescribe().getDefaultValue());
-		return ActionPlansMetadataUtility.getFieldOptions('Task', 'Priority', hasDefaultValue);
+		return ActionPlansUtilities.getFieldOptions('Task', 'Priority', hasDefaultValue);
 	}
 
 	public List<SelectOption> getHoursOption(){
-		return ActionPlansMetadataUtility.getHoursOption();
+		return ActionPlansUtilities.getHoursOption();
 	}
 
 	/**
@@ -1136,14 +1140,14 @@ public inherited sharing class ActionPlanCreationController{
 			userRequired    = userReq;
 
 			Id taskRTID = null;
-			if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+			if(ActionPlansUtilities.HAS_RECORD_TYPE){
 				taskRTID = defaultTaskRTId;
 			}
 
 			if(task.Id == null){
-				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansMetadataUtility.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
-				task.Status__c = task.Status__c != null ? task.Status__c : ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(defaultTaskRTId);
-				task.Type__c = task.Type__c != null ? task.Type__c : ActionPlansMetadataUtility.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
+				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
+				task.Status__c = task.Status__c != null ? task.Status__c : ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(defaultTaskRTId);
+				task.Type__c = task.Type__c != null ? task.Type__c : ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
 			}
 		}
 	}

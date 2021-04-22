@@ -69,7 +69,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 			when BEFORE_INSERT {
 				System.debug('before insert action plan');
 
-				Id defaultTaskRTId = ActionPlansMetadataUtility.getDefaultTaskRecordTypeId();
+				Id defaultTaskRTId = ActionPlansUtilities.getDefaultTaskRecordTypeId();
 
 				Set<Id> aptemplates = new Set<Id>();
 				for(ActionPlan__c ap : newRecords){
@@ -150,18 +150,6 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 				if (!taskList.isEmpty()){
 					unDel_errors = Database.undelete( taskList,false);
-					/* try {
-						unDel_errors = Database.undelete( taskList,false);
-					} catch(Exception e){
-						for(Integer i = 0; i < unDel_errors.size(); i++){
-							if(!unDel_errors[i].getErrors().isEmpty()){
-								// Process any errors here
-
-								//todo: handle this
-
-							}
-						}
-					} */
 				}
 			}
 		}
@@ -169,7 +157,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 	private static void validateActionPlans(List<ActionPlan__c> actionPlans){
 
-		List<String> actionPlanReferenceFields = ActionPlansMetadataUtility.getCustomRelationshipFields();
+		List<String> actionPlanReferenceFields = ActionPlansUtilities.getCustomRelationshipFields();
 
 		// Validate that 1 and only 1 custom reference field is filled
 
@@ -191,18 +179,17 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 		//System.debug('IN APTaskTemplate__c ' + triggerEvent.name());
 
-		//Undelete Tasks
 		switch on triggerEvent {
 
 			when BEFORE_INSERT, BEFORE_UPDATE {
-				//ÍSystem.debug('closed statuses: ' + ActionPlansMetadataUtility.getClosedTaskStatuses());
+				//ÍSystem.debug('closed statuses: ' + ActionPlansUtilities.getClosedTaskStatuses());
 
 				for( APTaskTemplate__c a : newRecords ){
-					a.IsClosed__c = ActionPlansMetadataUtility.getClosedTaskStatuses().contains(a.Status__c);
+					a.IsClosed__c = ActionPlansUtilities.getClosedTaskStatuses().contains(a.Status__c);
 				}
 
 				Set<Id> apIDs = new Set<Id>();
-				String aptPrefix = ActionPlansMetadataUtility.getObjectKeyPrefix('APTaskTemplate__c');
+				String aptPrefix = ActionPlansUtilities.getObjectKeyPrefix('APTaskTemplate__c');
 				//System.debug('aptPrefix ' + aptPrefix);
 				for(APTaskTemplate__c apt : newRecords){
 					//System.debug('Evaluating ' + apt.Name + ' from subject ' + apt.Subject__c);
@@ -220,8 +207,8 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							//System.debug('the task has a template and we will rename');
 							String apName = nameMap.get(apt.Action_Plan__c).Name;
 							String newSubject = apName + ' - ' + apt.Subject__c;
-							apt.Name = ActionPlansMetadataUtility.actionPlanSubjectToName(newSubject, taskTemplateNameLength);
-							System.debug('renaming aptaskTemplate to ' + newSubject);
+							apt.Name = ActionPlansUtilities.actionPlanSubjectToName(newSubject, taskTemplateNameLength);
+							//System.debug('renaming aptaskTemplate to ' + newSubject);
 						}
 					}
 				}
@@ -243,7 +230,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					undelete aP_tasks;
 				} catch ( Dmlexception e ){
 					for (APTaskTemplate__c a: newRecords){
-						a.addError('BROKEN TASK UNDELETE:'+e);
+						a.addError('ERROR on Task undelete:'+e);
 					}
 				}
 			}
@@ -254,7 +241,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 		switch on triggerEvent {
 
 			when BEFORE_INSERT {
-				Id defaultTaskRTId = ActionPlansMetadataUtility.getDefaultTaskRecordTypeId();
+				Id defaultTaskRTId = ActionPlansUtilities.getDefaultTaskRecordTypeId();
 
 				for(ActionPlanTemplate__c apt : newRecords){
 					if(apt.TaskRecordTypeID__c == null || !(apt.TaskRecordTypeID__c instanceOf Id)){
@@ -289,7 +276,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 			when BEFORE_INSERT, BEFORE_UPDATE {
 				Set<Id> templateIDs = new Set<Id>();
-				String apttPrefix = ActionPlansMetadataUtility.getObjectKeyPrefix('APTTaskTemplate__c');
+				String apttPrefix = ActionPlansUtilities.getObjectKeyPrefix('APTTaskTemplate__c');
 				//System.debug('apttPrefix ' + apttPrefix);
 				for(APTTaskTemplate__c aptt : newRecords){
 					//System.debug('Evaluating ' + aptt.Name + ' from subject ' + aptt.Subject__c);
@@ -306,7 +293,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							System.debug('the task has a template and we will rename');
 							String templateName = nameMap.get(aptt.Action_Plan_Template__c).Name;
 							String newSubject = templateName + ' - ' + aptt.Subject__c;
-							aptt.Name = ActionPlansMetadataUtility.actionPlanSubjectToName(newSubject);
+							aptt.Name = ActionPlansUtilities.actionPlanSubjectToName(newSubject);
 						} else {
 							System.debug('the task has NO template - figure this out');
 						}
@@ -332,11 +319,11 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					triggerTasksWithTemplateTaskStatus.put(ta.Id, ta);
 				}
 
-				Boolean taskHasRecordType = ActionPlansMetadataUtility.HAS_RECORD_TYPE;
+				Boolean taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 
 				//System.debug('do we have a task record type? ' + taskHasRecordType);
 
-				Set<String> closedStatuses = ActionPlansMetadataUtility.getClosedTaskStatuses();
+				Set<String> closedStatuses = ActionPlansUtilities.getClosedTaskStatuses();
 
 				// Map of record ID to "true" if the related task template is OPEN
 
@@ -412,6 +399,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							tmp.Comments__c = t.Description;
 							tmp.Priority__c = t.Priority;
 							tmp.User__c		= t.OwnerId;
+							//tmp.ActivityDate__c = t.ActivityDate;
 							lUpsert.add(tmp);
 						}
 					}
@@ -460,7 +448,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 			}
 
 			when BEFORE_INSERT {
-				if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+				if(ActionPlansUtilities.HAS_RECORD_TYPE){
 					//System.debug('Task BEFORE_INSERT Record Type to be set');
 					Map<Id, Id> taskTemplateToIntendedRecordTypeId = new Map<Id, Id>();
 					Set<Id> taskTemplateIDs = new Set<Id>();
@@ -482,11 +470,11 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						if(!taskTemplateToIntendedRecordTypeId.containsKey(t.TaskAPTaskTemplate__c)){
 							//System.debug('Template not queried');
 						}
-						if(!ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().containsKey(taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c))){
+						if(!ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().containsKey(taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c))){
 							//System.debug('Map contains invalid value');
 						}
 						if(t.TaskAPTaskTemplate__c != null && taskTemplateToIntendedRecordTypeId.containsKey(t.TaskAPTaskTemplate__c)
-						&& ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().containsKey(taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c))){
+						&& ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().containsKey(taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c))){
 							//System.debug('Putting RecordTypeId ' + taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c));
 							t.put('RecordTypeId', taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c));
 						} else {
@@ -507,7 +495,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 	*/
 	public static Map<Id, Boolean> allowChangeParentStatus(Set<Id> apTaskTemplateIds){
 		Map<Id, Boolean> allowTasksMap = new Map<Id, Boolean>();
-		Set<String> openStatuses = ActionPlansMetadataUtility.getOpenTaskStatuses();
+		Set<String> openStatuses = ActionPlansUtilities.getOpenTaskStatuses();
 
 		/* List<APTaskTemplate__c> aptList =  [SELECT a.Status__c, a.APTaskTemplate__c, a.APTaskTemplate__r.Status__c
 											FROM APTaskTemplate__c a
@@ -525,6 +513,11 @@ global inherited sharing class ActionPlansTriggerHandlers {
 	}
 
 	/**
+	 * If the user's action plans setting says to move to next open business hour day, we shift the due date to the next available work day
+	 * @param List<Task> tasks
+	 */
+
+	/**
 	 * Handle ActionPlans related to Leads after conversion
 	 */
 	public static void triggerHandler_ActionPlanLead(List<Lead> newRecords, List<Lead> oldRecords, Map<Id,Lead> newRecordsMap, Map<Id,Lead> oldRecordsMap, System.TriggerOperation triggerEvent){
@@ -537,7 +530,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					apMap.put(ap.Lead__c, ap);
 				}
 
-				Action_Plans_Settings__c mySettings = ActionPlansMetadataUtility.getCustomSetting();
+				Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 				String destinationObject = mysettings.Default_Object_on_Lead_Conversion__c;
 				if(destinationObject != null){
 					destinationObject = destinationObject.toLowerCase();

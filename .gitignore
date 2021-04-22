@@ -48,5 +48,6 @@ $RECYCLE.BIN/
 # temporary files
 src
 temp
+metadata
 force-app/main/default/classes/ActionPlansUtilities.cls
 force-app/main/default/classes/ActionPlansUtilities.cls-meta.xml

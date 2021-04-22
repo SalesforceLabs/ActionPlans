@@ -3,34 +3,38 @@ Action Plans v4
 Updated by David Schach 2021
 
 Action Plans v3
-Force.com Labs
+Force.com Labs 2011
 http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
 
-Copyright (c) 2011, salesforce.com, inc.
+BSD 3-Clause License
+
+Copyright (c) 2021, salesforce.com, inc.
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-* Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation
-and/or other materials provided with the distribution.
-* Neither the name of the salesforce.com, inc. nor the names of its contributors
-may be used to endorse or promote products derived from this software
-without specific prior written permission.
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
-OF THE POSSIBILITY OF SUCH DAMAGE.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 public inherited sharing class ActionPlansTaskTriggerUtilities {
@@ -109,16 +113,16 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	}
 
 	/**
-	* Get list of dependent Action Plans Template Task
+	* Get list of dependent Action Plan Template Tasks
 	*/
 	private List<APTaskTemplate__c> dependentActionPlansTemplateTask() {
 
 		this.dependentAptts = new List<APTaskTemplate__c>();
 		//Add Action Plan custom object reference Field.
 
-		String apdependentQuery = 'SELECT Action_Plan__r.SkipWeekends__c, ';
+		String apdependentQuery = 'SELECT Action_Plan__r.SkipWeekends__c, Action_Plan__r.SkipDay__c, ';
 
-		apdependentQuery += 'Action_Plan__r.' + String.join(ActionPlansMetadataUtility.getCustomRelationshipFields(), ', Action_Plan__r.') + ', ';
+		apdependentQuery += 'Action_Plan__r.' + String.join(ActionPlansUtilities.getCustomRelationshipFields(), ', Action_Plan__r.') + ', ';
 
 		apdependentQuery += ' Action_Plan__r.StartDate__c, Action_Plan__c, Type__c, Subject__c, ActivityDate__c, ' +
 		'Dependent__c, Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, ' +
@@ -157,24 +161,63 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 			auxTask.OwnerId             = dependentAptt.User__c;
 			//auxTask.Type				= dependentAptt.Type__c;
 			auxTask.TaskAPTaskTemplate__c   = dependentAptt.Id;
-			if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+			if(ActionPlansUtilities.HAS_RECORD_TYPE){
 				auxTask.put('RecordTypeId', dependentAptt.Task_RecordTypeId__c);
 			}
 
 			if( dependentAptt.Status__c == null ){
 				String defaultStatus;
-				if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
-					defaultStatus = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(ActionPlansMetadataUtility.getDefaultTaskRecordTypeId());
+				if(ActionPlansUtilities.HAS_RECORD_TYPE){
+					defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
 				} else {
-					defaultStatus = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(null);
+					defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
 				}
 				auxTask.Status = defaultStatus;
 				dependentAptt.Status__c = defaultStatus;//update status of Task Template
 				updList.add(dependentAptt);
 			}
 
+
+			// create due date, calculate the due date of the tasks for skip weekends feature
+			if( dependentAptt.Action_Plan__r.SkipWeekends__c == true && dependentAptt.Action_Plan__r.SkipDay__c != null){
+				Date dueDate = this.getCompletedATPTaskDate(dependentAptt.Id).addDays( dependentAptt.DaysFromStart__c.intValue() );
+
+				// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
+				//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
+				//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
+
+				String dayName = ActionPlansUtilities.getDayOfWeek( dueDate );
+				System.debug('Task is originally due on a ' + dayName);
+
+				Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
+
+				System.debug('cmdt: ' + cmdt);
+
+				Integer addDays = 0;
+
+				if( dependentAptt.Action_Plan__r.SkipDay__c.startsWithIgnoreCase('End')){
+					System.debug('Template is set to skip back to end of the previous week');
+					Integer daysToAdjust = cmdt.Days_from_end_of_previous_week__c.intValue();
+					addDays = addDays - daysToAdjust;
+					System.debug('Removing ' + daysToAdjust + ' days from ' + dueDate);
+				}
+				else if( dependentAptt.Action_Plan__r.SkipDay__c.startsWithIgnoreCase('Start')){
+					System.debug('Template is set to skip forward to beginning of the next week');
+					Integer daysToAdjust = cmdt.Days_to_start_of_next_week__c.intValue();
+					System.debug('Adding ' + daysToAdjust + ' days to ' + dueDate);
+					addDays = addDays + daysToAdjust;
+				}
+				if(addDays != 0){
+					System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
+				}
+				dependentAptt.ActivityDate__c = dueDate.addDays( addDays );
+			}
+			else {
+				dependentAptt.ActivityDate__c = dependentAptt.Action_Plan__r.StartDate__c.addDays( dependentAptt.DaysFromStart__c.intValue() );
+			}
+
 			// calculate the due date of the tasks for skip weekends feature
-			if( dependentAptt.Action_Plan__r.SkipWeekends__c ){
+			/* if( dependentAptt.Action_Plan__r.SkipWeekends__c ){
 
 				Date dueDate        = this.getCompletedATPTaskDate(dependentAptt.Id);
 				Integer addDays     = dependentAptt.DaysFromStart__c.intValue();
@@ -187,13 +230,11 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				addDays = ( dayOfWeek == 0 )? addDays + 1 : addDays;
 				addDays = ( dayOfWeek == 6 )? addDays + 2 : addDays;
 
-				Date d = this.getCompletedATPTaskDate(dependentAptt.Id);
-				auxTask.ActivityDate = d.addDays( addDays );
+				auxTask.ActivityDate = dueDate.addDays( addDays );
 			}
 			else {
-				Date d = this.getCompletedATPTaskDate(dependentAptt.Id);
-				dependentAptt.ActivityDate__c = d.addDays( dependentAptt.DaysFromStart__c.intValue() );
-			}
+				dependentAptt.ActivityDate__c = dueDate.addDays( dependentAptt.DaysFromStart__c.intValue() );
+			} */
 
 			this.newTaskMap.put( auxTask.TaskAPTaskTemplate__c, auxTask );
 		} // end for loop
@@ -226,7 +267,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 			t2.Priority          = dependentAptt.Priority__c;
 			t2.OwnerId           = dependentAptt.User__c;
 			t2.TaskAPTaskTemplate__c = dependentAptt.Id;
-			if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
+			if(ActionPlansUtilities.HAS_RECORD_TYPE){
 				t2.put('RecordTypeId', dependentAptt.Task_RecordTypeId__c);
 			}
 
@@ -246,7 +287,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 
 			ActionPlan__c ap = dependentAptt.Action_Plan__r;
 
-			for( String s : ActionPlansMetadataUtility.getCustomRelationshipFields() ){
+			for( String s : ActionPlansUtilities.getCustomRelationshipFields() ){
 				String f = s;
 				if(!f.equalsIgnoreCase('Contact__c') && !f.equalsIgnoreCase('Lead__c') && ap.get(f) != null){
 					t2.WhatId = (Id)ap.get(f);
@@ -264,10 +305,10 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 
 			t2.Type         = dependentAptt.Type__c;
 			String defaultStatus;
-			if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
-				defaultStatus = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(ActionPlansMetadataUtility.getDefaultTaskRecordTypeId());
+			if(ActionPlansUtilities.HAS_RECORD_TYPE){
+				defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
 			} else {
-				defaultStatus = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(null);
+				defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
 			}
 			t2.Status = defaultStatus;
 			//t2.Status       = defaultStatus;
