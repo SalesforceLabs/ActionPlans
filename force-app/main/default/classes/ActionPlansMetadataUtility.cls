@@ -47,10 +47,10 @@ public inherited sharing class ActionPlansMetadataUtility {
 	 */
 	private static Boolean setHasRecordType(){
 		if(ActionPlansTestUtilities.forceHasRecordType != null){
-			System.debug('forceHasRecordType was set to ' + ActionPlansTestUtilities.forceHasRecordType);
+			//System.debug('forceHasRecordType was set to ' + ActionPlansTestUtilities.forceHasRecordType);
 			return ActionPlansTestUtilities.forceHasRecordType;
 		} else {
-			System.debug('forceHasRecordType is null');
+			//System.debug('forceHasRecordType is null');
 			ActionPlansTestUtilities.forceHasRecordType = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
 		}
 		return ActionPlansTestUtilities.forceHasRecordType;
@@ -364,6 +364,7 @@ public inherited sharing class ActionPlansMetadataUtility {
 		Action_Plans_Settings__c instance = Action_Plans_Settings__c.getInstance();
 		if(instance == null){
 			instance = new Action_Plans_Settings__c();
+			instance.Action_Plans_Business_Hours_ID__c = [SELECT Id FROM BusinessHours WHERE IsDefault = true].Id;
 			upsert instance;
 		}
 		return instance;
@@ -410,5 +411,53 @@ public inherited sharing class ActionPlansMetadataUtility {
 
 		return orgCanSendEmails;
 	}
+
+	/**
+	 * Returns Friday in the running user language
+	 */
+	public static String getFriday(){
+		Datetime dt = DateTime.newInstance(1900, 1,5,1,1,1);
+		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
+		System.debug(dayOfWeek);
+		return dayOfWeek;
+	}
+
+	public static String getMonday(){
+		Datetime dt = DateTime.newInstance(1900, 1,1,1,1,1);
+		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
+		System.debug(dayOfWeek);
+		return dayOfWeek;
+	}
+
+	public static String getDayOfWeek(Date d){
+
+		Date monday = Date.newInstance(1900, 1, 1);
+		Integer dayOfWeek = Math.mod(monday.daysBetween(d), 7);
+		return dayOfWeekEnglish.get(dayOfWeek);
+
+		/* Datetime dt = DateTime.newInstance( d.year(), d.month(), d.day(), 1, 1, 1 );
+		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
+		System.debug(dayOfWeek);
+		return dayOfWeek; */
+	}
+
+	public static Map<Integer, String> dayOfWeekEnglish = new Map<Integer, String>{
+		0 => 'Monday', 1 => 'Tuesday', 2 => 'Wednesday', 3 => 'Thursday', 4 => 'Friday', 5 => 'Saturday', 6 => 'Sunday'
+	};
+
+	public static Weekend_Day__mdt getWeekendDay(String developerName){
+		return getWeekendDay(developerName, 0, 0);
+	}
+
+	public static Weekend_Day__mdt getWeekendDay(String developerName, Integer daysBack, Integer daysForward){
+		weekendDay = Weekend_Day__mdt.getInstance(developerName);
+		if(weekendDay == null){
+			weekendDay = new Weekend_Day__mdt(DeveloperName = developerName);
+			weekendDay.Days_to_start_of_next_week__c = daysForward;
+			weekendDay.Days_from_end_of_previous_week__c = daysBack;
+		}
+		return weekendDay;
+	}
+	private static Weekend_Day__mdt weekendDay;
 
 }

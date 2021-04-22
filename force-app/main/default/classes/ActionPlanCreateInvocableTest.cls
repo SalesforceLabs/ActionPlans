@@ -68,7 +68,7 @@ private class ActionPlanCreateInvocableTest {
 
 		Test.StartTest();
 
-		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id);
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id, 0);
 
 		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
 		requests.add(req);
@@ -111,7 +111,7 @@ private class ActionPlanCreateInvocableTest {
 		}
 		update allTaskTemplates;
 
-		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id);
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id, 0);
 
 		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
 		requests.add(req);
@@ -137,7 +137,7 @@ private class ActionPlanCreateInvocableTest {
 		apTemplate.SkipWeekends__c = false;
 		update apTemplate;
 
-		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id);
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id, 0);
 
 		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
 		requests.add(req);
@@ -160,7 +160,7 @@ private class ActionPlanCreateInvocableTest {
 
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( TASK_COUNT );
 
-		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id);
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id, 0);
 
 		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
 		requests.add(req);
@@ -183,7 +183,7 @@ private class ActionPlanCreateInvocableTest {
 
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( TASK_COUNT );
 
-		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id);
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id, 0);
 
 		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
 		requests.add(req);
@@ -206,7 +206,7 @@ private class ActionPlanCreateInvocableTest {
 
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( TASK_COUNT );
 
-		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id);
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id, 0);
 
 		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
 		requests.add(req);
@@ -252,10 +252,83 @@ private class ActionPlanCreateInvocableTest {
 
 	}  */
 
-	private static ActionPlanCreateInvocable.CreateActionPlanRequest setupRequest(Id templateId, Id relatedID){
+	@IsTest
+	private static void checkWeekendDueDate(){
+
+
+		Weekend_Day__mdt saturday = ActionPlansMetadataUtility.getWeekendDay('Saturday', 1, 2);
+		if(saturday.Id == null){
+			// We need to find a way to insert our custom metadata record
+		}
+
+		//Integer daysToSaturday = 0;
+		Date upcomingSaturday = Date.today();
+		//Date monday = Date.newInstance(1900, 1, 1);
+		Integer daysToSaturday = 0;
+		for(daysToSaturday = 0; daysToSaturday < 8; daysToSaturday++){
+			upcomingSaturday = Date.today().addDays(daysToSaturday);
+			if( ActionPlansMetadataUtility.getDayOfWeek(upcomingSaturday) == 'Saturday' ){
+				break;
+			}
+		}
+		System.debug(upcomingSaturday + ' is a Saturday');
+		System.debug('There are this many days to Saturday: ' + daysToSaturday);
+
+		Action_Plans_Settings__c aps = Action_Plans_Settings__c.getOrgDefaults();
+		aps.Chatter_Object_Brag__c = false;
+		aps.Unassigned_Task_Default__c = true;
+		try{
+			upsert aps;
+		} catch (Exception e){
+			update aps;
+		}
+
+		Account a = new Account();
+		a.Name = 'TestAcct';
+		insert a;
+
+		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
+
+		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( TASK_COUNT );
+
+		System.assertEquals(TASK_COUNT, [SELECT Count() FROM APTTaskTemplate__c]);
+
+		apTemplate.SkipDay__c = 'End of previous week';
+		update apTemplate;
+
+		List<APTTaskTemplate__c> allTaskTemplates = [SELECT Id, Dependent__c, SendEmail__c, Reminder__c FROM APTTaskTemplate__c];
+		for(APTTaskTemplate__c at : allTaskTemplates){
+			at.SendEmail__c = false;
+			at.Reminder__c = false;
+			at.Dependent__c = null;
+			at.User__c = null;
+		}
+		update allTaskTemplates;
+
+		Test.StartTest();
+
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = setupRequest(apTemplate.Id, a.Id, daysToSaturday);
+
+		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
+		requests.add(req);
+
+		List<Id> resultIDs = ActionPlanCreateInvocable.makeActionPlanFromTemplate(requests);
+
+		Test.stopTest();
+		System.assertNotEquals(null, resultIDs);
+		System.assertEquals(1, resultIDs.size());
+		System.assertEquals(TASK_COUNT, [SELECT Count() FROM Task]);
+		for(Task t : [SELECT Id, ActivityDate FROM Task]){
+			System.debug('Task is due on ' + t.ActivityDate + ' which is a ' + ActionPlansMetadataUtility.getDayOfWeek(t.ActivityDate));
+		}
+		System.assertEquals(0, [SELECT Count() FROM Task WHERE ActivityDate = :upcomingSaturday]);
+	}
+
+	private static ActionPlanCreateInvocable.CreateActionPlanRequest setupRequest(Id templateId, Id relatedID, Integer daysToActionPlanStart){
 		ActionPlanCreateInvocable.CreateActionPlanRequest req = new ActionPlanCreateInvocable.CreateActionPlanRequest();
 		req.templateNameOrID = templateId;
 		req.relatedRecordID = relatedId;
+		req.daysToActionPlanStart = daysToActionPlanStart;
 
 		return req;
 	}

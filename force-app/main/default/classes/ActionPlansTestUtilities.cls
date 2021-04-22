@@ -381,7 +381,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		ActionPlanTemplate__c apTemplate = new ActionPlanTemplate__c();
 		apTemplate.Name = this.createRandomWord();
 		apTemplate.SkipWeekends__c = true;
-		apTemplate.SkipDay__c = 'Monday';
+		apTemplate.SkipDay__c = 'Friday';
 
 		try{
 			insert apTemplate;

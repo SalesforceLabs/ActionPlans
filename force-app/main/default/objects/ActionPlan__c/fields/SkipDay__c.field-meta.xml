@@ -9,26 +9,15 @@
     <type>Picklist</type>
     <valueSet>
         <controllingField>SkipWeekends__c</controllingField>
-        <valueSetDefinition>
-            <sorted>false</sorted>
-            <value>
-                <fullName>Friday</fullName>
-                <default>false</default>
-                <label>Friday</label>
-            </value>
-            <value>
-                <fullName>Monday</fullName>
-                <default>false</default>
-                <label>Monday</label>
-            </value>
-        </valueSetDefinition>
+        <restricted>true</restricted>
+        <valueSetName>SkipDay</valueSetName>
         <valueSettings>
             <controllingFieldValue>checked</controllingFieldValue>
-            <valueName>Friday</valueName>
+            <valueName>End of previous week</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>checked</controllingFieldValue>
-            <valueName>Monday</valueName>
+            <valueName>Start of next week</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

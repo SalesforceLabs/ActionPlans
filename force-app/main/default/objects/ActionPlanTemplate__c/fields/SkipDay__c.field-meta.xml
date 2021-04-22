@@ -3,23 +3,22 @@
     <fullName>SkipDay__c</fullName>
     <description>If a Due Date lands on a weekend it should be pushed to this day.</description>
     <externalId>false</externalId>
+    <inlineHelpText>If a Due Date lands on a weekend it should be pushed to this day.</inlineHelpText>
     <label>Default weekend due dates to</label>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        <valueSetDefinition>
-            <sorted>false</sorted>
-            <value>
-                <fullName>Friday</fullName>
-                <default>false</default>
-                <label>Friday</label>
-            </value>
-            <value>
-                <fullName>Monday</fullName>
-                <default>false</default>
-                <label>Monday</label>
-            </value>
-        </valueSetDefinition>
+        <controllingField>SkipWeekends__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetName>SkipDay</valueSetName>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>End of previous week</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Start of next week</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>

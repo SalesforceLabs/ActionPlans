@@ -105,7 +105,7 @@ private class ActionPlansUtilitiesTest {
 		Test.startTest();
 
 		ap.SkipWeekends__c = true;
-		ap.SkipDay__c = System.Label.ap_Friday;
+		ap.SkipDay__c = 'Friday';
 		update ap;
 		Test.setCurrentPage(Page.ActionPlanCreation);
 		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
@@ -335,7 +335,7 @@ private class ActionPlansUtilitiesTest {
 
 			apt.TaskRecordTypeID__c = ActionPlansTestUtilities.getNonDefaultAvailableTaskRecordType();
 			apt.SkipWeekends__c = true;
-			apt.SkipDay__c = 'Monday';
+			apt.SkipDay__c = 'Friday';
 
 			update apt;
 
@@ -346,7 +346,7 @@ private class ActionPlansUtilitiesTest {
 			apCreateController.refreshRelatedObjectsLookUp();
 
 			apCreateController.actionPlan.SkipWeekends__c = true;
-			apCreateController.actionPlan.SkipDay__c = 'Monday';
+			apCreateController.actionPlan.SkipDay__c = 'Friday';
 			apCreateController.getTasks();
 
 			System.assert( !apCreateController.getTasks().isEmpty() );

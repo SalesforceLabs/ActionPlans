@@ -47,7 +47,8 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 		Map<String, ActionPlanTemplate__c> templateNameOrIdToTemplate = new Map<String, ActionPlanTemplate__c>();
 
-		List<ActionPlanTemplate__c> possibleTemplates = [SELECT Id, Description__c, Name, OwnerId, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c,
+		List<ActionPlanTemplate__c> possibleTemplates =
+							[SELECT Id, Description__c, Name, OwnerId, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c,
 								(SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, User__r.Name, Id,
 								DaysFromStart__c, Action_Plan_Template__c, APTTaskTemplate__r.Subject__c,
 								Reminder__c, SendEmail__c, Comments__c, TaskIndex__c, Action_Plan_Template__r.TaskRecordTypeID__c
@@ -95,11 +96,13 @@ global inherited sharing class ActionPlanCreateInvocable {
 			ap.SkipDay__c                   = actionPlanTemplate.SkipDay__c;
 			ap.Action_Plan_Template__c      = actionPlanTemplate.Id;
 			ap.TaskRecordTypeID__c          = actionPlanTemplate.TaskRecordTypeID__c;
-			ap.StartDate__c                 = Date.today();
+			ap.StartDate__c                 = Date.today().addDays(r.daysToActionPlanStart == null ? 0 : r.daysToActionPlanStart);
 
 			for(String s : ActionPlansMetadataUtility.getCustomRelationshipFields()){
 				ap.put(s, null);
 			}
+
+			// TODO: Check if we have the proper object relationship on ActionPlan
 
 			Id relatedId = r.relatedRecordID;
 			Schema.SObjectType token = relatedId.getSObjectType();
@@ -185,6 +188,44 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 					// create due date, calculate the due date of the tasks for skip weekends feature
 					if( ap.SkipWeekends__c == true && ap.SkipDay__c != null){
+						Date dueDate = ap.StartDate__c.addDays( apTask.DaysFromStart__c.intValue() );
+
+						// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
+						//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
+						//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
+
+						String dayName = ActionPlansMetadataUtility.getDayOfWeek( dueDate );
+						System.debug('Task is originally due on a ' + dayName);
+
+						Weekend_Day__mdt cmdt = ActionPlansMetadataUtility.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
+
+						System.debug('cmdt: ' + cmdt);
+
+						Integer addDays = 0;
+
+						if( ap.SkipDay__c.startsWithIgnoreCase('End')){
+							System.debug('Template is set to skip back to end of the previous week');
+							Integer daysToAdjust = cmdt.Days_from_end_of_previous_week__c.intValue();
+							addDays = addDays - daysToAdjust;
+							System.debug('Removing ' + daysToAdjust + ' days from ' + dueDate);
+						}
+						else if( ap.SkipDay__c.startsWithIgnoreCase('Start')){
+							System.debug('Template is set to skip forward to beginning of the next week');
+							Integer daysToAdjust = cmdt.Days_to_start_of_next_week__c.intValue();
+							System.debug('Adding ' + daysToAdjust + ' days to ' + dueDate);
+							addDays = addDays + daysToAdjust;
+						}
+						if(addDays != 0){
+							System.debug('Task is now due on a ' + ActionPlansMetadataUtility.getDayOfWeek( dueDate.addDays( addDays ) ));
+						}
+						apTask.ActivityDate__c = dueDate.addDays( addDays );
+					}
+					else {
+						apTask.ActivityDate__c = ap.StartDate__c.addDays( apTask.DaysFromStart__c.intValue() );
+					}
+
+					/* // create due date, calculate the due date of the tasks for skip weekends feature
+					if( ap.SkipWeekends__c == true && ap.SkipDay__c != null){
 						Date dueDate    = ap.StartDate__c.addDays( apTask.DaysFromStart__c.intValue() );
 						Integer addDays = apTask.DaysFromStart__c.intValue();
 
@@ -197,7 +238,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 							addDays = ( dayOfWeek == 0 ) ? addDays - 2  : addDays ;
 							addDays = ( dayOfWeek == 6 ) ? addDays - 1  : addDays ;
 						}
-						else {
+						else if( ap.SkipDay__c.equalsIgnoreCase( 'Monday' ) ) {
 							// push to monday
 							addDays = ( dayOfWeek == 0 ) ? addDays + 1  : addDays ;
 							addDays = ( dayOfWeek == 6 ) ? addDays + 2  : addDays ;
@@ -206,7 +247,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 					}
 					else {
 						apTask.ActivityDate__c = ap.StartDate__c.addDays( apTask.DaysFromStart__c.intValue() );
-					}
+					} */
 				}
 				aptasksToInsert.add( apTask );
 			}
@@ -332,11 +373,14 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 	global class CreateActionPlanRequest {
 
-		@InvocableVariable(required=true)
+		@InvocableVariable(required=true label='The Template Id or Name to use' description='Name is not unique, so ID is preferred')
 		global String templateNameOrID;
 
-		@InvocableVariable(required=true)
+		@InvocableVariable(required=true label='The parent Record ID' description='Must have a relationship from Action Plan object')
 		global Id relatedRecordID;
+
+		@InvocableVariable(required=false label='Days from trigger to start Action Plan' description='Defaults to 0, the day the plan is created')
+		global Integer daysToActionPlanStart;
 	}
 
 }

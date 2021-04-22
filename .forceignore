@@ -12,13 +12,12 @@ package.xml
 **/__tests__/**
 
 # Org Metadata
-**/default/quickActions
-**default/Custom_Object__c***
-**/default/profiles
+**/quickActions
+**Custom_Object***
+**/profiles/**
 **/objects/Task/recordTypes
 **/standardValueSets
+**/Translations
+**/settings/**
 
-/src*
-src.zip
-**settings
-**profiles
+src

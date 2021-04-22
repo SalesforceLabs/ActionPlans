@@ -38,12 +38,15 @@ ehthumbs.db
 $RECYCLE.BIN/
 
 # Salesforce Metadata
-**/default/quickActions
-**Custom_Object__c***
-**/default/profiles
-force-app/main/default/objects/Task/recordTypes
-force-app/main/default/standardValueSets
+**Custom_Object***
+**/quickActions
+**/profiles/**
+**/objects/Task/recordTypes
+**/standardValueSets
+**/Translations
 
 # temporary files
-src.zip
-src/**
+src
+temp
+force-app/main/default/classes/ActionPlansUtilities.cls
+force-app/main/default/classes/ActionPlansUtilities.cls-meta.xml

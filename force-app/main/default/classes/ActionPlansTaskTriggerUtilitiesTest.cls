@@ -102,7 +102,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'contact', 0 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Monday';
+		ap.SkipDay__c				= 'Friday';
 		update ap;
 
 		List<Id> apTTaskIds 		= new List<Id>();
@@ -153,7 +153,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'opportunity', 0 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Monday';
+		ap.SkipDay__c				= 'Friday';
 		update ap;
 
 		List<Id> apTTaskIds 		= new List<Id>();
@@ -211,7 +211,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'contract', 1 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Monday';
+		ap.SkipDay__c				= 'Friday';
 		update ap;
 
 		// select the APTask Template
@@ -263,7 +263,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'campaign', 3 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Monday';
+		ap.SkipDay__c				= 'Friday';
 		update ap;
 
 		// select the APTask Template
