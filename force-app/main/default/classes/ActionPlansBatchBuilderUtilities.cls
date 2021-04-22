@@ -3,34 +3,38 @@ Action Plans v4
 Updated by David Schach 2021
 
 Action Plans v3
-Force.com Labs
+Force.com Labs 2011
 http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
 
-Copyright (c) 2011, salesforce.com, inc.
+BSD 3-Clause License
+
+Copyright (c) 2021, salesforce.com, inc.
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
-	* Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-	* Neither the name of the salesforce.com, inc. nor the names of its contributors
-	may be used to endorse or promote products derived from this software
-	without specific prior written permission.
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
-OF THE POSSIBILITY OF SUCH DAMAGE.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 public inherited sharing class ActionPlansBatchBuilderUtilities {
@@ -72,7 +76,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 		} else {
 
-			List<String> apRefFields = ActionPlansMetadataUtility.getCustomRelationshipFields();
+			List<String> apRefFields = ActionPlansUtilities.getCustomRelationshipFields();
 
 			// If baseObjId == null, then we are inserting a single or multiple APs
 
@@ -139,7 +143,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 					nt = t.clone();
 
 					nt.Action_Plan__c       = ap.Id;
-					nt.Name                 = ActionPlansMetadataUtility.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength);
+					nt.Name                 = ActionPlansUtilities.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength);
 					nt.DaysFromStart__c     = ( nt.DaysFromStart__c < 0 ) ? 0 : nt.DaysFromStart__c;
 					nt.User__c              = getAPTaskTemplateUser(ap, objectOwnersMap, nt.User__c); //( nt.User__c != null ) ? nt.User__c : getRelatedRecordOwnerId( ap, objectOwnersMap );
 					aptList.add( nt );
@@ -159,7 +163,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 				for( APTaskTemplate__c t : this.baseAPTaskList ) {
 
 					t.DaysFromStart__c     = ( t.DaysFromStart__c < 0 ) ? 0 : t.DaysFromStart__c;
-					t.Name                 = ActionPlansMetadataUtility.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength);
+					t.Name                 = ActionPlansUtilities.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength);
 					t.User__c              = getAPTaskTemplateUser(ap, objectOwnersMap, t.User__c); //( nt.User__c != null ) ? nt.User__c : getRelatedRecordOwnerId( ap, objectOwnersMap );
 				}
 				aptList = this.baseAPTaskList;
@@ -188,12 +192,12 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 				if( at.Status__c == null ){
 					if(!String.isBlank(at.Task_RecordTypeId__c) && at.Task_RecordTypeId__c instanceof Id && at.Task_RecordTypeId__c.startsWithIgnoreCase('012')){
-						at.Status__c = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(at.Task_RecordTypeId__c);
+						at.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(at.Task_RecordTypeId__c);
 					} else {
-						if(ActionPlansMetadataUtility.HAS_RECORD_TYPE){
-							at.Status__c = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(ActionPlansMetadataUtility.getDefaultTaskRecordTypeId());
+						if(ActionPlansUtilities.HAS_RECORD_TYPE){
+							at.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
 						} else {
-							at.Status__c = ActionPlansMetadataUtility.getTaskRecordTypeStatusDefaultValues().get(null);
+							at.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
 						}
 					}
 				}
@@ -220,10 +224,10 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 						//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
 						//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
 
-						String dayName = ActionPlansMetadataUtility.getDayOfWeek( dueDate );
+						String dayName = ActionPlansUtilities.getDayOfWeek( dueDate );
 						System.debug('Task is originally due on a ' + dayName);
 
-						Weekend_Day__mdt cmdt = ActionPlansMetadataUtility.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
+						Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
 
 						System.debug('cmdt: ' + cmdt);
 
@@ -242,7 +246,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 							addDays = addDays + daysToAdjust;
 						}
 						if(addDays != 0){
-							System.debug('Task is now due on a ' + ActionPlansMetadataUtility.getDayOfWeek( dueDate.addDays( addDays ) ));
+							System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
 						}
 						at.ActivityDate__c = dueDate.addDays( addDays );
 					}
@@ -331,7 +335,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 			}
 
 			//link to Action Plan's Related To Object
-			for( String s : ActionPlansMetadataUtility.getCustomRelationshipFields() ){
+			for( String s : ActionPlansUtilities.getCustomRelationshipFields() ){
 				String f = s;
 				if(!f.equalsIgnoreCase('Contact__c') && !f.equalsIgnoreCase('Lead__c') && apAux.get(f) != null){
 					t.WhatId = (Id)apAux.get(f);
@@ -399,7 +403,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 		if (this.mode != ApEditMode.MODE_EDIT_SINGLE){
 		 //Execution When a Action Plan is Created, that check the Custom Setings in order to Post a new Feed ( Object )
-			Action_Plans_Settings__c mySettings = ActionPlansMetadataUtility.getCustomSetting();
+			Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 
 			Set<Id> relObjectIDs = new Set<Id>();
 			for(ActionPlan__c ap : relActionPlans){
@@ -422,7 +426,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 	 */
 	public static Id getAPTaskTemplateUser( ActionPlan__c ap, Map<Id, Id> relObjOwners, Id apTaskUser){
 		if(String.isNotBlank(apTaskUser)){ return apTaskUser; }
-		Action_Plans_Settings__c mySettings = ActionPlansMetadataUtility.getCustomSetting();
+		Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 		if(!mySettings.Unassigned_Task_Default__c){
 
 			return UserInfo.getUserId();
@@ -441,7 +445,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		Id ownerValue;
 		Id objId;
 
-		for( String f : ActionPlansMetadataUtility.getCustomRelationshipFields() ){
+		for( String f : ActionPlansUtilities.getCustomRelationshipFields() ){
 
 			if(ap.get(f) != null){
 				objId = (Id)ap.get(f);
@@ -490,7 +494,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 		List<SObject> chatterPosts = new List<SObject>();
 
-		List<String> apRefFields = ActionPlansMetadataUtility.getCustomRelationshipFields();
+		List<String> apRefFields = ActionPlansUtilities.getCustomRelationshipFields();
 		String apQuery = 'SELECT Id, ' + String.join(apRefFields, ', ') + ' FROM ActionPlan__c WHERE Id IN :objIds';
 
 		for(SObject so : Database.query(apQuery)){
