@@ -2,11 +2,22 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
     global static void actionPlansSObjectTriggerHandler(List<SObject> newRecords, List<SObject> oldRecords, Map<Id,SObject> newRecordsMap, Map<Id,SObject> oldRecordsMap, System.TriggerOperation triggerEvent, String sObjectName){
 
-		String relationshipName = sObjectName;
-		System.debug('relationshipName: ' + relationshipName);
-		if(!relationshipName.endsWithIgnoreCase('__c')){
-			relationshipName += '__c';
+		String relationshipName = null;
+
+		switch on triggerEvent {
+
+			when BEFORE_DELETE {
+				relationshipName = getRelationshipName((Id)oldRecordsMap.values()[0].get('Id'));
+			}
+			when AFTER_UNDELETE {
+				relationshipName = getRelationshipName((Id)newRecordsMap.values()[0].get('Id'));
+			}
+			when ELSE {
+				return;
+			}
 		}
+		if(relationshipName == null) { return; }
+
 		System.debug('relationshipName: ' + relationshipName);
 
 		//Delete related action plans
@@ -58,6 +69,26 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 			}
 		}
+	}
+
+	private static String getRelationshipName(Id recordId) {
+		Schema.SObjectType token = recordId.getSObjectType();
+		String sObjectName = token.getDescribe().getName().toLowerCase();
+
+		Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.ActionPlan__c.fields.getMap();
+
+		for(String s : fieldMap.keyset()){
+			Schema.DescribeFieldResult dfr = fieldMap.get(s).getDescribe();
+			Schema.DisplayType dt = dfr.getType();
+			if(dt.name().equalsIgnoreCase('Reference') && s.endsWithIgnoreCase('__c')){
+				String relationshipObjectName = dfr.getReferenceTo()[0].getDescribe().getName();
+				if( sObjectName.equalsIgnoreCase(relationshipObjectName) ){
+					return s;
+				}
+			}
+		}
+		return null;
+
 	}
 
 	public static void triggerHandler_ActionPlan(List<ActionPlan__c> newRecords, List<ActionPlan__c> oldRecords, Map<Id,ActionPlan__c> newRecordsMap, Map<Id,ActionPlan__c> oldRecordsMap, System.TriggerOperation triggerEvent){
@@ -230,7 +261,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					undelete aP_tasks;
 				} catch ( Dmlexception e ){
 					for (APTaskTemplate__c a: newRecords){
-						a.addError('ERROR on Task undelete:'+e);
+						a.addError(System.Label.ap_Error + ' ' + Task.sObjectType.getDescribe().getLabel() + ' ' + triggerEvent + ': ' + e);
 					}
 				}
 			}
@@ -290,12 +321,12 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 					for(APTTaskTemplate__c aptt : newRecords){
 						if( nameMap.containsKey(aptt.Action_Plan_Template__c) ){
-							System.debug('the task has a template and we will rename');
+							//System.debug('the task has a template and we will rename');
 							String templateName = nameMap.get(aptt.Action_Plan_Template__c).Name;
 							String newSubject = templateName + ' - ' + aptt.Subject__c;
 							aptt.Name = ActionPlansUtilities.actionPlanSubjectToName(newSubject);
 						} else {
-							System.debug('the task has NO template - figure this out');
+							//System.debug('the task has NO template - figure this out');
 						}
 					}
 				}

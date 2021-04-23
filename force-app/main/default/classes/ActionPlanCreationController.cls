@@ -94,14 +94,11 @@ public inherited sharing class ActionPlanCreationController{
 
 		this.canDisplayReminder    = ActionPlansUtilities.getCanDisplayReminder();
 		this.taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
-		if(this.refType != null){
-			this.relatedFieldName = refType;
-		} else {
-			this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
-		}
 
-		ActionPlansTestUtilities.showDebugParameters = true;
-		ActionPlansTestUtilities.debugParameters();
+		this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
+
+		//ActionPlansTestUtilities.showDebugParameters = true;
+		ActionPlansTestUtilities.debugParameters('Creation Controller constructor');
 	}
 
 	/**
@@ -205,6 +202,11 @@ public inherited sharing class ActionPlanCreationController{
 		}
 		set {
 			relatedFieldName = value;
+			if(relatedFieldName == null){
+				relatedFieldName = getRelatedObjectOptions()[0].getValue();
+			}
+			System.debug('relatedFieldName ' + value);
+			if(!relatedFieldName.endsWithIgnoreCase('__c')){ relatedFieldName += '__c'; }
 			Schema.DescribeFieldResult dfr = Schema.sObjectType.ActionPlan__c.fields.getMap().get(relatedFieldName).getDescribe();
 			Schema.SObjectType sot = dfr.getReferenceTo()[0];
 			Schema.DescribeSObjectResult dsr = sot.getDescribe();
@@ -227,7 +229,7 @@ public inherited sharing class ActionPlanCreationController{
 	}
 
 	/**
-	* Getter and Setter for RefType
+	* Getter and Setter for RefType (related object Name)
 	*/
 	public String refType {
 		get{
@@ -496,8 +498,8 @@ public inherited sharing class ActionPlanCreationController{
 		String pageRef;
 		String aPlanListUrl;
 
-		ActionPlansTestUtilities.showDebugParameters = true;
-		ActionPlansTestUtilities.debugParameters();
+		//ActionPlansTestUtilities.showDebugParameters = true;
+		ActionPlansTestUtilities.debugParameters('Creation Controller cancel');
 
 		// Reference action plan detail page
 		if( paramid != null ){
@@ -863,7 +865,7 @@ public inherited sharing class ActionPlanCreationController{
 			}
 		}
 
-		retrieveNameRelatedObject(relatedObjIds, nameParam);
+		retrieveNameRelatedRecord(relatedObjIds, nameParam);
 	}
 
 	/**
@@ -871,7 +873,7 @@ public inherited sharing class ActionPlanCreationController{
 	* @param relatedObjIds
 	* @param relatedObjectName
 	*/
-	private void retrieveNameRelatedObject( Set<Id> relatedObjIds, String relatedObjectName ){
+	private void retrieveNameRelatedRecord( Set<Id> relatedObjIds, String relatedObjectName ){
 		String objectlower = relatedObjectName.toLowerCase();
 		//System.debug('related object name is ' + objectlower);
 
@@ -1019,44 +1021,48 @@ public inherited sharing class ActionPlanCreationController{
 		return maxIndex;
 	}
 
+	private List<SelectOption> relatedObjectOptions;
+
 	/**
 	* Getter method with the related object options by default.
 	*/
 	public List<SelectOption> getRelatedObjectOptions(){
+		if(relatedObjectOptions == null){
+			relatedObjectOptions = new List<SelectOption>();
+			Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
 
-		List<SelectOption> options = new List<SelectOption>();
-		Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+			// Describe the fieldSet so we can make sure that we only add SelectOptions for desired records
+			Schema.FieldSet fs = Schema.SObjectType.ActionPlan__c.fieldSets.Related_Objects;
 
-		// Describe the fieldSet so we can make sure that we only add SelectOptions for desired records
-		Schema.FieldSet fs = Schema.SObjectType.ActionPlan__c.fieldSets.Related_Objects;
+			for(Schema.FieldSetMember fsm : fs.getFields()){
+				//System.debug('Field Set field ' + fsm.getFieldPath());
+				String s = fsm.getFieldPath();
+				Schema.DisplayType dt = fsm.getType();
+				if(s.contains('.') || !dt.name().equalsIgnoreCase('Reference') || !s.endsWithIgnoreCase('__c')){
+					continue; // only look at custom references one object up
+				}
 
-		for(Schema.FieldSetMember fsm : fs.getFields()){
-			//System.debug('Field Set field ' + fsm.getFieldPath());
-			String s = fsm.getFieldPath();
-			Schema.DisplayType dt = fsm.getType();
-			if(s.contains('.') || !dt.name().equalsIgnoreCase('Reference') || !s.endsWithIgnoreCase('__c')){
-				continue; // only look at custom references one object up
+				Schema.SObjectField sof = fsm.getSObjectField();
+				Schema.DescribeFieldResult dfr = sof.getDescribe();
+				Schema.SObjectType sot = dfr.getReferenceTo()[0];
+				Schema.DescribeSObjectResult dsr = sot.getDescribe();
+				Boolean hasActivities = dsr.fields.getMap().containsKey('lastactivitydate');
+				System.debug(dfr.getLabel() + ' has activities? ' + hasActivities);
+				Boolean canSeeRelatedObject = dsr.isAccessible();
+				Boolean canUpdateLookupField = dfr.isUpdateable();
+				//System.debug('Checking object name ' + dsr.getName() + ' from field ' + s);
+
+				if(canSeeRelatedObject && canUpdateLookupField && hasActivities){
+					String value = dfr.getName();
+					String label = dsr.getLabel();
+					System.debug('RELATED OBJECT OPTION: VALUE : ' + value + ' LABEL: ' + label);
+					relatedObjectOptions.add( new SelectOption( value, label ));
+				}
 			}
 
-			Schema.SObjectField sof = fsm.getSObjectField();
-			Schema.DescribeFieldResult dfr = sof.getDescribe();
-			Schema.SObjectType sot = dfr.getReferenceTo()[0];
-			Schema.DescribeSObjectResult dsr = sot.getDescribe();
-			Boolean hasActivities = dsr.fields.getMap().containsKey('lastactivitydate');
-			//System.debug(dfr.getLabel() + ' has activities? ' + hasActivities);
-			Boolean canSeeRelatedObject = dsr.isAccessible();
-			Boolean canUpdateLookupField = dfr.isUpdateable();
-			//System.debug('Checking object name ' + dsr.getName() + ' from field ' + s);
-
-			if(canSeeRelatedObject && canUpdateLookupField && hasActivities){
-				String value = dfr.getName();
-				String label = dsr.getLabel();
-				options.add( new SelectOption( value, label ));
-			}
+			relatedObjectOptions.sort();
 		}
-
-		options.sort();
-		return options;
+		return relatedObjectOptions;
 	}
 
 	/**

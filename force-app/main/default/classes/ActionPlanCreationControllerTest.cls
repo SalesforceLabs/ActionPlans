@@ -124,7 +124,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( ap ) );
 
 		apCreateController.actionPlan.SkipWeekends__c = true;
-		apCreateController.actionPlan.SkipDay__c = 'Friday';
+		apCreateController.actionPlan.SkipDay__c = 'End of previous week';
 
 		apCreateController.save();
 
@@ -595,7 +595,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		apCreateController.refreshRelatedObjectsLookUp();
 		apCreateController.actionPlan.TaskRecordTypeID__c = ActionPlansTestUtilities.getNonDefaultAvailableTaskRecordType();
 		apCreateController.actionPlan.SkipWeekends__c = true;
-		apCreateController.actionPlan.SkipDay__c = 'Friday';
+		apCreateController.actionPlan.SkipDay__c = 'End of previous week';
 		apCreateController.getTasks();
 
 		System.assert( !apCreateController.getTasks().isEmpty() );

@@ -63,7 +63,8 @@ public inherited sharing class ActionPlansTestUtilities{
 	* of follow status.
 	*/
 	public User createTestUser() {
-		for( Profile p : [SELECT Id, PermissionsModifyAllData, Name from Profile WHERE PermissionsModifyAllData = true AND UserType = 'Standard' LIMIT 100] ){
+		//for( Profile p : [SELECT Id, PermissionsModifyAllData, Name from Profile WHERE Name = 'System Administrator' AND UserType = 'Standard' LIMIT 100] ){
+		for( Profile p : [SELECT Id, PermissionsModifyAllData, Name from Profile WHERE PermissionsModifyAllData = true AND UserType = 'Standard' LIMIT 1] ){
 			if( p.PermissionsModifyAllData ){
 				return this.createTestUser( p );
 			}
@@ -92,6 +93,14 @@ public inherited sharing class ActionPlansTestUtilities{
 		testUser.EmailEncodingKey 	= 'UTF-8';
 
 		insert testUser;
+
+		List<PermissionSet> pslist = [SELECT Id FROM PermissionSet WHERE Name Like 'Action_Plans%'];
+		List<PermissionSetAssignment> psalist = new List<PermissionSetAssignment>();
+		for(PermissionSet ps : pslist){
+			psalist.add(new PermissionSetAssignment(AssigneeId = testUser.Id, PermissionSetId = ps.Id));
+		}
+		System.debug('psalist: ' + psalist);
+		Database.insert(psalist, false);
 
 		return testUser;
 	}
@@ -385,7 +394,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		ActionPlanTemplate__c apTemplate = new ActionPlanTemplate__c();
 		apTemplate.Name = this.createRandomWord();
 		apTemplate.SkipWeekends__c = true;
-		apTemplate.SkipDay__c = 'Friday';
+		apTemplate.SkipDay__c = 'End of previous week';
 
 		try{
 			insert apTemplate;
@@ -497,14 +506,14 @@ public inherited sharing class ActionPlansTestUtilities{
 	/**
 	 * Utility method for debugging Visualforce page parameters
 	 */
-	public static void debugParameters(){
+	public static void debugParameters(String prefix){
 		try{
-				if(showDebugParameters != true){ return; }
+			if(showDebugParameters != true || !Test.isRunningTest()){ return; }
 
-				Map<String, String> pageParams = ApexPages.currentPage().getParameters();
-				for( String s : ApexPages.currentPage().getParameters().keyset() ){
-					System.debug(s + ' - ' + pageParams.get(s));
-				}
+			Map<String, String> pageParams = ApexPages.currentPage().getParameters();
+			for( String s : ApexPages.currentPage().getParameters().keyset() ){
+				System.debug(prefix + ' debug parameters: ' + s + ' - ' + pageParams.get(s));
+			}
 		} catch (Exception e){}
 	}
 

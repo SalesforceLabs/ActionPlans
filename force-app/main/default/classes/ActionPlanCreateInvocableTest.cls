@@ -102,7 +102,7 @@ private class ActionPlanCreateInvocableTest {
 		Test.StartTest();
 
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( TASK_COUNT );
-		apTemplate.SkipDay__c = 'Friday';
+		apTemplate.SkipDay__c = 'End of previous week';
 		update apTemplate;
 
 		List<APTTaskTemplate__c> allTaskTemplates = [SELECT Id, Dependent__c, SendEmail__c, Reminder__c FROM APTTaskTemplate__c];

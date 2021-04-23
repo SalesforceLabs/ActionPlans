@@ -164,7 +164,8 @@ private class ActionPlanTemplateCreationCntrlTest {
 		FROM APTTaskTemplate__c a
 		WHERE a.Action_Plan_Template__c = :actionPlanTemplate.Id];
 
-		Boolean error = aptcc.addTemplateTask();
+		Boolean error = aptcc.addedTask;
+		aptcc.addTemplateTask();
 
 		System.assert( aptcc.geterrorMsg() == null, 'A error was returned when adding a template task ');
 
@@ -178,7 +179,9 @@ private class ActionPlanTemplateCreationCntrlTest {
 		FROM APTTaskTemplate__c a
 		WHERE a.Action_Plan_Template__c = :actionPlanTemplate2.Id];
 
-		error = aptcc.addTemplateTask();
+		aptcc.addTemplateTask();
+		error = aptcc.addedTask;
+		System.assert(!aptcc.addedTask);
 
 		System.assert( aptcc.geterrorMsg() != null, 'A error was not returned when adding a template task' );
 

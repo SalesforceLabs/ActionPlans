@@ -43,15 +43,15 @@ public inherited sharing class ImportTemplateController{
 	/**
 	* Constructor
 	*/
-    public ImportTemplateController(){
-    	this.attachment = new Attachment();
-    }
+	public ImportTemplateController(){
+		this.attachment = new Attachment();
+	}
 
-    /**
+	/**
 	* Action that initiates the Import process
 	* @return PageReference
 	*/
-    public PageReference importTemplate(){
+	public PageReference importTemplate(){
 
 		ImportActionPlanTemplate importUtil = new ImportActionPlanTemplate();
 
@@ -59,18 +59,18 @@ public inherited sharing class ImportTemplateController{
 			String templateId = importUtil.processImportedDocument( this.attachment );
 
 			PageReference newPage = Page.ActionPlanTemplateDetail;
-	        newPage.getParameters().put('Id', templateId);
+			newPage.getParameters().put('Id', templateId);
 
-    		return newPage ;
+			return newPage ;
 
-    		//return new Pagereference( '/apex/ActionPlanTemplateDetail?id=' + templateId );
-    	} catch( Exception ex ){
-    		//we initialize again the attachment when an error ocurres to prevent viewstate size errors
-    		this.attachment = new Attachment();
-    		ApexPages.addMessages( ex );
-    	}
+			//return new Pagereference( '/apex/ActionPlanTemplateDetail?id=' + templateId );
+		} catch( Exception ex ){
+			//we initialize again the attachment when an error ocurres to prevent viewstate size errors
+			this.attachment = new Attachment();
+			ApexPages.addMessages( ex );
+		}
 
-    	return null;
-    }
+		return null;
+	}
 
 }

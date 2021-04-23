@@ -42,7 +42,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	private Double					taskIndex;
 	@testvisible private ActionPlanTemplate__c	actionPlanTemplate;
 	public String					subTitle				{ get; private set; }
-	private Boolean					addedTask;
+	@testvisible private Boolean					addedTask;
 	public Boolean					canDisplayReminder			{ get; private set; }
 	public Boolean					taskHasRecordType		{ get; private set; }
 	public List<APTTaskTemplate__c> 		pendingTemplateDeletes;

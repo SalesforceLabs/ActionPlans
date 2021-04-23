@@ -58,7 +58,7 @@ private class ActionPlansUtilitiesTest {
 		Test.setCurrentPage(Page.ActionPlanCreation);
 		Test.startTest();
 		ActionPlanCreationController apu = new ActionPlanCreationController(new ApexPages.StandardController( new ActionPlan__c() ) );
-		ActionPlansTestUtilities.debugParameters();
+		ActionPlansTestUtilities.debugParameters('testDebugParameters');
 		Test.stopTest();
 		System.assert(true);
 	}
@@ -109,7 +109,7 @@ private class ActionPlansUtilitiesTest {
 		Test.startTest();
 
 		ap.SkipWeekends__c = true;
-		ap.SkipDay__c = 'Friday';
+		ap.SkipDay__c = 'End of previous week';
 		update ap;
 		Test.setCurrentPage(Page.ActionPlanCreation);
 		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
@@ -286,6 +286,8 @@ private class ActionPlansUtilitiesTest {
 	@IsTest
 	private static void doChatterPost() {
 
+		ActionPlansTestUtilities.showDebugParameters = false;
+
 		Action_Plans_Settings__c aps = Action_Plans_Settings__c.getInstance();
 		if(!aps.Chatter_Object_Brag__c){
 			aps.Chatter_Object_Brag__c = true;
@@ -339,10 +341,11 @@ private class ActionPlansUtilitiesTest {
 
 			apt.TaskRecordTypeID__c = ActionPlansTestUtilities.getNonDefaultAvailableTaskRecordType();
 			apt.SkipWeekends__c = true;
-			apt.SkipDay__c = 'Friday';
+			apt.SkipDay__c = 'End of previous week';
 
 			update apt;
 
+			// TODO: Delete these lines?
 			ApexPages.currentPage().getParameters().put( 'id', null );
 
 			ApexPages.currentPage().getParameters().put( 'templateId', apt.Id );
@@ -350,7 +353,7 @@ private class ActionPlansUtilitiesTest {
 			apCreateController.refreshRelatedObjectsLookUp();
 
 			apCreateController.actionPlan.SkipWeekends__c = true;
-			apCreateController.actionPlan.SkipDay__c = 'Friday';
+			apCreateController.actionPlan.SkipDay__c = 'End of previous week';
 			apCreateController.getTasks();
 
 			System.assert( !apCreateController.getTasks().isEmpty() );

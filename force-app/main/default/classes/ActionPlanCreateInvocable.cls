@@ -241,7 +241,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 							addDays = ( dayOfWeek == 0 ) ? addDays - 2  : addDays ;
 							addDays = ( dayOfWeek == 6 ) ? addDays - 1  : addDays ;
 						}
-						else if( ap.SkipDay__c.equalsIgnoreCase( 'Monday' ) ) {
+						else {
 							// push to monday
 							addDays = ( dayOfWeek == 0 ) ? addDays + 1  : addDays ;
 							addDays = ( dayOfWeek == 6 ) ? addDays + 2  : addDays ;

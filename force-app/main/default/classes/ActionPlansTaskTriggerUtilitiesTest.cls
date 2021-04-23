@@ -106,7 +106,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'contact', 0 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Friday';
+		ap.SkipDay__c				= 'End of previous week';
 		update ap;
 
 		List<Id> apTTaskIds 		= new List<Id>();
@@ -157,7 +157,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'opportunity', 0 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Friday';
+		ap.SkipDay__c				= 'End of previous week';
 		update ap;
 
 		List<Id> apTTaskIds 		= new List<Id>();
@@ -215,7 +215,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'contract', 1 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Friday';
+		ap.SkipDay__c				= 'End of previous week';
 		update ap;
 
 		// select the APTask Template
@@ -267,7 +267,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'campaign', 3 );
 		ap.SkipWeekends__c			= true;
-		ap.SkipDay__c				= 'Friday';
+		ap.SkipDay__c				= 'End of previous week';
 		update ap;
 
 		// select the APTask Template
@@ -295,7 +295,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 			Database.undelete (ids);
 		} catch(Dmlexception e){
 			System.debug('Dmlexception: ' + e.getMessage());
-			System.assert( e.getMessage().contains('BROKEN'), e.getMessage() );
+			System.assert( e.getMessage().contains(System.Label.ap_Error), e.getMessage() + '(APTaskTemplate__c undelete error should have the proper format)');
 		}
 
 		Test.stopTest();
