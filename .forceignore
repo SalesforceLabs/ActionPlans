@@ -5,20 +5,23 @@
 package.xml
 
 # LWC configuration files
-**/jsconfig.json
+**lwc/jsconfig.json
+jsconfig.json
 **/.eslintrc.json
+force-app/main/default/lwc/jsconfig.json
 
 # LWC Jest
 **/__tests__/**
 
 # Org Metadata
-**/quickActions
+**quickActions
 **Custom_Object***
-**/profiles/**
+**profiles/**
 **/objects/Task/recordTypes
-**/standardValueSets
-**/Translations
+**/standardValueSets/**
+**/Translations/**
 **/settings/**
+**/lwc
 
 src
 metadata

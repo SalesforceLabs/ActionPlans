@@ -101,10 +101,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ActionPlansMetadataUtility</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ActionPlansObjectTriggersTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>

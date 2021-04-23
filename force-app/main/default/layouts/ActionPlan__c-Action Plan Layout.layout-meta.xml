@@ -15,10 +15,6 @@
                 <behavior>Edit</behavior>
                 <field>Description__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Custom_Object__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

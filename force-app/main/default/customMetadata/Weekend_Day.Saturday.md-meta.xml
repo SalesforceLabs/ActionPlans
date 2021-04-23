@@ -3,19 +3,11 @@
     <label>Saturday</label>
     <protected>false</protected>
     <values>
-        <field>Action_Plan__c</field>
-        <value xsi:type="xsd:string">ActionPlan__c</value>
-    </values>
-    <values>
         <field>Days_from_end_of_previous_week__c</field>
         <value xsi:type="xsd:double">1.0</value>
     </values>
     <values>
         <field>Days_to_start_of_next_week__c</field>
         <value xsi:type="xsd:double">2.0</value>
-    </values>
-    <values>
-        <field>Skip_Day__c</field>
-        <value xsi:type="xsd:string">SkipDay__c</value>
     </values>
 </CustomMetadata>
