@@ -267,18 +267,21 @@ public inherited sharing class ActionPlansUtilities {
 		List<SelectOption> toReturn = new List<SelectOption>();
 		Schema.DescribeSObjectResult obj = Schema.getGlobalDescribe().get( objectname ).getDescribe();
 		Schema.SObjectField sof = obj.fields.getMap().get(fieldname);
-		if(hasDefaultValue == null || !hasDefaultValue){
-			toReturn.add( new SelectOption( '', '--' + System.Label.ap_None +'--' ) );
-		}
+
 		for(Schema.PicklistEntry spe : sof.getDescribe().getPicklistValues()){
+			if(spe.isDefaultValue()){
+				hasDefaultValue = true;
+			}
 			toReturn.add(new Selectoption(spe.getValue(), spe.getLabel()));
 		}
-
+		if(hasDefaultValue == null || !hasDefaultValue){
+			toReturn.add( 0, new SelectOption( '', '--' + System.Label.ap_None +'--' ) );
+		}
 		return toReturn;
 	}
 
 	/**
-	* Set the Hours for select box of Remainder Hour
+	* Set the Hours for select box of Reminder Time
 	* @return options
 	*/
 	public static List<SelectOption> getHoursOption() {
@@ -455,7 +458,7 @@ public inherited sharing class ActionPlansUtilities {
 	/**
 	 * Returns Friday in the running user language
 	 */
-	public static String getFriday(){
+	/* public static String getFriday(){
 		Datetime dt = DateTime.newInstance(1900, 1,5,1,1,1);
 		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
 		System.debug(dayOfWeek);
@@ -467,7 +470,7 @@ public inherited sharing class ActionPlansUtilities {
 		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
 		System.debug(dayOfWeek);
 		return dayOfWeek;
-	}
+	} */
 
 	public static String getDayOfWeek(Date d){
 

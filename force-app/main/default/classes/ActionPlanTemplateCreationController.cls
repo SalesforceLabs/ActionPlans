@@ -541,16 +541,16 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 * Generate picklist of Task Types
 	 */
 	public List<SelectOption> getTaskTypes(){
-		Boolean hasDefaultValue = String.isNotBlank((String)Task.Type.getDescribe().getDefaultValue());
-		return ActionPlansUtilities.getFieldOptions('Task', 'Type', hasDefaultValue);
+		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Type.getDescribe().getDefaultValue());
+		return ActionPlansUtilities.getFieldOptions('Task', 'Type', null);
 	}
 
 	/**
 	 * Generate picklist of Task Priorities
 	 */
 	public List<SelectOption> getTaskPriorities(){
-		Boolean hasDefaultValue = String.isNotBlank((String)Task.Priority.getDescribe().getDefaultValue());
-		return ActionPlansUtilities.getFieldOptions('Task', 'Priority', hasDefaultValue);
+		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Priority.getDescribe().getDefaultValue());
+		return ActionPlansUtilities.getFieldOptions('Task', 'Priority', null);
 	}
 
 	/**
