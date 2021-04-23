@@ -184,7 +184,7 @@ private with sharing class ActionPlanCreationControllerTest {
 	@IsTest
 	private static void testRelateToMultipleContacts(){
 
-		final Integer CONCOUNT = 200;
+		final Integer CONCOUNT = 100;
 		final Integer APTTASKCOUNT = 2;
 
 		List<Contact> contacts = new List<Contact>();
@@ -292,11 +292,12 @@ private with sharing class ActionPlanCreationControllerTest {
 	@IsTest
 	private static void testAddNewTask(){
 		ActionPlansTestUtilities testUtil   = new ActionPlansTestUtilities();
-		User ownerUser = testUtil.createTestUser();
 
 		Test.setCurrentPage(Page.ActionPlanCreation);
 
-		ActionPlan__c actionPlan            = testUtil.createNewActionPlan( 'account', 0 );
+		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', 0 );
+
+		User ownerUser = testUtil.createTestUser();
 
 		APTaskTemplate__c apTask = new APTaskTemplate__c();
 		apTask.Action_Plan__c       = actionPlan.Id;
@@ -379,13 +380,13 @@ private with sharing class ActionPlanCreationControllerTest {
 
 	@IsTest
 	private static void checkSubjectItems(){
-
+		Integer TASK_COUNT = 2;
 		Test.StartTest();
 
 		Test.setCurrentPage(Page.ActionPlanCreation);
 
 		ActionPlansTestUtilities testUtil   = new ActionPlansTestUtilities();
-		ActionPlan__c actionPlan            = testUtil.createNewActionPlan( 'account', 2 );
+		ActionPlan__c actionPlan            = testUtil.createNewActionPlan( 'account', TASK_COUNT );
 
 		ApexPages.currentPage().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
@@ -399,7 +400,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		List<Selectoption> options = apCreateController.getSubjectItems();
 
 		System.assert( !options.isEmpty(), 'SELECT options is empty' );
-		System.assert( options.size() == 3, 'incorrect number of select options' );
+		System.assertEquals(TASK_COUNT + 1, options.size(), 'incorrect number of select options' );
 
 		Test.StopTest();
 	}
@@ -500,7 +501,7 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		apCreateController.save();
 
-		System.assert( apCreateController.getErrorMsg() != null );
+		System.assertNotEquals( null, apCreateController.getErrorMsg() );
 
 		Test.StopTest();
 	}
@@ -554,10 +555,10 @@ private with sharing class ActionPlanCreationControllerTest {
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
 		apCreateController.referedObjectInit();
 
-		System.assert( apCreateController.relatedObjNameList.size() == 2 );
-		System.assert( apCreateController.getRelatedObjectOptions().size() == apCreateController.getRelatedObjectOptions().size() );
-
 		Test.StopTest();
+
+		System.assertEquals( 2, apCreateController.relatedObjNameList.size() );
+
 	}
 
 	@IsTest
@@ -637,7 +638,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan) );
 
 		Test.stopTest();
-		System.assertEquals(null, apCreateController.getDefaultTaskRecordTypeId());
+		System.assertEquals( null, apCreateController.getDefaultTaskRecordTypeId() );
 
 		System.assert(!ActionPlansUtilities.HAS_RECORD_TYPE);
 

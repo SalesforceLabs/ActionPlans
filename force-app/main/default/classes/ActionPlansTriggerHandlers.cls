@@ -346,7 +346,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				Set<Id> APTasksIds = new Set<Id>();
 
 				Map<Id, Task> triggerTasksWithTemplateTaskStatus = new Map<Id, Task>();
-				for(Task ta : [SELECT Id, Status, TaskAPTaskTemplate__r.Status__c, TaskAPTaskTemplate__r.APTaskTemplate__c, TaskAPTaskTemplate__r.APTaskTemplate__r.Status__c FROM Task WHERE Id IN :newRecords]){
+				for(Task ta : [SELECT Id, Status, TaskAPTaskTemplate__r.Status__c, TaskAPTaskTemplate__r.APTaskTemplate__c, TaskAPTaskTemplate__r.APTaskTemplate__r.Status__c FROM Task WHERE Id IN :newRecords AND TaskAPTaskTemplate__c != null]){
 					triggerTasksWithTemplateTaskStatus.put(ta.Id, ta);
 				}
 
@@ -405,13 +405,13 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 
 				//Call to ActionPlansUtilities in order to proceed with creation of dependent Task
-				if( !closedTasks.isEmpty() ) {
+				/* if( !closedTasks.isEmpty() ) {
 					ActionPlansTaskTriggerUtilities.initDependentTaskWork( closedTasks );
 				}
 				//update status to in progress for AP Tasks
 				if( !inProgressTasks.isEmpty() ) {
 					ActionPlansTaskTriggerUtilities.updateAPTasksStatus( inProgressTasks );
-				}
+				} */
 
 				//Query APTaskTemplate__c objects to update fields
 				if ( !APTasksIds.isEmpty() ){
@@ -430,13 +430,22 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							tmp.Comments__c = t.Description;
 							tmp.Priority__c = t.Priority;
 							tmp.User__c		= t.OwnerId;
-							//tmp.ActivityDate__c = t.ActivityDate;
+							tmp.ActivityDate__c = t.ActivityDate;
 							lUpsert.add(tmp);
 						}
 					}
 					if (!lUpsert.isEmpty()){
 						upsert lUpsert;
 					}
+				}
+
+				//Call to ActionPlansUtilities in order to proceed with creation of dependent Task
+				if( !closedTasks.isEmpty() ) {
+					ActionPlansTaskTriggerUtilities.initDependentTaskWork( closedTasks );
+				}
+				//update status to in progress for AP Tasks
+				if( !inProgressTasks.isEmpty() ) {
+					ActionPlansTaskTriggerUtilities.updateAPTasksStatus( inProgressTasks );
 				}
 			}
 

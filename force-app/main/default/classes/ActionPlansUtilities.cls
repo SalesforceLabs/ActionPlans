@@ -408,6 +408,7 @@ public inherited sharing class ActionPlansUtilities {
 		if(instance == null){
 			instance = new Action_Plans_Settings__c();
 			instance.Action_Plans_Business_Hours_ID__c = [SELECT Id FROM BusinessHours WHERE IsDefault = true].Id;
+
 			upsert instance;
 		}
 		return instance;

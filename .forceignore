@@ -15,13 +15,17 @@ force-app/main/default/lwc/jsconfig.json
 
 # Org Metadata
 **quickActions
-**Custom_Object***
+**Custom_Object**
 **profiles/**
 **/objects/Task/recordTypes
 **/standardValueSets/**
 **/Translations/**
 **/settings/**
 **/lwc
+**/layouts/Account**
+# **/layouts/Account-Account %28Action Plans%29 Layout.layout-meta.xml
+**/objects/Account/Account.object-meta.xml
+**/objects/Account/fields/***
 
 src
 metadata

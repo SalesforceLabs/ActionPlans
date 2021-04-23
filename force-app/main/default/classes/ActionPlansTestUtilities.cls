@@ -118,7 +118,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			try{
 				insert newAccount;
 			}
-			catch( Exception ex ){System.assert( false, String.format(System.Label.ap_PreDeployError, new String[]{Account.sObjectType.getDescribe().getLabel()} ) );
+			catch( Exception ex ){System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Account.sObjectType.getDescribe().getLabel()} ) );
 			}
 		}
 
@@ -147,7 +147,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			try{
 			insert newCampaign;
 		}
-		catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError, new String[]{ Campaign.sObjectType.getDescribe().getLabel()} ) );  }
+		catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{ Campaign.sObjectType.getDescribe().getLabel()} ) );  }
 	}
 		return newCampaign;
 	}
@@ -175,7 +175,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			try{
 				insert newCase;
 			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError, new String[]{Case.sObjectType.getDescribe().getLabel()} ) );  }
+			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Case.sObjectType.getDescribe().getLabel()} ) );  }
 		}
 		return newCase;
 	}
@@ -202,7 +202,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			try{
 				insert newContact;
 			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError, new String[]{Contact.sObjectType.getDescribe().getLabel() } ) );
+			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Contact.sObjectType.getDescribe().getLabel() } ) );
 
 			}
 		}
@@ -234,7 +234,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			try{
 				insert newContract;
 			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError, new String[]{Contract.sObjectType.getDescribe().getLabel() } ) ); }
+			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Contract.sObjectType.getDescribe().getLabel() } ) ); }
 		}
 		return newContract;
 	}
@@ -263,7 +263,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			try{
 				insert newLead;
 			}
-			catch( Exception ex ){System.assert( false, String.format(System.Label.ap_PreDeployError, new String[]{Lead.sObjectType.getDescribe().getLabel() } ) );
+			catch( Exception ex ){System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Lead.sObjectType.getDescribe().getLabel() } ) );
 			}
 		}
 		return newLead;
@@ -293,7 +293,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			try{
 				insert newOpportunity;
 			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError, new String[]{Opportunity.sObjectType.getDescribe().getLabel()}) ); }
+			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Opportunity.sObjectType.getDescribe().getLabel()}) ); }
 		}
 		return newOpportunity;
 	}
