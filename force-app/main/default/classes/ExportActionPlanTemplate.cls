@@ -55,10 +55,10 @@ public inherited sharing class ExportActionPlanTemplate{
 	*/
 	public Document export(){
 
-		ActionPlanTemplate__c apTemplate = [SELECT a.SkipWeekends__c, a.SkipDay__c, a.Name, a.Id, a.Description__c,
-												( SELECT Id, Name, Action_Plan_Template__c, APTTaskTemplate__c, Comments__c, DaysFromStart__c, Dependent__c,
-													Priority__c, Reminder__c, SendEmail__c, Subject__c, Type__c, Minutes_Reminder__c, TaskIndex__c FROM apTasks__r )
-												FROM ActionPlanTemplate__c a WHERE a.Id = :this.templateId];
+		ActionPlanTemplate__c apTemplate = [SELECT SkipWeekends__c, SkipDay__c, Name, Id, Description__c,
+												( SELECT Id, Name, Action_Plan_Template__c, APTTaskTemplate__c, Comments__c, DaysFromStart__c, Dependent__c, Type__c,
+													Priority__c, Reminder__c, SendEmail__c, Subject__c, Minutes_Reminder__c, TaskIndex__c FROM apTasks__r )
+												FROM ActionPlanTemplate__c WHERE Id = :this.templateId];
 
 		String xml 		= buildXmlString( apTemplate );
 		Document doc 	= saveToDocument( apTemplate.name, xml );

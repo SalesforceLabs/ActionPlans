@@ -222,7 +222,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 				t.Reminder__c 	= false;
 				t.TaskIndex__c 	= this.taskIndex;
 				t.Priority__c   = (String)Task.Priority.getDescribe().getDefaultValue();
-				//t.Type__c   = (String)Task.Type.getDescribe().getDefaultValue();
+				t.Type__c   = (String)Task.Type.getDescribe().getDefaultValue();
 				System.debug('taskIndex ' + t.TaskIndex__c);
 				System.debug('t.Priority__c ' + t.Priority__c);
 				System.debug('aptTasks: ' + aptTasks);
@@ -342,11 +342,11 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			Id tempApId = actionPlanTemplate.Id;
 
 			if( tempApId != null ) {
-				aptTasks = [SELECT a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c, TaskIndex__c,
-							 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, a.APTTaskTemplate__c,
-							 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c
-							 FROM APTTaskTemplate__c a
-							 WHERE a.Action_Plan_Template__c = :tempApId  ORDER BY TaskIndex__c ASC];
+				aptTasks = [SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c,
+							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
+							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
+							 FROM APTTaskTemplate__c
+							 WHERE Action_Plan_Template__c = :tempApId  ORDER BY TaskIndex__c ASC];
 			}
 			else {
 				aptTasks 				= new List<APTTaskTemplate__c>();
