@@ -341,8 +341,8 @@ global inherited sharing class ActionPlansTriggerHandlers {
 		switch on triggerEvent {
 
 			when AFTER_UPDATE {
-				Map<Id, String> closedTasks = new Map<Id, String>();
-				Map<Id, String> inProgressTasks = new Map<Id, String>();
+				Map<Id, String> closedTasksMap = new Map<Id, String>();
+				Map<Id, String> inProgressTasksMap = new Map<Id, String>();
 				Set<Id> APTasksIds = new Set<Id>();
 
 				Map<Id, Task> triggerTasksWithTemplateTaskStatus = new Map<Id, Task>();
@@ -390,10 +390,10 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							//if (allowChangeParentStatus(t.TaskAPTaskTemplate__c))
 							if(allowMap.containsKey(t.TaskAPTaskTemplate__c) && allowMap.get(t.TaskAPTaskTemplate__c)){
 								if( !t.IsClosed){
-									inProgressTasks.put( t.TaskAPTaskTemplate__c, t.Status );
+									inProgressTasksMap.put( t.TaskAPTaskTemplate__c, t.Status );
 									//System.debug('task is in progress');
 								} else if (t.IsClosed) {
-									closedTasks.put( t.TaskAPTaskTemplate__c, t.Status );
+									closedTasksMap.put( t.TaskAPTaskTemplate__c, t.Status );
 									//System.debug('task is closed');
 								}
 							} else {
@@ -405,13 +405,13 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 
 				//Call to ActionPlansUtilities in order to proceed with creation of dependent Task
-				/* if( !closedTasks.isEmpty() ) {
-					ActionPlansTaskTriggerUtilities.initDependentTaskWork( closedTasks );
+				if( !closedTasksMap.isEmpty() ) {
+					ActionPlansTaskTriggerUtilities.initDependentTaskWork( closedTasksMap );
 				}
 				//update status to in progress for AP Tasks
-				if( !inProgressTasks.isEmpty() ) {
-					ActionPlansTaskTriggerUtilities.updateAPTasksStatus( inProgressTasks );
-				} */
+				if( !inProgressTasksMap.isEmpty() ) {
+					ActionPlansTaskTriggerUtilities.updateAPTasksStatus( inProgressTasksMap );
+				}
 
 				//Query APTaskTemplate__c objects to update fields
 				if ( !APTasksIds.isEmpty() ){
@@ -430,6 +430,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							tmp.Comments__c = t.Description;
 							tmp.Priority__c = t.Priority;
 							tmp.User__c		= t.OwnerId;
+							//tmp.Status__c   = t.Status;
 							tmp.ActivityDate__c = t.ActivityDate;
 							lUpsert.add(tmp);
 						}
@@ -437,15 +438,6 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					if (!lUpsert.isEmpty()){
 						upsert lUpsert;
 					}
-				}
-
-				//Call to ActionPlansUtilities in order to proceed with creation of dependent Task
-				if( !closedTasks.isEmpty() ) {
-					ActionPlansTaskTriggerUtilities.initDependentTaskWork( closedTasks );
-				}
-				//update status to in progress for AP Tasks
-				if( !inProgressTasks.isEmpty() ) {
-					ActionPlansTaskTriggerUtilities.updateAPTasksStatus( inProgressTasks );
 				}
 			}
 
