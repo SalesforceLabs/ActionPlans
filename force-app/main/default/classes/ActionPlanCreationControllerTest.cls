@@ -229,7 +229,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		System.assertEquals(CONCOUNT, [SELECT Count() FROM ActionPlan__c], 'Failed to make one AP per contact');
 		System.debug('successfully related to ' + CONCOUNT + ' Contacts');
 
-		System.debug([SELECT Name FROM ActionPlan__c]);
+		System.assertNotEquals(0, [SELECT Count() FROM ActionPlan__c WHERE Contact__c != null], 'Should have');
 
 		System.assertEquals( CONCOUNT * APTTASKCOUNT, [SELECT Count() FROM APTaskTemplate__c], 'Not enough Action Plan Tasks created');
 
