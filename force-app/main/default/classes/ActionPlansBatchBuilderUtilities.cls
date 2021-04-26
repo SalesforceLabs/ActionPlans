@@ -126,7 +126,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		Map<Id,Id> objectOwnersMap = retrieveOwnersDataRelatedObject( this.relatedRecordIDs, this.relatedObjectName );
 
 		//insert Action Plans to DB
-		System.debug('about to upsert ' + relActionPlans.size() + ' action plans');
+		//System.debug('about to upsert ' + relActionPlans.size() + ' action plans');
 		upsert relActionPlans;
 
 		//create ActionPlanTemplatetasks && tasks from base ActionPlan Task List
@@ -159,7 +159,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 			for(ActionPlan__c ap : relActionPlans){
 
 				mapIDAP.put(ap.Id, ap);
-				//aptList = new List<APTaskTemplate__c>();
+
 				for( APTaskTemplate__c t : this.baseAPTaskList ) {
 
 					t.DaysFromStart__c     = ( t.DaysFromStart__c < 0 ) ? 0 : t.DaysFromStart__c;
@@ -180,7 +180,6 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 				}
 				if(at.Action_Plan__c != null && at.Action_Plan__c != ap.Id){continue;}
 
-				//aptTOTALListId.add(apt.Id);
 				aptTOTALListId.add(at.Id);
 
 				//APTaskTemplate__c at = apt.clone();
@@ -218,68 +217,13 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 					// create due date, calculate the due date of the tasks for skip weekends feature
 					if( ap.SkipWeekends__c == true && ap.SkipDay__c != null){
-						Date dueDate = ap.StartDate__c.addDays( at.DaysFromStart__c.intValue() );
 
-						// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
-						//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
-						//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
-
-						String dayName = ActionPlansUtilities.getDayOfWeek( dueDate );
-						System.debug('Task is originally due on a ' + dayName);
-
-						Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
-
-						System.debug('cmdt: ' + cmdt);
-
-						Integer addDays = 0;
-
-						if( ap.SkipDay__c.startsWithIgnoreCase('End')){
-							System.debug('Template is set to skip back to end of the previous week');
-							Integer daysToAdjust = cmdt.Days_from_end_of_previous_week__c.intValue();
-							addDays = addDays - daysToAdjust;
-							System.debug('Removing ' + daysToAdjust + ' days from ' + dueDate);
-						}
-						else if( ap.SkipDay__c.startsWithIgnoreCase('Start')){
-							System.debug('Template is set to skip forward to beginning of the next week');
-							Integer daysToAdjust = cmdt.Days_to_start_of_next_week__c.intValue();
-							System.debug('Adding ' + daysToAdjust + ' days to ' + dueDate);
-							addDays = addDays + daysToAdjust;
-						}
-						if(addDays != 0){
-							System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
-						}
-						at.ActivityDate__c = dueDate.addDays( addDays );
+						at.ActivityDate__c = ActionPlansUtilities.adjustTaskDueDate(ap.StartDate__c, at.DaysFromStart__c.intValue(), ap.SkipDay__c);
 					}
 					else {
 						at.ActivityDate__c = ap.StartDate__c.addDays( at.DaysFromStart__c.intValue() );
 					}
 
-					/* // create due date, calculate the due date of the tasks for skip weekends feature
-					if( ap.SkipWeekends__c == true && ap.SkipDay__c != null){
-						Date dueDate    = ap.StartDate__c.addDays( at.DaysFromStart__c.intValue() );
-						Integer addDays = at.DaysFromStart__c.intValue();
-
-						// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
-						Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
-						Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
-
-						if( ap.SkipDay__c.equalsIgnoreCase( System.Label.ap_Friday ) ){
-							// push to friday
-							addDays = ( dayOfWeek == 0 ) ? addDays - 2  : addDays ;
-							addDays = ( dayOfWeek == 6 ) ? addDays - 1  : addDays ;
-						}
-						else {
-							// push to monday
-							addDays = ( dayOfWeek == 0 ) ? addDays + 1  : addDays ;
-							addDays = ( dayOfWeek == 6 ) ? addDays + 2  : addDays ;
-						}
-						at.ActivityDate__c = ap.StartDate__c.addDays( addDays );
-
-					}
-					else {
-
-						at.ActivityDate__c = ap.StartDate__c.addDays( at.DaysFromStart__c.intValue() );
-					} */
 				}
 
 				mapAP.put(at.Id,at);

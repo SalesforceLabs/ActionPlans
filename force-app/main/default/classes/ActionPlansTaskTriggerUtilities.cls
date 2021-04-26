@@ -39,85 +39,58 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 public inherited sharing class ActionPlansTaskTriggerUtilities {
 
-	public  Set<Id>                 closedTasks;
-	public  Set<Id>                 inProgressTasks;
-	private List<APTaskTemplate__c> dependentAptts   { get; set; }
-	private Map<Id, Task>           newTaskMap       { get; set; }
-	private List<APTaskTemplate__c> updateApttsList  { get; set; }
-	private List<Task>              tasksSendEmail   { get; set; }
-	private List<Task>              tasksSendNoEmail { get; set; }
+	//public static Set<Id>                 closedTasks = new Set<Id>();
+	private static List<APTaskTemplate__c> dependentAptts = new List<APTaskTemplate__c>();
+	//private static Map<Id, Task>           newTaskMap       { get; set; } // consider deleting
+	//private static List<APTaskTemplate__c> updateApttsList  { get; set; }
+	private static List<Task> tasksSendEmail  = new List<Task>();
+	private static List<Task> tasksSendNoEmail = new List<Task>();
 
 	/**
-	* Constructor
-	*/
-	public ActionPlansTaskTriggerUtilities(){
-
-		this.tasksSendEmail		= new List<Task>();
-		this.tasksSendNoEmail 	= new List<Task>();
-		this.dependentAptts = new List<APTaskTemplate__c>();
-	}
-
-	/**
-	* Initialize the functionalities to Create All dependent Tasks
+	* Initialize the functionalities to create All dependent Tasks
 	* @param cTasks
 	*/
-	@future
+	//@future
 	public static void initDependentTaskWork( Map<Id, String> cTasks) {
 		System.debug('FUTURE initDependentTaskWork');
-		ActionPlansTaskTriggerUtilities apTTUtils = new ActionPlansTaskTriggerUtilities();
-		apTTUtils.closedTasks = cTasks.keyset();
 
-		if( !apTTUtils.closedTasks.isEmpty() ){
+		Set<Id> closedTasks = cTasks.keyset();
+
+		if( !closedTasks.isEmpty() ){
 
 			//Mark all APTask as 'Completed'
-			apTTUtils.updateActionPlansTemplateTask(cTasks);
+			updateActionPlansTemplateTaskStatus(cTasks);
 
 			//Get all dependent APTask
-			apTTUtils.dependentActionPlansTemplateTask();
+			List<APTaskTemplate__c> dependentAptts = queryDependentAPTaskTemplates(closedTasks);
 
 			//Create actual Task Map
-			apTTUtils.populateNewTaskMap();
+			List<APTaskTemplate__c> updList = populateNewTaskMap(dependentAptts);
 
 			//Finaly, Create all New Tasks and Send DMLOption Emails
-			apTTUtils.populateUpdateApttsList();
+			List<APTaskTemplate__c> updateApttsList = populateUpdateApttsList(dependentAptts);
 
 			Database.DMLOptions dmlo = new Database.DMLOptions();
 
-			if(!apTTUtils.tasksSendEmail.isEmpty()){
+			if(!tasksSendEmail.isEmpty()){
 				dmlo.EmailHeader.triggerUserEmail = true;
-				Database.insert( apTTUtils.tasksSendEmail, dmlo );
+				Database.insert( tasksSendEmail, dmlo );
 			}
 
-			if(!apTTUtils.tasksSendNoEmail.isEmpty()){
+			if(!tasksSendNoEmail.isEmpty()){
 				dmlo.EmailHeader.triggerUserEmail = false;
-				Database.insert( apTTUtils.tasksSendNoEmail, dmlo );
+				Database.insert( tasksSendNoEmail, dmlo );
 			}
 
-			Database.update( apTTUtils.updateApttsList );
+			Database.update( updateApttsList );
 		}
-	}
-
-	/**
-	* Update associated aptt of task to match status
-	*/
-	private void updateActionPlansTemplateTask(Map<Id, String> cTasks){
-
-		List<APTaskTemplate__c> updateApttList = new List<APTaskTemplate__c>();
-
-		for ( APTaskTemplate__c aptt : [SELECT ap.Id, ap.Status__c FROM APTaskTemplate__c ap WHERE ap.Id IN :cTasks.keyset()] ){
-			aptt.Status__c = cTasks.get(aptt.Id);
-			updateApttList.add( aptt );
-		}
-
-		update updateApttList ;
 	}
 
 	/**
 	* Get list of dependent Action Plan Template Tasks
 	*/
-	private List<APTaskTemplate__c> dependentActionPlansTemplateTask() {
+	private static List<APTaskTemplate__c> queryDependentAPTaskTemplates(Set<Id> closedTasks) {
 
-		this.dependentAptts = new List<APTaskTemplate__c>();
 		//Add Action Plan custom object reference Field.
 
 		String apdependentQuery = 'SELECT Action_Plan__r.SkipWeekends__c, Action_Plan__r.SkipDay__c, ';
@@ -129,37 +102,41 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 		'APTaskTemplate__r.Subject__c, APTaskTemplate__c, SendEmail__c,  APTaskTemplate__r.Name, ' +
 		'Reminder__c, Priority__c, Status__c, Comments__c, Minutes_Reminder__c, Task_RecordTypeId__c' +
 		' FROM APTaskTemplate__c WHERE APTaskTemplate__c IN :closedTasks';
-		System.debug('APDEPENDENTQUERY: ' + apdependentQuery);
+		//System.debug('APDEPENDENTQUERY: ' + apdependentQuery);
 
-		this.dependentAptts = Database.query(apdependentQuery);
-		return this.dependentAptts;
+		dependentAptts = Database.query(apdependentQuery);
+		return dependentAptts;
 
 	}
 
 	/**
 	* Cycle through list of dependent Action Plans Template Task and create actual tasks
 	*/
-	private void populateNewTaskMap(){
+	private static List<APTaskTemplate__c> populateNewTaskMap(List<APTaskTemplate__c> dependentApttList){
 		List<APTaskTemplate__c> updList = new List<APTaskTemplate__c>();
 		Task auxTask;
-		this.newTaskMap = new Map<Id, Task>();
+		//Map<Id, Task> newTaskMap = new Map<Id, Task>();
 
-		for( APTaskTemplate__c dependentAptt : this.dependentAptts ){
+		Map<Id, Task> taskMap = new Map<Id, Task>();
+		for(Task t : [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c = :dependentApttList]){
+			taskMap.put(t.TaskAPTaskTemplate__c, t);
+		}
+
+		for( APTaskTemplate__c dependentAptt : dependentApttList ){
 
 			//Create the new task and template
 			//check if the task was already created
-			List<Task> lt = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c = :dependentAptt.Id];
-			if (!lt.isEmpty()){
-				auxTask	= lt[0];
-			} else {
-				//Create the new task and template
-				auxTask	= new Task();
+			if(taskMap.containsKey(dependentAptt.Id)){
+				auxTask = taskMap.get(dependentAptt.Id);
+			}
+			else {
+				auxTask = new Task();
 			}
 
 			auxTask.Subject             = dependentAptt.Subject__c;
 			auxTask.Priority            = dependentAptt.Priority__c;
 			auxTask.OwnerId             = dependentAptt.User__c;
-			//auxTask.Type				= dependentAptt.Type__c;
+			auxTask.Type				= dependentAptt.Type__c;
 			auxTask.TaskAPTaskTemplate__c   = dependentAptt.Id;
 			if(ActionPlansUtilities.HAS_RECORD_TYPE){
 				auxTask.put('RecordTypeId', dependentAptt.Task_RecordTypeId__c);
@@ -180,87 +157,52 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 
 			// create due date, calculate the due date of the tasks for skip weekends feature
 			if( dependentAptt.Action_Plan__r.SkipWeekends__c == true && dependentAptt.Action_Plan__r.SkipDay__c != null){
-				Date dueDate = this.getCompletedATPTaskDate(dependentAptt.Id).addDays( dependentAptt.DaysFromStart__c.intValue() );
-
-				// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
-				//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
-				//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
-
-				String dayName = ActionPlansUtilities.getDayOfWeek( dueDate );
-				System.debug('Task is originally due on a ' + dayName);
-
-				Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
-
-				System.debug('cmdt: ' + cmdt);
-
-				Integer addDays = 0;
-
-				if( dependentAptt.Action_Plan__r.SkipDay__c.startsWithIgnoreCase('End')){
-					System.debug('Template is set to skip back to end of the previous week');
-					Integer daysToAdjust = cmdt.Days_from_end_of_previous_week__c.intValue();
-					addDays = addDays - daysToAdjust;
-					System.debug('Removing ' + daysToAdjust + ' days from ' + dueDate);
-				}
-				else if( dependentAptt.Action_Plan__r.SkipDay__c.startsWithIgnoreCase('Start')){
-					System.debug('Template is set to skip forward to beginning of the next week');
-					Integer daysToAdjust = cmdt.Days_to_start_of_next_week__c.intValue();
-					System.debug('Adding ' + daysToAdjust + ' days to ' + dueDate);
-					addDays = addDays + daysToAdjust;
-				}
-				if(addDays != 0){
-					System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
-				}
-				dependentAptt.ActivityDate__c = dueDate.addDays( addDays );
+				System.debug('original start date day ' + ActionPlansUtilities.getDayOfWeek(dependentAptt.Action_Plan__r.StartDate__c.addDays( dependentAptt.DaysFromStart__c.intValue() )));
+				dependentAptt.ActivityDate__c = ActionPlansUtilities.adjustTaskDueDate(dependentAptt.Action_Plan__r.StartDate__c, dependentAptt.DaysFromStart__c.intValue(), dependentAptt.Action_Plan__r.SkipDay__c);
+				System.debug('new start date day ' + ActionPlansUtilities.getDayOfWeek(dependentAptt.ActivityDate__c));
 			}
 			else {
 				dependentAptt.ActivityDate__c = dependentAptt.Action_Plan__r.StartDate__c.addDays( dependentAptt.DaysFromStart__c.intValue() );
 			}
 
-			// calculate the due date of the tasks for skip weekends feature
-			/* if( dependentAptt.Action_Plan__r.SkipWeekends__c ){
-
-				Date dueDate        = this.getCompletedATPTaskDate(dependentAptt.Id);
-				Integer addDays     = dependentAptt.DaysFromStart__c.intValue();
-
-				// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
-				Date refDate        = Date.newInstance( 1900, 1, 7 );  // Jan 7 1900 = Sun
-
-				Integer dayOfWeek   = Math.mod( refDate.daysBetween( dueDate ), 7 ); // 0 = Sun ... 6 = Sat
-
-				addDays = ( dayOfWeek == 0 )? addDays + 1 : addDays;
-				addDays = ( dayOfWeek == 6 )? addDays + 2 : addDays;
-
-				auxTask.ActivityDate = dueDate.addDays( addDays );
-			}
-			else {
-				dependentAptt.ActivityDate__c = dueDate.addDays( dependentAptt.DaysFromStart__c.intValue() );
-			} */
-
-			this.newTaskMap.put( auxTask.TaskAPTaskTemplate__c, auxTask );
 		} // end for loop
 
 		//will update records for AP Tasks templates whose related tasks was created as Non Started
 		if (!updList.isEmpty()){
 			upsert updList;
 		}
+		return updList;
 	}
 
 	/**
 	* Cycle through list of dependent Action Plans Template Task and create tasks
 	*/
-	private void populateUpdateApttsList(){
-		Task t2 ;
-		this.updateApttsList = new List<APTaskTemplate__c>();
+	private static List<APTaskTemplate__c> populateUpdateApttsList(List<APTaskTemplate__c> dependentApttList){
 
-		for( APTaskTemplate__c dependentAptt : this.dependentAptts ){
+		List<APTaskTemplate__c> updateApttsList = new List<APTaskTemplate__c>();
 
+		Set<Id> apIDs = new Set<Id>();
+		Set<Id> controllingIDs = new Set<Id>();
+		for(APTaskTemplate__c dAptt : dependentApttList){
+			apIDs.add(dAptt.Action_Plan__c);
+			controllingIDs.add(dAptt.APTaskTemplate__c);
+		}
+		//Map<Id, ActionPlan__c> actionPlans = new Map<Id, ActionPlan__c>([SELECT Id, SkipWeekends__c, SkipDay__c, StartDate__c FROM ActionPlan__c WHERE Id IN :apIDs ]);
+ 		Map<Id, APTaskTemplate__c> controllingTasks = new Map<Id, APTaskTemplate__c>([SELECT Id, ActivityDate__c FROM APTaskTemplate__c WHERE Id IN :controllingIDs]);
+
+		Map<Id, Task> taskMap = new Map<Id, Task>();
+		for(Task t : [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c = :dependentApttList]){
+			taskMap.put(t.TaskAPTaskTemplate__c, t);
+		}
+
+		for( APTaskTemplate__c dependentAptt : dependentApttList ){
+			Task t2;
 			//Create the new task and template
-			List<Task> lt = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c   = :dependentAptt.Id];
-			if (!lt.isEmpty()){
-				t2	= lt[0];
-			} else {
-				//Create the new task and template
-				t2	= new Task();
+			if(taskMap.containsKey(dependentAptt.Id)){
+				t2 = taskMap.get(dependentAptt.Id);
+			}
+			else {
+				t2 = new Task();
 			}
 
 			t2.Subject           = dependentAptt.Subject__c;
@@ -271,8 +213,18 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				t2.put('RecordTypeId', dependentAptt.Task_RecordTypeId__c);
 			}
 
-			Date d = this.getCompletedATPTaskDate(dependentAptt.Id);
+			//Date d = this.getCompletedATPTaskDate(dependentAptt.Id);
+			Date d = Date.today();
+			if(dependentAptt.APTaskTemplate__c != null &&  controllingTasks.containsKey(dependentAptt.APTaskTemplate__c) && controllingTasks.get(dependentAptt.APTaskTemplate__c).ActivityDate__c != null){
+				d = controllingTasks.get(dependentAptt.APTaskTemplate__c).ActivityDate__c;
+			} else {
+				System.debug('null value in controlling task? odd. Defaulting to today.');
+			}
+
+			//ActionPlan__c ap = actionPlans.get(dependentAptt.Action_Plan__c);
 			dependentAptt.ActivityDate__c = d.addDays( dependentAptt.DaysFromStart__c.intValue() );
+
+			//dependentAptt.ActivityDate__c = ActionPlansUtilities.adjustTaskDueDate(d, dependentAptt.DaysFromStart__c.intValue(), actionPlans.get(dependentAptt.Action_Plan__c).SkipDay__c);
 
 			if( dependentAptt.Comments__c != null ){
 				t2.Description = dependentAptt.Comments__c;
@@ -303,7 +255,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				t2.WhoId = dependentAptt.Action_Plan__r.Lead__c;
 			}
 
-			t2.Type         = dependentAptt.Type__c;
+			t2.Type = dependentAptt.Type__c;
 			String defaultStatus;
 			if(ActionPlansUtilities.HAS_RECORD_TYPE){
 				defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
@@ -311,11 +263,11 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
 			}
 			t2.Status = defaultStatus;
-			//t2.Status       = defaultStatus;
 			t2.ActivityDate = dependentAptt.ActivityDate__c;
+			// TODO: Add weekend logic here?
 
-			this.newTaskMap.put( t2.TaskAPTaskTemplate__c, t2 );
-			this.updateApttsList.add( dependentAptt ) ;
+			//newTaskMap.put( t2.TaskAPTaskTemplate__c, t2 );
+			updateApttsList.add( dependentAptt ) ;
 
 			//populate the list to send emails or not.
 			if(dependentAptt.SendEmail__c){
@@ -324,41 +276,34 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				tasksSendNoEmail.add(t2);
 			}
 		}
+		return updateApttsList;
 	}
 
-	private Date getCompletedATPTaskDate( Id aptTaskId ){
-		Date d;
-		APTaskTemplate__c lAPT = [SELECT APTaskTemplate__r.id, APTaskTemplate__r.ActivityDate__c FROM APTaskTemplate__c WHERE Id = :aptTaskId];
+	/**
+	* Update associated aptt of task to match status
+	*/
+	private static void updateActionPlansTemplateTaskStatus(Map<Id, String> cTasks){
 
-		if ( lAPT != null &&  lAPT.APTaskTemplate__r.ActivityDate__c != null){
-			d = lAPT.APTaskTemplate__r.ActivityDate__c;
-		} else {
-			d = Date.today();
+		if( !cTasks.keyset().isEmpty() ){
+			updateAPTasksStatus(cTasks);
 		}
 
-		return d;
 	}
 
 	/**
 	* Update APTasks status as passed into method
 	* @param cTasks
 	*/
-	@future
+	//@future
 	public static void updateAPTasksStatus( Map<Id, String> cTasks ) {
 
-		ActionPlansTaskTriggerUtilities apTTUtils = new ActionPlansTaskTriggerUtilities();
-		apTTUtils.inProgressTasks = cTasks.keyset();
-
-		if( !apTTUtils.inProgressTasks.isEmpty() ){
+		if( !cTasks.keyset().isEmpty() ){
 
 			//Update all APTasks
-			//apTTUtils.updateActionPlansTemplateTask('In Progress');
+			List<APTaskTemplate__c> updateApttList = [SELECT Id, Status__c FROM APTaskTemplate__c WHERE Id IN :cTasks.keyset()];
 
-			List<APTaskTemplate__c> updateApttList = new List<APTaskTemplate__c>();
-
-			for ( APTaskTemplate__c aptt : [SELECT Id, ap.Status__c FROM APTaskTemplate__c ap WHERE ap.Id IN :cTasks.keyset()] ){
+			for ( APTaskTemplate__c aptt : updateApttList ){
 				aptt.Status__c = cTasks.get(aptt.Id);
-				updateApttList.add( aptt );
 			}
 
 			update updateApttList ;
@@ -369,7 +314,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	* Delete Action Plan Tasks
 	* @param aPTasks
 	*/
-	@future
+	//@future
 	public static void deleteAPTasks( Set<Id> aPTasks ) {
 		try{
 		delete [SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :aPTasks];
@@ -388,14 +333,14 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	}
 
 	/*
-	This method reviews the task list and removes the one with TaskIndex__c field matching tmp_taskIndex.
+	This method reviews the task list FOR A SINGLE ACTION PLAN and removes the one with TaskIndex__c field matching tmp_taskIndex.
 	Rearranges the dependencies between tasks.
 	*/
 	private static void generateDependentTasksAndReset(List<APTaskTemplate__c> apTasks, Decimal tmp_taskIndex ){
 		Set<Id> pendingIdsToDelete = new Set<Id>();
 
 		//APTaskTemplate__c apTask;
-		Integer taskIndex, dependentApTask ;
+		Integer taskIndex, dependentApTaskIndex ;
 
 		for( Integer t_i = 0; t_i < apTasks.size();  t_i++ ){
 			APTaskTemplate__c apTask = apTasks[ t_i ];
@@ -410,12 +355,12 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 			APTaskTemplate__c apTask = apTasks[ i ];
 
 			if( apTask.Dependent__c != null && apTask.Dependent__c != 'None' ){
-				dependentApTask = Integer.valueOf( apTask.Dependent__c );
+				dependentApTaskIndex = Integer.valueOf( apTask.Dependent__c );
 
-				if( dependentApTask > taskIndex ){
-					apTask.Dependent__c = String.valueOf( dependentApTask - 1 );
+				if( dependentApTaskIndex > taskIndex ){
+					apTask.Dependent__c = String.valueOf( dependentApTaskIndex - 1 );
 				} else {
-					if( dependentApTask == taskIndex ){
+					if( dependentApTaskIndex == taskIndex ){
 						apTask.Dependent__c 		= 'None';
 						apTask.APTaskTemplate__c    = null;
 					}
@@ -430,30 +375,29 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 
 		apTasks.remove( taskIndex );
 
-		ActionPlansTaskTriggerUtilities apTTUtils = new ActionPlansTaskTriggerUtilities();
-		apTTUtils.closedTasks = pendingIdsToDelete;
+		Set<Id> closedTasks = pendingIdsToDelete;
 
-		if( !apTTUtils.closedTasks.isEmpty() ){
+		if( !closedTasks.isEmpty() ){
 
 			//Get all dependent APTask
-			apTTUtils.dependentActionPlansTemplateTask();
+			List<APTaskTemplate__c>  dependentAptts = queryDependentAPTaskTemplates(closedTasks);
 
 			//Create actual Task Map
-			apTTUtils.populateNewTaskMap();
+			List<APTaskTemplate__c> updList = populateNewTaskMap(dependentAptts);
 
-			//Finaly, Create all New Tasks and Send DMLOption Emails
-			apTTUtils.populateUpdateApttsList();
+			//Finally, Create all New Tasks and Send DMLOption Emails
+			populateUpdateApttsList(dependentAptts);
 
 			Database.DMLOptions dmlo = new Database.DMLOptions();
 
-			if(!apTTUtils.tasksSendEmail.isEmpty()){
+			if(!tasksSendEmail.isEmpty()){
 				dmlo.EmailHeader.triggerUserEmail = true;
-				Database.insert( apTTUtils.tasksSendEmail, dmlo );
+				Database.insert( tasksSendEmail, dmlo );
 			}
 
-			if(!apTTUtils.tasksSendNoEmail.isEmpty()){
+			if(!tasksSendNoEmail.isEmpty()){
 				dmlo.EmailHeader.triggerUserEmail = false;
-				Database.insert( apTTUtils.tasksSendNoEmail, dmlo );
+				Database.insert( tasksSendNoEmail, dmlo );
 			}
 
 		}
@@ -462,17 +406,16 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	}
 
 	/**
-	* Before deleting a APTemplate task, Initialize the functionalities to Create All dependent Tasks and reset index
+	* Before deleting a APTemplate task, Initialize the functionalities to create all dependent Tasks and reset index
 	* @param cTasks list with Task templates to be deleted
 	*/
 	public static void initDependentTasksAndReset( Set<Id> cTasks ) {
 
 		try{
 
-			ActionPlansTaskTriggerUtilities apTTUtils = new ActionPlansTaskTriggerUtilities(); // why is this line here?
 			Map<Id, APTaskTemplate__c> apIdsMaps = new Map<Id, APTaskTemplate__c>();
-			List<APTaskTemplate__c>  lAPT = [SELECT  a.Id, a.Action_Plan__c, a.TaskIndex__c, a.Dependent__c
-											FROM APTaskTemplate__c a
+			List<APTaskTemplate__c>  lAPT = [SELECT Id, Action_Plan__c, TaskIndex__c, Dependent__c
+											FROM APTaskTemplate__c
 											WHERE Id IN: cTasks];
 
 			//create a map with : (APTaskId, APTaskTemplate)
@@ -482,19 +425,114 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 
 			List<APTaskTemplate__c> tmp_lAPT;
 			APTaskTemplate__c aux;
+
+			// TODO: Bulkify this SOQL in a loop
 			for(Id apId : apIdsMaps.keySet()){
 
-				tmp_lAPT = [SELECT  a.Id, a.Action_Plan__c, a.TaskIndex__c, a.Dependent__c
-							FROM APTaskTemplate__c a
-							WHERE a.Action_Plan__c  = :apId];
+				tmp_lAPT = [SELECT Id, Action_Plan__c, TaskIndex__c, Dependent__c
+							FROM APTaskTemplate__c
+							WHERE Action_Plan__c  = :apId];
 				//
 				aux = apIdsMaps.get(apId);
-				ActionPlansTaskTriggerUtilities.generateDependentTasksAndReset(tmp_lAPT, aux.TaskIndex__c);
+				generateDependentTasksAndReset(tmp_lAPT, aux.TaskIndex__c);
 
 			}
-		} catch(Exception e){
+		} catch (Exception e){
 			System.debug(Logginglevel.INFO,'\n\n====EXCEPTION : ' + e);
 		}
 
 	}
+
+	/* private static void generateDependentTasksAndReset(List<DependentTasksWrapper> dtwList){
+		//Set<Id> closedTasks = new Set<Id>();
+		List<Task> tasksSendEmail = new List<Task>();
+		List<Task> tasksSendNoEmail = new List<Task>();
+		List<APTaskTemplate__c> apTasks = new List<APTaskTemplate__c>();
+
+		for(DependentTasksWrapper dtw : dtwList){
+			Set<Id> pendingIdsToDelete = new Set<Id>();
+
+			//APTaskTemplate__c apTask;
+			Integer taskIndex, dependentApTaskIndex ;
+
+			for( Integer t_i = 0; t_i < apTasks.size();  t_i++ ){
+				APTaskTemplate__c apTask = apTasks[ t_i ];
+				if (apTask.TaskIndex__c == dtw.tmp_taskIndex){
+					taskIndex = t_i;
+				}
+			}
+
+			//update the current dependent position from tasks below of deleted one.
+			for( Integer i = 0; i < apTasks.size(); i++ ){
+
+				APTaskTemplate__c apTask = apTasks[ i ];
+
+				if( apTask.Dependent__c != null && apTask.Dependent__c != 'None' ){
+					dependentApTaskIndex = Integer.valueOf( apTask.Dependent__c );
+
+					if( dependentApTaskIndex > taskIndex ){
+						apTask.Dependent__c = String.valueOf( dependentApTaskIndex - 1 );
+					} else {
+						if( dependentApTaskIndex == taskIndex ){
+							apTask.Dependent__c 		= 'None';
+							apTask.APTaskTemplate__c    = null;
+						}
+					}
+				}
+			}
+
+			// before remove check if it exists in the DB; if so, add to pendingDeletes to be deleted on save.
+			if( apTasks[taskIndex].Id != null ){
+				pendingIdsToDelete.add(apTasks[taskIndex].Id);
+			}
+
+			apTasks.remove( taskIndex );
+
+			Set<Id> closedTasks = pendingIdsToDelete;
+
+			if( !closedTasks.isEmpty() ){
+
+				//List<APTaskTemplate__c> dependentAptts = new List<APTaskTemplate__c>();
+
+				//Get all dependent APTask
+				List<APTaskTemplate__c> dependentAptts = queryDependentAPTaskTemplates(closedTasks);
+
+				//Create actual Task Map
+				List<APTaskTemplate__c> updList = populateNewTaskMap(dependentAptts);
+
+				//Finaly, Create all New Tasks and Send DMLOption Emails
+				populateUpdateApttsList(dependentAptts);
+
+			}
+		}
+
+
+		Database.DMLOptions dmlo = new Database.DMLOptions();
+
+		if(!tasksSendEmail.isEmpty()){
+			dmlo.EmailHeader.triggerUserEmail = true;
+			Database.insert( tasksSendEmail, dmlo );
+		}
+
+		if(!tasksSendNoEmail.isEmpty()){
+			dmlo.EmailHeader.triggerUserEmail = false;
+			Database.insert( tasksSendNoEmail, dmlo );
+		}
+
+		Database.update(apTasks);
+	}
+
+	public class DependentTasksWrapper{
+		private ActionPlan__c ap;
+		List<APTaskTemplate__c> WrapperApTasks;
+		Decimal tmp_taskIndex;
+
+		public DependentTasksWrapper(ActionPlan__c apParam, List<APTaskTemplate__c> apTasksParam, Decimal tmp_taskIndexParam){
+			this.ap = apParam;
+			this.WrapperApTasks = apTasksParam;
+			this.tmp_taskIndex = tmp_taskIndexParam;
+		}
+
+
+	} */
 }
