@@ -63,14 +63,15 @@ public inherited sharing class ActionPlansUtilities {
 			Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.ActionPlan__c.fields.getMap();
 
 			for(String s : fieldMap.keyset()){
-				if(s == 'Action_Plan_Template__c'){continue;}
+				//if(s == 'Action_Plan_Template__c'){continue;}
 				/* if(!gd.containsKey(s) && !gd.containsKey(s.replace('__c',''))){
 					continue;
 				} */
 				if(s.containsIgnoreCase('.')){ continue; }
 				Schema.DescribeFieldResult dfr = fieldMap.get(s).getDescribe();
 				Schema.DisplayType dt = dfr.getType();
-				if(dt.name().equalsIgnoreCase('Reference') && s.endsWithIgnoreCase('__c')){
+				String relatedObjectName = dfr.getReferenceTo()[0].getDescribe().getName();
+				if(!relatedObjectName.startsWithIgnoreCase('ActionPlan') &&  dt.name().equalsIgnoreCase('Reference') && s.endsWithIgnoreCase('__c')){
 					refrerenceFieldNames.add(s);
 				}
 			}
@@ -504,4 +505,46 @@ public inherited sharing class ActionPlansUtilities {
 	}
 	private static Weekend_Day__mdt weekendDay;
 
+	/**
+	 * Given a task due date, we adjust it here for weekends
+	 * @param actionPlanStartDate the start date of the action plan
+	 * @param taskDaysFromStart the days after the initial date that the task will be due
+	 * @return the new task due date
+	 */
+	public static Date adjustTaskDueDate(Date actionPlanStartDate, Integer taskDaysFromStart, String apSkipDay){
+		System.debug('start Date ' + actionPlanStartDate);
+		System.debug('taskDaysFromStart ' + taskDaysFromStart);
+		Date dueDate = actionPlanStartDate.addDays( taskDaysFromStart );
+
+
+		// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
+		//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
+		//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
+
+		String dayName = ActionPlansUtilities.getDayOfWeek( dueDate );
+		System.debug('Task is originally due on a ' + dayName);
+
+		Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
+
+		System.debug('cmdt: ' + cmdt);
+
+		Integer addDays = 0;
+
+		if( apSkipDay != null && apSkipDay.startsWithIgnoreCase('End')){
+			System.debug('Template is set to skip back to end of the previous week');
+			Integer daysToAdjust = cmdt.Days_from_end_of_previous_week__c.intValue();
+			addDays = addDays - daysToAdjust;
+			System.debug('Removing ' + daysToAdjust + ' days from ' + dueDate);
+		}
+		else if( apSkipDay != null && apSkipDay.startsWithIgnoreCase('Start')){
+			System.debug('Template is set to skip forward to beginning of the next week');
+			Integer daysToAdjust = cmdt.Days_to_start_of_next_week__c.intValue();
+			System.debug('Adding ' + daysToAdjust + ' days to ' + dueDate);
+			addDays = addDays + daysToAdjust;
+		}
+		if(addDays != 0){
+			System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
+		}
+		return dueDate.addDays( addDays );
+	}
 }
