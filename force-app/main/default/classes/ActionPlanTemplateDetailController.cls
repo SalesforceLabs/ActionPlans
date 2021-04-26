@@ -93,11 +93,11 @@ public inherited sharing class ActionPlanTemplateDetailController {
 	 * @return List<APTTaskTemplate__c>
 	 */
 	public List<APTTaskTemplate__c> getTemplateTasks(){
-		return [SELECT a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c, TaskIndex__c,
-							 a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, a.APTTaskTemplate__c,
-							 a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c
-							 FROM APTTaskTemplate__c a
-							 WHERE a.Action_Plan_Template__c = :actionPlanTemplate.Id  ORDER BY TaskIndex__c ASC];
+		return [SELECT Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Type__c,
+							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
+							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
+							 FROM APTTaskTemplate__c
+							 WHERE Action_Plan_Template__c = :actionPlanTemplate.Id  ORDER BY TaskIndex__c ASC];
 	}
 
 	/**

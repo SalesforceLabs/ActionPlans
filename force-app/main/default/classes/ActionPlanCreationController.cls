@@ -61,7 +61,7 @@ public inherited sharing class ActionPlanCreationController{
 	public List<APTaskTemplate__c>  pendingDeletes;
 	public List<APTTaskTemplate__c> aptTasks;
 	private String                   cloneParam = '0';
-	private Boolean inVisualforceContext = true;
+	private Boolean inVisualforceContext = false;
 
 	/**
 	* Constructor
@@ -365,14 +365,14 @@ public inherited sharing class ActionPlanCreationController{
 
 				//System.debug('checking actionPlan.Id ' + actionPlan.Id);
 				if (actionPlan.Id == null && !this.inVisualforceContext && !System.isFuture() && !System.isBatch()){
-					//System.debug('actionPlan.Id is null');
+					System.debug('actionPlan.Id is null');
 					//System.debug('actionPlan ' + this.actionPlan);
 					//System.debug('apTasksOrg ' + apTasksOrg);
 					//System.debug('objName ' + objName);
 					//System.debug('oIdsList ' + oIdsList);
 					Database.ExecuteBatch( new ActionPlansBatchBuilder(this.actionPlan, this.apTasks, objName, parentIDs) );
 				} else {
-					//System.debug('actionPlan.Id is NOT null or we are going synchronous');
+					System.debug('actionPlan.Id is NOT null or we are going synchronous');
 					//System.debug('actionPlan ' + this.actionPlan);
 					//System.debug('apTasksOrg ' + apTasksOrg);
 					//System.debug('objName ' + objName);
@@ -720,11 +720,11 @@ public inherited sharing class ActionPlanCreationController{
 
 			if( templateId != null ){
 
-				aptTasks = [SELECT a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c, a.User__r.Name, a.Id,
-							a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c, a.APTTaskTemplate__r.Subject__c,
-							a.Reminder__c, a.SendEmail__c, a.Comments__c, a.TaskIndex__c, a.Action_Plan_Template__r.TaskRecordTypeID__c
-							FROM APTTaskTemplate__c a
-							WHERE a.Action_Plan_Template__c = :templateId ORDER BY TaskIndex__c ASC];
+				aptTasks = [SELECT Subject__c, Priority__c, Dependent__c, Name, User__c, User__r.Name, Id, Type__c,
+							DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__r.Subject__c,
+							Reminder__c, SendEmail__c, Comments__c, TaskIndex__c, Action_Plan_Template__r.TaskRecordTypeID__c
+							FROM APTTaskTemplate__c
+							WHERE Action_Plan_Template__c = :templateId ORDER BY TaskIndex__c ASC];
 
 				this.apTasks = new List<APTaskTemplate__c>();
 
@@ -808,13 +808,13 @@ public inherited sharing class ActionPlanCreationController{
 	*/
 	public static List<APTaskTemplate__c> retrieveTaskFromExistingActionPlan( Id actionPlanId ){
 
-		List<APTaskTemplate__c> myList = [SELECT a.Type__c, a.Subject__c, a.ActivityDate__c, a.Priority__c, a.Status__c, a.Dependent__c,
-			a.Name, a.User__c, a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.APTaskTemplate__r.Name,
-			a.APTaskTemplate__r.Subject__c, a.APTaskTemplate__c, a.Action_Plan__c, a.Reminder__c,
-			a.SendEmail__c, a.Comments__c, a.Minutes_Reminder__c, a.TaskIndex__c, a.Time_Reminder__c,
-			Task_RecordTypeId__c, a.IsClosed__c
-			FROM APTaskTemplate__c a
-			WHERE a.Action_Plan__c = :actionPlanId ORDER BY a.TaskIndex__c asc];
+		List<APTaskTemplate__c> myList = [SELECT Subject__c, ActivityDate__c, Priority__c, Status__c, Dependent__c, Type__c,
+			Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, APTaskTemplate__r.Name,
+			APTaskTemplate__r.Subject__c, APTaskTemplate__c, Action_Plan__c, Reminder__c,
+			SendEmail__c, Comments__c, Minutes_Reminder__c, TaskIndex__c, Time_Reminder__c,
+			Task_RecordTypeId__c, IsClosed__c
+			FROM APTaskTemplate__c
+			WHERE Action_Plan__c = :actionPlanId ORDER BY TaskIndex__c asc];
 		//System.debug('retrieve from existing actionplan: ' + myList);
 		return myList;
 	}
