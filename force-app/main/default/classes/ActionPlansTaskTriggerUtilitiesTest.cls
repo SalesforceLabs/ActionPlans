@@ -56,7 +56,6 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		List<Task> apTask 			= new List<Task>();
 		List<APTaskTemplate__c> aptt = new List<APTaskTemplate__c>();
 
-		Test.startTest();
 		for( Integer i = 0; i < 4; i++ ){
 			APTaskTemplate__c at = new APTaskTemplate__c();
 			at.Action_Plan__c 	 = ap.Id;
@@ -85,6 +84,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 			}
 		}
 
+		Test.startTest();
 		apTask = [SELECT Status, Id FROM Task WHERE TaskAPTaskTemplate__c IN :apTTaskIds];
 		for( Task t : apTask ){
 			t.Status = 'Completed';
