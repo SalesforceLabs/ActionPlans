@@ -70,9 +70,12 @@ public inherited sharing class ActionPlansUtilities {
 				if(s.containsIgnoreCase('.')){ continue; }
 				Schema.DescribeFieldResult dfr = fieldMap.get(s).getDescribe();
 				Schema.DisplayType dt = dfr.getType();
-				String relatedObjectName = dfr.getReferenceTo()[0].getDescribe().getName();
-				if(!relatedObjectName.startsWithIgnoreCase('ActionPlan') &&  dt.name().equalsIgnoreCase('Reference') && s.endsWithIgnoreCase('__c')){
-					refrerenceFieldNames.add(s);
+				if(dt.name().equalsIgnoreCase('Reference') && s.endsWithIgnoreCase('__c')){
+					String relatedObjectName = dfr.getReferenceTo()[0].getDescribe().getName();
+					if( !relatedObjectName.startsWithIgnoreCase('ActionPlan') )
+					{
+						refrerenceFieldNames.add(s);
+					}
 				}
 			}
 			apCustomRelationshipFields = refrerenceFieldNames;
