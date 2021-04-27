@@ -33,7 +33,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 <apex:page standardController="ActionPlanTemplate__c" extensions="ActionPlanTemplateDetailController" action="{!exportTemplateToXMLDoc}" lightningStylesheets="true">
-	<c:SectionHeader sObjType="ActionPlanTemplate__c" title="{!$Label.ap_ExportTitle}" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}"  />
+	<c:APSectionHeader sObjType="ActionPlanTemplate__c" title="{!$Label.ap_ExportTitle}" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}"  />
 	<div class="slds-scope">
     <apex:pageBlock title="{!$Label.ap_ExportTitle}">
         <table>

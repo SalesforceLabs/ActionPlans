@@ -61,7 +61,7 @@ public inherited sharing class ActionPlanCreationController{
 	public List<APTaskTemplate__c>  pendingDeletes;
 	public List<APTTaskTemplate__c> aptTasks;
 	private String                   cloneParam = '0';
-	private Boolean inVisualforceContext = false;
+	public Boolean inVisualforceContext = false;
 
 	/**
 	* Constructor
@@ -416,10 +416,11 @@ public inherited sharing class ActionPlanCreationController{
 		List<APTaskTemplate__c> aptList = new List<APTaskTemplate__c>();
 		Savepoint sp = Database.setSavepoint();
 
+		List<Id> oIdsList = new List<Id>();
 		if( ( oName != null || oName != '' ) && ( oIds != null || oIds != '' ) ){
 			try{
 
-				List<Id> oIdsList = oIds.split(',');
+				oIdsList = oIds.split(',');
 				Set<Id> parentIDs = new Set<Id>();
 				parentIDs.addAll(oIdsList);
 				//Now for each inserted AP we should run through tasks and create them
@@ -431,7 +432,11 @@ public inherited sharing class ActionPlanCreationController{
 			}
 		}
 
-		PageReference newPage = new PageReference( '/' + ActionPlansUtilities.getObjectKeyPrefix( oName ) + '/o' );
+		//PageReference newPage = new PageReference( '/' + ActionPlansUtilities.getObjectKeyPrefix( oName ) + '/o' );
+		PageReference newPage = Page.ActionPlansHome;
+		String confirmation = oIdsList.size() + ' ' + ActionPlan__c.sObjectType.getDescribe().getLabelPlural() + ' ' + System.Label.ap_Created + ' ' + System.Label.ap_CreatesActionPlansP4_note;
+		newPage.getParameters().put('message', confirmation);
+		newPage.getParameters().put('severity','success');
 		newPage.setRedirect( true );
 		return newPage;
 	}
@@ -480,7 +485,12 @@ public inherited sharing class ActionPlanCreationController{
 			ap_Prefix = newApId;
 		}
 
-		PageReference newPage = new PageReference(  '/' + ap_Prefix );
+		//PageReference newPage = new PageReference(  '/' + ap_Prefix );
+		PageReference newPage = Page.ActionPlansHome;
+
+		String confirmation = actionPlan.Name + ' ' + System.Label.ap_Created;
+		newPage.getParameters().put('message', confirmation);
+		newPage.getParameters().put('severity','success');
 		newPage.setRedirect( true );
 
 		return newPage;

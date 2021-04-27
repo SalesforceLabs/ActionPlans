@@ -56,7 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		}
 	</style>
 
-	<c:SectionHeader sObjType="ActionPlan__c" subtitle="{!$ObjectType.ActionPlan__c.label}" title="{!ActionPlan__c.Name}" printUrl="{!$Page.ActionPlanPrint}?id={!ActionPlan__c.Id}" />
+	<c:APSectionHeader sObjType="ActionPlan__c" subtitle="{!$ObjectType.ActionPlan__c.label}" title="{!ActionPlan__c.Name}" printUrl="{!$Page.ActionPlanPrint}?id={!ActionPlan__c.Id}" />
 
 	<apex:form id="apForm">
 		<apex:pageBlock id="detailBlock" mode="detail">

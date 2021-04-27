@@ -104,7 +104,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	<apex:outputText value="{!RefId}" />
 	<br/>
 	<apex:outputText value="{!refType}" />
-	<c:SectionHeader sObjType="ActionPlan__c" subtitle="{!$ObjectType.ActionPlan__c.label}" title="{!subtitle}" />
+	<c:APSectionHeader sObjType="ActionPlan__c" subtitle="{!$ObjectType.ActionPlan__c.label}" title="{!subtitle}" />
 
 	<apex:pageMessages id="pageMessages" />
 	<apex:form id="apForm" html-novalidate="novalidate">
@@ -298,18 +298,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 									<abbr class="slds-required" title="required">*</abbr>
 								</div> -->
 								<!-- <apex:outputText value="{!relatedObjectName}.{!relatedFieldName}" /> -->
-								<c:LightningLookup sObj="{!ActionPlan__c}" field="{!relatedFieldName}" sObjType="{!relatedObjectName}" required="true" for="{!relatedFieldName}lookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" />
+								<c:APLightningLookup sObj="{!ActionPlan__c}" field="{!relatedFieldName}" sObjType="{!relatedObjectName}" required="true" for="{!relatedFieldName}lookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" />
 
-								<!-- <c:LightningLookup sObj="{!ActionPlan__c}" field="Account__c" sObjType="account" required="true" for="accountlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}"  rendered="{!relatedFieldName == 'Account' && $ObjectType.Account.accessible}" />
-								<c:LightningLookup sObj="{!ActionPlan__c}" field="Lead__c" sObjType="lead" required="true" for="leadlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Lead' && $ObjectType.Lead.accessible}" />
-								<c:LightningLookup sObj="{!ActionPlan__c}" field="Contact__c" sObjType="contact" required="true" for="contactlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Contact' && $ObjectType.Contact.accessible}" />
-								<c:LightningLookup sObj="{!ActionPlan__c}" field="Opportunity__c" sObjType="opportunity" required="true" for="opportunitylookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Opportunity' && $ObjectType.Opportunity.accessible}" />
-								<c:LightningLookup sObj="{!ActionPlan__c}" field="Campaign__c" sObjType="campaign" required="true" for="campaignlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Campaign' && $ObjectType.Campaign.accessible}" />
-								<c:LightningLookup sObj="{!ActionPlan__c}" field="Case__c" sObjType="case" required="true" for="caselookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Case' && $ObjectType.Case.accessible}" />
-								<c:LightningLookup sObj="{!ActionPlan__c}" field="Contract__c" sObjType="contract" required="true" for="contractlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Contract' && $ObjectType.Contract.accessible}" />
+								<!-- <c:APLightningLookup sObj="{!ActionPlan__c}" field="Account__c" sObjType="account" required="true" for="accountlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}"  rendered="{!relatedFieldName == 'Account' && $ObjectType.Account.accessible}" />
+								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Lead__c" sObjType="lead" required="true" for="leadlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Lead' && $ObjectType.Lead.accessible}" />
+								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Contact__c" sObjType="contact" required="true" for="contactlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Contact' && $ObjectType.Contact.accessible}" />
+								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Opportunity__c" sObjType="opportunity" required="true" for="opportunitylookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Opportunity' && $ObjectType.Opportunity.accessible}" />
+								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Campaign__c" sObjType="campaign" required="true" for="campaignlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Campaign' && $ObjectType.Campaign.accessible}" />
+								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Case__c" sObjType="case" required="true" for="caselookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Case' && $ObjectType.Case.accessible}" />
+								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Contract__c" sObjType="contract" required="true" for="contractlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Contract' && $ObjectType.Contract.accessible}" />
 
 								<!-- Customization Area: Lookup -->
-								<!-- <c:LightningLookup id="cuName" sObj="{!ActionPlan__c}" field="Custom__c" sObjType="custom__c" required="true" for="customlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" /> -->
+								<!-- <c:APLightningLookup id="cuName" sObj="{!ActionPlan__c}" field="Custom__c" sObjType="custom__c" required="true" for="customlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" /> -->
 								<!-- End of customization Area  -->
 								</apex:outputPanel>
 								<apex:outputPanel layout="none" rendered="{!!lex}">
@@ -447,7 +447,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:outputPanel id="userPanel" layout="block" rendered="{!!wrapTask.task.IsClosed__c}">
 							<apex:outputPanel rendered="{!wrapTask.displayLookUp && $ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userLookup">
 								<apex:inputField required="{!wrapTask.userRequired}" value="{!wrapTask.task.User__c}" rendered="{!!lex}" />
-								<c:LightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" where="AND IsActive = true AND ProfileId != null" fieldStyle="width:100%" required="{!wrapTask.userRequired}" rendered="{!lex}" />
+								<c:APLightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" where="AND IsActive = true AND ProfileId != null" fieldStyle="width:100%" required="{!wrapTask.userRequired}" rendered="{!lex}" />
 							</apex:outputPanel>
 							<apex:outputText rendered="{!!wrapTask.displayLookUp || !$ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userDisplay">[ {!$ObjectType.APTaskTemplate__c.fields.User__c.label} ]</apex:outputText>
 							<!-- TODO: Show a placeholder if the template has no set user and the running user cannot edit this field -->
@@ -526,7 +526,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					<!-- <br/> -->
 				</apex:outputPanel>
 
-				<apex:panelGrid columns="2" id="linkpanelgrid">
+				<apex:panelGrid columns="2" id="linkpanelgrid" style="margin-bottom: 160px;">
 				 <!-- , nameSection, lookupSectionOutPanel, templateLookupSection -->
 						<apex:commandLink action="{!addTask}" style="font-weight:bold" id="addnewtasklink"
 								rerender="taskList, taskStatus, pageMessages"

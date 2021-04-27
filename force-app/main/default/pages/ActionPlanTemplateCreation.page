@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </head>
 <body>
 
-<c:SectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!subtitle}" />
+<c:APSectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!subtitle}" />
 
 	<apex:pageMessages id="pageMessages" />
 
@@ -176,7 +176,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:column id="userLookup" headerValue="{!$ObjectType.APTTaskTemplate__c.fields.User__c.label}" >
 						<apex:outputPanel layout="block" id="userPanel">
 							<apex:inputField value="{!wrapTask.task.User__c}" rendered="{!!lex}" />
-							<c:LightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" required="false" where="AND IsActive = true AND ProfileId != null" rendered="{!lex}" fieldStyle="width:100%;" />
+							<c:APLightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" required="false" where="AND IsActive = true AND ProfileId != null" rendered="{!lex}" fieldStyle="width:100%;" />
 						</apex:outputPanel>
 						</apex:column>
 

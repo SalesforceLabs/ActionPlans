@@ -31,7 +31,7 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<apex:page tabStyle="ActionPlan__c" lightningStylesheets="true" docType="html-5.0" contentType="text/html" showHeader="true">
+<apex:page tabStyle="ActionPlan__c" lightningStylesheets="true" docType="html-5.0" contentType="text/html" showHeader="true" >
 
 <apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/jquery-3.6.0.min.js')}" />
 <script type="text/javascript">
@@ -54,10 +54,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 <div id="actionPlans">
 	<div class="slds-scope">
 
+		<c:APMessage severity="{!$CurrentPage.parameters.severity}" message="{!$CurrentPage.parameters.message}" rendered="{!$CurrentPage.parameters.message != null}"/>
+
 		<article class="slds-card">
 			<div class="slds-card__body slds-card__body_inner">
 
-				<c:SectionHeader sObjType="ActionPlan__c" title="{!$ObjectType.ActionPlan__c.LabelPlural}" subtitle="" />
+				<c:APSectionHeader sObjType="ActionPlan__c" title="{!$ObjectType.ActionPlan__c.LabelPlural}" subtitle="" />
 
 				<div class="slds-tabs_default">
 					<ul class="slds-tabs_default__nav" role="tablist">
@@ -72,7 +74,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:ListViews type="ActionPlan__c" />
 					</div>
 					<div id="tab-default-2" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="actionPlanTemplatesTab">
-						If you can see this, there is a problem with your displayed theme.
+						If you can see this, there is a problem with your displayed theme. You may have switched to or from Lightning Experience in another tab.
 					</div>
 				</div>
 			</div>
@@ -84,7 +86,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 		<article class="slds-card">
 			<div class="slds-card__body slds-card__body_inner">
 
-				<c:SectionHeader sObjType="ActionPlanTemplate__c" title="{!$ObjectType.ActionPlanTemplate__c.LabelPlural}" subtitle="" />
+				<c:APSectionHeader sObjType="ActionPlanTemplate__c" title="{!$ObjectType.ActionPlanTemplate__c.LabelPlural}" subtitle="" />
 
 				<div class="slds-tabs_default">
 					<ul class="slds-tabs_default__nav" role="tablist">
@@ -96,7 +98,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 						</li>
 					</ul>
 					<div id="tab-default-1" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="actionPlansTab">
-						If you can see this, there is a problem with your displayed theme.
+						If you can see this, there is a problem with your displayed theme. You may have switched to or from Lightning Experience in another tab.
 					</div>
 					<div id="tab-default-2" class="slds-tabs_default__content slds-show" role="tabpanel" aria-labelledby="actionPlanTemplatesTab">
 						<apex:ListViews type="ActionPlanTemplate__c" />

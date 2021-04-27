@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	</script>
 
 
-	<c:SectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!ActionPlanTemplate__c.Name}" />
+	<c:APSectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!ActionPlanTemplate__c.Name}" />
 
 	<apex:form id="detailForm">
 		<apex:pageBlock id="templateDetail" title="" mode="detail">

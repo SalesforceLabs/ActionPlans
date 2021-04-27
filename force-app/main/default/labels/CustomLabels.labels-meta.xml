@@ -69,6 +69,14 @@
 			&lt;/ul&gt;</value>
     </labels>
     <labels>
+        <fullName>ap_ActionPlansHome</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ActionPlansHome</shortDescription>
+        <value>Action Plans Home</value>
+    </labels>
+    <labels>
         <fullName>ap_ActionPlansSetup</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -107,6 +115,14 @@
         <protected>true</protected>
         <shortDescription>AreYouSureAsk</shortDescription>
         <value>Are you sure?</value>
+    </labels>
+    <labels>
+        <fullName>ap_BackgroundCreation</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BackgroundCreation</shortDescription>
+        <value>Action Plans are being created in the background and will appear soon.</value>
     </labels>
     <labels>
         <fullName>ap_Cancel</fullName>
@@ -236,6 +252,14 @@
         <value>Create a Template</value>
     </labels>
     <labels>
+        <fullName>ap_Created</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Created</shortDescription>
+        <value>created.</value>
+    </labels>
+    <labels>
         <fullName>ap_CreatedBy</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -301,7 +325,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>AboutCreateP4Note</shortDescription>
-        <value>Note: Action Plan creation is handled by a batch process, it can take a couple of minutes to be able to view all created objects.</value>
+        <value>Action Plan creation is handled by a batch process. It can take a couple of minutes to be able to view all created records.</value>
     </labels>
     <labels>
         <fullName>ap_CreatesActionPlansP5</fullName>
@@ -429,7 +453,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Error: xmlMetaData</shortDescription>
-        <value>Meta Data Information is incorrect!</value>
+        <value>Metadata Information is incorrect!</value>
     </labels>
     <labels>
         <fullName>ap_Errors_xmlRead</fullName>

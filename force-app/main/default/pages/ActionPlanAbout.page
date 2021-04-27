@@ -91,7 +91,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
             <apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP3_bottom_text}" />
 
             <p>{!$Label.ap_CreatesActionPlansP4}</p>
-            <apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP4_note}" />
+            <apex:outputText escape="false" value="{!$Label.ap_Note}" />&nbsp;<apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP4_note}" />
             <p><apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlan-Detail.PNG')}"  /></p>
 
             <p>{!$Label.ap_CreatesActionPlansP5}</p>

@@ -4,5 +4,5 @@
     <availableInTouch>true</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
     <description>Printable view for Action Plan that preserves two column page block section</description>
-    <label>ActionPlanPrint</label>
+    <label>Action Plan Print</label>
 </ApexPage>
