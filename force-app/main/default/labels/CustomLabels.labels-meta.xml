@@ -44,7 +44,7 @@
         <protected>true</protected>
         <shortDescription>AboutP1a</shortDescription>
         <value>&lt;h2&gt;Getting Help&lt;/h2&gt;
-			&lt;p&gt;Action Plans is Unsupported. For community assistance with Action Plans, please visit &lt;a href=&quot;https://trailblazers.salesforce.com/&quot;&gt;Salesforce Trailblazer Community&lt;/a&gt;.  
+			&lt;p&gt;Action Plans is unsupported. For community assistance with Action Plans, please visit &lt;a href=&quot;https://trailblazers.salesforce.com/&quot;&gt;Salesforce Trailblazer Community&lt;/a&gt;.  
     To submit ideas or issues, please visit &lt;a href=&quot;https://github.com/SalesforceLabs/ActionPlans&quot;&gt;Action Plans on Github&lt;/a&gt;.
     &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 	&lt;h2&gt;Community&lt;/h2&gt;
@@ -718,7 +718,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>PostMessage</shortDescription>
-        <value>has created a new Action Plan for this</value>
+        <value>has created Action Plan {0} for this {1}.</value>
     </labels>
     <labels>
         <fullName>ap_PreDeployError</fullName>
@@ -775,6 +775,14 @@
         <protected>true</protected>
         <shortDescription>Save</shortDescription>
         <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>ap_SaveAndNew</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SaveAndNew</shortDescription>
+        <value>Save and New</value>
     </labels>
     <labels>
         <fullName>ap_Search</fullName>
