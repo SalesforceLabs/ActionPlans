@@ -439,7 +439,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		List<SObject> chatterPosts = new List<SObject>();
 
 		List<String> apRefFields = ActionPlansUtilities.getCustomRelationshipFields();
-		String apQuery = 'SELECT Id, ' + String.join(apRefFields, ', ') + ' FROM ActionPlan__c WHERE Id IN :objIds';
+		String apQuery = 'SELECT Id, Name, ' + String.join(apRefFields, ', ') + ' FROM ActionPlan__c WHERE Id IN :objIds';
 
 		for(SObject so : Database.query(apQuery)){
 
@@ -448,20 +448,15 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 			Id objId;
 			String objName;
 			Boolean chatter_enabled ;
-			Schema.DescribeSObjectResult r;
 
 			for( String f : apRefFields ){
 
 				if(ap.get(f) != null){
 					objId = (Id)ap.get(f);
-					Schema.DescribeSObjectResult dsr = objId.getSObjectType().getDescribe();
-					objName = dsr.getLabel();
-					chatter_enabled = dsr.isFeedEnabled();
-
+					chatter_enabled = objId.getSObjectType().getDescribe().isFeedEnabled();
 					//System.debug(objName + ' OBJECT IS FEED ENABLED? ' + chatter_enabled);
 					break;
 				}
-
 			}
 
 			if (chatter_enabled){
@@ -470,7 +465,8 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 				SObject objPost = token.newSObject();
 				objPost.put('Type', 'TextPost');
 				objPost.put('ParentId', objId);
-				objPost.put('Body', getPostObjectBody( objName ));
+				//objPost.put('Body', getPostObjectBody( objName ));
+				objPost.put('Body', getPostObjectBody( objId, (String)ap.get('Name') ));
 
 				chatterPosts.add(objPost);
 
@@ -487,9 +483,25 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 	* @parm : objName
 	* @return fText
 	*/
-	public static String getPostObjectBody( String objName  ){
+	// Using a parameterized label is better
+	/* public static String getPostObjectBody( String objName, String apName ){
+		String chatterPostMessage = UserInfo.getName();
 		Schema.DescribeSObjectResult obj = Schema.getGlobalDescribe().get( objName ).getDescribe();
-		return System.Label.ap_PostMessage +' ' + obj.getLabel() +'!';
+		return System.Label.ap_PostMessage + ' ' + obj.getLabel() + '!';
+	} */
+
+	public static String getPostObjectBody( Id recID, String apName ){
+
+		String objName = recID.getSObjectType().getDescribe().getLabel();
+		String actionPlanName = apName;
+		String runningUserName = UserInfo.getName();
+
+		List<String> parameters = new List<String>();
+		parameters.add(actionPlanName);
+		parameters.add(objName);
+
+		String chatterBody = runningUserName + ' ' + String.format(System.Label.ap_PostMessage, parameters);
+		return chatterBody;
 	}
 
 }
