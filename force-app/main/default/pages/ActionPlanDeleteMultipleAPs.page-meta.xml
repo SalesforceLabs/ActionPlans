@@ -3,5 +3,6 @@
     <apiVersion>51.0</apiVersion>
     <availableInTouch>true</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-	<label>Action Plans Delete Multiple</label>
+    <description>Button on Action Plan list view for deleting multiple records</description>
+    <label>Action Plans Delete Multiple</label>
 </ApexPage>

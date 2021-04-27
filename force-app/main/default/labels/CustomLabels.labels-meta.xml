@@ -69,14 +69,6 @@
 			&lt;/ul&gt;</value>
     </labels>
     <labels>
-        <fullName>ap_ActionPlansHome</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ActionPlansHome</shortDescription>
-        <value>Action Plans Home</value>
-    </labels>
-    <labels>
         <fullName>ap_ActionPlansSetup</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>

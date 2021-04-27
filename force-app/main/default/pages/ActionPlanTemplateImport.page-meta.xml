@@ -3,5 +3,6 @@
     <apiVersion>51.0</apiVersion>
     <availableInTouch>true</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Import Action Plan Template as XML</description>
     <label>Action Plan Template Import</label>
 </ApexPage>

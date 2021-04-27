@@ -34,17 +34,17 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 <apex:page id="importTemplate" tabStyle="Action_Plans_Template_Import__tab" controller="ImportTemplateController" lightningStylesheets="true" docType="html-5.0" contentType="text/html">
 
-	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/jquery-3.6.0.min.js')}" />
-	<script>
-		var j$ = jQuery.noConflict();
-	</script>
+    <apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/jquery-3.6.0.min.js')}" />
+    <script>
+        var j$ = jQuery.noConflict();
+    </script>
 
-	<apex:sectionHeader title="{!$ObjectType.ActionPlan__c.label}" subtitle="{!$Label.ap_Import}" />
+    <apex:sectionHeader title="{!$ObjectType.ActionPlan__c.label}" subtitle="{!$Label.ap_Import}" />
 
     <apex:form id="theForm" onSubmit="return fileUpload.verify();">
       <apex:pageBlock id="pageBlock" title="{!$Label.ap_Import}">
           <apex:pageBlockSection id="blockSection" columns="1"  collapsible="false">
-          	<b>{!$Label.ap_import_file}</b><br /><br />
+            <b>{!$Label.ap_import_file}</b><br /><br />
             <apex:inputFile id="fileInput" value="{!attachment.body}" filename="{!attachment.name}" />
              <br />
             <apex:commandButton id="btnImport" value="{!$Label.ap_Import}" action="{!importTemplate}" />
@@ -55,42 +55,42 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
     </apex:form>
     <script type="text/javascript">
 
-    	fileUpload = {
-    		verify : function(){
-				//var file 	= document.getElementById('importTemplate:theForm:pageBlock:blockSection:fileInput').getElementsByTagName('input')[0];
-				var file = j$("[id$=fileInput] input").first();
-				//var error 	= document.getElementById('errors');
-				var error   = j$("[id$=errors]");
-				//var error_field = document.getElementById('{!$Component.theForm.pageBlock.blockSection.errorMsg}');
-				var error_field = j$("[id$=errorMsg]");
-				if (error_field){
-					error_field.innerHTML = '';
-				}
+        fileUpload = {
+            verify : function(){
+                //var file  = document.getElementById('importTemplate:theForm:pageBlock:blockSection:fileInput').getElementsByTagName('input')[0];
+                var file = j$("[id$=fileInput] input").first();
+                //var error     = document.getElementById('errors');
+                var error   = j$("[id$=errors]");
+                //var error_field = document.getElementById('{!$Component.theForm.pageBlock.blockSection.errorMsg}');
+                var error_field = j$("[id$=errorMsg]");
+                if (error_field){
+                    error_field.innerHTML = '';
+                }
 
 
-				if( file.files.length == 0 ){
-					error.innerHTML = "{!$Label.ap_Errors_SelectXML}";
-					return false;
-				}
-				else{
-					var fileName 		= file.files[0].fileName;
-					var filenameSplit 	= fileName.split('.');
+                if( file.files.length == 0 ){
+                    error.innerHTML = "{!$Label.ap_Errors_SelectXML}";
+                    return false;
+                }
+                else{
+                    var fileName        = file.files[0].fileName;
+                    var filenameSplit   = fileName.split('.');
 
-					if( filenameSplit.length == 1){
-						error.innerHTML = "{$Label.ap_Errors_SelectCorrectXML}";
-						return false;
-					}
-					else{
-						if( filenameSplit[ filenameSplit.length -1 ] != 'xml' ){
-							error.innerHTML = "{!$Label.ap_Errors_SelectCorrectXMLExtension}";
-							return false;
-						}
-						else{
-							return true;
-						}
-					}
-				}
-    		}
-    	}
+                    if( filenameSplit.length == 1){
+                        error.innerHTML = "{$Label.ap_Errors_SelectCorrectXML}";
+                        return false;
+                    }
+                    else{
+                        if( filenameSplit[ filenameSplit.length -1 ] != 'xml' ){
+                            error.innerHTML = "{!$Label.ap_Errors_SelectCorrectXMLExtension}";
+                            return false;
+                        }
+                        else{
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
     </script>
 </apex:page>
