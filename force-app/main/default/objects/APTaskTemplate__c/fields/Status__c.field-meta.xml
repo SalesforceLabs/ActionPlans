@@ -34,11 +34,6 @@
                 <default>false</default>
                 <label>Completed</label>
             </value>
-            <value>
-                <fullName>Created</fullName>
-                <default>false</default>
-                <label>Created</label>
-            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
