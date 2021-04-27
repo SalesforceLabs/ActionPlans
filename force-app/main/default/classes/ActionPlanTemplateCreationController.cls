@@ -540,17 +540,25 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	/**
 	 * Generate picklist of Task Types
 	 */
+	private List<SelectOption> taskTypes;
 	public List<SelectOption> getTaskTypes(){
 		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Type.getDescribe().getDefaultValue());
-		return ActionPlansUtilities.getFieldOptions('Task', 'Type', null);
+		if(taskTypes == null){
+			taskTypes = ActionPlansUtilities.getFieldOptions('Task', 'Type', null);
+		}
+		return taskTypes;
 	}
 
 	/**
 	 * Generate picklist of Task Priorities
 	 */
+	private List<SelectOption> taskPriorities;
 	public List<SelectOption> getTaskPriorities(){
 		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Priority.getDescribe().getDefaultValue());
-		return ActionPlansUtilities.getFieldOptions('Task', 'Priority', null);
+		if(taskPriorities == null){
+			taskPriorities = ActionPlansUtilities.getFieldOptions('Task', 'Priority', null);
+		}
+		return taskPriorities;
 	}
 
 	/**
@@ -568,7 +576,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			task		= apTask;
 			position	= pos;
 			isLast		= false;
-			if(task.Id == null){
+			if(task.Id == null && task.Subject__c == null){
 				System.debug('passing RTID ' + defaultTaskRTId);
 				if(ActionPlansUtilities.HAS_RECORD_TYPE){
 					task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);

@@ -410,7 +410,7 @@ public inherited sharing class ActionPlanCreationController{
 	*/
 	public PageReference saveMultiple(){
 		//System.debug('in saveMultiple');
-		String oName                    = ApexPages.currentPage().getParameters().get( 'refType' );
+		String oName                    = refType; //ApexPages.currentPage().getParameters().get( 'refType' );
 		String oIds                     = ApexPages.currentPage().getParameters().get( 'refId' );
 		List<ActionPlan__c> apList      = new List<ActionPlan__c>();
 		List<APTaskTemplate__c> aptList = new List<APTaskTemplate__c>();
@@ -501,7 +501,7 @@ public inherited sharing class ActionPlanCreationController{
 	* @return PageReference
 	*/
 	public PageReference cancel(){
-		String objectType   = ApexPages.currentPage().getParameters().get( 'refType' );
+		String objectType   = refType; //ApexPages.currentPage().getParameters().get( 'refType' );
 		String objectIds    = ApexPages.currentPage().getParameters().get( 'refId' );
 		String retURL       = ApexPages.currentPage().getParameters().get( 'retURL' );
 		String paramid      = this.actionPlan.Id != null ? this.actionPlan.Id : ApexPages.currentPage().getParameters().get( 'id' );
@@ -1116,17 +1116,25 @@ public inherited sharing class ActionPlanCreationController{
 	/**
 	* Generate picklist of Task Types
 	*/
+	private List<SelectOption> taskTypes;
 	public List<SelectOption> getTaskTypes(){
 		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Type.getDescribe().getDefaultValue());
-		return ActionPlansUtilities.getFieldOptions('Task', 'Type', null);
+		if(taskTypes == null){
+			taskTypes = ActionPlansUtilities.getFieldOptions('Task', 'Type', null);
+		}
+		return taskTypes;
 	}
 
 	/**
 	* Generate picklist of Task Priorities
 	*/
+	private List<SelectOption> taskPriorities;
 	public List<SelectOption> getTaskPriorities(){
 		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Priority.getDescribe().getDefaultValue());
-		return ActionPlansUtilities.getFieldOptions('Task', 'Priority', null);
+		if(taskPriorities == null){
+			taskPriorities = ActionPlansUtilities.getFieldOptions('Task', 'Priority', null);
+		}
+		return taskPriorities;
 	}
 
 	public List<SelectOption> getHoursOption(){
