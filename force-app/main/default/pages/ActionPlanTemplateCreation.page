@@ -80,7 +80,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			<apex:pageBlockButtons id="buttons" >
 				<apex:commandButton id="save" action="{!checkCycleDependent}" value="{!$Label.ap_Save}" reRender="pageMessages" />
-				<apex:commandButton id="saveandnew" action="{!saveAndNew}" value="{!$Label.ap_Save} {!$Label.ap_New}" reRender="pageMessages" />
+				<apex:commandButton id="saveandnew" action="{!saveAndNew}" value="{!$Label.ap_SaveAndNew} {!$Label.ap_New}" reRender="pageMessages" />
 				<apex:actionRegion >
 					<apex:commandButton id="cancel" action="{!cancelTemplate}" value="{!$Label.ap_Cancel}" html-formnovalidate="novalidate"/>
 				</apex:actionRegion>
@@ -180,7 +180,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						</apex:outputPanel>
 						</apex:column>
 
-						<apex:column headerValue="{!$ObjectType.Task.fields.Type.label}" rendered="{!$ObjectType.Task.fields.Type.accessible}">
+						<apex:column headerValue="{!$ObjectType.Task.fields.Type.label}" rendered="{!$ObjectType.Task.fields.Type.accessible}" styleclass="slds-input slds-select">
 							<apex:pageBlockSectionItem >
 								<apex:selectList value="{!wrapTask.task.Type__c}" size="1">
 									<apex:selectOptions value="{!TaskTypes}" />
@@ -190,7 +190,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Priority__c.label}">
 							<apex:pageBlockSectionItem >
-								<apex:selectList required="true" value="{!wrapTask.task.Priority__c}" size="1">
+								<apex:selectList required="true" value="{!wrapTask.task.Priority__c}" size="1" styleclass="slds-input slds-select">
 									<apex:selectOptions value="{!TaskPriorities}" />
 								</apex:selectList>
 							</apex:pageBlockSectionItem>
