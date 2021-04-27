@@ -5,7 +5,7 @@
     <displayType>massActionButton</displayType>
     <encodingKey>UTF-8</encodingKey>
     <linkType>url</linkType>
-    <masterLabel>Create Case Action Plans</masterLabel>
+    <masterLabel>Create Case Action Plan</masterLabel>
     <openType>replace</openType>
     <protected>false</protected>
     <requireRowSelection>false</requireRowSelection>

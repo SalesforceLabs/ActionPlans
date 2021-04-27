@@ -173,13 +173,6 @@
         <searchResultsAdditionalFields>StartDate__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Action_Plan_Template__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Task_Status_Formula__c</searchResultsAdditionalFields>
-        <searchResultsCustomButtons>Create_Account_Action_Plan</searchResultsCustomButtons>
-        <searchResultsCustomButtons>Create_Campaign_Action_Plan</searchResultsCustomButtons>
-        <searchResultsCustomButtons>Create_Campaign_Contact_Action_Plan</searchResultsCustomButtons>
-        <searchResultsCustomButtons>Create_Case_Action_Plan</searchResultsCustomButtons>
-        <searchResultsCustomButtons>Create_Contract_Action_Plan</searchResultsCustomButtons>
-        <searchResultsCustomButtons>Create_Lead_Action_Plan</searchResultsCustomButtons>
-        <searchResultsCustomButtons>Create_Opportunity_Action_Plan</searchResultsCustomButtons>
         <searchResultsCustomButtons>Delete_Multiple_Action_Plans</searchResultsCustomButtons>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
