@@ -57,9 +57,11 @@ temp
 metadata
 **/objects/Account/Account.object-meta.xml
 # force-app/main/default/objects/Account/listViews/*
-**/objects/Account/field*
-**/objects/Contact/field*
+**/objects/Account/fields/
+**/objects/Contact/fields/
+**/objects/Account/listViews/
+**/objects/Contact/listViews/
 **/objects/Contact/Contact.object-meta.xml
 # force-app/main/default/objects/Contact/listViews/*
 **/layouts/Contact*
-**/layouts/Globa*
+**/layouts/Global*

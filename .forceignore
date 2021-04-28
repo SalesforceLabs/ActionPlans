@@ -14,17 +14,19 @@ force-app/main/default/lwc/jsconfig.json
 **/__tests__/**
 
 # Org Metadata
-**quickActions
+**quickActions**
 **Custom_Object**
-**/profiles/**
+**/profiles/
 **/objects/Task/recordTypes
-**/standardValueSets/**
-**/Translations/**
-**/settings/**
+**/standardValueSets/
+**/Translations/
+**/settings/
 **/lwc
 **/objects/Account/Account.object-meta.xml
-**/objects/Account/fields/**
-**/objects/Contact/fields/**
+**/objects/Account/fields/
+**/objects/Account/listViews/
+**/objects/Contact/fields/
+**/layouts/Global*
 
 src
 metadata

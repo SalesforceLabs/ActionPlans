@@ -3,6 +3,7 @@
     <fullName>My_Templates</fullName>
     <columns>NAME</columns>
     <columns>Description__c</columns>
+	<columns>OWNER.ALIAS</columns>
     <filterScope>Mine</filterScope>
     <label>My Templates</label>
 </ListView>
