@@ -149,7 +149,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 			}
 
-			//Execution when a Action Plan is deleted, delete all asociated Tasks
+			//Execution when an Action Plan is deleted: delete all asociated Tasks
 			when BEFORE_DELETE {
 				Set<Id> taskIds= new Set<Id>();
 				if ( !System.isBatch() && !System.isFuture()){
@@ -170,7 +170,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 				Database.UndeleteResult[] unDel_errors;
 
-				//get Id of all deleted Action Plan Tasks Templates
+				//get Id of all deleted Action Plan Task Templates
 				Map<Id,APTaskTemplate__c> map_APTasks = new Map<Id,APTaskTemplate__c>([SELECT a.Id, a.Action_Plan__c
 				FROM APTaskTemplate__c a WHERE a.Action_Plan__c IN :newRecordsMap.keyset() ALL ROWS ]);
 

@@ -39,14 +39,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 global inherited sharing class ActionPlansBatchDelete implements Database.Batchable<SObject>, Database.Stateful{
 
-	ActionPlansBatchDeleteUtilities apBatchDeleteUtil;
+	//ActionPlansBatchDeleteUtilities apBatchDeleteUtil;
+
+	private Set<Id> relActionPlansIds;
 
 	/**
 	* Constructor
 	*/
 	public ActionPlansBatchDelete( Set<Id> oIDsSet){
 
-		 apBatchDeleteUtil = new ActionPlansBatchDeleteUtilities(oIDsSet);
+		relActionPlansIds = oIDsSet;
+
+		//apBatchDeleteUtil = new ActionPlansBatchDeleteUtilities(oIDsSet);
 
 	}
 
@@ -54,7 +58,11 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 	* Use the start method to collect the records or objects to be passed to the interface method execute
 	*/
 	global Database.QueryLocator start( Database.BatchableContext bc ){
-		return this.apBatchDeleteUtil.getObjects(bc);
+
+		String soql = 'SELECT Id FROM ActionPlan__c WHERE Id IN :relActionPlansIds';
+		return Database.getQueryLocator( soql );
+
+		//return this.apBatchDeleteUtil.getObjects(bc);
 	}
 
 	/**
@@ -63,8 +71,14 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 	* @param data
 	*/
 	global void execute( Database.BatchableContext bc, List<SObject> data ){
+		Set<Id> actionPlanIDs = new Set<Id>();
+		for( SObject s : data ){
+			actionPlanIDs.add((Id)s.get('Id'));
+			//ActionPlan__c a = (ActionPlan__c)s;
+			//actionPlanIDs.add(a.Id);
+		}
 		try{
-			this.apBatchDeleteUtil.deleteActionPlans();
+			deleteActionPlans(actionPlanIDs);
 			if (ActionPlansTestUtilities.forceError){
 				String str = null;
 				str.toLowerCase();
@@ -78,12 +92,38 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 			String[] toAddresses = new String[] {a.CreatedBy.Email};
 			mail.setToAddresses(toAddresses);
 			mail.setSubject('EXCEPTION during Action Plans Batch deletion  ' + a.Status);
-			mail.setPlainTextBody('The batch Apex job processed ' + a.TotalJobItems + ' batches.\nError :' + e );
+			mail.setPlainTextBody('The batch Apex job processed ' + a.TotalJobItems + ' batches.\nError :' + makeEmailBody(e) );
 			if(ActionPlansUtilities.canSendEmails()){
 				Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
 			}
 		}
 	}
+
+	global void deleteActionPlans(Set<Id> relActionPlansIds) {
+
+		List<ActionPlan__c> relActionPlans = [SELECT Id FROM ActionPlan__c WHERE Id IN :relActionPlansIds LIMIT :ActionPlansConstants.MAX_APTODELETE];
+
+		// 	task templates probably don't need to be deleted as they are the detail part of the relationship
+		Map<Id, APTaskTemplate__c> relTaskTemplateMap = new Map<Id, APTaskTemplate__c>([SELECT Id FROM APTaskTemplate__c WHERE Action_Plan__c IN :relActionPlansIds]);
+
+		delete relActionPlans;
+
+		List<Task> relTaskList = [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__c IN :relTaskTemplateMap.keySet()];
+
+		// Tasks should have been deleted by the trigger handler, but we will be sure here
+		delete relTaskList;
+
+	 }
+
+	 private String makeEmailBody(Exception e){
+		String emailBody = '';
+		emailBody += 'Exception type caught: ' + e.getTypeName();
+		emailBody += 'Message: ' + e.getMessage();
+		emailBody += 'Cause: ' + e.getCause();
+		emailBody += 'Line number: ' + e.getLineNumber();
+		emailBody += 'Stack trace: ' + e.getStackTraceString();
+		return emailBody;
+	 }
 
 	/**
 	*

@@ -45,7 +45,7 @@ public inherited sharing class ActionPlansConstants {
 	public static final Integer MAX_APOBJECTS   = 40;
 
 	// Max number of Action Plans that can be deleted from list
-	public static final Integer MAX_APTODELETE	= 65;
+	public static final Integer MAX_APTODELETE	= 1000;
 
     //public static final String DEFAULT_TASK_STATUS = [SELECT MasterLabel FROM TaskStatus WHERE IsDefault = true LIMIT 1].MasterLabel;
 

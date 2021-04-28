@@ -137,15 +137,16 @@ private with sharing class ActionPlansBatchDeleteTest {
 		Set<Id> sIDs = new Set<Id>();
 		sIDs.add(ap.Id);
 
-		//ActionPlansBatchDelete taskBatch = new ActionPlansBatchDelete(sIDs, Userinfo.getUserId());
-		//Database.ExecuteBatch( taskBatch );
+		ActionPlansBatchDelete taskBatch = new ActionPlansBatchDelete(sIDs);
+		Database.ExecuteBatch( taskBatch );
 
-		ActionPlansBatchDeleteUtilities taskBatch = new ActionPlansBatchDeleteUtilities(sIDs);
-        taskBatch.deleteActionPlans();
-
-		undelete ap;
+		//ActionPlansBatchDeleteUtilities taskBatch = new ActionPlansBatchDeleteUtilities(sIDs);
+        //taskBatch.deleteActionPlans();
 
 		Test.stopTest();
+		undelete ap;
+
+
 
 		//System.assert([SELECT Count() FROM Task] > 0);
 
