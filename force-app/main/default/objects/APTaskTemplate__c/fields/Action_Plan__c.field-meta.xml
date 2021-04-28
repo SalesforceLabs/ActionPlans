@@ -4,7 +4,7 @@
     <externalId>false</externalId>
     <label>Action Plan</label>
     <referenceTo>ActionPlan__c</referenceTo>
-    <relationshipName>AP_Tasks</relationshipName>
+    <relationshipName>apTasks</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
     <trackTrending>false</trackTrending>

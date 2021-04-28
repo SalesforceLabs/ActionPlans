@@ -5,7 +5,6 @@
     <externalId>false</externalId>
     <label>Depends On</label>
     <referenceTo>APTaskTemplate__c</referenceTo>
-    <relationshipLabel>AP Task Templates</relationshipLabel>
     <relationshipName>Dependent_AP_Tasks</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>
