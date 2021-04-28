@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
         var j$ = jQuery.noConflict();
     </script>
 
-    <apex:sectionHeader title="{!$ObjectType.ActionPlan__c.label}" subtitle="{!$Label.ap_Import}" />
+    <c:APSectionHeader title="{!$ObjectType.ActionPlanTemplate__c.label}" subtitle="{!$Label.ap_Import}" sObjType="ActionPlanTemplate__c" />
 
     <apex:form id="theForm" onSubmit="return fileUpload.verify();">
       <apex:pageBlock id="pageBlock" title="{!$Label.ap_Import}">
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
              <br />
             <apex:commandButton id="btnImport" value="{!$Label.ap_Import}" action="{!importTemplate}" />
             <apex:messages id="errorMsg" style="color:white;" />
-            <div id="errors" style="color:white;"></div>
+            <div id="errors" style="color:red;"></div>
           </apex:pageBlockSection>
        </apex:pageBlock>
     </apex:form>
@@ -66,7 +66,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
                 if (error_field){
                     error_field.innerHTML = '';
                 }
-
 
                 if( file.files.length == 0 ){
                     error.innerHTML = "{!$Label.ap_Errors_SelectXML}";
