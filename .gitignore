@@ -49,15 +49,17 @@ $RECYCLE.BIN/
 **/objects/Task/recordTypes
 **/standardValueSets
 **/Translations
+**/listViews/**
 
 # temporary files
 src
 temp
 metadata
-force-app/main/default/layouts/Account-Account %28Action Plans%29 Layout.layout-meta.xml
-force-app/main/default/objects/Account/Account.object-meta.xml
-force-app/main/default/objects/Account/fields/**
-force-app/main/default/objects/Contact/fields/**
-force-app/main/default/objects/Contact/Contact.object-meta.xml
-force-app/main/default/objects/Contact/listViews/All.listView-meta.xml
-force-app/main/default/layouts/Contact*
+**/objects/Account/Account.object-meta.xml
+# force-app/main/default/objects/Account/listViews/*
+**/objects/Account/field*
+**/objects/Contact/field*
+**/objects/Contact/Contact.object-meta.xml
+# force-app/main/default/objects/Contact/listViews/*
+**/layouts/Contact*
+**/layouts/Globa*

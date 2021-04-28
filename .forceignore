@@ -22,10 +22,9 @@ force-app/main/default/lwc/jsconfig.json
 **/Translations/**
 **/settings/**
 **/lwc
-**/layouts/Account**
-# **/layouts/Account-Account %28Action Plans%29 Layout.layout-meta.xml
 **/objects/Account/Account.object-meta.xml
-**/objects/Account/fields/***
+**/objects/Account/fields/**
+**/objects/Contact/fields/**
 
 src
 metadata
