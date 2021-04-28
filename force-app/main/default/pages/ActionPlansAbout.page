@@ -1,0 +1,243 @@
+<!--
+Action Plans v3
+Force.com Labs 2011
+http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
+
+BSD 3-Clause License
+
+Copyright (c) 2021, salesforce.com, inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+<apex:page lightningStylesheets="true" docType="html-5.0" contentType="text/html" id="thePage">
+<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/jquery-3.6.0.min.js')}" />
+<script>
+    var j$ = jQuery.noConflict();
+    j$(document).ready(function () {
+    j$("p").addClass("slds-p-vertical_small");
+    j$("h2").addClass("slds-text-heading_large slds-p-top_medium");
+    j$("h3").addClass("slds-text-heading_medium slds-p-top_medium");
+    j$("h4").addClass("slds-text-heading_small slds-p-top_small");
+    j$("ul").addClass("slds-list_dotted");
+    j$("ol").addClass("slds-list_ordered");
+    });
+</script>
+        <c:APSectionHeader sObjType="ActionPlan__c" title="{!$Label.ap_ActionPlansSetup}" subtitle="{!$ObjectType.ActionPlan__c.labelPlural}" />
+<apex:slds />
+<div class="slds-scope">
+    <div aria-labelledby="boxAbout">
+
+        <fieldset class="slds-box slds-theme_default slds-container_x-large">
+            <legend id="boxAbout" class="slds-text-heading_large">
+                 {!$Label.ap_About}
+            </legend>
+            <apex:outputText value="{!$Label.ap_AboutP1}" escape="false" />
+            <apex:outputText value="{!$Label.ap_AboutP1a}" escape="false" />
+            <apex:outputText value="{!$Label.ap_AboutP1b}" escape="false" />
+
+
+        </fieldset>
+    </div>
+
+
+
+
+       <!--  <apex:pageBlock title="{!$Label.ap_About}">
+            <apex:outputText value="{!$Label.ap_AboutP1}" escape="false" />
+            <apex:outputText value="{!$Label.ap_AboutP1a}" escape="false" />
+            <apex:outputText value="{!$Label.ap_AboutP1b}" escape="false" />
+        </apex:pageBlock> -->
+
+        <div aria-labelledby="boxGettingStarted">
+
+            <fieldset class="slds-box slds-theme_default slds-container_x-large">
+                <legend id="boxGettingStarted" class="slds-text-heading_large">
+                     {!$Label.ap_GettingStartedTitle}
+                </legend>
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStartedP1}" />"
+
+                 <h3 class="slds-text-heading_medium"><apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1_title}" /></h3>
+
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1}" />
+
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_title}" />
+
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub1P1}{!$Label.ap_GettingStarted_section2_sub1P2}" />
+
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub2}" />
+
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section3}" />
+
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}{!$Label.ap_GettingStarted_section4P2}" />
+            </fieldset>
+        </div>
+
+       <!-- <apex:pageBlock title="{!$Label.ap_GettingStartedTitle}">
+            <p>{!$Label.ap_GettingStartedP1}</p>
+            <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1_title}" />
+            <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1}" />
+            <br/>
+            <br/>
+            <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_title}" />
+            <br/>
+            <br/>
+            <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub1P1}{!$Label.ap_GettingStarted_section2_sub1P2}" />
+            <br/>
+            <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub2}" />
+            <br/>
+            <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section3}" />
+
+            <br/>
+            <br/>
+            <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}{!$Label.ap_GettingStarted_section4P2}" />
+
+        </apex:pageBlock> -->
+
+        <div aria-labelledby="boxTemplate">
+
+            <fieldset class="slds-box slds-theme_default slds-container_x-large">
+                <legend id="boxTemplate" class="slds-text-heading_large">
+                    {!$Label.ap_CreateTemplateTitle}
+                </legend>
+                <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateP1andP2}" />
+
+                <p>
+                    <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Template-Creation.png')}" />
+                </p>
+                <ol class="slds-list_ordered">
+                    <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart1}" />
+                    <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart2}" />
+                    <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart3}" />
+                    <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart4}" />
+                </ol>
+
+            </fieldset>
+        </div>
+
+        <!-- <apex:pageBlock title="{!$Label.ap_CreateTemplateTitle}">
+            <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateP1andP2}" />
+            <p><apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Template-Creation.png')}"  /></p>
+            <ol>
+                <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart1}" />
+                <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart2}" />
+                <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart3}" />
+                <apex:outputText escape="false" value="{!$Label.ap_CreateTemplateOlpart4}" />
+            </ol>
+        </apex:pageBlock> -->
+
+        <div aria-labelledby="boxPlan">
+
+            <fieldset class="slds-box slds-theme_default slds-container_x-large">
+                <legend id="boxPlan" class="slds-text-heading_large">
+                     {!$Label.ap_CreatesActionPlans}
+                </legend>
+                <p>{!$Label.ap_CreatesActionPlansP1}</p>
+
+                <p>
+                    <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Select-Accounts.png')}" />
+                </p>
+
+                <p>{!$Label.ap_CreatesActionPlansP2}</p>
+
+                <p>
+                    <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Choose-template-step1.png')}" />
+                </p>
+
+                <p>{!$Label.ap_CreatesActionPlansP3}</p>
+
+                <p>
+                    <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Choose-template-step2.png')}" />
+                </p>
+
+                <!-- <apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP3_bottom_text}" /> -->
+
+                <p>{!$Label.ap_CreatesActionPlansP4}</p>
+                <apex:outputText escape="false" value="{!$Label.ap_Note}:" />&nbsp;
+                <apex:outputText escape="false" value="{!$Label.ap_ConfirmationofCreation}" />
+                <p>
+                    <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlan-Detail.png')}" />
+                </p>
+
+                <p>{!$Label.ap_CreatesActionPlansP5}</p>
+                <apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP5_note}" />
+                <p>
+                    <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/AccountActionPlan-Detail.png')}" />
+                </p>
+
+            </fieldset>
+        </div>
+
+        <!-- <apex:pageBlock title="{!$Label.ap_CreatesActionPlans}">
+
+            <p>{!$Label.ap_CreatesActionPlansP1}</p>
+
+            <p><apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Select-Accounts.png')}"  /></p>
+
+            <p>{!$Label.ap_CreatesActionPlansP2}</p>
+
+            <p><apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Choose-template-step1.png')}"  /></p>
+
+            <p>{!$Label.ap_CreatesActionPlansP3}</p>
+
+            <p><apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/Choose-template-step2.png')}"  /></p>
+
+            <apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP3_bottom_text}" />
+
+            <p>{!$Label.ap_CreatesActionPlansP4}</p>
+            <apex:outputText escape="false" value="{!$Label.ap_Note}:" />&nbsp;<apex:outputText escape="false" value="{!$Label.ap_ConfirmationofCreation}" />
+            <p><apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlan-Detail.png')}"  /></p>
+
+            <p>{!$Label.ap_CreatesActionPlansP5}</p>
+            <apex:outputText escape="false" value="{!$Label.ap_CreatesActionPlansP5_note}" />
+            <p><apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/AccountActionPlan-Detail.png')}"  /></p>
+
+
+        </apex:pageBlock> -->
+
+        <div aria-labelledby="boxShare">
+
+            <fieldset class="slds-box slds-theme_default slds-container_x-large">
+                <legend id="boxShare" class="slds-text-heading_large">
+                     {!$Label.ap_ImportExport_Title}
+                </legend>
+                <apex:outputText escape="false" value="{!$Label.ap_ImportExport_1}" />
+                <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-1.png')}" />
+                <apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}" />
+                <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-2.png')}" />
+            </fieldset>
+        </div>
+
+        <!-- <apex:pageBlock title="{!$Label.ap_ImportExport_Title}">
+            <p><apex:outputText escape="false" value="{!$Label.ap_ImportExport_1}" /></p>
+            <br/><br/>
+            <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-1.png')}" />
+            <br/><br/>
+            <p><apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}" /></p>
+            <br/><br/>
+            <apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-2.png')}" />
+        </apex:pageBlock> -->
+</div>
+    </apex:page>
