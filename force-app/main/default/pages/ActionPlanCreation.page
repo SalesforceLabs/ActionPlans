@@ -245,14 +245,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<!-- End Information Section -->
 
 			<!--  Start Related Section -->
-			<apex:pageBlockSection id="RelatedSection" title="{!relatedObjLabelPlural}" columns="3" rendered="{!hasRelated}" collapsible="false">
-				<apex:dataList value="{!relatedObjNameList}" var="objName" first="0" rows="14">
+			<apex:pageBlockSection id="RelatedSection" title="{!relatedObjLabelPlural} ({!nameListSize})" columns="3" rendered="{!hasRelated}" collapsible="false">
+				<!-- <apex:dataList value="{!relatedObjNameList}" var="objName" first="0" rows="14">
 					<apex:outputText value="{!objName}" />
 				</apex:dataList>
 				<apex:dataList value="{!relatedObjNameList}" var="objName" first="14" rows="14">
 					<apex:outputText value="{!objName}" />
 				</apex:dataList>
 				<apex:dataList value="{!relatedObjNameList}" var="objName" first="28" rows="12">
+					<apex:outputText value="{!objName}" />
+				</apex:dataList> -->
+				<apex:dataList value="{!relatedObjNameList}" var="objName" first="0" rows="{!oneThirdCutoff}">
+					<apex:outputText value="{!objName}" />
+				</apex:dataList>
+				<apex:dataList value="{!relatedObjNameList}" var="objName" first="{!oneThirdCutoff}" rows="{!oneThirdCutoff}">
+					<apex:outputText value="{!objName}" />
+				</apex:dataList>
+				<apex:dataList value="{!relatedObjNameList}" var="objName" first="{!twoThirdsCutoff}" rows="{!oneThirdCutoff + 1}">
 					<apex:outputText value="{!objName}" />
 				</apex:dataList>
 			</apex:pageBlockSection>

@@ -44,7 +44,7 @@ public inherited sharing class ActionPlanCreationController{
 	private Id                      templateId;
 	public Set<Id>                  relatedObjIds           { get; set; }
 	public String                   relatedObjLabelPlural          { get; set; }
-	public List<String>             relatedObjNameList      { get; set; }
+
 	public Boolean                  hasRelated              { get; set; }
 	public Boolean                  hasRelatedObject        { get; set; }
 
@@ -875,7 +875,7 @@ public inherited sharing class ActionPlanCreationController{
 			}
 		}
 
-		retrieveNameRelatedRecord(relatedObjIds, nameParam);
+		relatedObjNameList = retrieveNameRelatedRecord(relatedObjIds, nameParam);
 	}
 
 	/**
@@ -883,7 +883,9 @@ public inherited sharing class ActionPlanCreationController{
 	* @param relatedObjIds
 	* @param relatedObjectName
 	*/
-	private void retrieveNameRelatedRecord( Set<Id> relatedObjIds, String relatedObjectName ){
+	private List<String> retrieveNameRelatedRecord( Set<Id> relatedObjIds, String relatedObjectName ){
+		List<String> nameList = new List<String>();
+
 		String objectlower = relatedObjectName.toLowerCase();
 		//System.debug('related object name is ' + objectlower);
 
@@ -895,23 +897,51 @@ public inherited sharing class ActionPlanCreationController{
 
 			when 'case' {
 				for( Case ca : [SELECT Subject, CaseNumber FROM Case WHERE Id IN :relatedObjIds] ){
-					this.relatedObjNameList.add( (ca.Subject != null) ?  ca.CaseNumber + ': ' + ca.Subject : ca.CaseNumber );
+					nameList.add( (ca.Subject != null) ?  ca.CaseNumber + ': ' + ca.Subject : ca.CaseNumber );
 				}
 			}
 			when 'contract' {
 				for( Contract contr : [SELECT ContractNumber FROM Contract WHERE Id IN :relatedObjIds] ){
-					this.relatedObjNameList.add( Contract.Name.getDescribe().getLabel() + ' ' + contr.ContractNumber );
+					nameList.add( Contract.Name.getDescribe().getLabel() + ' ' + contr.ContractNumber );
 				}
 			}
 			when else {
 					String relNameQuery = 'SELECT Id, Name FROM ' + relatedObjectName + ' WHERE Id IN :relatedObjIds';
 					//System.debug('relNameQuery ' + relNameQuery);
 					for(SObject so : Database.query(relNameQuery)){
-						this.relatedObjNameList.add( (String)so.get('Name'));
+						nameList.add( (String)so.get('Name'));
 					}
 			}
 		}
+		return nameList;
 	}
+
+	private Map<Id, String> relatedObjectNameMap = new Map<Id, String>();
+
+	//public List<String> relatedObjNameList      { get; set; }
+
+	public List<String> relatedObjNameList {
+		get {
+			if(relatedObjNameList == null){
+				relatedObjNameList = new List<String>();
+				nameListSize = 0;
+				oneThirdCutoff = 0;
+				twoThirdsCutoff = 0;
+			}
+			return relatedObjNameList;
+		}
+		set {
+			relatedObjNameList = value;
+			nameListSize = relatedObjNameList.size();
+			oneThirdCutoff = (Decimal.valueof(nameListSize/3)).round(System.RoundingMode.DOWN).intValue();
+			twoThirdsCutoff = (Decimal.valueof(nameListSize*2/3)).round(System.RoundingMode.DOWN).intValue();
+
+		}
+	}
+
+	public Integer nameListSize { get; set; }
+	public Integer oneThirdCutoff { get; set; }
+	public Integer twoThirdsCutoff { get; set; }
 
 	/**
 	* Checks if Action Plan Tasks has cyclic dependency.
