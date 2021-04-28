@@ -40,7 +40,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 public inherited sharing class ActionPlansBatchDeleteUtilities {
 
  	private Set<Id> 			    relActionPlansIds;
- 	//private List<ActionPlan__c> 	relActionPlans		{ get; set; }
 
 	//constructor
 	public ActionPlansBatchDeleteUtilities(Set<Id> oIDsSet){
@@ -51,38 +50,23 @@ public inherited sharing class ActionPlansBatchDeleteUtilities {
 
 	public Database.QueryLocator getObjects( Database.BatchableContext bc ){
 
-		String soql		= 	'SELECT a.Id FROM ActionPlan__c a WHERE a.Id IN :relActionPlansIds';
-		/* String inClause = 	'(';
-
-		inClause += '\'' + String.join( relActionPlansIds, '\',\'' ) + '\'';
-		inClause 	+= ')';
-		soql 		+= inClause; */
-
-		System.debug('SOQL: ' + soql);
-
+		String soql = 'SELECT Id FROM ActionPlan__c WHERE Id IN :relActionPlansIds';
 		return Database.getQueryLocator( soql );
 	}
 
 	public void deleteActionPlans() {
 
-		//List<APTaskTemplate__c> relTaskTemplateList = new List<APTaskTemplate__c>();
-		//List<Id> relTaskTemplateIds 			= new List<Id>();
-		//List<Task> relTaskList 						= new List<Task>();
+		List<ActionPlan__c> relActionPlans = [SELECT Id FROM ActionPlan__c WHERE Id IN :this.relActionPlansIds LIMIT :ActionPlansConstants.MAX_APTODELETE];
 
-		//try{
-			List<ActionPlan__c> relActionPlans = [SELECT Id FROM ActionPlan__c WHERE Id IN :this.relActionPlansIds LIMIT :ActionPlansConstants.MAX_APTODELETE];
-			// 	task templates are deleted as they are the detail part or the relationship
-			Map<Id,APTaskTemplate__c> relTaskTemplateMap = new Map<Id,APTaskTemplate__c>([SELECT Id FROM APTaskTemplate__c WHERE Action_Plan__c IN :this.relActionPlansIds]);
-			List<Task> relTaskList = [SELECT Id FROM Task t WHERE t.IsClosed = false AND t.TaskAPTaskTemplate__c IN :relTaskTemplateMap.keySet()];
+		// 	task templates probably don't need to be deleted as they are the detail part of the relationship
+		Map<Id, APTaskTemplate__c> relTaskTemplateMap = new Map<Id, APTaskTemplate__c>([SELECT Id FROM APTaskTemplate__c WHERE Action_Plan__c IN :this.relActionPlansIds]);
 
-			delete relActionPlans;
-			delete relTaskList;
+		delete relActionPlans;
 
-		//} catch(Exception e){
-			/*
-			todo: handle this
-			*/
-		//}
+		List<Task> relTaskList = [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__c IN :relTaskTemplateMap.keySet()];
+
+		// Tasks should have been deleted by the trigger handler, but we will be sure here
+		delete relTaskList;
 
 	 }
 
