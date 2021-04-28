@@ -58,6 +58,7 @@ private class ActionPlansUtilitiesTest {
 		Test.setCurrentPage(Page.ActionPlanCreation);
 		Test.startTest();
 		ActionPlanCreationController apu = new ActionPlanCreationController(new ApexPages.StandardController( new ActionPlan__c() ) );
+		ActionPlansTestUtilities.showDebugParameters = true;
 		ActionPlansTestUtilities.debugParameters('testDebugParameters');
 		Test.stopTest();
 		System.assert(true);

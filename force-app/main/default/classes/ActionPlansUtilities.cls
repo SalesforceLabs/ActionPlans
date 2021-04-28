@@ -494,10 +494,11 @@ public inherited sharing class ActionPlansUtilities {
 	};
 
 	public static Weekend_Day__mdt getWeekendDay(String developerName){
-		return getWeekendDay(developerName, 0, 0);
+		return Weekend_Day__mdt.getInstance(developerName);
+		//return getWeekendDay(developerName, 0, 0);
 	}
 
-	public static Weekend_Day__mdt getWeekendDay(String developerName, Integer daysBack, Integer daysForward){
+	/* public static Weekend_Day__mdt getWeekendDay(String developerName, Integer daysBack, Integer daysForward){
 		weekendDay = Weekend_Day__mdt.getInstance(developerName);
 		if(weekendDay == null){
 			weekendDay = new Weekend_Day__mdt(DeveloperName = developerName);
@@ -506,7 +507,7 @@ public inherited sharing class ActionPlansUtilities {
 		}
 		return weekendDay;
 	}
-	private static Weekend_Day__mdt weekendDay;
+	private static Weekend_Day__mdt weekendDay; */
 
 	/**
 	 * Given a task due date, we adjust it here for weekends
