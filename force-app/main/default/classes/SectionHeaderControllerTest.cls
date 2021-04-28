@@ -40,16 +40,23 @@ private class SectionHeaderControllerTest {
 			shc.objectName = 'CaseComment';
 			shc.getIsCustom();
 			shc.getObjectIconInfo();
-
-			/* shc.objectName = 'APTaskTemplate__c';
-			shc.getIsCustom();
-			shc.getObjectIconInfo();
-
-			shc.objectName = 'Account';
-			shc.getIsCustom();
-			shc.getObjectIconInfo(); */
 		}
 		Test.stopTest();
 
+	}
+
+	@IsTest
+	static void testNullObject(){
+		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
+		User u = testUtil.createTestUser();
+
+		Test.startTest();
+		System.runAs(u){
+			SectionHeaderController shc = new SectionHeaderController();
+			shc.objectName = null;
+			shc.getIsCustom();
+			shc.getObjectIconInfo();
+		}
+		Test.stopTest();
 	}
 }

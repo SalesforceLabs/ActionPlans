@@ -1,6 +1,6 @@
-<apex:component controller="SectionHeaderController" access="global">
+<apex:component controller="SectionHeaderController" >
 
-	<apex:attribute name="sObjType" type="String" assignTo="{!objectName}" description="Object Name for the header object" />
+	<apex:attribute name="sObjType" type="String" assignTo="{!objectName}" description="Object Name for the header object" required="true" />
 	<apex:attribute name="title" type="String" required="false" default="Record" description="Header title text" />
 	<apex:attribute name="subtitle" type="String" required="false" description="Header subtitle text" />
 	<apex:attribute name="printURL" type="String" required="false" default="" description="printURL URL for classic header" />
@@ -9,7 +9,7 @@
 	<apex:variable var="headersubtitle" value="{!IF(subtitle == null, $ObjectType[sObjType].label, subtitle)}" />
 
 	<apex:outputPanel rendered="{!!lex}" layout="none">
-		<apex:sectionheader subtitle="{!title}" title="{!headersubtitle}" printUrl="{!printURL}" />
+		<apex:sectionHeader subtitle="{!title}" title="{!headersubtitle}" printUrl="{!printURL}" />
 	</apex:outputPanel>
 
 	<apex:outputPanel rendered="{!lex}" layout="none">

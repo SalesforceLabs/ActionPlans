@@ -19,6 +19,7 @@ global inherited sharing class SectionHeaderController {
 	 * Given an object name, return if it is a custom object
 	 */
 	private Boolean isCustom(String sObjectName){
+		if(sObjectName == null){return false;}
 		return Schema.getGlobalDescribe().get( sObjectName.toLowerCase() ).getDescribe().isCustom();
 	}
 
@@ -38,8 +39,6 @@ global inherited sharing class SectionHeaderController {
 		List<Schema.DescribeTabSetResult> tabSetDesc      = Schema.describeTabs();
 		List<Schema.DescribeTabResult>    tabDesc         = new List<Schema.DescribeTabResult>();
 		List<Schema.DescribeIconResult>   iconDesc        = new List<Schema.DescribeIconResult>();
-
-
 
 		for(Schema.DescribeTabSetResult tsr : tabSetDesc){
 			tabDesc.addAll(tsr.getTabs());
@@ -81,12 +80,12 @@ global inherited sharing class SectionHeaderController {
 			}
 		}
 		//if no icons are found, just default to the Custom lightning icon
-		if(iconStyle == null){
+		if(iconStyle == null || sObjectName == null){
 			iconStyle = 'slds-icon-standard-record';
 			iconURL   = '/img/icon/t4v35/standard/record_120.png';
 			iconTag   = 'No Lightning Icon Found';
 		}
-		if(!sObjectName.endsWithIgnoreCase('__c')){
+		else if(!sObjectName.endsWithIgnoreCase('__c')){
 			iconStyle = 'slds-icon-standard-' + sObjectName.toLowerCase();
 			iconURL   = '/img/icon/t4v35/standard/' + sObjectName.toLowerCase() + '_120.png';
 			iconTag   = sObjectName.toLowerCase();
