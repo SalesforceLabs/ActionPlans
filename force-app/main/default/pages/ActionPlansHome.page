@@ -56,7 +56,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     });
 </script>
 
-<apex:variable value="{!$User.UITheme == 'Theme4d' || $User.UITheme == 'Theme4d'}" var="lex" />
+<apex:variable value="{!$User.UIThemeDisplayed == 'Theme4d' || $User.UIThemeDisplayed == 'Theme4u'}" var="lex" />
 <apex:slds />
 
 <apex:outputPanel layout="block" id="actionPlans" rendered="{!$ObjectType.ActionPlan__c.accessible}">

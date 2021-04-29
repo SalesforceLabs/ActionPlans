@@ -65,7 +65,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			border: 2px solid #CC0000;
 		}
 	</style>
-	<apex:variable value="{!$User.UITheme == 'Theme4d' || $User.UITheme == 'Theme4d'}" var="lex" />
+	<apex:variable value="{!$User.UIThemeDisplayed == 'Theme4d' || $User.UIThemeDisplayed == 'Theme4u'}" var="lex" />
 	<apex:slds rendered="{!lex}" />
 </head>
 <body>

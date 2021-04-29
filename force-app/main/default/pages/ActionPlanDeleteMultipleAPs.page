@@ -1,6 +1,6 @@
 <apex:page standardController="ActionPlan__c" recordSetVar="cs" extensions="ActionPlansDeleteMultipleAPExtension" lightningStylesheets="true">
 
-    <apex:variable value="{!$User.UITheme == 'Theme4d' || $User.UITheme == 'Theme4d'}" var="lex" />
+    <apex:variable value="{!$User.UIThemeDisplayed == 'Theme4d' || $User.UIThemeDisplayed == 'Theme4u'}" var="lex" />
 <apex:slds rendered="{!lex}" />
     <apex:form >
         <section role="alertdialog" tabindex="0" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt"
