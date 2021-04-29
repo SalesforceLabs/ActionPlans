@@ -338,13 +338,21 @@
         <shortDescription>AboutCreateP5</shortDescription>
         <value>Step 5: Verify the Action Plan and the tasks.</value>
     </labels>
+	<labels>
+		<fullName>ap_CreatesActionPlansP6</fullName>
+		<categories>Action Plans</categories>
+		<language>en_US</language>
+		<protected>true</protected>
+		<shortDescription>AboutCreateP6</shortDescription>
+		<value>Step 6: Complete the first task on the Action Plan.</value>
+	</labels>
     <labels>
-        <fullName>ap_CreatesActionPlansP5_note</fullName>
+        <fullName>ap_CreatesActionPlansP6_note</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>AboutCreateP5Note</shortDescription>
-        <value>Note that the Action Plan is now in the correct related list and that this account has two open activities. The third activity in the template is dependent and will be created only when its predecessor is complete.</value>
+        <value>Note that the Action Plan is now in the correct related list and that this account has one open activity and one closed activity. The third activity in the template is dependent and will be created only when its predecessor is complete.</value>
     </labels>
     <labels>
         <fullName>ap_Delete</fullName>
