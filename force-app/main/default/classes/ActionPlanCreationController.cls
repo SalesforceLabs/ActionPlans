@@ -43,7 +43,7 @@ public inherited sharing class ActionPlanCreationController{
 	public ActionPlan__c            actionPlan;
 	private Id                      templateId;
 	public Set<Id>                  relatedObjIds           { get; set; }
-	public String                   relatedObjLabelPlural          { get; set; }
+	public String                   relatedObjLabelPlural   { get; set; }
 
 	public Boolean                  hasRelated              { get; set; }
 	public Boolean                  hasRelatedObject        { get; set; }
@@ -73,7 +73,6 @@ public inherited sharing class ActionPlanCreationController{
 		this.addedTask          = false;
 		this.hasRelated         = false;
 		this.hasRelatedObject   = false;
-		this.relatedObjNameList = new List<String>();
 		this.relatedObjIds      = new Set<Id>();
 		this.mapTasksListBkp    = new Map<Id, ApTaskWrapper>();
 		this.actionPlan         = ( ActionPlan__c ) stdController.getRecord();
@@ -236,8 +235,10 @@ public inherited sharing class ActionPlanCreationController{
 			if( refType == null && refId != null){
 				Id shortId = refId.left(15);
 				refType = shortId.getSobjectType().getDescribe().getName();
+				System.debug('refType from Id: ' + refType);
 			} else if(refId == null) {
 				refType = ApexPages.currentPage().getParameters().get( 'refType' );
+				System.debug('refType from URL: ' + refType);
 			}
 			return refType;
 		} set;
@@ -434,7 +435,7 @@ public inherited sharing class ActionPlanCreationController{
 
 		//PageReference newPage = new PageReference( '/' + ActionPlansUtilities.getObjectKeyPrefix( oName ) + '/o' );
 		PageReference newPage = Page.ActionPlansHome;
-		String confirmation = oIdsList.size() + ' ' + ActionPlan__c.sObjectType.getDescribe().getLabelPlural() + ' ' + System.Label.ap_Created + ' ' + System.Label.ap_CreatesActionPlansP4_note;
+		String confirmation = oIdsList.size() + ' ' + ActionPlan__c.sObjectType.getDescribe().getLabelPlural() + ' ' + System.Label.ap_Created + ' ' + System.Label.ap_ConfirmationofCreation;
 		newPage.getParameters().put('message', confirmation);
 		newPage.getParameters().put('severity','success');
 		newPage.setRedirect( true );
@@ -476,24 +477,24 @@ public inherited sharing class ActionPlanCreationController{
 		}
 		catch ( DmlException e ){
 			System.debug('savePageRef_dmlexception ' + e.getMessage());
-			//throw e;
+			Apexpages.addMessages( e );
 			return null;
 		}
 
-		ap_Prefix =  ActionPlansUtilities.getObjectKeyPrefix( 'ActionPlan__c' ) ;
 		if(newApId != null){
-			ap_Prefix = newApId;
+			PageReference newPage = Page.ActionPlanDetail;
+			newPage.getParameters().put('Id', newApId);
+			return newPage;
 		}
+		else {
+			PageReference newPage = Page.ActionPlansHome;
 
-		//PageReference newPage = new PageReference(  '/' + ap_Prefix );
-		PageReference newPage = Page.ActionPlansHome;
-
-		String confirmation = actionPlan.Name + ' ' + System.Label.ap_Created;
-		newPage.getParameters().put('message', confirmation);
-		newPage.getParameters().put('severity','success');
-		newPage.setRedirect( true );
-
-		return newPage;
+			String confirmation = actionPlan.Name + ' ' + System.Label.ap_Created;
+			newPage.getParameters().put('message', confirmation);
+			newPage.getParameters().put('severity','success');
+			newPage.setRedirect( true );
+			return newPage;
+		}
 	}
 
 	/**
@@ -902,14 +903,14 @@ public inherited sharing class ActionPlanCreationController{
 			}
 			when 'contract' {
 				for( Contract contr : [SELECT ContractNumber FROM Contract WHERE Id IN :relatedObjIds] ){
-					nameList.add( Contract.Name.getDescribe().getLabel() + ' ' + contr.ContractNumber );
+					nameList.add( Contract.Name.getDescribe().getLabel() + ': ' + contr.ContractNumber );
 				}
 			}
 			when else {
 					String relNameQuery = 'SELECT Id, Name FROM ' + relatedObjectName + ' WHERE Id IN :relatedObjIds';
 					//System.debug('relNameQuery ' + relNameQuery);
 					for(SObject so : Database.query(relNameQuery)){
-						nameList.add( (String)so.get('Name'));
+						nameList.add( (String)so.get('Name') );
 					}
 			}
 		}
@@ -924,24 +925,21 @@ public inherited sharing class ActionPlanCreationController{
 		get {
 			if(relatedObjNameList == null){
 				relatedObjNameList = new List<String>();
-				nameListSize = 0;
-				oneThirdCutoff = 0;
-				twoThirdsCutoff = 0;
 			}
 			return relatedObjNameList;
 		}
-		set {
-			relatedObjNameList = value;
-			nameListSize = relatedObjNameList.size();
-			oneThirdCutoff = (Decimal.valueof(nameListSize/3)).round(System.RoundingMode.DOWN).intValue();
-			twoThirdsCutoff = (Decimal.valueof(nameListSize*2/3)).round(System.RoundingMode.DOWN).intValue();
-
-		}
+		set;
 	}
 
-	public Integer nameListSize { get; set; }
-	public Integer oneThirdCutoff { get; set; }
-	public Integer twoThirdsCutoff { get; set; }
+	public Integer getNameListSize(){
+		return relatedObjNameList.size();
+	}
+	public Integer getOneThirdCutoff(){
+		return (Decimal.valueof(getNameListSize()/3)).round(System.RoundingMode.DOWN).intValue();
+	}
+	public Integer getTwoThirdsCutoff(){
+		return (Decimal.valueof(getNameListSize()*2/3)).round(System.RoundingMode.DOWN).intValue();
+	}
 
 	/**
 	* Checks if Action Plan Tasks has cyclic dependency.

@@ -327,7 +327,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	* Delete Action Plan Tasks related Tasks
 	* @param apttIds
 	*/
-	@future
+	//@future
 	public static void deleteTasks( Set<Id> apttIds ) {
 		delete [SELECT Id FROM Task WHERE IsClosed = false AND Id IN :apttIds];
 	}

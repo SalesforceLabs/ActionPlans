@@ -290,7 +290,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 		dmlo2.EmailHeader.triggerUserEmail = false;
 
 		if( myNewTasksWithEmail.size() > 0 ){
-			System.debug('new tasks with email');
 			Database.insert( myNewTasksWithEmail, dmlo );
 		}
 
