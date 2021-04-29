@@ -65,7 +65,7 @@ global inherited sharing class SectionHeaderController {
 				iconURL   = ir.getURL();
 				iconStyle = 'slds-icon-standard-record';
 				break;
-			} else if(ir.getWidth() == 120 && ir.getTheme().startsWithIgnoreCase('theme4') && ir.getContentType() == 'image/png'){//large lightning icon image
+			} else if(ir.getWidth() == 120 && ir.getTheme() =='theme4' && ir.getContentType() == 'image/png'){//large lightning icon image
 				if(ir.getURL().contains('/custom/')){ //Icon is from the Custom Sprite
 					iconTag    = ir.getURL().substringBetween('custom/','.png').substringBefore('_');
 					iconURL    = '/img/icon/t4v35/custom/' + iconTag + '_120.png';
