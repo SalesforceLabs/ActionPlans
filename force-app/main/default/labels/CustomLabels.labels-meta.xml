@@ -327,13 +327,6 @@
         <value>Step 5: Verify the Action Plan and the tasks.</value>
     </labels>
     <labels>
-        <fullName>ap_CreatesActionPlansP5_note</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ap_CreatesActionPlansP5_note</shortDescription>
-        <value>ap_CreatesActionPlansP5_note</value>
-    </labels>
-    <labels>
         <fullName>ap_CreatesActionPlansP6</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
