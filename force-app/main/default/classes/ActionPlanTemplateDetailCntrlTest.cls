@@ -138,7 +138,7 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		controller.exportTemplateToXMLDoc();
 
-		System.assert( controller.actionPlanExportXMLDoc != null );
+		System.assert( controller.actionPlanExportXMLId != null );
 
 		Test.StopTest();
 	}

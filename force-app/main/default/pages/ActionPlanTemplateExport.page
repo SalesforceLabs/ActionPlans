@@ -33,36 +33,41 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 <apex:page standardController="ActionPlanTemplate__c" extensions="ActionPlanTemplateDetailController" action="{!exportTemplateToXMLDoc}" lightningStylesheets="true">
-    <c:APSectionHeader sObjType="ActionPlanTemplate__c" title="{!$Label.ap_ExportTitle}" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}"  />
-    <div class="slds-scope">
+
+	<c:APSectionHeader sObjType="ActionPlanTemplate__c" title="{!$Label.ap_ExportTitle}" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}"  />
+
+	<div class="slds-scope">
     <apex:pageBlock title="{!$Label.ap_ExportTitle}">
         <table>
-            <apex:outputPanel layout="none" rendered="{!ISNULL(actionPlanExportXMLDoc)}">
+            <apex:outputPanel layout="none" rendered="{!ISNULL(actionPlanExportXMLId)}">
                 <tr>
-                    <td>Your template could not successfully be exported to an XML document.</td>
+                    <td><apex:outputText value="{!$Label.ap_XMLFailure}" /></td>
                 </tr>
-                </apex:outputPanel>
-                <apex:outputPanel layout="none" rendered="{!NOT(ISNULL(actionPlanExportXMLDoc))}">
+			</apex:outputPanel>
+			<apex:outputPanel layout="none" rendered="{!NOT(ISNULL(actionPlanExportXMLId))}">
                 <tr>
-                    <td>The XML file for your template has been successfully created, and can be found in your Salesforce documents folder.</td>
+                    <td>
+						<apex:outputText value="{!$Label.ap_XMLSuccess}" />
+					</td>
                 </tr>
                 <tr>
                     <td><br/></td>
                 </tr>
                 <tr>
-                    <td><a href="/{!actionPlanExportXMLDoc.id}">Click here</a> to view the XML file in your Salesforce documents folder.</td>
+                    <td>{!$Label.ap_ViewFile}&nbsp;<a href="/{!actionPlanExportXMLId}">{!ActionPlanTemplate__c.Name}</a></td>
                 </tr>
             </apex:outputPanel>
             <tr>
                 <td><br/></td>
             </tr>
             <tr>
-                <td><a href="{!$Page.ActionPlanTemplateDetail}?Id={!ActionPlanTemplate__c.Id}">Click here</a> to return to the template.</td>
+                <td><apex:form><apex:outputText value="{!$Label.ap_View}"/>&nbsp;{!$ObjectType.ActionPlanTemplate__c.label}&nbsp;<apex:commandLink action="{!URLFOR($Action.ActionPlanTemplate__c.View, ActionPlanTemplate__c.Id)}" value="{!ActionPlanTemplate__c.Name}"/></apex:form>
+				</td>
             </tr>
             <tr>
                 <td>
-                    <br/><br/><br/>
-                    <span>Do you want to share this template with others on the Action Plans Template page? Simply email it to <a href="mailto:labs@salesforce.com">labs@salesforce.com</a></span>
+                    <br/><br/>
+					<apex:outputText escape="false" value="{!$Label.ap_ShareEmail}" />
                 </td>
             </tr>
         </table>

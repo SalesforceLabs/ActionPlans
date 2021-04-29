@@ -212,11 +212,11 @@
         <protected>true</protected>
         <shortDescription>AboutCreateTemplateP3</shortDescription>
         <value>&lt;li&gt;Reminder – This check box will define the default behaviour for reminders when applying the template to create an Action plan .
-				&lt;ol&gt;
+				&lt;ull&gt;
 					&lt;li&gt;If it’s left unchecked, in the Action Plan Creation page the reminders will be initially disabled&lt;/li&gt;
 					&lt;li&gt;If it’s checked the reminders will be available.&lt;/li&gt;
-				&lt;/ol&gt; 
-				Note: Reminders take in consideration.
+				&lt;/ul&gt; 
+				Note: Reminders take into consideration:
 			&lt;ul&gt;
 					&lt;li&gt;User org Reminder settings: 
 						Go Personal Setup &gt; My Personal Information &gt; Reminders, if the option &quot;By default, set reminder on Tasks to:&quot; is checked then the selected time will be the default option for task template reminders.
@@ -303,18 +303,6 @@
         <value>Step 3: Enter the information specific to this plan. Note that the accounts you selected earlier are visible and that the &quot;Assign To&quot; has been completed using the current user.</value>
     </labels>
     <labels>
-        <fullName>ap_CreatesActionPlansP3_bottom_text</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP3BottomText</shortDescription>
-        <value>Considerations : When hovering the calendar icon (1.) next to the Days After field a calendar is displayed (2.) This calendar has two dates highlighted :&lt;br/&gt;&lt;br/&gt;
-			&lt;ul&gt;
-				&lt;li&gt;the Action Plan start Date displayed in dark blue.&lt;/li&gt;
-				&lt;li&gt;the expected date for the beginning of the current task in light blue.&lt;/li&gt;
-			&lt;/ul&gt;</value>
-    </labels>
-    <labels>
         <fullName>ap_CreatesActionPlansP4</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -338,20 +326,27 @@
         <shortDescription>AboutCreateP5</shortDescription>
         <value>Step 5: Verify the Action Plan and the tasks.</value>
     </labels>
-	<labels>
-		<fullName>ap_CreatesActionPlansP6</fullName>
-		<categories>Action Plans</categories>
-		<language>en_US</language>
-		<protected>true</protected>
-		<shortDescription>AboutCreateP6</shortDescription>
-		<value>Step 6: Complete the first task on the Action Plan.</value>
-	</labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP5_note</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ap_CreatesActionPlansP5_note</shortDescription>
+        <value>ap_CreatesActionPlansP5_note</value>
+    </labels>
+    <labels>
+        <fullName>ap_CreatesActionPlansP6</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutCreateP6</shortDescription>
+        <value>Step 6: Complete the first task on the Action Plan.</value>
+    </labels>
     <labels>
         <fullName>ap_CreatesActionPlansP6_note</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>AboutCreateP5Note</shortDescription>
+        <shortDescription>AboutCreateP6Note</shortDescription>
         <value>Note that the Action Plan is now in the correct related list and that this account has one open activity and one closed activity. The third activity in the template is dependent and will be created only when its predecessor is complete.</value>
     </labels>
     <labels>
@@ -865,6 +860,14 @@
         <value>Search</value>
     </labels>
     <labels>
+        <fullName>ap_ShareEmail</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ShareEmail</shortDescription>
+        <value>Do you want to share this template with others on the Action Plans Template page? Email it to &lt;a href=&quot;mailto:labs@salesforce.com?subject=Action Plans Template for Community Sharing&quot;&gt;labs@salesforce.com&lt;/a&gt;.</value>
+    </labels>
+    <labels>
         <fullName>ap_Sharing</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -895,6 +898,38 @@
         <protected>true</protected>
         <shortDescription>UpdateStatusError</shortDescription>
         <value>This task is part of an Action Plan and it depends on a task that is not completed yet.</value>
+    </labels>
+    <labels>
+        <fullName>ap_View</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>View</shortDescription>
+        <value>View</value>
+    </labels>
+    <labels>
+        <fullName>ap_ViewFile</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ViewFile</shortDescription>
+        <value>View the XML file:</value>
+    </labels>
+    <labels>
+        <fullName>ap_XMLFailure</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>XMLFailure</shortDescription>
+        <value>Your template could not successfully be exported to an XML document.</value>
+    </labels>
+    <labels>
+        <fullName>ap_XMLSuccess</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>XMLSuccess</shortDescription>
+        <value>The XML file for your template has been successfully created, and can be found in your personal folder.</value>
     </labels>
     <labels>
         <fullName>ap_import_file</fullName>

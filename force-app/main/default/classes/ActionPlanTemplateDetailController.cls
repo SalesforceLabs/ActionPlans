@@ -39,9 +39,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 public inherited sharing class ActionPlanTemplateDetailController {
 
-	public ActionPlanTemplate__c 	actionPlanTemplate;
-	public Document                 actionPlanExportXMLDoc { get; set; }
-	public Boolean					taskHasRecordType		{ get; set; }
+	@TestVisible private ActionPlanTemplate__c 	actionPlanTemplate;
+	public Id                       actionPlanExportXMLId { get; private set; }
+	public Boolean					taskHasRecordType      { get; set; }
 
 	/**
 	 * Constructor
@@ -120,7 +120,7 @@ public inherited sharing class ActionPlanTemplateDetailController {
 	public void exportTemplateToXMLDoc(){
 		ExportActionPlanTemplate utility = new ExportActionPlanTemplate( actionPlanTemplate.Id );
 
-		actionPlanExportXMLDoc = utility.export();
+		actionPlanExportXMLId = utility.export();
 	}
 
 }

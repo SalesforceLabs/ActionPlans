@@ -40,6 +40,8 @@ public inherited sharing class ExportActionPlanTemplate{
 
 	private String templateId;
 
+	public Id fileOrDocumentId { get; private set; }
+
 	/**
 	* Constructor
 	* @param templateId
@@ -53,17 +55,18 @@ public inherited sharing class ExportActionPlanTemplate{
 	* Method in charge of handling the export task related to a Action Plan Template
 	* @return doc
 	*/
-	public Document export(){
+	public Id export(){
 
 		ActionPlanTemplate__c apTemplate = [SELECT SkipWeekends__c, SkipDay__c, Name, Id, Description__c,
 												( SELECT Id, Name, Action_Plan_Template__c, APTTaskTemplate__c, Comments__c, DaysFromStart__c, Dependent__c, Type__c,
 													Priority__c, Reminder__c, SendEmail__c, Subject__c, Minutes_Reminder__c, TaskIndex__c FROM apTasks__r )
 												FROM ActionPlanTemplate__c WHERE Id = :this.templateId];
 
-		String xml 		= buildXmlString( apTemplate );
-		Document doc 	= saveToDocument( apTemplate.name, xml );
+		String xml = buildXmlString( apTemplate );
 
-		return doc;
+		fileOrDocumentId = ActionPlansUtilities.getIsLex() ? saveToContent( apTemplate.name, xml ) : saveToDocument( apTemplate.name, xml );
+
+		return fileOrDocumentId;
 	}
 
 	/**
@@ -72,7 +75,7 @@ public inherited sharing class ExportActionPlanTemplate{
 	* @param xml
 	* @return doc
 	*/
-	private Document saveToDocument( String name, String xml ){
+	private Id saveToDocument( String name, String xml ){
 
 		Document doc = new Document();
 		doc.body 			= Blob.valueOf( xml );
@@ -82,7 +85,24 @@ public inherited sharing class ExportActionPlanTemplate{
 
 		insert doc;
 
-		return doc;
+		return doc.Id;
+	}
+
+	/**
+	 * Method to save the XML file to a File (if the user is using Lightning Experience)
+	 */
+	private Id saveToContent( String name, String xml ){
+		ContentVersion cv = new ContentVersion();
+		cv.Title = 'Export - ' + name + ' - ' + System.now()+'.xml';
+		cv.VersionData = Blob.valueof(xml);
+		cv.PathOnClient = cv.Title;
+		cv.OwnerId = UserInfo.getUserId();
+		insert cv;
+
+		ContentDocument cd = [SELECT LatestPublishedVersionId, Id, Title
+  					FROM ContentDocument WHERE LatestPublishedVersionId = :cv.Id];
+
+		return cd.Id;
 	}
 
 	/**
