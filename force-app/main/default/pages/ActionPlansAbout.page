@@ -89,9 +89,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 
                 <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub2}" />
 
-                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section3}" />
-
-                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}{!$Label.ap_GettingStarted_section4P2}" />
+                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}"/>
+				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section3}" />
+				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P2}" />
+				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P3}{!$Label.ap_GettingStarted_section4P4}" />
+				<apex:outputText escape="false" value="{!$Label.ap_LeadConversionSettings}" />
             </fieldset>
         </div>
 
@@ -115,6 +117,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
             <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}{!$Label.ap_GettingStarted_section4P2}" />
 
         </apex:pageBlock> -->
+
+		<div aria-labelledby="boxCustom">
+			<fieldset class="slds-box slds-theme_default slds-container_x-large">
+				<legend id="boxShare" class="slds-text-heading_large">
+					{!$Label.ap_RelatedObjectTitle}
+				</legend>
+				<apex:outputText escape="false" value="{!$Label.ap_RelatedObjectStart}" />
+				<apex:outputText escape="false" value="{!$Label.ap_RelatedObjectStop}" />
+				<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanFieldSet.png')}" />
+			</fieldset>
+		</div>
 
         <div aria-labelledby="boxTemplate">
 

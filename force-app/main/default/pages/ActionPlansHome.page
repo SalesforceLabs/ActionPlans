@@ -45,13 +45,21 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             j$("#actionPlans").hide();
             j$("#actionPlanTemplates").show();
         });
+		/* if ({!!$ObjectType.ActionPlan__c.accessible}){
+			j$("#actionPlans").hide();
+			j$("#actionPlanTemplates").show();
+		};
+		if({!!$ObjectType.ActionPlanTemplate__c.accessible}){
+			j$("#actionPlanTemplates").hide();
+		}; */
+
     });
 </script>
 
 <apex:variable value="{!$User.UITheme == 'Theme4d' || $User.UITheme == 'Theme4d'}" var="lex" />
 <apex:slds />
 
-<div id="actionPlans">
+<apex:outputPanel layout="block" id="actionPlans" rendered="{!$ObjectType.ActionPlan__c.accessible}">
     <div class="slds-scope">
 
         <c:APMessage severity="{!$CurrentPage.parameters.severity}" message="{!$CurrentPage.parameters.message}" rendered="{!$CurrentPage.parameters.message != null}"/>
@@ -80,8 +88,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             </div>
         </article>
     </div>
-</div>
-<div id="actionPlanTemplates" style="display:none;">
+</apex:outputPanel>
+<apex:outputPanel id="actionPlanTemplates" layout="block" style="display:none;" rendered="{!$ObjectType.ActionPlanTemplate__c.accessible}">
     <div class="slds-scope">
         <article class="slds-card">
             <div class="slds-card__body slds-card__body_inner">
@@ -107,5 +115,5 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
             </div>
         </article>
     </div>
-</div>
+</apex:outputPanel>
 </apex:page>

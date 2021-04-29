@@ -69,10 +69,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ActionPlansBatchDeleteUtilities</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ActionPlansBatchTaskBuilder</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -152,11 +148,15 @@
         <apexClass>SectionHeaderControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Action_Plan_Template_Export</name>
+    </customPermissions>
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>Action_Plans_Settings__c</name>
     </customSettingAccesses>
-    <description>Full Action Plan access</description>
+    <description>Full Action Plans access</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>APTTaskTemplate__c.APTTaskTemplate__c</field>
@@ -404,11 +404,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Event.Type</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Event.WhatId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -430,11 +425,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.TaskAPTaskTemplate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Task.Type</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

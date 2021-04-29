@@ -566,10 +566,10 @@
         <value>&lt;h4&gt;Delete Action Plans Button&lt;/h4&gt;
 		&lt;p&gt;Follow this steps for Action Plan Object:&lt;/p&gt;
 		&lt;ol&gt;
-			&lt;li&gt;Navigate to Setup &gt; Object Manager &gt; Action Plan &gt; Search Layouts.&lt;/li&gt;
-			&lt;li&gt;Click on &quot;Edit&quot; near &quot;List View&quot;.&lt;/li&gt;
-			&lt;li&gt;Move the &quot;Delete Action Plans&quot; button from &quot;Available Buttons&quot; to &quot;Selected Buttons&quot;.&lt;/li&gt;
-			&lt;li&gt;Click &quot;Save&quot;.&lt;/li&gt;
+&lt;li&gt;Navigate to Setup &gt; Object Manager &gt; Action Plan &gt; Search Layouts.&lt;/li&gt;
+&lt;li&gt;Click on &quot;Edit&quot; near &quot;List View&quot;.&lt;/li&gt;
+&lt;li&gt;Move the &quot;Delete Action Plans&quot; button from &quot;Available Buttons&quot; to &quot;Selected Buttons&quot;.&lt;/li&gt;
+&lt;li&gt;Click &quot;Save&quot;.&lt;/li&gt;
 		&lt;/ol&gt;</value>
     </labels>
     <labels>
@@ -587,10 +587,10 @@
         <protected>true</protected>
         <shortDescription>AboutGettingStartedS3</shortDescription>
         <value>&lt;h3&gt;Update Your Sharing Settings&lt;/h3&gt;
-		&lt;p&gt;Action Plans includes four objects: Action Plan, Action Plan Template, AP Task and APT Task. You can configure your sharing settings in whatever way works for your organization.&lt;/p&gt;
-		&lt;p&gt;If you want anyone to be able to create and see plans and their templates, use Public Read/Write for Action Plan and Action Plan Template.&lt;/p&gt;
-		&lt;p&gt;If you want anyone to be able to see Action Plans and Templates without being able to change them, select &quot;Public Read Only&quot;.
-		&lt;p&gt;Please note that if you set your Action Plan Template object to private, templates will not be visible outside of other sharing rules you might set up. This may make Action Plans somewhat less useful.&lt;/p&gt;</value>
+&lt;p&gt;Action Plans includes four objects: Action Plan, Action Plan Template, AP Task and APT Task. You can configure your sharing settings in whatever way works for your organization.&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;If you want anyone to be able to create and see plans and their templates, use Public Read/Write for Action Plan and Action Plan Template.&lt;/li&gt;
+&lt;li&gt;If you want anyone to be able to see Action Plans and Templates without being able to change them, select &quot;Public Read Only&quot;.&lt;/li&gt;
+&lt;li&gt;If your Org-Wide Default sharing settings are set to Private for Action Plan or Action Plan Template, you may need to implement custom automation to share Action Plan records with the appropriate people. You may do this via Apex sharing or you may write automation to assign ownership of the Action Plan itself to the related record owner.&lt;/li&gt;&lt;/ul&gt;</value>
     </labels>
     <labels>
         <fullName>ap_GettingStarted_section4P1</fullName>
@@ -598,10 +598,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>AboutGettingStartedS4P1</shortDescription>
-        <value>&lt;h3&gt;If You Use Profiles For Security&lt;/h3&gt;
-		&lt;p&gt;Users who will use Action Plans require the following permissions on their profile:&lt;br/&gt;
-		&lt;b&gt;Custom Object Permissions:&lt;/b&gt; Read, Create, Edit and Delete for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.&lt;br/&gt;
-		Note that if you have a profile that will &quot;read&quot; but not &quot;edit&quot; or &quot;create&quot; templates, you can make Action Plan Templates and APT Tasks Templates read only.</value>
+        <value>&lt;h2&gt;Security&lt;/h2&gt;</value>
     </labels>
     <labels>
         <fullName>ap_GettingStarted_section4P2</fullName>
@@ -609,25 +606,33 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>AboutGettingStartedS4P2</shortDescription>
-					<value>&lt;br/&gt;&lt;b&gt;Tab Settings:&lt;/b&gt; About Action Plans, Action Plans and Import Template should be &quot;Default On&quot;. &lt;br/&gt;Note that if you have a set of users who should not import templates, &quot;Import Template&quot; can be set to &quot;Tab Hidden&quot;.&lt;br/&gt;
-		&lt;b&gt;Custom App Settings:&lt;/b&gt; Action Plans should be visible.&lt;br/&gt;
-		&lt;b&gt;Enabled Apex Class Access:&lt;/b&gt; All Apex classes from the Action Plans package must be enabled.&lt;br/&gt;
-		&lt;b&gt;Enabled Visualforce Page Access:&lt;/b&gt; All Visualforce pages from the Action Plans AppExchange package must be enabled.&lt;/p&gt;</value>
+        <value>&lt;h3&gt;Use Permission Sets For Security&lt;/h3&gt;
+&lt;p&gt;Assign the appropriate Permission Set(s) to each user who will need to use Action Plans:&lt;br/&gt;
+&lt;b&gt;Action Plans Admin:&lt;/b&gt; Full permissions for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.&lt;br/&gt;
+&lt;b&gt;Action Plans Template Creator:&lt;/b&gt; Full permissions for Action Plan Templates and AP Template Tasks. No Action Plan access.&lt;br/&gt;
+&lt;b&gt;Action Plans Creator:&lt;/b&gt; Read, Create, Edit, Delete for Action Plans and AP Tasks. Read-only for Action Plan Templates and APT Task Templates.&lt;br/&gt;
+&lt;b&gt;Action Plans User:&lt;/b&gt; Read-only for Action Plans and AP Tasks.&lt;br/&gt;</value>
     </labels>
-	<labels>
-		<fullName>ap_GettingStarted_section4P3</fullName>
-		<categories>Action Plans</categories>
-		<language>en_US</language>
-		<protected>true</protected>
-		<shortDescription>AboutGettingStartedS4P3</shortDescription>
-		<value>&lt;h3&gt;If You Use Permission Sets For Security&lt;/h3&gt;
-		&lt;p&gt;Assign the appropriate Permission Set(s) to each user who will need to use Action Plans:&lt;br/&gt;
-		&lt;b&gt;Action Plans Admin:&lt;/b&gt; Full permissions for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.&lt;br/&gt;
-		&lt;b&gt;Action Plans Template Creator:&lt;/b&gt; Read, Create, Edit and Delete for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.&lt;br/&gt;
-		&lt;b&gt;Action Plans Creator:&lt;/b&gt; Read, Create for Action Plans and AP Tasks. Read for Action Plan Templates and APT Task Templates.&lt;br/&gt;
-		&lt;b&gt;Action Plans User:&lt;/b&gt; Read for Action Plans and AP Tasks.&lt;br/&gt;
-		</value>
-	</labels>
+    <labels>
+        <fullName>ap_GettingStarted_section4P3</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS4P3</shortDescription>
+        <value>&lt;ul&gt;&lt;li&gt;To use Action Plans, most users require access only to Tasks. They can be assigned Tasks without knowing that these Tasks are part of an Action Plan. Any changes they make to a Task&amp;#39;s Status will be reflected in the related Action Plan Task Template record automatically. No Permission Set is required.&lt;/li&gt;
+&lt;li&gt;Some users may require visibility into the Action Plans related to those Tasks. These users need the &lt;b&gt;Action Plans User&lt;/b&gt;&amp;nbsp;Permission Set. It gives Read-only access to Action Plan.&lt;/li&gt;
+&lt;li&gt;Some users may need to create Action Plans from Templates but not edit the templates themselves. The &lt;b&gt;Action Plans Creator&lt;/b&gt;&amp;nbsp;Permission Set gives read-only access to Action Plan Templates, and Read, Create, Edit, and Delete access to Action Plans.&lt;/li&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_GettingStarted_section4P4</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AboutGettingStartedS4P4</shortDescription>
+        <value>&lt;li&gt;Users who can create and edit Action Plan Templates require the &lt;b&gt;Action Plans Template Creator&lt;/b&gt;&amp;nbsp;Permission Set. This includes permission to Read, Create, Edit, and Delete all Action Plan Templates only. It does not include any Action Plan or Task permissions. If these users require Action Plan access, other Permission Sets should be used as well. A custom permission allows exporting of Action Plan Templates.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Action Plans Admin&lt;/b&gt;&amp;nbsp;includes Modify All permissions for all four Action Plan objects (Action Plan, Action Plan Task Template, Action Plan Template, and Action Plan Template Task Template). A custom permission allows exporting Action Plan Templates.&lt;/li&gt;
+&lt;li&gt;Note: The Apex used in Flows or invoked directly via triggers does not require special permissions to run.&lt;/li&gt;&lt;/ul&gt;</value>
+    </labels>
     <labels>
         <fullName>ap_Import</fullName>
         <categories>Action Plans</categories>
@@ -644,7 +649,7 @@
         <shortDescription>ImportExport_1</shortDescription>
         <value>&lt;p&gt;Action Plans supports the sharing and discovery of best practices using Template Export and Template Import.&lt;/p&gt;
 			&lt;h2&gt;How to Share Your Template&lt;/h2&gt;
-			&lt;p&gt;Export is simple. Simply navigate to the Template you wish to export. Click on the &quot;Export&quot; button.&lt;/p&gt;</value>
+			&lt;p&gt;Export is simple. Navigate to the Template you wish to export. Click on the &quot;Export&quot; button.&lt;/p&gt;</value>
     </labels>
     <labels>
         <fullName>ap_ImportExport_2</fullName>
@@ -654,9 +659,9 @@
         <shortDescription>ImportExport_2</shortDescription>
         <value>&lt;p&gt;Export creates a simple XML file containing template header and task information. It also includes information about who created the template.&lt;br/&gt;
 			Note: It does not include user information or sensitive data about what objects you might use this template with.&lt;/p&gt;
-			&lt;p&gt;Sharing the file is easy. Simply email the file to whomever you want to share it with.	Do you want to share it with a broader audience? Email the file to Force.com Labs at &lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;. 
+			&lt;p&gt;Sharing the file is easy. Email the file to whomever you want to share it with.	Do you want to share it with a broader audience? Email the file to Force.com Labs at &lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;. 
 			&lt;h2&gt;Best Practices: How to Import&lt;/h2&gt;
-			&lt;p&gt;Import is also simple. Simply navigate to the &quot;Import Template&quot; tab.	Select the file you want to import using &quot;Browse&quot; and once you’ve found it click on &quot;Import Template.&quot;</value>
+			&lt;p&gt;Import is also simple. Navigate to the &quot;Import Template&quot; tab.	Select the file you want to import using &quot;Browse&quot; and once you’ve found it click on &quot;Import Template.&quot;</value>
     </labels>
     <labels>
         <fullName>ap_ImportExport_Title</fullName>
@@ -689,6 +694,15 @@
         <protected>true</protected>
         <shortDescription>LastModifiedBy</shortDescription>
         <value>Last Modified By</value>
+    </labels>
+    <labels>
+        <fullName>ap_LeadConversionSettings</fullName>
+        <categories>ActionPlans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>LeadConversionSettings</shortDescription>
+        <value>&lt;h3&gt;Lead Conversion Settings&lt;/h3&gt;
+&lt;p&gt;If an Action Plan is related to a Lead, then specify if the Action Plan should be moved to the converted Account, Contact, or Opportunity when the Lead is converted. The default is Contact. Change this setting by editing Action Plan Settings at either the organization level, a profile level, or a user level.&lt;/p&gt;</value>
     </labels>
     <labels>
         <fullName>ap_New</fullName>
@@ -777,6 +791,38 @@
         <protected>true</protected>
         <shortDescription>RelatedObject</shortDescription>
         <value>Related Object</value>
+    </labels>
+    <labels>
+        <fullName>ap_RelatedObjectStart</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RelatedObjectStart</shortDescription>
+        <value>&lt;h2&gt;To Use a Custom Object with Action Plans&lt;/h2&gt;
+&lt;ol start=&quot;1&quot;&gt;
+	&lt;li&gt;Create the object and be sure to check &amp;quot;Track Activities&amp;quot; for the object attrributes&lt;/li&gt;
+	&lt;li&gt;Create a lookup field from Action Plan to the object. Name the field the same as the object name. The field label can be anything.&lt;/li&gt;
+	&lt;li&gt;Add the field to the Related Objects fieldset on Action Plan.&lt;/li&gt;
+	&lt;li&gt;The related object will now be available for selection when creating a new Action Plan and relating it to an object.&lt;/li&gt;
+	&lt;li&gt;Add the following code to the object trigger in &lt;b&gt;before delete&lt;/b&gt; and &lt;b&gt;after undelete&lt;/b&gt; contexts:&lt;br/&gt;
+&lt;pre&gt;ActionPlansTriggerHandlers.actionPlansSObjectTriggerHandler(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap, Trigger.operationType, &apos;Custom_Object__c&apos;);&lt;/pre&gt;&lt;/li&gt;&lt;/ol&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_RelatedObjectStop</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RelatedObjectStop</shortDescription>
+        <value>&lt;h2&gt;To Stop Using an Object with Action Plans&lt;/h2&gt;
+&lt;p&gt;If you want, for example, not to allow relating Action Plans to Contracts, remove the Contract field from the Action Plan Related Objects fieldset.&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>ap_RelatedObjectTitle</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RelatedObjectTitle</shortDescription>
+        <value>Using Action Plans with Custom Objects</value>
     </labels>
     <labels>
         <fullName>ap_Remove</fullName>
