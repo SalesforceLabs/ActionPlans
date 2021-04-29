@@ -460,23 +460,6 @@ public inherited sharing class ActionPlansUtilities {
 		return orgCanSendEmails;
 	}
 
-	/**
-	 * Returns Friday in the running user language
-	 */
-	/* public static String getFriday(){
-		Datetime dt = DateTime.newInstance(1900, 1,5,1,1,1);
-		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
-		System.debug(dayOfWeek);
-		return dayOfWeek;
-	}
-
-	public static String getMonday(){
-		Datetime dt = DateTime.newInstance(1900, 1,1,1,1,1);
-		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
-		System.debug(dayOfWeek);
-		return dayOfWeek;
-	} */
-
 	public static String getDayOfWeek(Date d){
 
 		Date monday = Date.newInstance(1900, 1, 1);
@@ -497,17 +480,6 @@ public inherited sharing class ActionPlansUtilities {
 		return Weekend_Day__mdt.getInstance(developerName);
 		//return getWeekendDay(developerName, 0, 0);
 	}
-
-	/* public static Weekend_Day__mdt getWeekendDay(String developerName, Integer daysBack, Integer daysForward){
-		weekendDay = Weekend_Day__mdt.getInstance(developerName);
-		if(weekendDay == null){
-			weekendDay = new Weekend_Day__mdt(DeveloperName = developerName);
-			weekendDay.Days_to_start_of_next_week__c = daysForward;
-			weekendDay.Days_from_end_of_previous_week__c = daysBack;
-		}
-		return weekendDay;
-	}
-	private static Weekend_Day__mdt weekendDay; */
 
 	/**
 	 * Given a task due date, we adjust it here for weekends
@@ -550,5 +522,12 @@ public inherited sharing class ActionPlansUtilities {
 			System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
 		}
 		return dueDate.addDays( addDays );
+	}
+
+	/*******
+	 * Detect user theme
+	 */
+	public static Boolean getIsLex(){
+		return ( UserInfo.getUiThemeDisplayed().equalsIgnoreCase('theme4d') || UserInfo.getUiThemeDisplayed().equalsIgnoreCase('theme4u'));
 	}
 }
