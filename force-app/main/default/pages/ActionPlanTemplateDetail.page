@@ -61,7 +61,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<!-- <apex:commandButton id="clone" action="{!cloneTemplate}" value="{!$Label.ap_Clone}" rendered="{!$ObjectType.ActionPlanTemplate__c.createable}" /> -->
 				<!-- <apex:commandButton id="share" action="/p/share/CustomObjectSharingDetail?parentId={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_Sharing}" rendered="{!$ObjectType.ActionPlanTemplate__c.updateable}" /> -->
 				<apex:commandButton id="newActionPlan" action="{!$Page.ActionPlanCreation}?templateId={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_New} {!$ObjectType.ActionPlan__c.label}" rendered="{!$ObjectType.ActionPlan__c.createable}" />
-				<apex:commandButton id="export" action="{!$Page.ActionPlanTemplateExport}?Id={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_Export}" />
+				<apex:commandButton id="export" action="{!$Page.ActionPlanTemplateExport}?Id={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_Export}" rendered="{!$Permission.Action_Plan_Template_Export}" />
 			</apex:pageBlockButtons>
 
 			<apex:pageBlockSection title="{!$Label.ap_Information}" columns="2" collapsible="false">
