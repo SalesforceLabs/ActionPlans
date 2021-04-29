@@ -5,7 +5,7 @@
 	<apex:attribute name="subtitle" type="String" required="false" description="Header subtitle text" />
 	<apex:attribute name="printURL" type="String" required="false" default="" description="printURL URL for classic header" />
 
-	<apex:variable var="lex" value="{!$User.UITheme == 'Theme4d' || $User.UITheme == 'Theme4d'}" />
+	<apex:variable var="lex" value="{!$User.UIThemeDisplayed == 'Theme4d' || $User.UIThemeDisplayed == 'Theme4u'}" />
 	<apex:variable var="headersubtitle" value="{!IF(subtitle == null, $ObjectType[sObjType].label, subtitle)}" />
 
 	<apex:outputPanel rendered="{!!lex}" layout="none">
