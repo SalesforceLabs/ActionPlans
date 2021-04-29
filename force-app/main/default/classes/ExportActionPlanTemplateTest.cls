@@ -13,10 +13,12 @@ private class ExportActionPlanTemplateTest {
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 3 );
 
 		ExportActionPlanTemplate exportTemplate = new ExportActionPlanTemplate( actionPlanTemplate.Id );
-		Document doc = exportTemplate.export();
-
-		System.assert( doc != null );
+		Id xmlId = exportTemplate.export();
 
 		Test.StopTest();
+
+		System.assert( xmlId != null );
+
+
 	}
 }

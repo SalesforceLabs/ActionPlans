@@ -117,6 +117,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ActionPlansUtilities</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ActionPlansUtilitiesTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -494,10 +498,6 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <pageAccesses>
-        <apexPage>ActionPlanAbout</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>ActionPlanCreation</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -527,6 +527,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ActionPlanTemplateImport</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ActionPlansAbout</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

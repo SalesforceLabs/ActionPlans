@@ -517,6 +517,7 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		Contact contact         = testUtil.createNewContact();
 		Account account         = testUtil.createNewAccount();
+		Account account2        = testUtil.createNewAccount();
 		Lead lead               = testUtil.createNewLead();
 		Opportunity opportunity = testUtil.createNewOpportunity();
 
@@ -527,15 +528,18 @@ private with sharing class ActionPlanCreationControllerTest {
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
 		apCreateController.referedObjectInit();
 		System.assertEquals('Contact', apCreateController.refType);
+		String contactName = [SELECT Name FROM Contact LIMIT 1].Name;
 
-		System.assert( apCreateController.relatedObjNameList.size() == 2 );
+		System.assert( apCreateController.relatedObjNameList.size() == 1 );
+		System.assert( apCreateController.relatedObjNameList[0].containsIgnoreCase(contactName));
 
 		ApexPages.currentPage().getParameters().put( 'id', null );
-		ApexPages.currentPage().getParameters().put( 'refId', account.Id );
-		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
+		ApexPages.currentPage().getParameters().put( 'refId', account.Id + ',' + account2.Id );
+		ApexPages.currentPage().getParameters().put( 'refType', null );
 
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
 		apCreateController.referedObjectInit();
+		System.assertEquals('Account', apCreateController.refType);
 
 		System.assert( apCreateController.relatedObjNameList.size() == 2 );
 
@@ -546,7 +550,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
 		apCreateController.referedObjectInit();
 
-		System.assert( apCreateController.relatedObjNameList.size() == 2 );
+		System.assert( apCreateController.relatedObjNameList.size() == 1 );
 
 		ApexPages.currentPage().getParameters().put( 'id', null );
 		ApexPages.currentPage().getParameters().put( 'refId', opportunity.Id );
@@ -557,7 +561,7 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		Test.StopTest();
 
-		System.assertEquals( 2, apCreateController.relatedObjNameList.size() );
+		System.assertEquals( 1, apCreateController.relatedObjNameList.size() );
 
 	}
 
@@ -596,7 +600,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		apCreateController.refreshRelatedObjectsLookUp();
 		apCreateController.actionPlan.TaskRecordTypeID__c = ActionPlansTestUtilities.getNonDefaultAvailableTaskRecordType();
 		apCreateController.actionPlan.SkipWeekends__c = true;
-		apCreateController.actionPlan.SkipDay__c = 'End of previous week';
+		apCreateController.actionPlan.SkipDay__c = 'Start of next week';
 		apCreateController.getTasks();
 
 		System.assert( !apCreateController.getTasks().isEmpty() );
