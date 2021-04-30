@@ -80,7 +80,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			<apex:pageBlockButtons id="buttons" >
 				<apex:commandButton id="save" action="{!checkCycleDependent}" value="{!$Label.ap_Save}" reRender="pageMessages" />
-				<apex:commandButton id="saveandnew" action="{!saveAndNew}" value="{!$Label.ap_SaveAndNew} {!$Label.ap_New}" reRender="pageMessages" />
+				<apex:commandButton id="saveandnew" action="{!saveAndNew}" value="{!$Label.ap_SaveAndNew}" reRender="pageMessages" />
 				<apex:actionRegion >
 					<apex:commandButton id="cancel" action="{!cancelTemplate}" value="{!$Label.ap_Cancel}" html-formnovalidate="novalidate"/>
 				</apex:actionRegion>
