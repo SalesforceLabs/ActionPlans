@@ -291,10 +291,10 @@ public inherited sharing class ActionPlansUtilities {
 	public static List<SelectOption> getHoursOption() {
 
  	 	List<SelectOption> options = new List<SelectOption>();
- 	 	options.add( new SelectOption( '0',  '12:00 AM' ) );
- 	 	options.add( new SelectOption( '30', '12:30 AM' ) );
-		options.add( new SelectOption( '60', '1:00 AM'  ) );
-		options.add( new SelectOption( '90', '1:30 AM'  ) );
+ 	 	options.add( new SelectOption( '0',  '12:00 AM'  ) );
+ 	 	options.add( new SelectOption( '30', '12:30 AM'  ) );
+		options.add( new SelectOption( '60', '1:00 AM'   ) );
+		options.add( new SelectOption( '90', '1:30 AM'   ) );
 		options.add( new SelectOption( '120', '2:00 AM'  ) );
 		options.add( new SelectOption( '150', '2:30 AM'  ) );
 		options.add( new SelectOption( '180', '3:00 AM'  ) );

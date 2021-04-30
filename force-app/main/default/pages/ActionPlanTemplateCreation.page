@@ -53,6 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		j$(document).ready(function () {
 			checkSkipWeekend(j$("[id$=skipWeekendCheckbox]").attr('id'), j$("[id$=skipDayPicklist]").attr('id'));
 			checkAllDependent('{!$Label.ap_ItselfDependencyError}', '{!$Label.ap_Error_Cyclic_Dependency_Found}');
+			checkReminderPicklists();
 			showErrors();
 		});
 	</script>
@@ -207,14 +208,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							</apex:pageBlockSectionItem>
 						</apex:column>
 
-						<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" >
+						<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" style="vertical-align: middle;">
 							<apex:facet name="header">
 								{!$ObjectType.APTTaskTemplate__c.fields.Reminder__c.label} <br/>
 								<a id="reminderAll" onclick="javascript:checkReminder(1);" class="all-none">{!$Label.ap_All}</a> |
 								<a id="reminderNone" onclick="javascript:checkReminder(0);" class="all-none">{!$Label.ap_None}</a>
 							</apex:facet>
 							<apex:pageBlockSectionItem id="reminderSection">
-								<apex:inputField id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;" />
+								<!-- <apex:inputField id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;" /> -->
+								<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display: inline-block;vertical-align:middle;" onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');"/>
+								<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" >
+									<apex:selectOptions value="{!hoursOption}" />
+								</apex:selectList>
 							</apex:pageBlockSectionItem>
 						</apex:column>
 

@@ -246,15 +246,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			<!--  Start Related Section -->
 			<apex:pageBlockSection id="RelatedSection" title="{!relatedObjLabelPlural} ({!nameListSize})" columns="3" rendered="{!hasRelated}" collapsible="false">
-				<!-- <apex:dataList value="{!relatedObjNameList}" var="objName" first="0" rows="14">
-					<apex:outputText value="{!objName}" />
-				</apex:dataList>
-				<apex:dataList value="{!relatedObjNameList}" var="objName" first="14" rows="14">
-					<apex:outputText value="{!objName}" />
-				</apex:dataList>
-				<apex:dataList value="{!relatedObjNameList}" var="objName" first="28" rows="12">
-					<apex:outputText value="{!objName}" />
-				</apex:dataList> -->
 				<apex:dataList value="{!relatedObjNameList}" var="objName" first="0" rows="{!oneThirdCutoff}">
 					<apex:outputText value="{!objName}" />
 				</apex:dataList>
@@ -300,26 +291,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 							<apex:outputPanel layout="block" rendered="{!!hasRelatedObject}" id="lookupSectionOutPanel">
 								<apex:outputPanel layout="none" rendered="{!lex}" >
-								<!-- <div class="slds-scope">
-									<abbr class="slds-required" title="required">*</abbr>
-								</div> -->
-								<!-- <apex:outputText value="{!relatedObjectName}.{!relatedFieldName}" /> -->
-								<c:APLightningLookup sObj="{!ActionPlan__c}" field="{!relatedFieldName}" sObjType="{!relatedObjectName}" required="true" for="{!relatedFieldName}lookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" />
-
-								<!-- <c:APLightningLookup sObj="{!ActionPlan__c}" field="Account__c" sObjType="account" required="true" for="accountlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}"  rendered="{!relatedFieldName == 'Account' && $ObjectType.Account.accessible}" />
-								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Lead__c" sObjType="lead" required="true" for="leadlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Lead' && $ObjectType.Lead.accessible}" />
-								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Contact__c" sObjType="contact" required="true" for="contactlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Contact' && $ObjectType.Contact.accessible}" />
-								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Opportunity__c" sObjType="opportunity" required="true" for="opportunitylookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Opportunity' && $ObjectType.Opportunity.accessible}" />
-								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Campaign__c" sObjType="campaign" required="true" for="campaignlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Campaign' && $ObjectType.Campaign.accessible}" />
-								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Case__c" sObjType="case" required="true" for="caselookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Case' && $ObjectType.Case.accessible}" />
-								<c:APLightningLookup sObj="{!ActionPlan__c}" field="Contract__c" sObjType="contract" required="true" for="contractlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" rendered="{!relatedFieldName == 'Contract' && $ObjectType.Contract.accessible}" />
-
-								<!-- Customization Area: Lookup -->
-								<!-- <c:APLightningLookup id="cuName" sObj="{!ActionPlan__c}" field="Custom__c" sObjType="custom__c" required="true" for="customlookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" /> -->
-								<!-- End of customization Area  -->
+									<c:APLightningLookup sObj="{!ActionPlan__c}" field="{!relatedFieldName}" sObjType="{!relatedObjectName}" required="true" for="{!relatedFieldName}lookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" />
 								</apex:outputPanel>
 								<apex:outputPanel layout="none" rendered="{!!lex}">
-
 									<apex:inputField id="classicRelated" required="true" value="{!ActionPlan__c[relatedFieldName]}" styleClass="{!IF(throwError !=null,'errorBorder','')}" />
 								</apex:outputPanel>
 								<apex:outputPanel id="errorDivLookUp" layout="block" styleclass="errorMsg" rendered="{!throwError != null}" >
@@ -329,24 +303,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						</apex:facet>
 					</apex:actionStatus>
 				</apex:pageBlockSectionItem>
-				<!-- <apex:outputField value="{!ActionPlan__c.Account__c}"     rendered="{!(ActionPlan__c.Account__c != null && hasRelatedObject)}" />
-				<apex:outputField value="{!ActionPlan__c.Contact__c}"     rendered="{!(ActionPlan__c.Contact__c != null && hasRelatedObject)}" />
-				<apex:outputField value="{!ActionPlan__c.Lead__c}"        rendered="{!(ActionPlan__c.Lead__c != null && hasRelatedObject)}" />
-				<apex:outputField value="{!ActionPlan__c.Opportunity__c}" rendered="{!(ActionPlan__c.Opportunity__c != null && hasRelatedObject)}" />
-				<apex:outputField value="{!ActionPlan__c.Case__c}"        rendered="{!(ActionPlan__c.Case__c != null && hasRelatedObject)}" />
-				<apex:outputField value="{!ActionPlan__c.Contract__c}"    rendered="{!(ActionPlan__c.Contract__c != null && hasRelatedObject)}" />
-				<apex:outputField value="{!ActionPlan__c.Campaign__c}"    rendered="{!(ActionPlan__c.Campaign__c != null && hasRelatedObject)}" /> -->
-
 				<apex:repeat value="{!$ObjectType.ActionPlan__c.FieldSets.Related_Objects}" var="f">
 					<apex:outputField value="{!ActionPlan__c[f.FieldPath]}" rendered="{!(ActionPlan__c[f.FieldPath] != null && hasRelatedObject)}" />
 				</apex:repeat>
-				<!-- Customization Area : PickList -->
-				<!-- <apex:outputField value="{!ActionPlan__c.CustomObject__c}" 	rendered="{!(ActionPlan__c.CustomObject__c != null && hasRelatedObject)}" /> -->
-				<!-- End of Customization Area -->
+
 			<apex:pageBlockSectionItem rendered="{!ActionPlan__c.Action_Plan_Template__c != null && ActionPlan__c.Id != null}">
 				<apex:outputLabel value="{!$ObjectType.ActionPlanTemplate__c.label}" />
 				<apex:outputPanel >
-					<!-- <apex:outputLink value="{!$Page.ActionPlanTemplateDetail}?Id={!ActionPlan__c.Action_Plan_Template__c}">{!ActionPlan__c.Action_Plan_Template__r.Name}</apex:outputLink> -->
 					<apex:outputField value="{!ActionPlan__c.Action_Plan_Template__c}" />
 					<apex:outputPanel rendered="{!ActionPlan__c.CreatedDate < ActionPlan__c.Action_Plan_Template__r.LastModifiedDate}">
 						<br/>
@@ -376,17 +339,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:pageBlockSectionItem rendered="{!taskHasRecordType}">
 					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.TaskRecordTypeID__c.label}" />
 					<apex:outputPanel styleClass="slds-scope">
-					<apex:selectList value="{!ActionPlan__c.TaskRecordTypeID__c}" rendered="{!ActionPlan__c.Id == null}"
-							styleclass="slds-input slds-select resize"
-							multiselect="false"
-							size="1"
-							style="font-size:14px;"
-							required="true">
-						<apex:selectOptions value="{!TaskRTPicklistValues}" />
-					</apex:selectList>
-					<apex:outputText value="{!recordTypeName}" rendered="{!ActionPlan__c.Id != null}" />
+						<apex:selectList value="{!ActionPlan__c.TaskRecordTypeID__c}" rendered="{!ActionPlan__c.Id == null}"
+								styleclass="slds-input slds-select resize"
+								multiselect="false"
+								size="1"
+								style="font-size:14px;"
+								required="true">
+							<apex:selectOptions value="{!TaskRTPicklistValues}" />
+						</apex:selectList>
+						<apex:outputText value="{!recordTypeName}" rendered="{!ActionPlan__c.Id != null}" />
 					</apex:outputPanel>
 				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem rendered="{!!taskHasRecordType}" />
 
 				<apex:pageBlockSectionItem>
 					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipDay__c.label}" />
@@ -463,19 +427,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 					<!--  Tasks type  -->
 					<apex:column headerValue="{!$ObjectType.Task.fields.Type.label}" rendered="{!$ObjectType.Task.fields.Type.accessible}">
-						<apex:outputPanel rendered="{!$ObjectType.Task.fields.Type.updateable}">
+						<apex:outputPanel rendered="{!$ObjectType.APTaskTemplate__c.fields.Type__c.updateable}">
 							<apex:selectList value="{!wrapTask.task.Type__c}" size="1" disabled="{!wrapTask.task.IsClosed__c}" styleclass="slds-input slds-select">
 								<apex:selectOptions value="{!TaskTypes}" />
 							</apex:selectList>
-							<apex:outputField value="{!wrapTask.task.Type__c}" rendered="{!!$ObjectType.Task.fields.Type.updateable}" />
+							<apex:outputField value="{!wrapTask.task.Type__c}" rendered="{!!$ObjectType.APTaskTemplate__c.fields.Type__c.updateable}" />
 						</apex:outputPanel>
 					</apex:column>
 
 					<!--  Tasks priority  -->
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" >
-						<apex:selectList required="true" value="{!wrapTask.task.Priority__c}" size="1" disabled="{!wrapTask.task.IsClosed__c}" styleclass="slds-input slds-select">
+						<apex:selectList required="true" value="{!wrapTask.task.Priority__c}" size="1" rendered="{!!wrapTask.task.IsClosed__c}" styleclass="slds-input slds-select">
 							<apex:selectOptions value="{!TaskPriorities}" />
 						</apex:selectList>
+						<apex:outputField value="{!wrapTask.task.Priority__c}" rendered="{!wrapTask.task.IsClosed__c}" />
 					</apex:column>
 
 					<!--  Tasks send Email  -->
@@ -500,9 +465,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						</apex:facet>
 						<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display: inline-block;vertical-align:middle;"
 								onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');" disabled="{!wrapTask.task.IsClosed__c}" />
-							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" disabled="{!wrapTask.task.IsClosed__c}">
+							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" rendered="{!!wrapTask.task.IsClosed__c}">
 								<apex:selectOptions value="{!hoursOption}" />
 							</apex:selectList>
+							<apex:outputText value="{!wrapTask.ReminderTime}" rendered="{!wrapTask.task.IsClosed__c && wrapTask.task.Reminder__c}" />
 					</apex:column>
 
 					<!--  Tasks comments  -->

@@ -1201,6 +1201,14 @@ public inherited sharing class ActionPlanCreationController{
 				task.Type__c = task.Type__c != null ? task.Type__c : ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
 			}
 		}
+
+		public String getReminderTime(){
+			if( !task.Reminder__c ) { return ''; }
+			String hourVal = Math.mod(Integer.valueof(task.Minutes_Reminder__c)/60 , 12 ) == 0 ? '12' : String.valueof(Math.mod(Integer.valueof(task.Minutes_Reminder__c)/60, 12));
+			String minutesVal = Math.mod(Integer.valueof(task.Minutes_Reminder__c), 60) == 0 ? '00' : String.valueof(Math.mod(Integer.valueof(task.Minutes_Reminder__c), 60));
+			String suffix = Integer.valueof(task.Minutes_Reminder__c) >= 720 ? 'PM' : 'AM';
+			return hourVal + ':' + minutesVal + ' ' + suffix;
+		}
 	}
 
 	public class FieldCustomValidationException extends Exception{

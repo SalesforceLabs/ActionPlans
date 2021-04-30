@@ -342,7 +342,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			Id tempApId = actionPlanTemplate.Id;
 
 			if( tempApId != null ) {
-				aptTasks = [SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c,
+				aptTasks = [SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Minutes_Reminder__c,
 							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
 							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
 							 FROM APTTaskTemplate__c
@@ -561,6 +561,10 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		return taskPriorities;
 	}
 
+	public List<SelectOption> getHoursOption(){
+		return ActionPlansUtilities.getHoursOption();
+	}
+
 	/**
 	* Inner Wrapper Class for Action Plan Template Tasks
 	* @author Matias Menafra
@@ -585,6 +589,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 					task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(null);
 					task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(null);
 				}
+				task.Minutes_Reminder__c    = ActionPlansUtilities.getDefaultReminderMinutes();
 			}
 		}
 	}
