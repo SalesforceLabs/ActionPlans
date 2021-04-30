@@ -183,7 +183,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}" styleClass="assigned_to_field">
 						<apex:outputField value="{!wrap.apt.User__c}" />
 					</apex:column>
-					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}" value="{!wrap.apt.Type__c}" />
+					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}" value="{!wrap.apt.Type__c}" rendered="{!$ObjectType.Task.fields.Type.accessible}" />
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}" value="{!wrap.apt.Status__c}" />
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" value="{!wrap.apt.Priority__c}" />
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.SendEmail__c.label}" value="{!wrap.apt.SendEmail__c}" style="vertical-align: middle;" />
