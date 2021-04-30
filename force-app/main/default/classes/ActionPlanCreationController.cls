@@ -732,7 +732,7 @@ public inherited sharing class ActionPlanCreationController{
 
 				aptTasks = [SELECT Subject__c, Priority__c, Dependent__c, Name, User__c, User__r.Name, Id, Type__c,
 							DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__r.Subject__c,
-							Reminder__c, SendEmail__c, Comments__c, TaskIndex__c, Action_Plan_Template__r.TaskRecordTypeID__c
+							Reminder__c, Minutes_Reminder__c, SendEmail__c, Comments__c, TaskIndex__c, Action_Plan_Template__r.TaskRecordTypeID__c
 							FROM APTTaskTemplate__c
 							WHERE Action_Plan_Template__c = :templateId ORDER BY TaskIndex__c ASC];
 
@@ -768,7 +768,7 @@ public inherited sharing class ActionPlanCreationController{
 					t.DaysFromStart__c      = aptTask.DaysFromStart__c;
 					t.User__c               = userId;
 					t.Reminder__c           = aptTask.Reminder__c;
-					t.Minutes_Reminder__c   = ActionPlansUtilities.getDefaultReminderMinutes();
+					t.Minutes_Reminder__c   = aptTask.Minutes_Reminder__c; //ActionPlansUtilities.getDefaultReminderMinutes();
 
 					t.SendEmail__c          = aptTask.SendEmail__c;
 					t.Comments__c           = aptTask.Comments__c;

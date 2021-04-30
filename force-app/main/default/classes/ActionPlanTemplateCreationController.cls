@@ -589,7 +589,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 					task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(null);
 					task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(null);
 				}
-				task.Minutes_Reminder__c    = ActionPlansUtilities.getDefaultReminderMinutes();
+				task.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
 			}
 		}
 	}

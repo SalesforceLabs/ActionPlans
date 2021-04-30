@@ -638,6 +638,9 @@ private with sharing class ActionPlanCreationControllerTest {
 					System.assertNotEquals(ActionPlansUtilities.getDefaultTaskRecordTypeId(), t.get('RecordTypeId'), 'Record Type is default');
 				}
 			}
+			System.assertNotEquals(0, ActionPlansUtilities.getTaskRTPicklistValues().size());
+		} else {
+			System.assertEquals(0, ActionPlansUtilities.getTaskRTPicklistValues().size());
 		}
 	}
 

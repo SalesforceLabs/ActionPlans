@@ -116,7 +116,7 @@ public inherited sharing class ActionPlansUtilities {
 	 */
 	private static List<SObject> getTaskRecordTypes(){
 		if(taskRecordTypes == null){
-			String taskRTQuery = 'SELECT Id, Name FROM RecordType WHERE SObjectType = \'Task\' and IsActive = true';
+			String taskRTQuery = 'SELECT Id, Name FROM RecordType WHERE SObjectType = \'Task\' AND IsActive = true ORDER BY Name ASC';
 			taskRecordTypes = Database.query(taskRTQuery);
 		}
 		return taskRecordTypes;
@@ -216,8 +216,8 @@ public inherited sharing class ActionPlansUtilities {
 	public static List<SelectOption> getTaskRTPicklistValues(){
 		if(taskRTs == null){
 			taskRTs = new List<SelectOption>();
-			String taskRTQuery = 'SELECT Id, Name, IsActive FROM RecordType WHERE SObjectType = \'Task\' ORDER BY Name ASC';
-			for( SObject rt : Database.query(taskRTQuery)){
+			//String taskRTQuery = 'SELECT Id, Name, IsActive FROM RecordType WHERE SObjectType = \'Task\' ORDER BY Name ASC';
+			for( SObject rt : getTaskRecordTypes()){
 				SelectOption so = new SelectOption((String)rt.get('Id'), (String)rt.get('Name'), !(Boolean)rt.get('IsActive'));
 				//so.setValue(rt.Id);
 				//so.setLabel(rt.Name);
