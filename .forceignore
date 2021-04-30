@@ -27,6 +27,7 @@ force-app/main/default/lwc/jsconfig.json
 **/objects/Account/listViews/
 **/objects/Contact/fields/
 **/layouts/Global*
+Admin.profile
 
 src
 metadata
