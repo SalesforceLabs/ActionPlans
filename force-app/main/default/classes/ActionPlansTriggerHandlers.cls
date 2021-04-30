@@ -171,13 +171,13 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				Database.UndeleteResult[] unDel_errors;
 
 				//get Id of all deleted Action Plan Task Templates
-				Map<Id,APTaskTemplate__c> map_APTasks = new Map<Id,APTaskTemplate__c>([SELECT a.Id, a.Action_Plan__c
-				FROM APTaskTemplate__c a WHERE a.Action_Plan__c IN :newRecordsMap.keyset() ALL ROWS ]);
+				Map<Id,APTaskTemplate__c> map_APTasks = new Map<Id,APTaskTemplate__c>([SELECT Id, Action_Plan__c
+				FROM APTaskTemplate__c WHERE Action_Plan__c IN :newRecordsMap.keyset() ALL ROWS ]);
 
 				//get all tasks asociated to this APTasks
-				List<Task> taskList = [SELECT a.Id, a.TaskAPTaskTemplate__c, a.IsDeleted
-										FROM Task a
-										WHERE a.TaskAPTaskTemplate__c IN :map_APTasks.keySet() AND a.isDeleted = true ALL ROWS ];
+				List<Task> taskList = [SELECT Id, TaskAPTaskTemplate__c, IsDeleted
+										FROM Task
+										WHERE TaskAPTaskTemplate__c IN :map_APTasks.keySet() AND isDeleted = true ALL ROWS ];
 
 				if (!taskList.isEmpty()){
 					unDel_errors = Database.undelete( taskList,false);
@@ -208,12 +208,11 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 	public static void triggerHandler_ActionPlanTaskTemplate(List<APTaskTemplate__c> newRecords, List<APTaskTemplate__c> oldRecords, Map<Id, APTaskTemplate__c> newRecordsMap, Map<Id, APTaskTemplate__c> oldRecordsMap, System.TriggerOperation triggerEvent){
 
-		//System.debug('IN APTaskTemplate__c ' + triggerEvent.name());
+		System.debug('In APTaskTemplate__c ' + triggerEvent.name());
 
 		switch on triggerEvent {
 
 			when BEFORE_INSERT, BEFORE_UPDATE {
-				//ÍSystem.debug('closed statuses: ' + ActionPlansUtilities.getClosedTaskStatuses());
 
 				for( APTaskTemplate__c a : newRecords ){
 					a.IsClosed__c = ActionPlansUtilities.getClosedTaskStatuses().contains(a.Status__c);
@@ -223,10 +222,12 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				String aptPrefix = ActionPlansUtilities.getObjectKeyPrefix('APTaskTemplate__c');
 				//System.debug('aptPrefix ' + aptPrefix);
 				for(APTaskTemplate__c apt : newRecords){
-					//System.debug('Evaluating ' + apt.Name + ' from subject ' + apt.Subject__c);
+
 					if(oldRecords == null || (apt.Name == null  || apt.Name.startsWithIgnoreCase(aptPrefix) || (oldRecords != null && apt.Subject__c != oldRecordsMap.get(apt.Id).Subject__c)) || !apt.Name.endsWithIgnoreCase(apt.Subject__c) ){
-						//System.debug('we will rename using ' + apt.Subject__c);
+						System.debug('Renaming ' + apt.Name + ' from subject ' + apt.Subject__c + ' on ' + triggerEvent.name());
 						apIDs.add(apt.Action_Plan__c);
+					} else {
+						System.debug('SKIPPING ' + apt.Name + ' with subject ' + apt.Subject__c + ' on ' + triggerEvent.name());
 					}
 				}
 				if(!apIDs.isEmpty()){
@@ -239,7 +240,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							String apName = nameMap.get(apt.Action_Plan__c).Name;
 							String newSubject = apName + ' - ' + apt.Subject__c;
 							apt.Name = ActionPlansUtilities.actionPlanSubjectToName(newSubject, taskTemplateNameLength);
-							//System.debug('renaming aptaskTemplate to ' + newSubject);
+							System.debug('renaming aptaskTemplate to ' + newSubject);
 						}
 					}
 				}
@@ -415,10 +416,10 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 				//Query APTaskTemplate__c objects to update fields
 				if ( !APTasksIds.isEmpty() ){
-					Map<Id,APTaskTemplate__c> mapAPTasks = new Map<Id,APTaskTemplate__c>([SELECT a.Status__c, a.Id, a.APTaskTemplate__r.Status__c, a.ActivityDate__c, a.Minutes_Reminder__c,
-																							a.Action_Plan__r.Name
+					Map<Id,APTaskTemplate__c> mapAPTasks = new Map<Id,APTaskTemplate__c>([SELECT Status__c, Id, APTaskTemplate__r.Status__c, ActivityDate__c, Minutes_Reminder__c,
+																							Action_Plan__r.Name
 																							FROM APTaskTemplate__c a
-																							WHERE a.Id IN :APTasksIds ]);
+																							WHERE Id IN :APTasksIds ]);
 					List<APTaskTemplate__c> lUpsert = new List<APTaskTemplate__c>();
 
 					//Integer taskTemplateNameLength	= APTaskTemplate__c.Name.getDescribe().getLength();
@@ -463,15 +464,14 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 				//only delete Action Plan Template Tasks that are not deleted
 
-				for( APTaskTemplate__c ta : [SELECT a.Id, a.Action_Plan__c
-						FROM APTaskTemplate__c a
+				for( APTaskTemplate__c ta : [SELECT Id, Action_Plan__c
+						FROM APTaskTemplate__c
 						WHERE Id IN :taskTempIds AND isDeleted = false ALL ROWS ] ){
 					finalIds.add( ta.Id );
 				}
 
 				if (!finalIds.isEmpty()){
 					if ( System.isBatch() || System.isFuture() ){
-						//delete
 						delete [SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :finalIds];
 					} else {
 						ActionPlansTaskTriggerUtilities.deleteAPTasks( finalIds );
@@ -490,24 +490,16 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							taskTemplateIDs.add(t.TaskAPTaskTemplate__c);
 						}
 					}
-					//System.debug('We have ' + taskTemplateIDs.size() + ' templates represented');
-					//System.debug('Task Template Query ' + [SELECT Id, Action_Plan__r.TaskRecordTypeID__c FROM APTaskTemplate__c WHERE Id IN :taskTemplateIDs]);
 					for(APTaskTemplate__c aptt : [SELECT Id, Action_Plan__r.TaskRecordTypeID__c FROM APTaskTemplate__c WHERE Id IN :taskTemplateIDs]){
-						//System.debug('Template has task Record Type ' + aptt.Action_Plan__r.TaskRecordTypeID__c);
 						taskTemplateToIntendedRecordTypeId.put(aptt.Id, aptt.Action_Plan__r.TaskRecordTypeID__c);
 					}
-					//System.debug('Here is the map: ' + taskTemplateToIntendedRecordTypeId);
 					for(Task t : newRecords){
-						//System.debug('looking at Task with Template ' + t.TaskAPTaskTemplate__c);
 						if(!taskTemplateToIntendedRecordTypeId.containsKey(t.TaskAPTaskTemplate__c)){
-							//System.debug('Template not queried');
 						}
 						if(!ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().containsKey(taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c))){
-							//System.debug('Map contains invalid value');
 						}
 						if(t.TaskAPTaskTemplate__c != null && taskTemplateToIntendedRecordTypeId.containsKey(t.TaskAPTaskTemplate__c)
 						&& ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().containsKey(taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c))){
-							//System.debug('Putting RecordTypeId ' + taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c));
 							t.put('RecordTypeId', taskTemplateToIntendedRecordTypeId.get(t.TaskAPTaskTemplate__c));
 						} else {
 							//System.debug('We did not link Task to Template');
@@ -529,13 +521,13 @@ global inherited sharing class ActionPlansTriggerHandlers {
 		Map<Id, Boolean> allowTasksMap = new Map<Id, Boolean>();
 		Set<String> openStatuses = ActionPlansUtilities.getOpenTaskStatuses();
 
-		/* List<APTaskTemplate__c> aptList =  [SELECT a.Status__c, a.APTaskTemplate__c, a.APTaskTemplate__r.Status__c
-											FROM APTaskTemplate__c a
-											WHERE a.Id = :apTaskIds]; */
+		/* List<APTaskTemplate__c> aptList =  [SELECT Status__c, APTaskTemplate__c, APTaskTemplate__r.Status__c
+											FROM APTaskTemplate__c
+											WHERE Id = :apTaskIds]; */
 
-		for(APTaskTemplate__c apt : [SELECT a.Status__c, a.APTaskTemplate__c, a.APTaskTemplate__r.Status__c
-											FROM APTaskTemplate__c a
-											WHERE a.Id IN :apTaskTemplateIds]){
+		for(APTaskTemplate__c apt : [SELECT Status__c, APTaskTemplate__c, APTaskTemplate__r.Status__c
+											FROM APTaskTemplate__c
+											WHERE Id IN :apTaskTemplateIds]){
 			//if( apt.APTaskTemplate__c != null ){
 				allowTasksMap.put(apt.Id, apt.APTaskTemplate__c == null || !openStatuses.contains(apt.APTaskTemplate__r.Status__c) );
 			//}

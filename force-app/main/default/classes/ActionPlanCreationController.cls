@@ -94,9 +94,8 @@ public inherited sharing class ActionPlanCreationController{
 		this.canDisplayReminder    = ActionPlansUtilities.getCanDisplayReminder();
 		this.taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 
-		this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
+		//this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
 
-		//ActionPlansTestUtilities.showDebugParameters = true;
 		ActionPlansTestUtilities.debugParameters('Creation Controller constructor');
 	}
 

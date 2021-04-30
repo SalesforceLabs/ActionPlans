@@ -18,6 +18,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		System.currentPageReference().getParameters().put( 'clone', '1' );
 		aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
 		aptcc.getTemplateWrappers();
+		aptcc.getDefaultTaskRecordTypeId();
 		aptcc.getTaskRTPicklistValues();
 		aptcc.getTaskTypes();
 		aptcc.getTaskPriorities();
@@ -33,11 +34,11 @@ private class ActionPlanTemplateCreationCntrlTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = new ActionPlanTemplate__c();
 
-		apTemplate.Name = testUtil.createRandomWord();
+		apTemplate.Name = testUtil.createRandomWord('Name');
 
 		APTTaskTemplate__c newAPTTask = new APTTaskTemplate__c();
 
-		newAPTTask.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask.DaysFromStart__c = 2;
 		newAPTTask.Type__c 			 = 'Email';
 		newAPTTask.Priority__c 		 = 'High';
@@ -328,21 +329,21 @@ private class ActionPlanTemplateCreationCntrlTest {
 		APTTaskTemplate__c newAPTTask2 = new APTTaskTemplate__c();
 		APTTaskTemplate__c newAPTTask3 = new APTTaskTemplate__c();
 
-		newAPTTask1.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask1.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask1.DaysFromStart__c = 2;
 		newAPTTask1.Dependent__c	 = '2';
 		newAPTTask1.Type__c 		 = 'Email';
 		newAPTTask1.Priority__c 	 = 'High';
 		newAPTTask1.TaskIndex__c        = 0;
 
-		newAPTTask2.Subject__c           = testUtil.createRandomWord();
+		newAPTTask2.Subject__c           = testUtil.createRandomWord('subject');
 		newAPTTask2.DaysFromStart__c     = 2;
 		newAPTTask2.Dependent__c         = '0';
 		newAPTTask2.Type__c              = 'Email';
 		newAPTTask2.Priority__c          = 'High';
 		newAPTTask2.TaskIndex__c         = 1;
 
-		newAPTTask3.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask3.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask3.DaysFromStart__c = -2;
 		newAPTTask3.Dependent__c	 = '1';
 		newAPTTask3.Type__c 		 = 'Email';
@@ -374,7 +375,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		APTTaskTemplate__c newAPTTask1 = new APTTaskTemplate__c();
 
-		newAPTTask1.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask1.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask1.DaysFromStart__c = 2;
 		newAPTTask1.Dependent__c	 = '0';
 		newAPTTask1.Type__c 		 = 'Email';
@@ -407,28 +408,28 @@ private class ActionPlanTemplateCreationCntrlTest {
 		APTTaskTemplate__c newAPTTask3 = new APTTaskTemplate__c();
 		APTTaskTemplate__c newAPTTask4 = new APTTaskTemplate__c();
 
-		newAPTTask1.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask1.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask1.DaysFromStart__c = 2;
 		newAPTTask1.TaskIndex__c      = 0;
 		newAPTTask1.Dependent__c		 = '2';
 		newAPTTask1.Type__c 			 = 'Email';
 		newAPTTask1.Priority__c 		 = 'High';
 
-		newAPTTask2.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask2.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask2.DaysFromStart__c = 2;
 		newAPTTask2.TaskIndex__c     = 1;
 		newAPTTask2.Dependent__c	 = '0';
 		newAPTTask2.Type__c 		 = 'Email';
 		newAPTTask2.Priority__c 	 = 'High';
 
-		newAPTTask3.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask3.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask3.DaysFromStart__c = 2;
 		newAPTTask3.TaskIndex__c     = 2;
 		newAPTTask3.Dependent__c	 = '1';
 		newAPTTask3.Type__c 		 = 'Email';
 		newAPTTask3.Priority__c 	 = 'High';
 
-		newAPTTask4.Subject__c 		 = testUtil.createRandomWord();
+		newAPTTask4.Subject__c 		 = testUtil.createRandomWord('subject');
 		newAPTTask4.DaysFromStart__c = 2;
 		newAPTTask4.TaskIndex__c     = 3;
 		newAPTTask4.Dependent__c	 = '1';

@@ -143,7 +143,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 					nt = t.clone();
 
 					nt.Action_Plan__c       = ap.Id;
-					nt.Name                 = ActionPlansUtilities.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength);
+					nt.Name                 = t.Id == null ? ActionPlansUtilities.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength) : nt.Name;
 					nt.DaysFromStart__c     = ( nt.DaysFromStart__c < 0 ) ? 0 : nt.DaysFromStart__c;
 					nt.User__c              = getAPTaskTemplateUser(ap, objectOwnersMap, nt.User__c); //( nt.User__c != null ) ? nt.User__c : getRelatedRecordOwnerId( ap, objectOwnersMap );
 					aptList.add( nt );
@@ -163,7 +163,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 				for( APTaskTemplate__c t : this.baseAPTaskList ) {
 
 					t.DaysFromStart__c     = ( t.DaysFromStart__c < 0 ) ? 0 : t.DaysFromStart__c;
-					t.Name                 = ActionPlansUtilities.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength);
+					t.Name                 = t.Id == null ? ActionPlansUtilities.actionPlanSubjectToName(t.Subject__c, taskTemplateNameLength) : t.Name;
 					t.User__c              = getAPTaskTemplateUser(ap, objectOwnersMap, t.User__c); //( nt.User__c != null ) ? nt.User__c : getRelatedRecordOwnerId( ap, objectOwnersMap );
 				}
 				aptList = this.baseAPTaskList;

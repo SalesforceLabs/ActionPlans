@@ -51,8 +51,10 @@ public inherited sharing class ActionPlansTestUtilities{
 	* during a test class and produce false test results.
 	*/
 	public String createRandomWord() {
-
-		String ret = 'apword' + math.rint(math.random() * 100000);
+		return createRandomWord('apword');
+	}
+	public String createRandomWord(String prefix){
+		String ret = prefix + math.rint(math.random() * 100000);
 
 		return ret;
 	}
@@ -79,7 +81,7 @@ public inherited sharing class ActionPlansTestUtilities{
 	*/
 	public User createTestUser( Profile p ) {
 
-		String namePrefix = this.createRandomWord();
+		String namePrefix = this.createRandomWord('un');
 
 		User testUser = new User();
 		testUser.Email 				= 'test@test.com';
@@ -113,7 +115,7 @@ public inherited sharing class ActionPlansTestUtilities{
 	 */
 	public Account createNewAccount(Boolean insertRecord){
 		Account newAccount 	= new Account();
-		newAccount.Name 	= this.createRandomWord();
+		newAccount.Name 	= this.createRandomWord('AcctName');
 		if(insertRecord){
 			try{
 				insert newAccount;
@@ -254,10 +256,10 @@ public inherited sharing class ActionPlansTestUtilities{
 	public Lead createNewLead(Boolean insertRecord){
 
 		Lead newLead 		= new Lead();
-		newLead.LastName	= this.createRandomWord();
-		newLead.Company		= this.createRandomWord();
-		newLead.Status		= 'Open - Not Contacted';
-		newLead.Status = [SELECT ApiName, Id, IsDefault, MasterLabel, SortOrder FROM LeadStatus WHERE isdefault = true LIMIT 1].MasterLabel;
+		newLead.LastName	= this.createRandomWord('ln');
+		newLead.Company		= this.createRandomWord('company');
+		//newLead.Status		= 'Open - Not Contacted';
+		//newLead.Status = [SELECT ApiName, Id, IsDefault, MasterLabel, SortOrder FROM LeadStatus WHERE IsDefault = true LIMIT 1].MasterLabel;
 
 		if(insertRecord){
 			try{
@@ -315,7 +317,7 @@ public inherited sharing class ActionPlansTestUtilities{
 	public ActionPlan__c createNewActionPlan( String relatedObject, Integer numTasks ){
 
 		ActionPlan__c newActionPlan = new ActionPlan__c();
-		newActionPlan.Name			= this.createRandomWord();
+		newActionPlan.Name			= this.createRandomWord('APName');
 		newActionPlan.StartDate__c 	= Date.today();
 		newActionPlan.OwnerId		= Userinfo.getUserId();
 
@@ -374,7 +376,7 @@ public inherited sharing class ActionPlansTestUtilities{
 	public APTaskTemplate__c createNewActionPlanTask( ActionPlan__c actionPlan, Integer days, User user, String category, String priority ){
 
 		APTaskTemplate__c newAPTask = new APTaskTemplate__c();
-		newAPTask.Subject__c 		= this.createRandomWord();
+		newAPTask.Subject__c 		= this.createRandomWord('subject');
 		newAPTask.DaysFromStart__c 	= days;
 		newAPTask.Action_Plan__c 	= actionPlan.Id;
 		newAPTask.User__c 			= user != null ? user.Id : null;
@@ -426,7 +428,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		APTTaskTemplate__c newAPTTask = new APTTaskTemplate__c();
 
 		newAPTTask.Action_Plan_Template__c 	= apTemplate.Id;
-		newAPTTask.Subject__c 				= this.createRandomWord();
+		newAPTTask.Subject__c 				= this.createRandomWord('subject');
 		newAPTTask.DaysFromStart__c 		= days;
 		newAPTTask.Dependent__c				= 'None';
 		if( user != null ){

@@ -52,18 +52,34 @@ private with sharing class ActionPlanCreationControllerTest {
 	}
 
 	@IsTest
-	private static void constructorTests(){
-
+	private static void singleRecordConstructor(){
 		Test.StartTest();
 		Test.setCurrentPage(Page.ActionPlanCreation);
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'contact', 2 );
 
+		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
+
+		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		apCreateController.save();
+		Test.stopTest();
+	}
+
+	@IsTest
+	private static void constructorTests(){
+
+		Test.StartTest();
+		Test.setCurrentPage(Page.ActionPlanCreation);
+
 		ApexPages.currentPage().getParameters().put( 'id', null );
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
+		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
 
-		//ApexPages.currentPage().getParameters().put( 'id', actionPlan.Id );
+		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
+		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'contact', 2 );
+
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
 
 		ApexPages.currentPage().getParameters().put( 'id', null );
@@ -149,13 +165,13 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		Contact contact = testUtil.createNewContact();
 
-		actionPlan.Name         = testUtil.createRandomWord();
+		actionPlan.Name         = testUtil.createRandomWord('Name');
 		actionPlan.Contact__c   = contact.Id;
 		actionPlan.StartDate__c = Date.today();
 
 		APTaskTemplate__c apTask = new APTaskTemplate__c();
 
-		apTask.Subject__c           = testUtil.createRandomWord();
+		apTask.Subject__c           = testUtil.createRandomWord('subject');
 		apTask.User__c              = testUtil.createTestUser().Id;
 		apTask.DaysFromStart__c     = 2;
 		apTask.Type__c              = 'Email';
@@ -220,6 +236,10 @@ private with sharing class ActionPlanCreationControllerTest {
 		System.assert(apCreateController.inVisualforceContext, 'Test should have VF context as true');
 		apCreateController.getTasks();
 		System.assertEquals(APTTASKCOUNT, apCreateController.getTasks().size());
+
+		System.assertEquals(CONCOUNT, apCreateController.getNameListSize());
+		System.assert(apCreateController.getOneThirdCutoff() < CONCOUNT/2);
+		System.assert(apCreateController.getTwoThirdsCutoff() > CONCOUNT/2);
 
 		apCreateController.save();
 
@@ -301,7 +321,7 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		APTaskTemplate__c apTask = new APTaskTemplate__c();
 		apTask.Action_Plan__c       = actionPlan.Id;
-		apTask.Subject__c           = testUtil.createRandomWord();
+		apTask.Subject__c           = testUtil.createRandomWord('subject');
 		apTask.User__c              = ownerUser.Id;
 		apTask.DaysFromStart__c     = 2;
 		apTask.Type__c              = 'Email';
@@ -323,7 +343,7 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		ActionPlanCreationController.ApTaskWrapper apt = apCreateController.getTasks()[1];
 
-		apt.task.Subject__c = testUtil.createRandomWord();
+		apt.task.Subject__c = testUtil.createRandomWord('subject');
 		apt.task.DaysFromStart__c = 3;
 		apt.task.User__c = ownerUser.Id;
 		apt.task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
@@ -420,7 +440,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		APTaskTemplate__c newAPTask2 = new APTaskTemplate__c();
 		APTaskTemplate__c newAPTask3 = new APTaskTemplate__c();
 
-		newAPTask1.Subject__c           = testUtil.createRandomWord();
+		newAPTask1.Subject__c           = testUtil.createRandomWord('subject');
 		newAPTask1.DaysFromStart__c     = 2;
 		newAPTask1.Dependent__c         = '2';
 		newAPTask1.Type__c              = 'Email';
@@ -428,7 +448,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		newAPTask1.Action_Plan__c       = actionPlan.Id;
 		upsert newAPTask1;
 
-		newAPTask2.Subject__c           = testUtil.createRandomWord();
+		newAPTask2.Subject__c           = testUtil.createRandomWord('subject');
 		newAPTask2.DaysFromStart__c     = 2;
 		newAPTask2.Dependent__c         = 'None';
 		newAPTask2.Type__c              = 'Email';
@@ -436,7 +456,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		newAPTask2.Action_Plan__c       = actionPlan.Id;
 		upsert newAPTask2;
 
-		newAPTask3.Subject__c           = testUtil.createRandomWord();
+		newAPTask3.Subject__c           = testUtil.createRandomWord('subject');
 		newAPTask3.DaysFromStart__c     = 2;
 		newAPTask3.Dependent__c         = '1';
 		newAPTask3.Type__c              = 'Email';
@@ -473,19 +493,19 @@ private with sharing class ActionPlanCreationControllerTest {
 		APTaskTemplate__c newAPTask2 = new APTaskTemplate__c();
 		APTaskTemplate__c newAPTask3 = new APTaskTemplate__c();
 
-		newAPTask1.Subject__c           = testUtil.createRandomWord();
+		newAPTask1.Subject__c           = testUtil.createRandomWord('subject');
 		newAPTask1.DaysFromStart__c     = 2;
 		newAPTask1.Dependent__c         = '2';
 		newAPTask1.Type__c              = 'Email';
 		newAPTask1.Priority__c          = 'High';
 
-		newAPTask2.Subject__c           = testUtil.createRandomWord();
+		newAPTask2.Subject__c           = testUtil.createRandomWord('subject');
 		newAPTask2.DaysFromStart__c     = 2;
 		newAPTask2.Dependent__c         = '0';
 		newAPTask2.Type__c              = 'Email';
 		newAPTask2.Priority__c          = 'High';
 
-		newAPTask3.Subject__c           = testUtil.createRandomWord();
+		newAPTask3.Subject__c           = testUtil.createRandomWord('subject');
 		newAPTask3.DaysFromStart__c     = 2;
 		newAPTask3.Dependent__c         = '1';
 		newAPTask3.Type__c              = 'Email';

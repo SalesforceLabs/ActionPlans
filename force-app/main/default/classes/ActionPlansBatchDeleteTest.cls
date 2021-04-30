@@ -140,9 +140,6 @@ private with sharing class ActionPlansBatchDeleteTest {
 		ActionPlansBatchDelete taskBatch = new ActionPlansBatchDelete(sIDs);
 		Database.ExecuteBatch( taskBatch );
 
-		//ActionPlansBatchDeleteUtilities taskBatch = new ActionPlansBatchDeleteUtilities(sIDs);
-        //taskBatch.deleteActionPlans();
-
 		Test.stopTest();
 		undelete ap;
 

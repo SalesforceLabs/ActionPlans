@@ -75,6 +75,7 @@ public inherited sharing class ExportActionPlanTemplate{
 	* @param xml
 	* @return doc
 	*/
+	@TestVisible
 	private Id saveToDocument( String name, String xml ){
 
 		Document doc = new Document();
@@ -91,6 +92,7 @@ public inherited sharing class ExportActionPlanTemplate{
 	/**
 	 * Method to save the XML file to a File (if the user is using Lightning Experience)
 	 */
+	@TestVisible
 	private Id saveToContent( String name, String xml ){
 		ContentVersion cv = new ContentVersion();
 		cv.Title = 'Export - ' + name + ' - ' + System.now()+'.xml';
@@ -110,6 +112,7 @@ public inherited sharing class ExportActionPlanTemplate{
 	* @param target
 	* @return ret
 	*/
+	@TestVisible
 	private String buildXmlString( ActionPlanTemplate__c target ){
 
 		Xmlstreamwriter out = new Xmlstreamwriter();

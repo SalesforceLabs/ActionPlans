@@ -28,14 +28,12 @@ private class ActionPlanDetailControllerTest {
 
 		Test.StartTest();
 
-		//System.currentPageReference().getParameters().put( 'id', null );
 		ActionPlanDetailController apDetailController = new ActionPlanDetailController( new ApexPages.StandardController( new ActionPlan__c() ) );
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', 1 );
 		System.debug(actionPlan);
 
-		//System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanDetailController apDetailController2 = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
 
 		apDetailController2.getRecordTypeName();
@@ -55,38 +53,14 @@ private class ActionPlanDetailControllerTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', 3 );
 
-		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanDetailController apDetailController = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		List<APTaskTemplate__c> apTasks = apDetailController.getTasks();
+		List<ActionPlanDetailController.TaskWrapper> apTasks = apDetailController.getActionPlanTasks();
 
 		//Checks to see that list of tasks is not empty
 		System.assert( !apTasks.isEmpty(), 'task list is empty' );
 
 		Test.StopTest();
 	}
-
-	/* @IsTest
-	private static void checkTaskSize(){
-		PageReference pageRef = Page.ActionPlanDetail;
-		Test.StartTest();
-
-		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
-		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', 3 );
-
-		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		ActionPlanDetailController apDetailController = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-
-		List<APTaskTemplate__c> apTasks = apDetailController.getTasks();
-		Integer numTasks                = apDetailController.getTaskSize();
-
-		//Checks to see that list of tasks is not empty
-		System.assert( !apTasks.isEmpty(), 'task list is empty' );
-
-		//check that both methods return correct number of task objects
-		System.assertEquals( numTasks, apTasks.size() );
-
-		Test.StopTest();
-	} */
 
 	@IsTest
 	private static void checkCompletedTasks(){
@@ -96,7 +70,6 @@ private class ActionPlanDetailControllerTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', 3 );
 
-		//System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanDetailController apDetailController = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
 		Integer completedTasks = apDetailController.getCompleted();
 
@@ -123,7 +96,7 @@ private class ActionPlanDetailControllerTest {
 		boolean versionName = apDetailController.getVersion();
 
 		//Checks if Action Plan Template has not been changed since the creation of the Action Plan.
-		//System.assert( !versionName );
+		System.assert( !versionName );
 
 		apTemplate.Name = 'new name';
 		update apTemplate;
@@ -133,6 +106,7 @@ private class ActionPlanDetailControllerTest {
 		versionName = apDetailController.getVersion();
 
 		//Checks if Action Plan Template has been changed since the creation of the Action Plan.
+		//Will fail because tests run too fast on Salesforce Platform
 		//System.assert( versionName );
 
 		Test.StopTest();

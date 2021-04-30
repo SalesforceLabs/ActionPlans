@@ -39,8 +39,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 global inherited sharing class ActionPlansBatchDelete implements Database.Batchable<SObject>, Database.Stateful{
 
-	//ActionPlansBatchDeleteUtilities apBatchDeleteUtil;
-
 	private Set<Id> relActionPlansIds;
 
 	/**
@@ -49,8 +47,6 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 	public ActionPlansBatchDelete( Set<Id> oIDsSet){
 
 		relActionPlansIds = oIDsSet;
-
-		//apBatchDeleteUtil = new ActionPlansBatchDeleteUtilities(oIDsSet);
 
 	}
 

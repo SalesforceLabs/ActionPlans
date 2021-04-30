@@ -63,20 +63,13 @@ public inherited sharing class ActionPlanDetailController{
 
 		System.debug('retURL: ' + ApexPages.currentPage().getParameters().get('retURL'));
 
-		Savepoint sp        	= Database.setSavepoint();
-		//ActionPlan__c ap    = actionPlan;
-		//Set<Id> recordIds	= new Set<Id>{actionPlan.Id};
-
 		//delete ap, which will also delete apts via master-detail relationship
 		try{
-
-			//ActionPlansBatchDeleteUtilities taskBatch = new ActionPlansBatchDeleteUtilities(recordIds);
-			//taskBatch.deleteActionPlans();
 
 			delete actionPlan;
 
 		} catch( Exception e ){
-			Database.rollback( sp );
+			ApexPages.addMessages(e);
 		}
 		String retURL = '/' + ActionPlansUtilities.getObjectKeyPrefix( 'ActionPlan__c' ) + '/o' ;
 
@@ -98,7 +91,7 @@ public inherited sharing class ActionPlanDetailController{
 	/**
 	* Gets all tasks for a given ActionPlan
 	*/
-	private List<APTaskTemplate__c> apTasks;
+	/* private List<APTaskTemplate__c> apTasks;
 
 	public List<APTaskTemplate__c> getTasks(){
 
@@ -110,7 +103,7 @@ public inherited sharing class ActionPlanDetailController{
 							FROM APTaskTemplate__c WHERE Action_Plan__c = :actionPlan.Id WITH SECURITY_ENFORCED ORDER BY TaskIndex__c ASC];
 		}
 		return apTasks;
-	}
+	} */
 
 	private List<TaskWrapper> apTaskWrapperList;
 	public List<TaskWrapper> getActionPlanTasks(){
@@ -153,10 +146,10 @@ public inherited sharing class ActionPlanDetailController{
 	public Integer getCompleted(){
 		if(actionPlan.Id == null){ return 0; }
 
-		List<APTaskTemplate__c> ts = [SELECT t.Id
-				FROM APTaskTemplate__c t
-				WHERE t.Status__c IN :ActionPlansUtilities.getClosedTaskStatuses()
-				AND t.ActivityDate__c != null AND t.Action_Plan__c = :actionPlan.Id];
+		List<APTaskTemplate__c> ts = [SELECT Id
+				FROM APTaskTemplate__c
+				WHERE Status__c IN :ActionPlansUtilities.getClosedTaskStatuses()
+				AND ActivityDate__c != null AND Action_Plan__c = :actionPlan.Id];
 
 		return ( ts != null ) ? ts.size() : 0;
 	}
@@ -167,8 +160,8 @@ public inherited sharing class ActionPlanDetailController{
 	*/
 	public Boolean getVersion(){
 		if( actionPlan.Action_Plan_Template__c != null ){
-			ActionPlanTemplate__c TempApt = [SELECT LastModifiedDate FROM ActionPlanTemplate__c WHERE Id = :actionPlan.Action_Plan_Template__c];
-			if( TempApt.LastModifiedDate > actionPlan.createdDate ){
+			ActionPlanTemplate__c tempApt = [SELECT LastModifiedDate FROM ActionPlanTemplate__c WHERE Id = :actionPlan.Action_Plan_Template__c];
+			if( tempApt.LastModifiedDate > actionPlan.createdDate ){
 				return true;
 			}
 		}

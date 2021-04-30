@@ -380,7 +380,7 @@ private class ActionPlansUtilitiesTest {
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 
-		System.assert( testUtil.createRandomWord() != testUtil.createRandomWord() );
+		System.assert( testUtil.createRandomWord('testword') != testUtil.createRandomWord() );
 	}
 
 	private static APTaskTemplate__c makeAppTask ( ActionPlan__c ap ){
