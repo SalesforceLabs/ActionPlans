@@ -17,7 +17,7 @@
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
-## Installing the app using a Scratch Org or Developer Sandbox
+## Installing the app using a Scratch Org
 
 1. Set up your environment. Follow the steps in the [Quick Start: Lightning Web Components](https://trailhead.salesforce.com/content/learn/projects/quick-start-lightning-web-components/) Trailhead project. The steps include:
 
@@ -45,17 +45,11 @@
     sfdx force:org:create -s -f config/project-scratch-def.json -a ActionPlans
     ```
 
-1. (If using a sandbox) You can:
-
-	- Authenticate to your sandbox
+1. Authenticate to your scratch org
 
 	```
-	sfdx force:auth:web:login -r https://test.salesforce.com -a ActionPlans
+	sfdx force:auth:web:login -a ActionPlans
 	```
-
-	- Update the project ocnfiguration file (sfdx-project.json) by adding to the My Domain login URL
-	```
-
 
 1. Push the app to your scratch org:
 
@@ -88,7 +82,7 @@
 
 1. In your Dev Hub org, in Setup > Dev Hub, enable "Enable Source Tracking in Developer and Developer Pro Sandboxes"
 
-1. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** or whatever you'd prefer in the command below):
+1. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** in the command below):
 
     ```
     sfdx force:auth:web:login -d -a myhuborg
@@ -101,7 +95,7 @@
     cd ActionPlans
     ```
 
-1. Update the project configuration file (sfdx-project.json) by adding to the My Domain login URL
+1. Update the project configuration file `sfdx-project.json` by adding to the My Domain login URL
 
 	```
 	"sfdcLoginUrl" : "https://test.salesforce.com"
@@ -112,7 +106,7 @@
 	sfdx force:auth:web:login -a ActionPlans
 	```
 
-	or if you did not update sfdx-project.json
+	or if you did not update `sfdx-project.json`
 	```
 	sfdx force:auth:web:login -r https://test.salesforce.com -a ActionPlans
 	```
@@ -160,7 +154,7 @@ Start from a brand-new environment to avoid conflicts with previous work you may
 
 1. If you are setting up a Developer Edition: go to **Setup**, under **My Domain**, [register a My Domain](https://help.salesforce.com/articleView?id=domain_name_setup.htm&type=5).
 
-1. Run this command in a terminal to deploy the app.
+1. Run this command to deploy the app.
 
     ```
     sfdx force:source:deploy -p force-app
@@ -182,7 +176,7 @@ Start from a brand-new environment to avoid conflicts with previous work you may
 
 ## Optional Installation Instructions
 
-This repository contains several files that are relevant if you want to integrate modern web development tooling to your Salesforce development processes, or to your continuous integration/continuous deployment processes.
+This repository contains several files that are relevant if you want to add sample data, or integrate modern web development tooling to your Salesforce development processes or to your continuous integration/continuous deployment processes.
 
 ### Data Import
 
