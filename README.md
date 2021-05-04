@@ -157,7 +157,7 @@ Start from a brand-new environment to avoid conflicts with previous work you may
 1. Run this command to deploy the app.
 
     ```
-    sfdx force:source:deploy -p force-app
+    sfdx force:source:deploy -p action-plans
     ```
 
 1. If your org isn't already open, open it now:
