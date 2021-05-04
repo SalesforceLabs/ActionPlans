@@ -181,7 +181,6 @@ This repository contains several files that are relevant if you want to add samp
 ### Data Import
 
 (Optional) This repository comes with sample data. To load sample Accounts and Contacts, run the following:
-
     ```
 	sfdx force:data:tree:import -p ./data/data-plan.json
 	```
