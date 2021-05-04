@@ -26,44 +26,44 @@
     - Install Visual Studio Code
     - Install the Visual Studio Code Salesforce extensions, including the Lightning Web Components extension
 
-2. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** in the command below):
+1. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** in the command below):
 
     ```
     sfdx force:auth:web:login -d -a myhuborg
     ```
 
-3. Clone the ActionPlans repository:
+1. Clone the ActionPlans repository:
 
     ```
     git clone https://github.com/salesforcelabs/ActionPlans
     cd ActionPlans
     ```
 
-4. Create a scratch org and provide it with an alias (**ActionPlans** in the command below):
+1. Create a scratch org and provide it with an alias (**ActionPlans** in the command below):
 
     ```
     sfdx force:org:create -s -f config/project-scratch-def.json -a ActionPlans
     ```
 
-5. Push the app to your scratch org:
+1. Push the app to your scratch org:
 
     ```
     sfdx force:source:push
     ```
 
-6. Assign the `Action_Plans_Admin` permission set to the admin user.
+1. Assign the `Action_Plans_Admin` permission set to the admin user.
 
     ```
     sfdx force:user:permset:assign -n Action_Plans_Admin
     ```
 
-7. Open the scratch org:
+1. Open the scratch org:
 
     ```
     sfdx force:org:open
     ```
 
-8. In App Launcher, click **View All** then select the **Action Plans** app.
+1. In App Launcher, click **View All** then select the **Action Plans** app.
 
 ## Installing the App using a Developer Edition Org or a Trailhead Playground
 
@@ -78,38 +78,48 @@ Make sure to start from a brand-new environment to avoid conflicts with previous
     sfdx force:auth:web:login -d -a mydevorg
     ```
 
-2. Clone this repository:
+1. Clone this repository:
 
     ```
     git clone https://github.com/salesforcelabs/ActionPlans
     cd ActionPlans
     ```
 
-3. If you are setting up a Developer Edition: go to **Setup**, under **My Domain**, [register a My Domain](https://help.salesforce.com/articleView?id=domain_name_setup.htm&type=5).
+1. If you are setting up a Developer Edition: go to **Setup**, under **My Domain**, [register a My Domain](https://help.salesforce.com/articleView?id=domain_name_setup.htm&type=5).
 
-4. Run this command in a terminal to deploy the app.
+1. Run this command in a terminal to deploy the app.
 
     ```
     sfdx force:source:deploy -p force-app
     ```
 
-5. If your org isn't already open, open it now:
+1. If your org isn't already open, open it now:
 
     ```
     sfdx force:org:open -u mydevorg
     ```
 
-6. Assign the `Action_Plans_Admin` permission set to the admin user.
+1. Assign the `Action_Plans_Admin` permission set to the admin user.
 
     ```
     sfdx force:user:permset:assign -n Action_Plans_Admin
     ```
 
-7. In App Launcher, select the **Action Plans** app.
+1. In App Launcher, select the **Action Plans** app.
 
 ## Optional Installation Instructions
 
 This repository contains several files that are relevant if you want to integrate modern web development tooling to your Salesforce development processes, or to your continuous integration/continuous deployment processes.
+
+## Data Import
+
+This repository comes with sample data. To load sample Accounts and Contacts, run the following:
+
+    ```
+	sfdx force:data:tree:import -p ./data/data-plan.json
+	```
+
+This repository includes a sample Action Plan Template file, which you can import from the appropriate tab in the app. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in its folder.
 
 ### Code formatting
 
