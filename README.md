@@ -17,14 +17,14 @@
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
-## Installing the app using a Scratch Org
+## Installing the app using a Scratch Org or Developer Sandbox
 
 1. Set up your environment. Follow the steps in the [Quick Start: Lightning Web Components](https://trailhead.salesforce.com/content/learn/projects/quick-start-lightning-web-components/) Trailhead project. The steps include:
 
-    - Enable Dev Hub in your Trailhead Playground
+    - Enable Dev Hub in your Trailhead Playground or Production org
     - Install Salesforce CLI
     - Install Visual Studio Code
-    - Install the Visual Studio Code Salesforce extensions, including the Lightning Web Components extension
+    - Install the Visual Studio Code Salesforce extensions
 
 1. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** in the command below):
 
@@ -44,6 +44,18 @@
     ```
     sfdx force:org:create -s -f config/project-scratch-def.json -a ActionPlans
     ```
+
+1. (If using a sandbox) You can:
+
+	- Authenticate to your sandbox
+
+	```
+	sfdx force:auth:web:login -r https://test.salesforce.com -a ActionPlans
+	```
+
+	- Update the project ocnfiguration file (sfdx-project.json) by adding to the My Domain login URL
+	```
+
 
 1. Push the app to your scratch org:
 
@@ -65,12 +77,73 @@
 
 1. In App Launcher, click **View All** then select the **Action Plans** app.
 
+## Installing the App using a Sandbox with source tracking (Developer/Developer Pro Sanbox)
+
+1. Set up your environment. Follow the steps in the [Quick Start: Lightning Web Components](https://trailhead.salesforce.com/content/learn/projects/quick-start-lightning-web-components/) Trailhead project. The steps include:
+
+    - Enable Dev Hub in your Production org
+    - Install Salesforce CLI
+    - Install Visual Studio Code
+    - Install the Visual Studio Code Salesforce extensions
+
+1. In your Dev Hub org, in Setup > Dev Hub, enable "Enable Source Tracking in Developer and Developer Pro Sandboxes"
+
+1. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** or whatever you'd prefer in the command below):
+
+    ```
+    sfdx force:auth:web:login -d -a myhuborg
+    ```
+
+1. Clone the ActionPlans repository:
+
+    ```
+    git clone https://github.com/salesforcelabs/ActionPlans
+    cd ActionPlans
+    ```
+
+1. Update the project configuration file (sfdx-project.json) by adding to the My Domain login URL
+
+	```
+	"sfdcLoginUrl" : "https://test.salesforce.com"
+	```
+
+1. Authenticate to your sandbox
+	```
+	sfdx force:auth:web:login -a ActionPlans
+	```
+
+	or if you did not update sfdx-project.json
+	```
+	sfdx force:auth:web:login -r https://test.salesforce.com -a ActionPlans
+	```
+
+1. Push the app to your sandbox:
+
+    ```
+    sfdx force:source:push
+    ```
+
+1. Assign the `Action_Plans_Admin` permission set to the admin user.
+
+    ```
+    sfdx force:user:permset:assign -n Action_Plans_Admin
+    ```
+
+1. Open the sandbox:
+
+    ```
+    sfdx force:org:open
+    ```
+
+1. In App Launcher, click **View All** then select the **Action Plans** app.
+
+
 ## Installing the App using a Developer Edition Org or a Trailhead Playground
 
 Follow this set of instructions if you want to deploy the app to a more permanent environment than a Scratch org.
 This includes non source-tracked orgs such as a [free Developer Edition Org](https://developer.salesforce.com/signup) or a [Trailhead Playground](https://trailhead.salesforce.com/).
 
-Make sure to start from a brand-new environment to avoid conflicts with previous work you may have done.
+Start from a brand-new environment to avoid conflicts with previous work you may have done.
 
 1. Authorize your Trailhead Playground or Developer org and provide it with an alias (**mydevorg** in the command below):
 
@@ -111,9 +184,9 @@ Make sure to start from a brand-new environment to avoid conflicts with previous
 
 This repository contains several files that are relevant if you want to integrate modern web development tooling to your Salesforce development processes, or to your continuous integration/continuous deployment processes.
 
-## Data Import
+### Data Import
 
-This repository comes with sample data. To load sample Accounts and Contacts, run the following:
+(Optional) This repository comes with sample data. To load sample Accounts and Contacts, run the following:
 
     ```
 	sfdx force:data:tree:import -p ./data/data-plan.json
