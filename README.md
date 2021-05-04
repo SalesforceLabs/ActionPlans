@@ -51,10 +51,10 @@
     sfdx force:source:push
     ```
 
-6. Assign the `Action_Plans_SuperAdmin` permission set to the admin user.
+6. Assign the `Action_Plans_Admin` permission set to the admin user.
 
     ```
-    sfdx force:user:permset:assign -n Action_Plans_SuperAdmin
+    sfdx force:user:permset:assign -n Action_Plans_Admin
     ```
 
 7. Open the scratch org:
@@ -99,10 +99,10 @@ Make sure to start from a brand-new environment to avoid conflicts with previous
     sfdx force:org:open -u mydevorg
     ```
 
-6. Assign the `Action_Plans_SuperAdmin` permission set to the admin user.
+6. Assign the `Action_Plans_Admin` permission set to the admin user.
 
     ```
-    sfdx force:user:permset:assign -n Action_Plans_SuperAdmin
+    sfdx force:user:permset:assign -n Action_Plans_Admin
     ```
 
 7. In App Launcher, select the **Action Plans** app.
