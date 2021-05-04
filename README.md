@@ -180,13 +180,13 @@ This repository contains several files that are relevant if you want to add samp
 
 ### Data Import
 
-(Optional) This repository comes with sample data. To load sample Accounts and Contacts, run the following:
+- (Optional) This repository comes with sample data. To load sample Accounts and Contacts, run the following:
 
     ```
     sfdx force:data:tree:import -p ./data/data-plan.json
     ```
 
-This repository includes a sample Action Plan Template file, which you can import on the appropriate tab ('https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import') in the org. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in its folder.
+- This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
 
 ### Code formatting
 
