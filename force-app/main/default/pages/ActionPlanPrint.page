@@ -115,27 +115,27 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
                         </apex:outputPanel>
                     </apex:facet>
 
-                <apex:pageBlockTable value="{!tasks}" var="task" id="theTable" styleClass="tablesorter" style="width:100%">
+                <apex:pageBlockTable value="{!ActionPlanTasks}" var="task" id="theTable" styleClass="tablesorter" style="width:100%">
                     <apex:column id="columnOne" headerValue="{!$ObjectType.APTaskTemplate__c.fields.Subject__c.label}">
-                        <apex:outputText id="subject">{!task.Subject__c}</apex:outputText>
+                        <apex:outputText id="subject">{!task.apt.Subject__c}</apex:outputText>
                     </apex:column>
                     <apex:column id="dependency" headerValue="{!$ObjectType.APTaskTemplate__c.fields.APTaskTemplate__c.label}" headerClass="dependencyColumn">
-                        <apex:outputText >{!task.APTaskTemplate__r.Subject__c}</apex:outputText>
+                        <apex:outputText >{!task.apt.APTaskTemplate__r.Subject__c}</apex:outputText>
                     </apex:column>
                     <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.ActivityDate__c.label}">
-                        <apex:outputField value="{!task.ActivityDate__c}" style="{!IF(task.ActivityDate__c != null && task.ActivityDate__c < TODAY() && task.IsClosed__c == false, 'color:#cc0000', '')}" />
+                        <apex:outputField value="{!task.apt.ActivityDate__c}" style="{!IF(task.apt.ActivityDate__c != null && task.apt.ActivityDate__c < TODAY() && task.apt.IsClosed__c == false, 'color:#cc0000', '')}" />
                     </apex:column>
                     <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}">
-                        <apex:outputText >{!task.User__r.Name}</apex:outputText>
+                        <apex:outputText >{!task.apt.User__r.Name}</apex:outputText>
                     </apex:column>
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}" value="{!task.Type__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}" value="{!task.Status__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" value="{!task.Priority__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.SendEmail__c.label}" value="{!task.SendEmail__c}" />
-                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Reminder__c.label}" value="{!task.Reminder__c}" />
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}" value="{!task.apt.Type__c}" />
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}" value="{!task.apt.Status__c}" />
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" value="{!task.apt.Priority__c}" />
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.SendEmail__c.label}" value="{!task.apt.SendEmail__c}" />
+                    <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Reminder__c.label}" value="{!task.apt.Reminder__c}" />
                     <apex:column id="comment" headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}">
-                        <apex:outputText rendered="{!LEN(task.Comments__c) <= 80}">{!task.Comments__c}</apex:outputText>
-                        <apex:outputText rendered="{!LEN(task.Comments__c) > 80}">{!LEFT(task.Comments__c,77)}...</apex:outputText>
+                        <apex:outputText rendered="{!LEN(task.apt.Comments__c) <= 80}">{!task.apt.Comments__c}</apex:outputText>
+                        <apex:outputText rendered="{!LEN(task.apt.Comments__c) > 80}">{!LEFT(task.apt.Comments__c,77)}...</apex:outputText>
                     </apex:column>
                 </apex:pageBlockTable>
 
