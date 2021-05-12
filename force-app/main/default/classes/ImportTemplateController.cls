@@ -63,7 +63,6 @@ public inherited sharing class ImportTemplateController{
 
 			return newPage ;
 
-			//return new Pagereference( '/apex/ActionPlanTemplateDetail?id=' + templateId );
 		} catch( Exception ex ){
 			//we initialize again the attachment when an error ocurres to prevent viewstate size errors
 			this.attachment = new Attachment();
