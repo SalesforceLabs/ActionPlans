@@ -3,5 +3,5 @@
     <description>If a task due date falls on a specific weekend day, how many days will we push it to get it to the next weekday, or pull it to get to the day before the weekend?</description>
     <label>Weekend Day</label>
     <pluralLabel>Weekend Days</pluralLabel>
-    <visibility>Protected</visibility>
+    <visibility>Public</visibility>
 </CustomObject>
