@@ -337,7 +337,10 @@ public inherited sharing class ImportActionPlanTemplate{
 			//handle category field
 			if( reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'category' ){
 				reader.next();
-				apTaskAux.Type__c = getDecodedString( reader );
+				String taskType = getDecodedString( reader );
+				if( taskType != 'null' ){
+					apTaskAux.Type__c = taskType;
+				}
 			}
 			//handle priority field
 			if( reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'priority' ){
@@ -363,10 +366,7 @@ public inherited sharing class ImportActionPlanTemplate{
 			if( reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'comments' ){
 				reader.next();
 				String commentValue = getDecodedString( reader );
-				if( commentValue == 'null' ){
-					apTaskAux.Comments__c = '';
-				}
-				else {
+				if( commentValue != 'null' ){
 					apTaskAux.Comments__c = commentValue;
 				}
 			}
