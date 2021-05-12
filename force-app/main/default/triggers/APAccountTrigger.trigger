@@ -2,6 +2,6 @@ trigger APAccountTrigger on Account (before delete, after undelete) {
 
 	ActionPlansTriggerHandlers.triggerHandler_ActionPlanAccount(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap, Trigger.operationType);
 
-	ActionPlansTriggerHandlers.actionPlansSObjectTriggerHandler(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap, Trigger.operationType, 'Account');
+	ActionPlansTriggerHandlers.actionPlansSObjectTriggerHandler('Account');
 
 }

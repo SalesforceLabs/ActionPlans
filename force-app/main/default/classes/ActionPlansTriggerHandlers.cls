@@ -1,5 +1,9 @@
 global inherited sharing class ActionPlansTriggerHandlers {
 
+	global static void actionPlansSObjectTriggerHandler(String sObjectName){
+		actionPlansSObjectTriggerHandler(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap, Trigger.operationType, sObjectName);
+	}
+
     global static void actionPlansSObjectTriggerHandler(List<SObject> newRecords, List<SObject> oldRecords, Map<Id,SObject> newRecordsMap, Map<Id,SObject> oldRecordsMap, System.TriggerOperation triggerEvent, String sObjectName){
 
 		String relationshipName = null;
