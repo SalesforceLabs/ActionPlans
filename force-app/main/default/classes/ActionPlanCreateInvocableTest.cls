@@ -268,19 +268,17 @@ private class ActionPlanCreateInvocableTest {
 										FROM Weekend_Day__mdt
 										WHERE Days_to_start_of_next_week__c != 0][0];
 		String weekendDayName = weekend.DeveloperName;
-
-		//Integer daysToWeekendDay = 0;
 		Date upcomingWeekendDay = Date.today();
-		//Date monday = Date.newInstance(1900, 1, 1);
 		Integer daysToWeekendDay = 0;
+
 		for(daysToWeekendDay = 0; daysToWeekendDay < 8; daysToWeekendDay++){
 			upcomingWeekendDay = Date.today().addDays(daysToWeekendDay);
 			if( ActionPlansUtilities.getDayOfWeek(upcomingWeekendDay) == weekendDayName ){
 				break;
 			}
 		}
-		System.debug(upcomingWeekendDay + ' is a WeekendDay');
-		System.debug('There are this many days to WeekendDay: ' + daysToWeekendDay);
+		//System.debug(upcomingWeekendDay + ' is a WeekendDay');
+		//System.debug('There are this many days to WeekendDay: ' + daysToWeekendDay);
 
 		Action_Plans_Settings__c aps = Action_Plans_Settings__c.getOrgDefaults();
 		aps.Chatter_Object_Brag__c = false;

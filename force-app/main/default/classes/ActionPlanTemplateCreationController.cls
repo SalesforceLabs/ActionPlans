@@ -214,9 +214,9 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		//if( ApexPages.currentPage().getParameters().get( 'add' ) == '1' ){
 
 			//in case the task LIMIT is reached set a message error to display
-			if( this.aptTasks.size() >= ActionPlansConstants.MAX_APTASKS ){
+			if( this.aptTasks.size() >= ActionPlansUtilities.MAX_APTASKS ){
 				List<String> parameters = new List<String>();
-				parameters.add(String.valueof(ActionPlansConstants.MAX_APTASKS));
+				parameters.add(String.valueof(ActionPlansUtilities.MAX_APTASKS));
 
 				errorMsg = String.format(System.Label.ap_Errors_TaskLimitError, parameters);
 				//this.errorMsg = System.Label.ap_Errors_TaskLimitError;
@@ -302,7 +302,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			aptTasks.remove( taskIndex );
 
 			// clear errorMsg if it's set.
-			if( aptTasks.size() < ActionPlansConstants.MAX_APTASKS ){
+			if( aptTasks.size() < ActionPlansUtilities.MAX_APTASKS ){
 				 errorMsg = null;
 			}
 			removedTask = true;

@@ -137,7 +137,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		Test.StartTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
-		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( ActionPlansConstants.MAX_APTASKS + 1 );
+		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( ActionPlansUtilities.MAX_APTASKS + 1 );
 
 		//System.currentPageReference().getParameters().put( 'id', apTemplate.Id );
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
@@ -147,8 +147,8 @@ private class ActionPlanTemplateCreationCntrlTest {
 		Test.stopTest();
 		String errorMsg = aptcc.getErrorMsg();
 		System.debug(errorMsg);
-		System.debug(String.valueof(ActionPlansConstants.MAX_APTASKS));
-		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansConstants.MAX_APTASKS)));
+		System.debug(String.valueof(ActionPlansUtilities.MAX_APTASKS));
+		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansUtilities.MAX_APTASKS)));
 
 	}
 
@@ -192,7 +192,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.assert( aptcc.geterrorMsg() == null, 'A error was returned when adding a template task ');
 
-		ActionPlanTemplate__c actionPlanTemplate2 = testUtil.createNewActionPlanTemplate( ActionPlansConstants.MAX_APTASKS );
+		ActionPlanTemplate__c actionPlanTemplate2 = testUtil.createNewActionPlanTemplate( ActionPlansUtilities.MAX_APTASKS );
 		aptcc = new ActionPlanTemplateCreationController(new ApexPages.StandardController(actionPlanTemplate2));
 		//System.currentPageReference().getParameters().put( 'add', '1') ;
 

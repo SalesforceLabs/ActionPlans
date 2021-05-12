@@ -43,8 +43,17 @@ public inherited sharing class ActionPlansUtilities {
 	 * CONSTANTS *
 	*************/
 
-	public static final String FRIDAY = 'Friday';
-	public static final String MONDAY = 'Monday';
+	// Max number of APTasks per Action Plan
+	public static final Integer MAX_APTASKS     = 400;
+
+	// Max number of Action Plans that can be deleted from list
+	public static final Integer MAX_APTODELETE	= 1000;
+
+    //public static final String DEFAULT_TASK_STATUS = [SELECT MasterLabel FROM TaskStatus WHERE IsDefault = true LIMIT 1].MasterLabel;
+
+    public static final Boolean HAS_RECORD_TYPE = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
+
+    public static final Id MASTER_RECORD_TYPE_ID = '012000000000000AAA';
 
 	/**
 	 * Section to describe ActionPlan object to make custom relationship fields dynamic
@@ -84,19 +93,19 @@ public inherited sharing class ActionPlansUtilities {
 		return apCustomRelationshipFields;
 	}
 
-	public static final Boolean HAS_RECORD_TYPE = setHasRecordType();
+	//public static final Boolean HAS_RECORD_TYPE = setHasRecordType();
 
 	/**
 	 * Allows us to force the environment variable checking if Task has a Record Type for testing. Increases code coverage.
 	 */
-	private static Boolean setHasRecordType(){
+	/* private static Boolean setHasRecordType(){
 		if(ActionPlansTestUtilities.forceHasRecordType != null){
 			return ActionPlansTestUtilities.forceHasRecordType;
 		} else {
 			ActionPlansTestUtilities.forceHasRecordType = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
 		}
 		return ActionPlansTestUtilities.forceHasRecordType;
-	}
+	} */
 
 	/**
 	* Get prefix of sObject

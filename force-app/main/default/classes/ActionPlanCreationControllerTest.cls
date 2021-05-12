@@ -678,7 +678,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		Test.setCurrentPage(Page.ActionPlanCreation);
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
-		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', ActionPlansConstants.MAX_APTASKS );
+		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', ActionPlansUtilities.MAX_APTASKS );
 
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
 		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
@@ -697,7 +697,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		Test.setCurrentPage(Page.ActionPlanCreation);
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
-		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', ActionPlansConstants.MAX_APTASKS + 1 );
+		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', ActionPlansUtilities.MAX_APTASKS + 1 );
 
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
 		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
@@ -709,8 +709,8 @@ private with sharing class ActionPlanCreationControllerTest {
 		Test.stopTest();
 		String errorMsg = apCreateController.getErrorMsg();
 		System.debug(errorMsg);
-		System.debug(String.valueof(ActionPlansConstants.MAX_APTASKS));
-		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansConstants.MAX_APTASKS)));
+		System.debug(String.valueof(ActionPlansUtilities.MAX_APTASKS));
+		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansUtilities.MAX_APTASKS)));
 
 	}
 

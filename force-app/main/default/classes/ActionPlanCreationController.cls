@@ -577,9 +577,9 @@ public inherited sharing class ActionPlanCreationController{
 		this.taskIndex++;
 
 		Boolean hasNoErrors = true;
-		if( this.apTasks.size() >= ActionPlansConstants.MAX_APTASKS ){
+		if( this.apTasks.size() >= ActionPlansUtilities.MAX_APTASKS ){
 			List<String> parameters = new List<String>();
-			parameters.add(String.valueof(ActionPlansConstants.MAX_APTASKS));
+			parameters.add(String.valueof(ActionPlansUtilities.MAX_APTASKS));
 
 			errorMsg = String.format(System.Label.ap_Errors_TaskLimitError, parameters);
 		}
@@ -657,7 +657,7 @@ public inherited sharing class ActionPlanCreationController{
 			apTasks.remove( taskIndex );
 
 			// clear errorMsg if it's set.
-			if( this.apTasks.size() < ActionPlansConstants.MAX_APTASKS ){
+			if( this.apTasks.size() < ActionPlansUtilities.MAX_APTASKS ){
 				errorMsg = null;
 			}
 			removedTask = true;
@@ -1238,7 +1238,7 @@ public inherited sharing class ActionPlanCreationController{
 	* Pull maximum tasks from javascript to an Apex constant
 	*/
 	/* public Integer getMaxAPTasks(){
-		return ActionPlansConstants.MAX_APTASKS;
+		return ActionPlansUtilities.MAX_APTASKS;
 	} */
 
 }

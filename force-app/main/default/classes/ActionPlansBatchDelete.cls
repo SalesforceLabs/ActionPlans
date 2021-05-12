@@ -97,7 +97,7 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 
 	global void deleteActionPlans(Set<Id> relActionPlansIds) {
 
-		List<ActionPlan__c> relActionPlans = [SELECT Id FROM ActionPlan__c WHERE Id IN :relActionPlansIds LIMIT :ActionPlansConstants.MAX_APTODELETE];
+		List<ActionPlan__c> relActionPlans = [SELECT Id FROM ActionPlan__c WHERE Id IN :relActionPlansIds LIMIT :ActionPlansUtilities.MAX_APTODELETE];
 
 		// 	task templates probably don't need to be deleted as they are the detail part of the relationship
 		Map<Id, APTaskTemplate__c> relTaskTemplateMap = new Map<Id, APTaskTemplate__c>([SELECT Id FROM APTaskTemplate__c WHERE Action_Plan__c IN :relActionPlansIds]);
