@@ -132,7 +132,6 @@ public inherited sharing class ActionPlansUtilities {
 				for( SObject rt : getTaskRecordTypes() ){
 					Task t = (Task)Task.sObjectType.newSObject((Id)rt.get('Id'), true);
 					taskRecordTypeStatusDefaultValues.put((Id)rt.get('Id'), t.Status);
-					System.debug(rt.Name + ' has default status ' + t.Status);
 				}
 			} else {
 				taskRecordTypeStatusDefaultValues.put(null, (String)Task.Status.getDescribe().getDefaultValue());
