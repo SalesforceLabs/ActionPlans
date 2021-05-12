@@ -59,12 +59,11 @@ global inherited sharing class ActionPlanCreateInvocable {
 							FROM ActionPlanTemplate__c WHERE Name IN :templateNamesOrIDs OR Id IN :templateNamesOrIDs];
 
 		for(ActionPlanTemplate__c apt : possibleTemplates){
-			templateNameOrIdToTemplate.put(apt.id, apt);
+			templateNameOrIdToTemplate.put(apt.Id, apt);
 			templateNameOrIdToTemplate.put(apt.Name, apt);
 		}
 
 		if(templateNameOrIdToTemplate.isEmpty()){
-			System.debug('NO MATCHING TEMPLATES');
 			return resultIDs;
 		}
 
@@ -89,6 +88,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 		Map<Id, Id> relatedObjectOwners = ActionPlansBatchBuilderUtilities.retrieveOwnersDataRelatedObject(relatedIDs, relatedObjectName);
 
 		for(CreateActionPlanRequest r : requests){
+			if(!templateNameOrIdToTemplate.containsKey(r.templateNameOrID)){ continue; }
 
 			ActionPlanTemplate__c actionPlanTemplate = templateNameOrIdToTemplate.get(r.templateNameOrID);
 
@@ -114,8 +114,13 @@ global inherited sharing class ActionPlanCreateInvocable {
 			if(!relObjName.endsWithIgnoreCase('__c')){
 				relObjField += '__c';
 			}
+
+			if(!Schema.SObjectType.ActionPlan__c.fields.getMap().containsKey(relObjField)){
+				System.debug('Field not present. ' + relObjField);
+				continue;
+			}
+
 			ap.put(relObjField, relatedId);
-			System.debug('inserting action plan ' + ap);
 			actionPlansToInsert.put(r.relatedRecordID, ap);
 		}
 
@@ -136,19 +141,15 @@ global inherited sharing class ActionPlanCreateInvocable {
 			}
 
 			for( APTTaskTemplate__c aptTask : actionPlanTemplate.apTasks__r ){
-				System.debug('iterating over apTasks__r');
 				Id userId;
 				//Read the Custom Settings in order to asign the User to that Task
 				if( aptTask.User__c != null ) {
 					userId = aptTask.User__c ;
-					System.debug('USER WAS ALREADY FILLED!');
 				}
 				else if( aptTask.User__c == null && ( mySettings != null && !mySettings.Unassigned_Task_Default__c ) ) {
 					userId = UserInfo.getUserId();
-					System.debug('DEFAULT TO CURRENT USER');
 				}
 				else if( aptTask.User__c == null && ( mySettings != null &&  mySettings.Unassigned_Task_Default__c ) ) {
-					System.debug('ASSIGN TO RELATED OWNER');
 					userId = relatedObjectOwners.get(relatedId);
 				}
 
@@ -167,8 +168,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 				apTask.SendEmail__c          = aptTask.SendEmail__c;
 
 				apTask.Action_Plan__c        = ap.Id;
-
-				System.debug('SETTING AP.ID to ' + ap.id);
 
 				if(ActionPlansUtilities.HAS_RECORD_TYPE){
 					apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
@@ -217,64 +216,61 @@ global inherited sharing class ActionPlanCreateInvocable {
 			insertedActionPlans.put(ap.Id, ap);
 		}
 
-		//Task t;
-		for( APTaskTemplate__c t_t : aptasksToInsert ) {
-			ActionPlan__c apAux;
+		for( APTaskTemplate__c apTask : aptasksToInsert ) {
+			ActionPlan__c insertedAP;
 			// check if task exists already
 			Task t = new Task();
-			t.Subject           = t_t.Subject__c;
-			t.Priority          = t_t.Priority__c;
-			t.OwnerId           = t_t.User__c;
-			t.TaskAPTaskTemplate__c = t_t.Id;
+			t.Subject           = apTask.Subject__c;
+			t.Priority          = apTask.Priority__c;
+			t.OwnerId           = apTask.User__c;
+			t.TaskAPTaskTemplate__c = apTask.Id;
 
-			if( t_t.Comments__c != null ){
-				t.Description = t_t.Comments__c;
+			if( apTask.Comments__c != null ){
+				t.Description = apTask.Comments__c;
 			}
 
 			//set reminder based on user's default reminder setting
-			if( t_t.Reminder__c == true && t_t.ActivityDate__c != null ){
+			if( apTask.Reminder__c == true && apTask.ActivityDate__c != null ){
 
 				t.isReminderSet = true;
-				t.ReminderDateTime = Datetime.newInstance( t_t.ActivityDate__c.year(), t_t.ActivityDate__c.month(), t_t.ActivityDate__c.day(), 0, 0, 0 );
-				t.ReminderDateTime = t.ReminderDateTime.addMinutes( Integer.valueOf( t_t.Minutes_Reminder__c ) );
+				t.ReminderDateTime = Datetime.newInstance( apTask.ActivityDate__c.year(), apTask.ActivityDate__c.month(), apTask.ActivityDate__c.day(), 0, 0, 0 );
+				t.ReminderDateTime = t.ReminderDateTime.addMinutes( Integer.valueOf( apTask.Minutes_Reminder__c ) );
 			}
 			else {
 				t.isReminderSet = false;
 			}
 
-			APTaskTemplate__c apt = mapAP.get(t_t.Id);
+			APTaskTemplate__c apt = mapAP.get(apTask.Id);
 
 			if ( apt != null ){
-
-				apAux = insertedActionPlans.get(apt.Action_Plan__c);
-				//System.debug('apAux is first set to ' + apAux);
+				insertedAP = insertedActionPlans.get(apt.Action_Plan__c);
 			}
 
 			//link to Action Plan's Related To Object
 			for( String s : ActionPlansUtilities.getCustomRelationshipFields() ){
 				String f = s;
-				if(!f.equalsIgnoreCase('Contact__c') && !f.equalsIgnoreCase('Lead__c') && apAux.get(f) != null){
-					t.WhatId = (Id)apAux.get(f);
+				if(!f.equalsIgnoreCase('Contact__c') && !f.equalsIgnoreCase('Lead__c') && insertedAP.get(f) != null){
+					t.WhatId = (Id)insertedAP.get(f);
 					break;
 				}
 			}
 
-			if( apAux.Contact__c != null ){
-				t.WhoId = apAux.Contact__c;
+			if( insertedAP.Contact__c != null ){
+				t.WhoId = insertedAP.Contact__c;
 			}
-			if( apAux.Lead__c != null ){
-				t.WhoId = apAux.Lead__c;
+			if( insertedAP.Lead__c != null ){
+				t.WhoId = insertedAP.Lead__c;
 			}
 
-			t.Type = t_t.Type__c;
+			t.Type = apTask.Type__c;
 
 			if (t.Id == null){
-				t.Status        = t_t.Status__c;
+				t.Status        = apTask.Status__c;
 			}
-			t.ActivityDate  = t_t.ActivityDate__c;
+			t.ActivityDate  = apTask.ActivityDate__c;
 
-			if( t_t.Dependent__c == 'None' ){
-				if( t_t.SendEmail__c == true ){
+			if( apTask.Dependent__c == 'None' ){
+				if( apTask.SendEmail__c == true ){
 					myNewTasksWithEmail.add( t );
 				}
 				else {
@@ -314,7 +310,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 			resultIDs.add(actionPlansToInsert.get(request.relatedRecordID).Id);
 		}
 
-		System.debug('RETURNING RESULT IDs COUNT ' + resultIDs.size());
+		//System.debug('RETURNING RESULT IDs COUNT ' + resultIDs.size());
 
 		return resultIDs;
 	}

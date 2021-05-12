@@ -47,12 +47,6 @@
     sfdx force:org:create -s -f config/project-scratch-def.json -a ActionPlans
     ```
 
-1. Authenticate to your scratch org
-
-	```
-	sfdx force:auth:web:login -a ActionPlans
-	```
-
 1. Push the app to your scratch org:
 
     ```

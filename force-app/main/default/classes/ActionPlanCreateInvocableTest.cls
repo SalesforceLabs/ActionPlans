@@ -223,14 +223,14 @@ private class ActionPlanCreateInvocableTest {
 
 	}
 
-	/* @IsTest
+	@IsTest
 	static void bulkAccounts(){
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
 		apTemplate.name = 'B';
 		update apTemplate;
 
-		Integer BULK_COUNT = 200;
+		Integer BULK_COUNT = 100;
 		List<Account> toInsert = new List<Account>();
 
 
@@ -245,15 +245,21 @@ private class ActionPlanCreateInvocableTest {
 
 		Test.startTest();
 
+		List<ActionPlanCreateInvocable.CreateActionPlanRequest> requests = new List<ActionPlanCreateInvocable.CreateActionPlanRequest>();
+
 		for(Account a : toInsert){
-			a.Type = 'Customer - Direct';
+			ActionPlanCreateInvocable.CreateActionPlanRequest req = new ActionPlanCreateInvocable.CreateActionPlanRequest();
+			req.templateNameOrID = apTemplate.Id;
+			req.relatedRecordID = a.Id;
+			req.daysToActionPlanStart = 0;
+			requests.add(req);
 		}
-		update toInsert;
+		List<Id> resultIDs = ActionPlanCreateInvocable.makeActionPlanFromTemplate(requests);
 
 		Test.stopTest();
-		System.assertNotEquals(0, [SELECT Count() FROM ActionPlan__c WHERE Account__c != null]);
+		System.assertEquals(BULK_COUNT, [SELECT Count() FROM ActionPlan__c WHERE Account__c != null]);
 
-	}  */
+	}
 
 	@IsTest
 	private static void checkWeekendDueDate(){

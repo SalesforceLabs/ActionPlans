@@ -62,6 +62,7 @@
 				&lt;li&gt;Import Action Plan Templates.&lt;/li&gt;
 				&lt;li&gt;Supports Task reminder times.&lt;/li&gt;
 				&lt;li&gt;Action Plans Settings controls behavior around Chatter Notifications, actions when a Lead is converted, and default Task assignment behavior&lt;/li&gt;
+				&lt;li&gt;Invocable Apex allows automation of Action Plan creation from a Template in Process Builder and Flow&lt;/li&gt;
 			&lt;/ul&gt;</value>
     </labels>
     <labels>
@@ -436,7 +437,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Error: TaskLimitError</shortDescription>
-        <value>Task limit reached.</value>
+		<value>Tasks per Action Plan limit reached ({0}).</value>
     </labels>
     <labels>
         <fullName>ap_Errors_selectOneRecord</fullName>
@@ -503,17 +504,27 @@
         <value>Post Install Configuration</value>
     </labels>
     <labels>
-        <fullName>ap_GettingStarted_section1</fullName>
+        <fullName>ap_GettingStarted_section1_pt1</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>AboutGettingStartedS1</shortDescription>
+        <shortDescription>AboutGettingStartedS1_pt1</shortDescription>
         <value>&lt;ol&gt;
 			&lt;li&gt;Navigate to Setup &gt; Develop &gt; Custom Settings. Click on &apos;Manage&apos; next to &apos;Action Plans Settings&apos;. Click the &apos;New&apos; button near &apos;Default Organizational Level Value&apos;. Check the values that you want to enable.;&lt;/li&gt;	
-			&lt;li&gt;Enable Chatter Object places a &apos;[Username] has created an Action Plan&apos; in the related objects Chatter Feed. If unchecked, Action Plans does not create a Feed Post.;&lt;/li&gt;
-			&lt;li&gt;&apos;Unassigned Task Defaults to Record Owner&apos; ensure that Action Plan Template tasks with a blank &apos;Assigned To&apos; goes to the related record&apos;s owner. If unchecked, tasks with a blank &apos;Assigned To&apos; are assigned to the running user.&quot;&lt;/li&gt;
-			&lt;/ol&gt;</value>
+			&lt;li&gt;&apos;Enable Chatter Post&apos; places a &apos;[Username] has created an Action Plan&apos; in the related objects Chatter Feed. If unchecked, Action Plans does not create a Feed Post.;&lt;/li&gt;
+			&lt;li&gt;&apos;Unassigned Task Defaults to Record Owner&apos; ensures that Action Plan Template tasks with a blank &apos;Assigned To&apos; goes to the related record&apos;s owner. If unchecked, tasks with a blank &apos;Assigned To&apos; are assigned to the running user. Tasks can be assigned to specific people on Action Plan Templates, which overrides this setting.&lt;/li&gt;
+			</value>
     </labels>
+	<labels>
+		<fullName>ap_GettingStarted_section1_pt2</fullName>
+		<categories>Action Plans</categories>
+		<language>en_US</language>
+		<protected>true</protected>
+		<shortDescription>AboutGettingStartedS1_pt2</shortDescription>
+		<value>&lt;li&gt;&apos;Default Object on Lead Conversion&apos; specifies that if an Action Plan is related to a Lead, whether the Action Plan should be moved to the converted Account, Contact, or Opportunity when the Lead is converted. The default is Contact.&lt;/li&gt;
+			&lt;li&gt;&apos;Action Plans Business Hours ID&apos; and &apos;Use Business Hours&apos; are reserved for future functionality.&lt;/li&gt;
+			&lt;/ol&gt;</value>
+	</labels>
     <labels>
         <fullName>ap_GettingStarted_section1_title</fullName>
         <categories>Action Plans</categories>
@@ -797,11 +808,11 @@
         <value>&lt;h2&gt;To Use a Custom Object with Action Plans&lt;/h2&gt;
 &lt;ol start=&quot;1&quot;&gt;
 	&lt;li&gt;Create the object and be sure to check &amp;quot;Track Activities&amp;quot; for the object attrributes&lt;/li&gt;
-	&lt;li&gt;Create a lookup field from Action Plan to the object. Name the field the same as the object name. The field label can be anything.&lt;/li&gt;
+	&lt;li&gt;Create a lookup field from Action Plan to the object. &lt;b&gt;Name the field the same as the object name.&lt;/b&gt; The field label can be anything.&lt;/li&gt;
 	&lt;li&gt;Add the field to the Related Objects fieldset on Action Plan.&lt;/li&gt;
 	&lt;li&gt;The related object will now be available for selection when creating a new Action Plan and relating it to an object.&lt;/li&gt;
 	&lt;li&gt;Add the following code to the object trigger in &lt;b&gt;before delete&lt;/b&gt; and &lt;b&gt;after undelete&lt;/b&gt; contexts:&lt;br/&gt;
-&lt;pre&gt;ActionPlansTriggerHandlers.actionPlansSObjectTriggerHandler(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap, Trigger.operationType, &apos;Custom_Object__c&apos;);&lt;/pre&gt;&lt;/li&gt;&lt;/ol&gt;</value>
+&lt;pre&gt;ActionPlansTriggerHandlers.actionPlansSObjectTriggerHandler( &apos;Custom_Object__c&apos; );&lt;/pre&gt;&lt;/li&gt;&lt;/ol&gt;</value>
     </labels>
     <labels>
         <fullName>ap_RelatedObjectStop</fullName>

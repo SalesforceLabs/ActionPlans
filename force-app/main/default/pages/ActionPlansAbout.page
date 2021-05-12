@@ -73,7 +73,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 
                  <h3><apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1_title}" /></h3>
 
-                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1}" />
+				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1_pt1}" />
+				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section1_pt2}" />
                 <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_title}" />
                 <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub1P1}" />
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub1P2}" />
@@ -161,6 +162,40 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 
             </fieldset>
         </div>
+
+		<div aria-labelledby="boxInvoke">
+
+			<fieldset class="slds-box slds-theme_default slds-container_x-large">
+				<legend id="boxInvoke" class="slds-text-heading_large">
+					Using Invocable Apex
+				</legend>
+				<h3>Via Flow</h3>
+				<p>Action Plans includes an Invocable Apex class that can be included in a Flow. The Record ID of the triggering record is required, as is the Id OR the Name of the desired template.</p>
+				<p>Days from trigger to start Action Plan is optional. The first task will be due a certain number of days (specified on the template) from the start date.
+				This date may fall on a weekend, though task due dates will be moved to avoid weekends if set on the template.
+				</p>
+				image goes here
+				<h3>Via Process Builder</h3>
+				<p>It is recommended NOT to check the Recursion box when creating a Process Builder to work with Action PLans</p>
+				image goes here
+				<h3>Via Trigger</h3>
+				<p>To call the invocable Apex from a Trigger or Apex class, use the following sample code:</p>
+				<pre>
+List&lt;ActionPlanCreateInvocable.CreateActionPlanRequest&gt; requests = new List&lt;ActionPlanCreateInvocable.CreateActionPlanRequest&gt;();
+for(Account a : toInsert){
+		ActionPlanCreateInvocable.CreateActionPlanRequest req = new ActionPlanCreateInvocable.CreateActionPlanRequest();
+		req.templateNameOrID = apTemplate.Id;
+		req.relatedRecordID = a.Id;
+		req.daysToActionPlanStart = 0;
+		requests.add(req);
+}
+List&lt;Id&gt; resultIDs = ActionPlanCreateInvocable.makeActionPlanFromTemplate(requests);
+				</pre>
+				<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-1.png')}" />
+				<apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}" />
+				<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-2.png')}" />
+			</fieldset>
+		</div>
 
         <div aria-labelledby="boxShare">
 
