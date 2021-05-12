@@ -91,10 +91,8 @@ public inherited sharing class ActionPlansUtilities {
 	 */
 	private static Boolean setHasRecordType(){
 		if(ActionPlansTestUtilities.forceHasRecordType != null){
-			//System.debug('forceHasRecordType was set to ' + ActionPlansTestUtilities.forceHasRecordType);
 			return ActionPlansTestUtilities.forceHasRecordType;
 		} else {
-			//System.debug('forceHasRecordType is null');
 			ActionPlansTestUtilities.forceHasRecordType = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
 		}
 		return ActionPlansTestUtilities.forceHasRecordType;
@@ -134,12 +132,10 @@ public inherited sharing class ActionPlansUtilities {
 				for( SObject rt : getTaskRecordTypes() ){
 					Task t = (Task)Task.sObjectType.newSObject((Id)rt.get('Id'), true);
 					taskRecordTypeStatusDefaultValues.put((Id)rt.get('Id'), t.Status);
-					//System.debug(rt.Name + ' has default status ' + t.Status);
+					System.debug(rt.Name + ' has default status ' + t.Status);
 				}
 			} else {
-				//String firstStatus = [SELECT Id, ApiName FROM TaskStatus WHERE IsDefault = true LIMIT 1].MasterLabel;
 				taskRecordTypeStatusDefaultValues.put(null, (String)Task.Status.getDescribe().getDefaultValue());
-				//taskRecordTypeStatusDefaultValues.put('', firstStatus);
 			}
 
 		}
@@ -238,9 +234,8 @@ public inherited sharing class ActionPlansUtilities {
 			for(TaskStatus ts : [SELECT IsClosed, MasterLabel FROM TaskStatus WHERE IsClosed = false]){
 				openTaskStatuses.add(ts.MasterLabel);
 			}
-			//openTaskStatuses.remove([SELECT MasterLabel FROM TaskStatus WHERE IsDefault = true].MasterLabel);
 		}
-		//System.debug('Open Statuses: ' + openTaskStatuses);
+		System.debug('Open Statuses: ' + openTaskStatuses);
 		return openTaskStatuses;
 	}
 	private static Set<String> openTaskStatuses;
@@ -257,7 +252,7 @@ public inherited sharing class ActionPlansUtilities {
 				closedTaskStatuses.add(ts.MasterLabel);
 			}
 		}
-		//System.debug('Closed Statuses: ' + closedTaskStatuses);
+		System.debug('Closed Statuses: ' + closedTaskStatuses);
 		return closedTaskStatuses;
 	}
 
@@ -372,7 +367,6 @@ public inherited sharing class ActionPlansUtilities {
 	 */
 	public static Boolean getCheckReminderByDefault(){
 		if(checkReminderByDefault == null){
-			System.debug('FIRST time looking for checkReminderByDefault');
 			checkReminderByDefault = false;
 			if(getCanDisplayReminder()){
 				User u = [SELECT Name, UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
