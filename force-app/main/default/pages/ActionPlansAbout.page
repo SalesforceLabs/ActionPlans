@@ -174,9 +174,6 @@ for(Account a : toInsert){
 }
 List&lt;Id&gt; resultIDs = ActionPlanCreateInvocable.makeActionPlanFromTemplate(requests);
 				</pre>
-				<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-1.png')}" />
-				<apex:outputText escape="false" value="{!$Label.ap_ImportExport_2}" />
-				<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ActionPlanTemplate-import-2.png')}" />
 			</fieldset>
 		</div>
 
