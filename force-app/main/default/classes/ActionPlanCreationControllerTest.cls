@@ -334,7 +334,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		Test.StartTest();
 
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
-		apCreateController.apTasks = new List<APTaskTemplate__c>();
+		//apCreateController.apTasks = new List<APTaskTemplate__c>();
 		apCreateController.getTasks();
 		System.assertEquals(1, apCreateController.getTasks().size());
 		apCreateController.addTask();
@@ -668,6 +668,49 @@ private with sharing class ActionPlanCreationControllerTest {
 		System.assertEquals( null, apCreateController.getDefaultTaskRecordTypeId() );
 
 		System.assert(!ActionPlansUtilities.HAS_RECORD_TYPE);
+
+	}
+
+	@IsTest
+	static void checkMaxTasks(){
+
+		Test.StartTest();
+		Test.setCurrentPage(Page.ActionPlanCreation);
+
+		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
+		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', ActionPlansConstants.MAX_APTASKS );
+
+		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
+		System.assertEquals('Account__c', apCreateController.relatedFieldName, 'Should relate Account to Action Plan');
+
+		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		apCreateController.save();
+		Test.stopTest();
+
+	}
+
+	@IsTest
+	static void checkMaxTasksError(){
+
+		Test.StartTest();
+		Test.setCurrentPage(Page.ActionPlanCreation);
+
+		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
+		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', ActionPlansConstants.MAX_APTASKS + 1 );
+
+		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
+		System.assertEquals('Account__c', apCreateController.relatedFieldName, 'Should relate Account to Action Plan');
+
+		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		apCreateController.getTasks();
+		apCreateController.addTask();
+		Test.stopTest();
+		String errorMsg = apCreateController.getErrorMsg();
+		System.debug(errorMsg);
+		System.debug(String.valueof(ActionPlansConstants.MAX_APTASKS));
+		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansConstants.MAX_APTASKS)));
 
 	}
 

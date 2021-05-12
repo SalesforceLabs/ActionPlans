@@ -93,7 +93,7 @@ public inherited sharing class ActionPlanTemplateDetailController {
 	 * @return List<APTTaskTemplate__c>
 	 */
 	public List<APTTaskTemplate__c> getTemplateTasks(){
-		return [SELECT Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Type__c,
+		return [SELECT Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Type__c, Time_Reminder__c,
 							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
 							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
 							 FROM APTTaskTemplate__c

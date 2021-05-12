@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 public inherited sharing class ActionPlansConstants {
 
 	// Max number of APTasks per Action Plan
-	public static final Integer MAX_APTASKS     = 75;
+	public static final Integer MAX_APTASKS     = 400;
 
 	// Max number of objects (i.e.: Account, contact, etc.) that can be selected to create an Action Plan
 	public static final Integer MAX_APOBJECTS   = 40;

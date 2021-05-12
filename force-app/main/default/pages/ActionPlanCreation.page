@@ -506,7 +506,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 								oncomplete="javascript:showErrors();checkAllDependent();checkReminderPicklists();"
 								rendered="{!$ObjectType.APTaskTemplate__c.createable}">
 							<apex:outputText value="{!$Label.ap_AddNewTask}"/>
-							<apex:param name="add" value="1" />
 						</apex:commandLink>
 						<div class="slds-scope" >
 							<apex:actionStatus id="taskStatus">

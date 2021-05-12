@@ -578,14 +578,17 @@ public inherited sharing class ActionPlanCreationController{
 
 		Boolean hasNoErrors = true;
 		if( this.apTasks.size() >= ActionPlansConstants.MAX_APTASKS ){
-			errorMsg = System.Label.ap_Errors_TaskLimitError;
+			List<String> parameters = new List<String>();
+			parameters.add(String.valueof(ActionPlansConstants.MAX_APTASKS));
+
+			errorMsg = String.format(System.Label.ap_Errors_TaskLimitError, parameters);
 		}
 		else {
 			APTaskTemplate__c t     = new APTaskTemplate__c();
-			t.Reminder__c             = ActionPlansUtilities.getCheckReminderByDefault();
-			t.Minutes_Reminder__c    = ActionPlansUtilities.getDefaultReminderMinutes();
+			t.Reminder__c           = ActionPlansUtilities.getCheckReminderByDefault();
+			t.Minutes_Reminder__c   = ActionPlansUtilities.getDefaultReminderMinutes();
 			t.Name                  = null;
-			t.TaskIndex__c             = this.taskIndex;
+			t.TaskIndex__c          = this.taskIndex;
 			//t.Action_Plan__c        = this.actionPlan.Id;
 
 			//System.debug('taskIndex ' + t.TaskIndex__c);

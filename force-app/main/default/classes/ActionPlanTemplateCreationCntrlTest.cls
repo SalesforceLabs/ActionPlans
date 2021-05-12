@@ -68,7 +68,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		Test.StartTest();
 
 		aptcc.pendingTemplateDeletes = new List<APTTaskTemplate__c>();
-		aptcc.aptTasks = new List<APTTaskTemplate__c>();
+		//aptcc.aptTasks = new List<APTTaskTemplate__c>();
 		aptcc.pendingTemplateDeletes.add( testutil.createNewActionPlanTemplateTask(apt, 3, tUser, 'Email', 'High') );
 		insert aptcc.pendingTemplateDeletes;
 		aptcc.aptTasks.add( testutil.createNewActionPlanTemplateTask(apt, 3, null, 'Email', 'High') );
@@ -132,6 +132,27 @@ private class ActionPlanTemplateCreationCntrlTest {
 	}
 
 	@IsTest
+	static void checkMaxTasksError(){
+		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
+		Test.StartTest();
+
+		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
+		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( ActionPlansConstants.MAX_APTASKS + 1 );
+
+		//System.currentPageReference().getParameters().put( 'id', apTemplate.Id );
+		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
+		aptcc.getTemplateTasks();
+		System.currentPageReference().getParameters().put( 'add ', '1' );
+		aptcc.addTemplateTask();
+		Test.stopTest();
+		String errorMsg = aptcc.getErrorMsg();
+		System.debug(errorMsg);
+		System.debug(String.valueof(ActionPlansConstants.MAX_APTASKS));
+		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansConstants.MAX_APTASKS)));
+
+	}
+
+	@IsTest
 	private static void testAddTemplateTask(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
 		Test.StartTest();
@@ -141,6 +162,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.currentPageReference().getParameters().put( 'id', apTemplate.Id );
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
+		//aptcc.getTemplateTasks();
 		System.currentPageReference().getParameters().put( 'add ', '1' );
 		aptcc.addTemplateTask();
 
@@ -155,15 +177,15 @@ private class ActionPlanTemplateCreationCntrlTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 3 );
 
-		System.currentPageReference().getParameters().put( 'add', '1') ;
+		//System.currentPageReference().getParameters().put( 'add', '1') ;
 
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController(new ApexPages.StandardController(actionPlanTemplate));
 
-		aptcc.aptTasks = [SELECT a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
+		/* aptcc.aptTasks = [SELECT a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
 		a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c,
 		a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c
 		FROM APTTaskTemplate__c a
-		WHERE a.Action_Plan_Template__c = :actionPlanTemplate.Id];
+		WHERE a.Action_Plan_Template__c = :actionPlanTemplate.Id]; */
 
 		Boolean error = aptcc.addedTask;
 		aptcc.addTemplateTask();
@@ -172,13 +194,9 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		ActionPlanTemplate__c actionPlanTemplate2 = testUtil.createNewActionPlanTemplate( ActionPlansConstants.MAX_APTASKS );
 		aptcc = new ActionPlanTemplateCreationController(new ApexPages.StandardController(actionPlanTemplate2));
-		System.currentPageReference().getParameters().put( 'add', '1') ;
+		//System.currentPageReference().getParameters().put( 'add', '1') ;
 
-		aptcc.aptTasks = [SELECT a.Type__c, a.Subject__c, a.Priority__c, a.Dependent__c, a.Name, a.User__c,
-		a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.Action_Plan_Template__c,
-		a.APTTaskTemplate__r.Subject__c, a.Reminder__c, a.SendEmail__c, a.Comments__c
-		FROM APTTaskTemplate__c a
-		WHERE a.Action_Plan_Template__c = :actionPlanTemplate2.Id];
+		aptcc.getTemplateTasks();
 
 		aptcc.addTemplateTask();
 		error = aptcc.addedTask;
