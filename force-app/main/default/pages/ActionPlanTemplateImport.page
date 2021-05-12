@@ -44,9 +44,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
     <apex:form id="theForm" onSubmit="return fileUpload.verify();">
       <apex:pageBlock id="pageBlock" title="{!$Label.ap_Import}">
           <apex:pageBlockSection id="blockSection" columns="1"  collapsible="false">
-            <b>{!$Label.ap_import_file}</b><br /><br />
+            <b>{!$Label.ap_Import_File}</b><br /><br />
             <apex:inputFile id="fileInput" value="{!attachment.body}" filename="{!attachment.name}" />
-             <br />
+            <br />
             <apex:commandButton id="btnImport" value="{!$Label.ap_Import}" action="{!importTemplate}" />
             <apex:messages id="errorMsg" style="color:white;" />
             <div id="errors" style="color:red;"></div>

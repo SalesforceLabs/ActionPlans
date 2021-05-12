@@ -135,7 +135,7 @@ public inherited sharing class ExportActionPlanTemplate{
 		writeElement( out, 'name', target.name );
 		writeElement( out, 'description', '' + target.Description__c );
 		writeElement( out, 'skipWeekend', '' + String.valueOf( target.SkipWeekends__c ) );
-		writeElement( out, 'skipday', '' + target.SkipDay__c );
+		writeElement( out, 'skipday', '' + (!target.SkipWeekends__c ? 'null' : target.SkipDay__c ));
 
 		out.writeEndElement();
 		out.writeStartElement( null, 'ActionPlanTemplateTasks', null );

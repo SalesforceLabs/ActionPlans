@@ -68,6 +68,7 @@ public inherited sharing class ImportTemplateController{
 			//we initialize again the attachment when an error ocurres to prevent viewstate size errors
 			this.attachment = new Attachment();
 			ApexPages.addMessages( ex );
+			System.debug('ERROR: ' + ex.getMessage());
 		}
 
 		return null;

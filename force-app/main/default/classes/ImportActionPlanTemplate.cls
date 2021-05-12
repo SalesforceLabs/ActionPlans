@@ -86,11 +86,11 @@ public inherited sharing class ImportActionPlanTemplate{
 		try{
 			//Get information for all Tasks
 			this.importAPTtasks( xml, apTemplate.Id );
-			if( this.newTasks.size() > ActionPlansConstants.MAX_APTASKS ){
-				throw new ImportException( 'You cannot import more than 75 tasks, Please review your Template and try again.' );
+			if( this.newTasks.size() > ActionPlansUtilities.MAX_APTASKS ){
+				//throw new ImportException( 'You cannot import more than 75 tasks, Please review your Template and try again.' );
 			}
 			//Insert Tasks for Action Plan template
-			insert newTasks.Values();
+			insert newTasks.values();
 		} catch( Exception ex ){
 			throw new ImportException( System.Label.ap_Errors_ImportingXMLTask );
 		}
@@ -263,7 +263,15 @@ public inherited sharing class ImportActionPlanTemplate{
 			//handle skipday field
 			if( reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'skipday' ){
 				reader.next();
-				apTemplateAux.SkipDay__c = getDecodedString( reader );
+				//apTemplateAux.SkipDay__c = getDecodedString( reader );
+				String sdValue = getDecodedString( reader );
+				if( sdValue == 'null' ){
+					apTemplateAux.SkipDay__c = '';
+				}
+				else {
+					apTemplateAux.SkipDay__c = sdValue;
+				}
+
 			}
 
 			//validate that we're done
@@ -385,7 +393,7 @@ public inherited sharing class ImportActionPlanTemplate{
 		//list for returning updated tasks
 		List<APTTaskTemplate__c> updatedTasks = new List<APTTaskTemplate__c>();
 		//get all old ids as keys from recently imported and inserted tasks
-		Set<Id> keys = this.newTasks.KeySet();
+		Set<Id> keys = this.newTasks.keySet();
 
 		for( Id key : keys ){
 			APTTaskTemplate__c auxNewTask = this.newTasks.get( key );
@@ -393,7 +401,7 @@ public inherited sharing class ImportActionPlanTemplate{
 
 			//checks to see if task has a reference to another task
 			if( auxOldTask.APTTaskTemplate__c != null ){
-				if( String.valueOf( auxOldTask.APTTaskTemplate__c ).Length() != 0 ){
+				if( String.valueOf( auxOldTask.APTTaskTemplate__c ).length() != 0 ){
 					Id auxRefId 				= auxOldTask.APTTaskTemplate__c;
 					//get dependent task
 					APTTaskTemplate__c auxRefTask 	= this.newTasks.get( auxRefId );
@@ -414,6 +422,7 @@ public inherited sharing class ImportActionPlanTemplate{
 	* @return String
 	*/
 	private String getDecodedString( Xmlstreamreader reader ){
+		System.debug(reader.getText());
 		return EncodingUtil.urlDecode( reader.getText(), 'UTF-8' ).trim();
 	}
 
