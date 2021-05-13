@@ -201,17 +201,17 @@
         <value>&lt;li&gt;Days After- This value determines the due date of the task.
 				&lt;ol&gt;
 				&lt;li&gt;For tasks with no dependency, the task’s due date will be offset from the plan start date.&lt;/li&gt;
-				&lt;li&gt; For tasks with a dependency, the due date will be offset from the expected due date of the task on which it depends on.&lt;/li&gt;
+				&lt;li&gt; For tasks with a dependency, the due date will be offset from the expected due date of the task on which it depends.&lt;/li&gt;
 				&lt;/ol&gt; 
 				&lt;/li&gt;
 			&lt;li&gt;
-				Assigned To – Looks up to user. Leave blank if you want to assign the task dynamically. 
+				Assigned To – Looks up to user. Leave blank if you want to assign the task dynamically. &lt;br /&gt;
 				When assigning dynamically, the default behavior will be to assign the task to the running user. 
 				You can also have the system assign it to the record owner by changing your Action Plan Settings. 
 				See &quot;Post Install Configuration&quot; guide above. 
 			&lt;/li&gt;
 			&lt;li&gt;Category - What type of activity.&lt;/li&gt;
-			&lt;li&gt;Priority - Low, medium or high.&lt;/li&gt;
+			&lt;li&gt;Priority - Taken from Task priorities and Record Type (if applicable).&lt;/li&gt;
 			&lt;li&gt;Email - Send a standard New Task email when checked. For Tasks depending on others, the email will be sent when the task is created.&lt;/li&gt;</value>
     </labels>
     <labels>
@@ -231,7 +231,7 @@
 						Go Personal Setup &gt; My Personal Information &gt; Reminders, if the option &quot;By default, set reminder on Tasks to:&quot; is checked then the selected time will be the default option for task template reminders.
 					&lt;/li&gt;
 					&lt;li&gt;User setting for Activity Object : 
-					 Go App Setup&gt; Customize &gt; Activities &gt; Activity Settings, If option &quot;Enable Activity Reminders&quot; is not checked, then reminders column will not be displayed in the Action Plan creation page.
+					 Go App Setup&gt; Feature Settings &gt; Sales &gt; Activity Settings, If &quot;Enable Activity Reminders&quot; is not checked, then reminders column will not be displayed in the Action Plan creation page.
 					&lt;/li&gt;
 				&lt;/ul&gt;
 			&lt;/li&gt;</value>
@@ -544,7 +544,7 @@
         <shortDescription>AboutGettingStartedS1_pt1</shortDescription>
         <value>&lt;ol&gt;
 			&lt;li&gt;Navigate to Setup &gt; Develop &gt; Custom Settings. Click on &apos;Manage&apos; next to &apos;Action Plans Settings&apos;. Click the &apos;New&apos; button near &apos;Default Organizational Level Value&apos;. Check the values that you want to enable.;&lt;/li&gt;	
-			&lt;li&gt;&apos;Enable Chatter Post&apos; places a &apos;[Username] has created an Action Plan&apos; in the related record&apos;s Chatter Feed (if Chatter is enabled for that object). If unchecked, Action Plans does not create a Feed Post.;&lt;/li&gt;
+			&lt;li&gt;&apos;Enable Chatter Post&apos; places a post in the related record&apos;s Chatter Feed (if Chatter is enabled for that object). If unchecked, Action Plans does not create a Feed Post.;&lt;/li&gt;
 			&lt;li&gt;&apos;Unassigned Task Defaults to Record Owner&apos; ensures that Action Plan Template tasks with a blank &apos;Assigned To&apos; field go to the related record&apos;s owner. If unchecked, tasks with a blank &apos;Assigned To&apos; field are assigned to the running user. Tasks can be assigned to specific people on Action Plan Templates, which overrides this setting.&lt;/li&gt;</value>
     </labels>
     <labels>
@@ -563,7 +563,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>AboutGettingStartedS1</shortDescription>
-        <value>Update Your Action Plans Settings</value>
+        <value>Update Action Plans Custom Settings</value>
     </labels>
     <labels>
         <fullName>ap_GettingStarted_section2_sub1P1</fullName>
@@ -626,10 +626,11 @@
         <protected>true</protected>
         <shortDescription>AboutGettingStartedS3</shortDescription>
         <value>&lt;h3&gt;Update Your Sharing Settings&lt;/h3&gt;
-&lt;p&gt;Action Plans includes four objects: Action Plan, Action Plan Template, AP Task and APT Task. You can configure your sharing settings in whatever way works for your organization.&lt;/p&gt;
+&lt;p&gt;Action Plans includes two shareable objects: Action Plan and Action Plan Template. You may configure your sharing settings in whatever way works for your organization.&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;If you want anyone to be able to create and see plans and their templates, use Public Read/Write for Action Plan and Action Plan Template.&lt;/li&gt;
 &lt;li&gt;If you want anyone to be able to see Action Plans and Templates without being able to change them, select &quot;Public Read Only.&quot;&lt;/li&gt;
-&lt;li&gt;If your Org-Wide Default sharing settings are set to Private for Action Plan or Action Plan Template, you may need to implement custom automation to share Action Plan records with the appropriate people. You may do this via Apex sharing or you may write automation to assign ownership of the Action Plan itself to the related record owner.&lt;/li&gt;&lt;/ul&gt;</value>
+&lt;li&gt;If your Org-Wide Default sharing settings are set to Private for Action Plan or Action Plan Template, you may need to implement custom automation to share Action Plan records with the appropriate people. 
+You may do this via Apex sharing, or you may use other automation, to assign ownership of the Action Plan itself to the related record owner or any desired user.&lt;/li&gt;&lt;/ul&gt;</value>
     </labels>
     <labels>
         <fullName>ap_GettingStarted_section4P1</fullName>
@@ -639,6 +640,14 @@
         <shortDescription>AboutGettingStartedS4P1</shortDescription>
         <value>&lt;h2&gt;Security&lt;/h2&gt;</value>
     </labels>
+	<labels>
+		<fullName>ap_Security</fullName>
+		<categories>Action Plans</categories>
+		<language>en_US</language>
+		<protected>true</protected>
+		<shortDescription>Security</shortDescription>
+		<value>Security</value>
+	</labels>
     <labels>
         <fullName>ap_GettingStarted_section4P2</fullName>
         <categories>Action Plans</categories>
@@ -687,7 +696,7 @@
         <protected>true</protected>
         <shortDescription>ImportExport_1</shortDescription>
         <value>&lt;p&gt;Action Plans supports the sharing and discovery of best practices using Template Export and Template Import.&lt;/p&gt;
-			&lt;h2&gt;How to Share Your Template&lt;/h2&gt;
+			&lt;h3&gt;How to Share Your Template&lt;/h3&gt;
 			&lt;p&gt;Export is simple. Navigate to the Template you wish to export. Click on the &quot;Export&quot; button.&lt;/p&gt;</value>
     </labels>
     <labels>
@@ -699,9 +708,17 @@
         <value>&lt;p&gt;Export creates a simple XML file containing template header and task information. It also includes information about who created the template.&lt;br/&gt;
 			Note: It does not include user information or sensitive data about what objects you might use this template with.&lt;/p&gt;
 			&lt;p&gt;Sharing the file is easy. Email the file to whomever you want to share it with.	Do you want to share it with a broader audience? Email the file to Force.com Labs at &lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;. 
-			&lt;h2&gt;Best Practices: How to Import&lt;/h2&gt;
+			&lt;h3&gt;Best Practices: How to Import&lt;/h3&gt;
 			&lt;p&gt;Import is also simple. Navigate to the &quot;Import Template&quot; tab.	Select the file you want to import using &quot;Browse&quot; and once you’ve found it click on &quot;Import Template.&quot;</value>
     </labels>
+	<labels>
+		<fullName>ap_Automation_Title</fullName>
+		<categories>Action Plans</categories>
+		<language>en_US</language>
+		<protected>true</protected>
+		<shortDescription>Automation_Title</shortDescription>
+		<value>Automate Action Plan Creation</value>
+	</labels>
     <labels>
         <fullName>ap_ImportExport_Title</fullName>
         <categories>Action Plans</categories>

@@ -39,18 +39,26 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
     var j$ = jQuery.noConflict();
     j$(document).ready(function () {
 		j$("p").addClass("slds-p-vertical_small");
-		j$("h2").addClass("slds-text-heading_large slds-p-top_medium");
+		j$("fieldset").addClass("slds-card_boundary");
+		j$("legend").addClass("slds-text-heading_large");
 		j$("h3").addClass("slds-text-heading_medium slds-p-top_medium");
 		j$("h4").addClass("slds-text-heading_small slds-p-top_small");
 		j$("ul").addClass("slds-list_dotted");
 		j$("ol").addClass("slds-list_ordered");
 		j$("img").css({"border" : "1px solid #dddbda"});
+		j$(".slds-page-header__name-meta").css("padding-top", "0rem");
     });
 </script>
         <c:APSectionHeader sObjType="ActionPlan__c" title="{!$Label.ap_ActionPlansSetup}" subtitle="{!$ObjectType.ActionPlan__c.labelPlural}" />
 <apex:slds />
 <div class="slds-scope">
-    <div aria-labelledby="boxAbout">
+
+
+
+
+
+
+    <div aria-labelledby="boxAbout" id="about">
 
         <fieldset class="slds-box slds-theme_default slds-container_x-large">
             <legend id="boxAbout" class="slds-text-heading_large">
@@ -64,7 +72,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
         </fieldset>
     </div>
 
-        <div aria-labelledby="boxGettingStarted">
+        <div aria-labelledby="boxGettingStarted" id="gettingstarted">
 
             <fieldset class="slds-box slds-theme_default slds-container_x-large">
                 <legend id="boxGettingStarted" class="slds-text-heading_large">
@@ -82,7 +90,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
                 <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub1P1}" />
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub1P2}" />
                 <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section2_sub2}" />
-                <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}"/>
+				<!-- Security -->
+			</fieldset>
+		</div>
+
+		<div aria-labelledby="boxSecurity" id="security">
+
+			<fieldset class="slds-box slds-theme_default slds-container_x-large">
+				<legend id="boxGettingStarted" class="slds-text-heading_large">
+					 {!$Label.ap_Security}
+				</legend>
+                <!-- <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}"/> -->
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section3}" />
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P2}" />
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P3}" />
@@ -92,7 +110,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
             </fieldset>
         </div>
 
-		<div aria-labelledby="boxCustom">
+		<div aria-labelledby="boxCustom" id="custom">
 			<fieldset class="slds-box slds-theme_default slds-container_x-large">
 				<legend id="boxShare" class="slds-text-heading_large">
 					{!$Label.ap_RelatedObjectTitle}
@@ -103,7 +121,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 			</fieldset>
 		</div>
 
-        <div aria-labelledby="boxTemplate">
+        <div aria-labelledby="boxTemplate" id="template">
 
             <fieldset class="slds-box slds-theme_default slds-container_x-large">
                 <legend id="boxTemplate" class="slds-text-heading_large">
@@ -122,7 +140,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
             </fieldset>
         </div>
 
-        <div aria-labelledby="boxPlan">
+        <div aria-labelledby="boxPlan" id="plan">
 
             <fieldset class="slds-box slds-theme_default slds-container_x-large">
                 <legend id="boxPlan" class="slds-text-heading_large">
@@ -149,11 +167,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
             </fieldset>
         </div>
 
-		<div aria-labelledby="boxInvoke">
+		<div aria-labelledby="boxInvoke" id="invoke">
 
 			<fieldset class="slds-box slds-theme_default slds-container_x-large">
 				<legend id="boxInvoke" class="slds-text-heading_large">
-					Using Invocable Apex
+					 {!$Label.ap_Automation_Title}
 				</legend>
 				<h3>{!$Label.ap_Flow}</h3>
 				<p><apex:outputText escape="false" value="{!$Label.ap_ViaFlow}"/></p>
@@ -163,6 +181,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 				<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'about_images/ProcessBuilder.png')}" />
 				<h3>{!$Label.ap_Apex}</h3>
 				<p><apex:outputText escape="false" value="{!$Label.ap_ViaApex}" /></p>
+				<div class="slds-box slds-box_xx-small">
 				<pre>
 List&lt;ActionPlanCreateInvocable.CreateActionPlanRequest&gt; requests = new List&lt;ActionPlanCreateInvocable.CreateActionPlanRequest&gt;();
 for(Account a : toInsert){
@@ -174,10 +193,11 @@ for(Account a : toInsert){
 }
 List&lt;Id&gt; resultIDs = ActionPlanCreateInvocable.makeActionPlanFromTemplate(requests);
 				</pre>
+				</div>
 			</fieldset>
 		</div>
 
-        <div aria-labelledby="boxShare">
+        <div aria-labelledby="boxShare" id="share">
 
             <fieldset class="slds-box slds-theme_default slds-container_x-large">
                 <legend id="boxShare" class="slds-text-heading_large">
