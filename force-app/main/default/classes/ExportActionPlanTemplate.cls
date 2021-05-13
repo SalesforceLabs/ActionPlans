@@ -159,8 +159,7 @@ public inherited sharing class ExportActionPlanTemplate{
 			writeElement( out, 'priority', '' + currentTask.Priority__c );
 			writeElement( out, 'sendEmail', '' + String.valueOf( currentTask.SendEmail__c ) );
 			writeElement( out, 'reminder', '' + String.valueOf( currentTask.Reminder__c ) );
-			//removed Minutes_Reminder__c field
-			//writeElement( out, 'reminderTime', currentTask.Minutes_Reminder__c );
+			writeElement( out, 'reminderTime', '' + currentTask.Minutes_Reminder__c );
 			writeElement( out, 'comments', '' + currentTask.Comments__c );
 
 			out.writeEndElement();

@@ -42,17 +42,20 @@ public inherited sharing class ActionPlanDetailController{
 
 	private ActionPlan__c            actionPlan;
 	public Boolean                  hasRecordType   { get; set; }
+	public Boolean					canDisplayReminder    { get; private set; }
 
 	/**
 	* Constructor
 	*/
 	public ActionPlanDetailController( ApexPages.StandardController stdController ){
 
-		this.actionPlan = ( ActionPlan__c ) stdController.getRecord();
+		actionPlan = ( ActionPlan__c ) stdController.getRecord();
 
 		System.debug('constructor actionplanId ' + this.actionPlan.Id);
 
-		this.hasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
+		hasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
+
+		canDisplayReminder = ActionPlansUtilities.getCanDisplayReminder();
 	}
 
 	/**

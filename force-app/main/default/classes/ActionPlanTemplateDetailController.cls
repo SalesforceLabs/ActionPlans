@@ -42,6 +42,7 @@ public inherited sharing class ActionPlanTemplateDetailController {
 	@TestVisible private ActionPlanTemplate__c 	actionPlanTemplate;
 	public Id                       actionPlanExportXMLId { get; private set; }
 	public Boolean					taskHasRecordType      { get; set; }
+	public Boolean					canDisplayReminder    { get; private set; }
 
 	/**
 	 * Constructor
@@ -53,6 +54,8 @@ public inherited sharing class ActionPlanTemplateDetailController {
 		actionPlanTemplate = ( ActionPlanTemplate__c ) stdController.getRecord();
 
 		taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
+
+		canDisplayReminder = ActionPlansUtilities.getCanDisplayReminder();
 
 	}
 

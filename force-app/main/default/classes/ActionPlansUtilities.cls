@@ -355,7 +355,7 @@ public inherited sharing class ActionPlansUtilities {
 	*/
 	public static Boolean getCanDisplayReminder(){
 		if(canDisplayReminder == null){
-			System.debug('FIRST get for candisplayreminder');
+			//System.debug('FIRST get for candisplayreminder');
 			//Map<String, Schema.SObjectField> fieldsMap = Schema.sObjectType.User.fields.getMap();
 			/* if( fieldsMap.containsKey('UserPreferencesTaskRemindersCheckboxDefault') ){
 				canDisplayReminder = [SELECT UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1].UserPreferencesTaskRemindersCheckboxDefault;
@@ -377,8 +377,9 @@ public inherited sharing class ActionPlansUtilities {
 		if(checkReminderByDefault == null){
 			checkReminderByDefault = false;
 			if(getCanDisplayReminder()){
-				User u = [SELECT Name, UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
-				checkReminderByDefault = u.UserPreferencesTaskRemindersCheckboxDefault;
+				String reminderQuery = 'SELECT Name, UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1';
+				User u = Database.query(reminderQuery);
+				checkReminderByDefault = (Boolean)u.get('UserPreferencesTaskRemindersCheckboxDefault');
 			}
 		}
 		return checkReminderByDefault;
