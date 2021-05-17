@@ -44,15 +44,12 @@ public inherited sharing class ActionPlansUtilities {
 	*************/
 
 	// Max number of APTasks per Action Plan
-	public static final Integer MAX_APTASKS     = 400;
+	public static final Integer MAX_APTASKS = 400;
 
 	// Max number of Action Plans that can be deleted from list
-	public static final Integer MAX_APTODELETE	= 1000;
-
-    //public static final String DEFAULT_TASK_STATUS = [SELECT MasterLabel FROM TaskStatus WHERE IsDefault = true LIMIT 1].MasterLabel;
+	public static final Integer MAX_APTODELETE = 1000;
 
     public static final Boolean HAS_RECORD_TYPE = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
-
     public static final Id MASTER_RECORD_TYPE_ID = '012000000000000AAA';
 
 	/**
@@ -65,17 +62,10 @@ public inherited sharing class ActionPlansUtilities {
 		if(apCustomRelationshipFields == null){
 			List<String> refrerenceFieldNames = new List<String>();
 
-			//Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
-
-			//Schema.DescribeSObjectResult d = ActionPlan__c.sObjectType.getDescribe();
-
 			Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.ActionPlan__c.fields.getMap();
 
 			for(String s : fieldMap.keyset()){
-				//if(s == 'Action_Plan_Template__c'){continue;}
-				/* if(!gd.containsKey(s) && !gd.containsKey(s.replace('__c',''))){
-					continue;
-				} */
+
 				if(s.containsIgnoreCase('.')){ continue; }
 				Schema.DescribeFieldResult dfr = fieldMap.get(s).getDescribe();
 				Schema.DisplayType dt = dfr.getType();
@@ -92,20 +82,6 @@ public inherited sharing class ActionPlansUtilities {
 		System.debug('Related Fields: ' + apCustomRelationshipFields);
 		return apCustomRelationshipFields;
 	}
-
-	//public static final Boolean HAS_RECORD_TYPE = setHasRecordType();
-
-	/**
-	 * Allows us to force the environment variable checking if Task has a Record Type for testing. Increases code coverage.
-	 */
-	/* private static Boolean setHasRecordType(){
-		if(ActionPlansTestUtilities.forceHasRecordType != null){
-			return ActionPlansTestUtilities.forceHasRecordType;
-		} else {
-			ActionPlansTestUtilities.forceHasRecordType = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
-		}
-		return ActionPlansTestUtilities.forceHasRecordType;
-	} */
 
 	/**
 	* Get prefix of sObject
@@ -355,13 +331,6 @@ public inherited sharing class ActionPlansUtilities {
 	*/
 	public static Boolean getCanDisplayReminder(){
 		if(canDisplayReminder == null){
-			//System.debug('FIRST get for candisplayreminder');
-			//Map<String, Schema.SObjectField> fieldsMap = Schema.sObjectType.User.fields.getMap();
-			/* if( fieldsMap.containsKey('UserPreferencesTaskRemindersCheckboxDefault') ){
-				canDisplayReminder = [SELECT UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1].UserPreferencesTaskRemindersCheckboxDefault;
-			} else {
-				canDisplayReminder = false;
-			} */
 			canDisplayReminder = Schema.sObjectType.User.fields.getMap().containsKey('UserPreferencesTaskRemindersCheckboxDefault');
 		}
 		return canDisplayReminder;
@@ -504,7 +473,6 @@ public inherited sharing class ActionPlansUtilities {
 		System.debug('Task is originally due on a ' + dayName);
 
 		Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
-
 		System.debug('cmdt: ' + cmdt);
 
 		Integer addDays = 0;
