@@ -16,11 +16,11 @@ force-app/main/default/lwc/jsconfig.json
 # Org Metadata
 **quickActions**
 **Custom_Object**
-**/profiles/
+**/profiles
 **/objects/Task/recordTypes
-**/standardValueSets/
-**/Translations/
-**/settings/
+**/standardValueSets
+**/Translations
+**/settings
 **/lwc
 **/objects/Account/Account.object-meta.xml
 **/objects/Account/fields/
@@ -29,6 +29,7 @@ force-app/main/default/lwc/jsconfig.json
 **/objects/Contact/fields/
 **/layouts/Global*
 Admin.profile
+Activities.settings
 *.flow
 *.flowversion
 
