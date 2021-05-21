@@ -96,7 +96,6 @@ public inherited sharing class ActionPlanCreationController{
 
 		this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
 
-		ActionPlansTestUtilities.debugParameters('Creation Controller constructor');
 	}
 
 	/**
@@ -149,9 +148,9 @@ public inherited sharing class ActionPlanCreationController{
 		this.initNewActionPlan();
 		ActionPlanTemplate__c actionPlanTemplate;
 		if(apt == null){
-			List<ActionPlanTemplate__c> listAPT = [SELECT a.Id, a.Name, a.Description__c, a.LastModifiedDate,
-													a.SkipWeekends__c, a.SkipDay__c, TaskRecordTypeID__c FROM ActionPlanTemplate__c a
-													WHERE a.Id = :this.templateId];
+			List<ActionPlanTemplate__c> listAPT = [SELECT Id, Name, Description__c, LastModifiedDate,
+													SkipWeekends__c, SkipDay__c, TaskRecordTypeID__c FROM ActionPlanTemplate__c
+													WHERE Id = :this.templateId];
 			if(!listAPT.isEmpty()){
 				actionPlanTemplate = listAPT.get(0);
 			}
@@ -287,7 +286,7 @@ public inherited sharing class ActionPlanCreationController{
 				deleteApttIds.add(deleteAptt.Id);
 			}
 			//do not delete completed tasks
-			taskToDelete = [SELECT t.Id FROM Task t WHERE t.TaskAPTaskTemplate__c IN :deleteApttIds AND t.IsClosed = false];
+			taskToDelete = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c IN :deleteApttIds AND IsClosed = false];
 			//System.debug('We will delete some open tasks: ' + taskToDelete);
 			delete taskToDelete;
 			delete pendingDeletes;
@@ -364,14 +363,14 @@ public inherited sharing class ActionPlanCreationController{
 
 				//System.debug('checking actionPlan.Id ' + actionPlan.Id);
 				if (actionPlan.Id == null && !this.inVisualforceContext && !System.isFuture() && !System.isBatch()){
-					System.debug('actionPlan.Id is null');
+					//System.debug('actionPlan.Id is null');
 					//System.debug('actionPlan ' + this.actionPlan);
 					//System.debug('apTasksOrg ' + apTasksOrg);
 					//System.debug('objName ' + objName);
 					//System.debug('oIdsList ' + oIdsList);
 					Database.ExecuteBatch( new ActionPlansBatchBuilder(this.actionPlan, this.apTasks, objName, parentIDs) );
 				} else {
-					System.debug('actionPlan.Id is NOT null or we are going synchronous');
+					//System.debug('actionPlan.Id is NOT null or we are going synchronous');
 					//System.debug('actionPlan ' + this.actionPlan);
 					//System.debug('apTasksOrg ' + apTasksOrg);
 					//System.debug('objName ' + objName);
@@ -409,7 +408,7 @@ public inherited sharing class ActionPlanCreationController{
 	*/
 	public PageReference saveMultiple(){
 		//System.debug('in saveMultiple');
-		String oName                    = refType; //ApexPages.currentPage().getParameters().get( 'refType' );
+		String oName                    = refType;
 		String oIds                     = ApexPages.currentPage().getParameters().get( 'refId' );
 		List<ActionPlan__c> apList      = new List<ActionPlan__c>();
 		List<APTaskTemplate__c> aptList = new List<APTaskTemplate__c>();
@@ -500,7 +499,7 @@ public inherited sharing class ActionPlanCreationController{
 	* @return PageReference
 	*/
 	public PageReference cancel(){
-		String objectType   = refType; //ApexPages.currentPage().getParameters().get( 'refType' );
+		String objectType   = refType;
 		String objectIds    = ApexPages.currentPage().getParameters().get( 'refId' );
 		String retURL       = ApexPages.currentPage().getParameters().get( 'retURL' );
 		String paramid      = this.actionPlan.Id != null ? this.actionPlan.Id : ApexPages.currentPage().getParameters().get( 'id' );
@@ -508,7 +507,7 @@ public inherited sharing class ActionPlanCreationController{
 		String aPlanListUrl;
 
 		//ActionPlansTestUtilities.showDebugParameters = true;
-		ActionPlansTestUtilities.debugParameters('Creation Controller cancel');
+		//ActionPlansTestUtilities.debugParameters('Creation Controller cancel');
 
 		// Reference action plan detail page
 		if( paramid != null ){
@@ -559,10 +558,10 @@ public inherited sharing class ActionPlanCreationController{
 	public Integer getCompleted(){
 		if(actionPlan.Id == null){ return 0; }
 
-		List<APTaskTemplate__c> ts = [SELECT t.Id
-			FROM APTaskTemplate__c t
-			WHERE t.Status__c IN :ActionPlansUtilities.getClosedTaskStatuses()
-			AND t.ActivityDate__c != null AND t.Action_Plan__c = :actionPlan.Id];
+		List<APTaskTemplate__c> ts = [SELECT Id
+			FROM APTaskTemplate__c
+			WHERE Status__c IN :ActionPlansUtilities.getClosedTaskStatuses()
+			AND ActivityDate__c != null AND Action_Plan__c = :actionPlan.Id];
 
 		return ( ts != null ) ? ts.size() : 0;
 	}

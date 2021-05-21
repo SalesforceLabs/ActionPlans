@@ -510,7 +510,7 @@ public inherited sharing class ActionPlansTestUtilities{
 	 */
 	public static void debugParameters(String prefix){
 		try{
-			if(showDebugParameters != true || !Test.isRunningTest()){ return; }
+			if(showDebugParameters = false || !Test.isRunningTest()){ return; }
 
 			Map<String, String> pageParams = ApexPages.currentPage().getParameters();
 			for( String s : ApexPages.currentPage().getParameters().keyset() ){

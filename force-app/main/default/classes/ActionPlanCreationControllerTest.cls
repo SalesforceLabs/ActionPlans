@@ -97,7 +97,6 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		ApexPages.currentPage().getParameters().put( 'id', null );
 		ApexPages.currentPage().getParameters().put( 'refId', contact.Id );
-		//ApexPages.currentPage().getParameters().put( 'refType', 'Contact' );
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
 		String refid    = apCreateController.refId;
 		String reftype  = apCreateController.refType;
@@ -264,7 +263,6 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		Test.StartTest();
 
-		//ApexPages.currentPage().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
 
 		Integer numTasksComplete = apCreateController.getCompleted();
@@ -293,7 +291,6 @@ private with sharing class ActionPlanCreationControllerTest {
 		}
 		update apts;
 
-		//ApexPages.currentPage().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
 
 		Integer numTasksComplete = apCreateController.getCompleted();
