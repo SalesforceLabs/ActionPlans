@@ -126,4 +126,33 @@ public inherited sharing class ActionPlanTemplateDetailController {
 		actionPlanExportXMLId = utility.export();
 	}
 
+	public String getSuccessMessage(){
+
+		Boolean isLex = ActionPlansUtilities.getIsLex();
+		String fileLabel = '';
+		String docLabel = '';
+
+		List<Schema.DescribeTabSetResult> tabSetDesc = Schema.describeTabs();
+		for(DescribeTabSetResult tsr : tabSetDesc) {
+			List<Schema.DescribeTabResult> tabDesc = tsr.getTabs();
+			for(Schema.DescribeTabResult tr : tabDesc) {
+				if(tr.getSobjectName() == 'File' && !tr.isCustom()){
+					fileLabel = tr.getLabel();
+				}
+				if(tr.getSobjectName() == 'Document' && !tr.isCustom()){
+					docLabel = tr.getLabel();
+				}
+				if(docLabel != '' && fileLabel != ''){
+					break;
+				}
+			}
+		}
+
+		String destinationName = isLex ? fileLabel : docLabel;
+
+		List<String> parameters = new List<String>();
+		parameters.add(destinationName);
+		return String.format(System.Label.ap_XMLSuccess, parameters);
+	}
+
 }
