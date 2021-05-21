@@ -5,6 +5,7 @@
     <externalId>false</externalId>
     <label>Task Dependency</label>
     <referenceTo>APTTaskTemplate__c</referenceTo>
+    <relationshipLabel>Dependent Tasks</relationshipLabel>
     <relationshipName>Dependent_APT_Tasks</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>
