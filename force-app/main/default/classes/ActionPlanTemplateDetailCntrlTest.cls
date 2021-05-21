@@ -140,6 +140,8 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		System.assert( controller.actionPlanExportXMLId != null );
 
+		System.assertNotEquals(null, controller.getSuccessMessage());
+
 		Test.StopTest();
 	}
 }

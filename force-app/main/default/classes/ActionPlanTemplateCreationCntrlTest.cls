@@ -22,6 +22,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		aptcc.getTaskRTPicklistValues();
 		aptcc.getTaskTypes();
 		aptcc.getTaskPriorities();
+		aptcc.getHoursOption();
 
 		Test.StopTest();
 	}
