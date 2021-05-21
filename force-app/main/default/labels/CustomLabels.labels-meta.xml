@@ -114,6 +114,14 @@
         <value>Are you sure?</value>
     </labels>
     <labels>
+        <fullName>ap_Automation_Title</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Automation_Title</shortDescription>
+        <value>Automate Action Plan Creation</value>
+    </labels>
+    <labels>
         <fullName>ap_BackgroundCreation</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -640,14 +648,6 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <shortDescription>AboutGettingStartedS4P1</shortDescription>
         <value>&lt;h2&gt;Security&lt;/h2&gt;</value>
     </labels>
-	<labels>
-		<fullName>ap_Security</fullName>
-		<categories>Action Plans</categories>
-		<language>en_US</language>
-		<protected>true</protected>
-		<shortDescription>Security</shortDescription>
-		<value>Security</value>
-	</labels>
     <labels>
         <fullName>ap_GettingStarted_section4P2</fullName>
         <categories>Action Plans</categories>
@@ -711,14 +711,6 @@ You may do this via Apex sharing, or you may use other automation, to assign own
 			&lt;h3&gt;Best Practices: How to Import&lt;/h3&gt;
 			&lt;p&gt;Import is also simple. Navigate to the &quot;Import Template&quot; tab.	Select the file you want to import using &quot;Browse&quot; and once you’ve found it click on &quot;Import Template.&quot;</value>
     </labels>
-	<labels>
-		<fullName>ap_Automation_Title</fullName>
-		<categories>Action Plans</categories>
-		<language>en_US</language>
-		<protected>true</protected>
-		<shortDescription>Automation_Title</shortDescription>
-		<value>Automate Action Plan Creation</value>
-	</labels>
     <labels>
         <fullName>ap_ImportExport_Title</fullName>
         <categories>Action Plans</categories>
@@ -922,6 +914,14 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <value>Search</value>
     </labels>
     <labels>
+        <fullName>ap_Security</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Security</shortDescription>
+        <value>Security</value>
+    </labels>
+    <labels>
         <fullName>ap_ShareEmail</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -1024,7 +1024,7 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>XMLSuccess</shortDescription>
-        <value>The XML file for your template has been successfully created, and can be found in your personal folder.</value>
+        <value>The XML file for your template has been successfully created, and can be found in your personal {0} folder.</value>
     </labels>
     <labels>
         <fullName>ap_import_file</fullName>

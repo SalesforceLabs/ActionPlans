@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 			<apex:outputPanel layout="none" rendered="{!NOT(ISNULL(actionPlanExportXMLId))}">
                 <tr>
                     <td>
-						<apex:outputText value="{!$Label.ap_XMLSuccess}" />
+						<apex:outputText value="{!successMessage}" />
 					</td>
                 </tr>
                 <tr>
