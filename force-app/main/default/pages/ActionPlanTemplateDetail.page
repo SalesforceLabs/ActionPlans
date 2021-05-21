@@ -37,10 +37,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/jquery-3.6.0.min.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_Utilities.js')}" />
-	<!-- <apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlans_sortable.js')}" /> -->
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_DisplayScripts.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/jquery.tablesorter.min.js')}" />
-	<!-- <apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_ActionPlanTemplateDetailScripts.js')}" /> -->
 	<script type="text/javascript">
 		var j$ = jQuery.noConflict();
 		j$(document).ready(function () {
@@ -112,7 +110,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.SendEmail__c.label}" value="{!task.SendEmail__c}" />
 				<!-- <apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Reminder__c.label}" value="{!task.Reminder__c}" > -->
 				<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Reminder__c.label}" style="vertical-align: middle;" rendered="{!canDisplayReminder}">
-					<apex:outputPanel layout="block">
+					<apex:outputPanel layout="block" style="vertical-align:middle;">
 						<apex:outputField value="{!task.Reminder__c}" rendered="{!!task.Reminder__c}" />
 						<apex:outputField value="{!task.Time_Reminder__c}" rendered="{!task.Reminder__c}" />
 					</apex:outputPanel>

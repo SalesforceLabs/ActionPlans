@@ -58,16 +58,16 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 
 		if( !closedTasks.isEmpty() ){
 
-			//Mark all APTask as 'Completed'
+			//Mark all APTasks as 'Completed'
 			updateActionPlansTemplateTaskStatus(cTasks);
 
-			//Get all dependent APTask
+			//Get all dependent APTasks
 			List<APTaskTemplate__c> dependentAptts = queryDependentAPTaskTemplates(closedTasks);
 
 			//Create actual Task Map
 			List<APTaskTemplate__c> updList = populateNewTaskMap(dependentAptts);
 
-			//Finaly, Create all New Tasks and Send DMLOption Emails
+			//Finally, create all New Tasks and Send DMLOption Emails
 			List<APTaskTemplate__c> updateApttsList = populateUpdateApttsList(dependentAptts);
 
 			Database.DMLOptions dmlo = new Database.DMLOptions();
@@ -133,10 +133,10 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				auxTask = new Task();
 			}
 
-			auxTask.Subject             = dependentAptt.Subject__c;
-			auxTask.Priority            = dependentAptt.Priority__c;
-			auxTask.OwnerId             = dependentAptt.User__c;
-			auxTask.Type				= dependentAptt.Type__c;
+			auxTask.Subject                 = dependentAptt.Subject__c;
+			auxTask.Priority                = dependentAptt.Priority__c;
+			auxTask.OwnerId                 = dependentAptt.User__c;
+			auxTask.Type                    = dependentAptt.Type__c;
 			auxTask.TaskAPTaskTemplate__c   = dependentAptt.Id;
 			if(ActionPlansUtilities.HAS_RECORD_TYPE){
 				auxTask.put('RecordTypeId', dependentAptt.Task_RecordTypeId__c);
@@ -191,18 +191,15 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
  		Map<Id, APTaskTemplate__c> controllingTasks = new Map<Id, APTaskTemplate__c>([SELECT Id, ActivityDate__c FROM APTaskTemplate__c WHERE Id IN :controllingIDs]);
 
 		Map<Id, Task> taskMap = new Map<Id, Task>();
-		for(Task t : [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c = :dependentApttList]){
+		for(Task t : [SELECT Id, TaskAPTaskTemplate__c FROM Task WHERE TaskAPTaskTemplate__c = :dependentApttList]){
 			taskMap.put(t.TaskAPTaskTemplate__c, t);
 		}
 
 		for( APTaskTemplate__c dependentAptt : dependentApttList ){
-			Task t2;
+			Task t2 = new Task();
 			//Create the new task and template
 			if(taskMap.containsKey(dependentAptt.Id)){
 				t2 = taskMap.get(dependentAptt.Id);
-			}
-			else {
-				t2 = new Task();
 			}
 
 			t2.Subject           = dependentAptt.Subject__c;

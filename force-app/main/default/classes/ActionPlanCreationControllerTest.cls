@@ -238,8 +238,6 @@ private with sharing class ActionPlanCreationControllerTest {
 		System.assertEquals(APTTASKCOUNT, apCreateController.getTasks().size());
 
 		System.assertEquals(CONCOUNT, apCreateController.getNameListSize());
-		System.assert(apCreateController.getOneThirdCutoff() < CONCOUNT/2);
-		System.assert(apCreateController.getTwoThirdsCutoff() > CONCOUNT/2);
 
 		apCreateController.save();
 

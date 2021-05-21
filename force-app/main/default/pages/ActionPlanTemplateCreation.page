@@ -129,7 +129,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<apex:pageBlockSection id="taskSection" columns="1" collapsible="false">
 
 				<apex:outputPanel id="taskList" >
-					<apex:pageBlockTable value="{!TemplateWrappers}" var="wrapTask" id="taskTable" rules="none" style="table-layout: auto;width:100%" styleClass="taskTable" > <!-- columnClasses="first,second,third,fourth,fifth,sixth, seventh, eighth" styleClass="taskTable cardTable noBump pullTable" -->
+					<apex:pageBlockTable value="{!TemplateWrappers}" var="wrapTask" id="taskTable" rules="none" style="table-layout: auto;width:100%" > <!-- columnClasses="first,second,third,fourth,fifth,sixth, seventh, eighth" styleClass="taskTable cardTable noBump pullTable" -->
 						<!--  Tasks delete actions  -->
 						<apex:column style="width:0px;vertical-align:middle;" headerValue="" id="columnOne" rendered="{!TemplateWrappers.size > 1 && $ObjectType.ActionPlanTemplate__c.deletable}">
 
@@ -197,7 +197,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							</apex:pageBlockSectionItem>
 						</apex:column>
 
-						<apex:column styleClass="emailColumn">
+						<apex:column>
 							<apex:facet name="header">
 								{!$ObjectType.APTTaskTemplate__c.fields.SendEmail__c.label} <br/>
 								<a id="all" onclick="javascript:checkEmail(1);" class="all-none">{!$Label.ap_All}</a> |
@@ -223,7 +223,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							</apex:pageBlockSectionItem>
 						</apex:column>
 
-						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Comments__c.label}" styleClass="commentColumn">
+						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Comments__c.label}">
 							<apex:inputField id="commentPanel" styleClass="bd" style="width:250px;display:none;" value="{!wrapTask.task.Comments__c}" />
 							<div style="clear:left">
 							(

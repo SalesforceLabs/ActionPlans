@@ -246,13 +246,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			<!--  Start Related Section -->
 			<apex:pageBlockSection id="RelatedSection" title="{!relatedObjLabelPlural} ({!nameListSize})" columns="3" rendered="{!hasRelated}" collapsible="false">
-				<apex:dataList value="{!relatedObjNameList}" var="objName" first="0" rows="{!oneThirdCutoff}">
+				<apex:dataList value="{!relatedRecordsOne}" var="objName" >
 					<apex:outputText value="{!objName}" />
 				</apex:dataList>
-				<apex:dataList value="{!relatedObjNameList}" var="objName" first="{!oneThirdCutoff}" rows="{!oneThirdCutoff}">
+				<apex:dataList value="{!relatedRecordsTwo}" var="objName" >
 					<apex:outputText value="{!objName}" />
 				</apex:dataList>
-				<apex:dataList value="{!relatedObjNameList}" var="objName" first="{!twoThirdsCutoff}" rows="{!oneThirdCutoff + 1}">
+				<apex:dataList value="{!relatedRecordsThree}" var="objName" >
 					<apex:outputText value="{!objName}" />
 				</apex:dataList>
 			</apex:pageBlockSection>
@@ -339,14 +339,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:pageBlockSectionItem rendered="{!taskHasRecordType}">
 					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.TaskRecordTypeID__c.label}" />
 					<apex:outputPanel styleClass="slds-scope">
+						<apex:actionRegion>
 						<apex:selectList value="{!ActionPlan__c.TaskRecordTypeID__c}" rendered="{!ActionPlan__c.Id == null}"
 								styleclass="slds-input slds-select resize"
 								multiselect="false"
 								size="1"
 								style="font-size:14px;"
 								required="true">
+								<apex:actionSupport event="onchange" reRender="taskSection" />
 							<apex:selectOptions value="{!TaskRTPicklistValues}" />
 						</apex:selectList>
+						</apex:actionRegion>
 						<apex:outputText value="{!recordTypeName}" rendered="{!ActionPlan__c.Id != null}" />
 					</apex:outputPanel>
 				</apex:pageBlockSectionItem>
@@ -365,7 +368,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<apex:pageBlockSection id="taskSection" columns="1" collapsible="false">
 
 				<apex:outputPanel id="taskList" styleClass="slds-scope">
-					<apex:pageBlockTable value="{!Tasks}" var="wrapTask" id="taskTable" styleClass="taskTable" style="table-layout: auto;width:100%" rules="none"> <!-- columnClasses="first,second,third,fourth,fifth,sixth,septh,eight,ninth,tenth" styleClass="taskTable cardTable noBump pullTable" -->
+					<apex:pageBlockTable value="{!Tasks}" var="wrapTask" id="taskTable" style="table-layout: auto;width:100%" rules="none"> <!-- columnClasses="first,second,third,fourth,fifth,sixth,septh,eight,ninth,tenth" styleClass="taskTable cardTable noBump pullTable" -->
 					<!--  Tasks delete actions  -->
 					<apex:column style="width:0px;vertical-align:middle;" headerValue="" id="columnOne" rendered="{!Tasks.size > 1 && $ObjectType.ActionPlan__c.deletable}">
 						<!-- , nameSection, lookupSectionOutPanel, templateLookupSection -->
@@ -399,7 +402,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					</apex:column>
 
 					<!--  Tasks Days After  -->
-					<apex:column style="" styleclass="daysColumn" >
+					<apex:column>
 						<apex:facet name="header">
 							<span>
 								{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}
@@ -413,7 +416,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					</apex:column>
 
 					<!--  Tasks Assigned To  -->
-					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}" style="" styleClass="userColumn">
+					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}">
 						<apex:outputPanel id="userPanel" layout="block" rendered="{!!wrapTask.task.IsClosed__c}">
 							<apex:outputPanel rendered="{!wrapTask.displayLookUp && $ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userLookup">
 								<apex:inputField required="{!wrapTask.userRequired}" value="{!wrapTask.task.User__c}" rendered="{!!lex}" />
@@ -444,7 +447,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					</apex:column>
 
 					<!--  Tasks send Email  -->
-					<apex:column styleClass="emailColumn">
+					<apex:column>
 						<apex:facet name="header">
 							{!$ObjectType.APTaskTemplate__c.fields.SendEmail__c.label} <br/>
 							<a id="all" onclick="javascript:checkEmail(1);" class="all-none">{!$Label.ap_All}</a> |
@@ -453,26 +456,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:inputCheckbox id="sendEmailCheckbox" value="{!wrapTask.task.SendEmail__c}" disabled="{!wrapTask.task.IsClosed__c}" />
 					</apex:column>
 
-					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}">
+					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}"  style="vertical-align:middle;"> <!-- rendered="{!ActionPlan__c.Id != null}" -->
 							<apex:outputField value="{!wrapTask.task.Status__c}" />
 					</apex:column>
 
 					<!--  Tasks reminder settings  -->
-					<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" style="vertical-align: middle;">
+					<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" style="vertical-align:middle;">
 						<apex:facet name="header">{!$ObjectType.APTaskTemplate__c.fields.Reminder__c.label} <br/>
 							<a id="reminderAll" onclick="javascript:checkReminder(1);" class="all-none">{!$Label.ap_All}</a> |
 							<a id="reminderNone" onclick="javascript:checkReminder(0);" class="all-none">{!$Label.ap_None}</a>
 						</apex:facet>
-						<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display: inline-block;vertical-align:middle;"
+						<apex:outputPanel style="vertical-align:middle;">
+							<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left; display:inline-block; vertical-align:middle;"
 								onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');" disabled="{!wrapTask.task.IsClosed__c}" />
 							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" rendered="{!!wrapTask.task.IsClosed__c}">
 								<apex:selectOptions value="{!hoursOption}" />
 							</apex:selectList>
-							<apex:outputText value="{!wrapTask.ReminderTime}" rendered="{!wrapTask.task.IsClosed__c && wrapTask.task.Reminder__c}" />
+							<apex:outputText value="{!wrapTask.task.Time_Reminder__c}" rendered="{!wrapTask.task.IsClosed__c && wrapTask.task.Reminder__c}" />
+						</apex:outputPanel>
 					</apex:column>
 
 					<!--  Tasks comments  -->
-					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}" styleClass="commentColumn" >
+					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}">
 						<apex:outputPanel rendered="{!!wrapTask.task.IsClosed__c}"	>
 							<apex:inputField id="commentPanel" styleClass="bd" style="width:250px;display:none;" value="{!wrapTask.task.Comments__c}" />
 								( <a id="{!wrapTask.position}commentLink" onclick="toggleComments('{!$Component.commentPanel}', '{!$Component.actionLinks}', '{!$Label.ap_Add}', '{!$Label.ap_Edit}','{!$Label.ap_Close}');" style="text-decoration:underline">

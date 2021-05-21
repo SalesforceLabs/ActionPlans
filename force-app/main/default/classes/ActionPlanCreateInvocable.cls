@@ -58,14 +58,16 @@ global inherited sharing class ActionPlanCreateInvocable {
 								FROM ApTasks__r ORDER BY TaskIndex__c ASC)
 							FROM ActionPlanTemplate__c WHERE Name IN :templateNamesOrIDs OR Id IN :templateNamesOrIDs];
 
+		if(possibleTemplates.isEmpty()){
+			return resultIDs;
+		}
+
 		for(ActionPlanTemplate__c apt : possibleTemplates){
 			templateNameOrIdToTemplate.put(apt.Id, apt);
 			templateNameOrIdToTemplate.put(apt.Name, apt);
 		}
 
-		if(templateNameOrIdToTemplate.isEmpty()){
-			return resultIDs;
-		}
+
 
 		Set<Id> relatedIDs = new Set<Id>();
 		Map<Id, SObject> relatedObjects = new Map<Id, SObject>();

@@ -94,7 +94,7 @@ public inherited sharing class ActionPlanCreationController{
 		this.canDisplayReminder    = ActionPlansUtilities.getCanDisplayReminder();
 		this.taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 
-		//this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
+		this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
 
 		ActionPlansTestUtilities.debugParameters('Creation Controller constructor');
 	}
@@ -181,7 +181,6 @@ public inherited sharing class ActionPlanCreationController{
 		this.actionPlan.StartDate__c    = Date.today();
 		this.actionPlan.SkipWeekends__c = false;
 		if(ActionPlansUtilities.HAS_RECORD_TYPE){
-			//System.debug('set default action plan task record type id');
 			this.actionPlan.TaskRecordTypeID__c = getDefaultTaskRecordTypeId();
 		}
 		if( refId != null ){
@@ -591,10 +590,6 @@ public inherited sharing class ActionPlanCreationController{
 			t.TaskIndex__c          = this.taskIndex;
 			//t.Action_Plan__c        = this.actionPlan.Id;
 
-			//System.debug('taskIndex ' + t.TaskIndex__c);
-			//System.debug('t.Priority__c ' + t.Priority__c);
-			//System.debug('apTasks: ' + apTasks);
-
 			// validate user, priority, subject and days before adding another
 			Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 			for( APTaskTemplate__c apt : apTasks ) {
@@ -699,7 +694,7 @@ public inherited sharing class ActionPlanCreationController{
 				userRequired    = tmpAptask.userRequired; // true if not unassigned to record owner
 			}
 
-			ApTaskWrapper apTWrapper = new ApTaskWrapper( apTaskTemplate, i, displayLookup, userRequired, this.actionPlan.TaskRecordTypeID__c );
+			ApTaskWrapper apTWrapper = new ApTaskWrapper( apTaskTemplate, i, displayLookup, userRequired, actionPlan.TaskRecordTypeID__c );
 			tasksList.add( apTWrapper );
 			if ( String.isNotBlank(apTaskTemplate.Id) ){
 				this.mapTasksListBkp.put(apTaskTemplate.Id, apTWrapper);
@@ -711,7 +706,6 @@ public inherited sharing class ActionPlanCreationController{
 			tasksList.get( i - 1 ).isLast = true;
 		}
 
-		//System.debug('tasksList: ' + tasksList);
 		return tasksList;
 	}
 
@@ -771,7 +765,14 @@ public inherited sharing class ActionPlanCreationController{
 					t.DaysFromStart__c      = aptTask.DaysFromStart__c;
 					t.User__c               = userId;
 					t.Reminder__c           = aptTask.Reminder__c;
-					t.Minutes_Reminder__c   = aptTask.Minutes_Reminder__c; //ActionPlansUtilities.getDefaultReminderMinutes();
+
+					if( aptTask.Reminder__c && String.isBlank(aptTask.Minutes_Reminder__c) ){
+						t.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
+					} else if( aptTask.Reminder__c ){
+						t.Minutes_Reminder__c   = aptTask.Minutes_Reminder__c;
+					} else if ( !aptTask.Reminder__c ){
+						t.Minutes_Reminder__c = null;
+					}
 
 					t.SendEmail__c          = aptTask.SendEmail__c;
 					t.Comments__c           = aptTask.Comments__c;
@@ -927,21 +928,38 @@ public inherited sharing class ActionPlanCreationController{
 		get {
 			if(relatedObjNameList == null){
 				relatedObjNameList = new List<String>();
+				relatedRecordsOne = new List<String>();
+				relatedRecordsTwo = new List<String>();
+				relatedRecordsThree = new List<String>();
 			}
 			return relatedObjNameList;
 		}
-		set;
+		set {
+			relatedObjNameList = value;
+			relatedRecordsOne = new List<String>();
+			relatedRecordsTwo = new List<String>();
+			relatedRecordsThree = new List<String>();
+			for(Integer i = 0 ; i < getNameListSize(); i++){
+				if(Math.mod(i,3) == 0) {
+					relatedRecordsOne.add(relatedObjNameList[i]);
+				}
+				else if(Math.mod(i,3) == 1) {
+					relatedRecordsTwo.add(relatedObjNameList[i]);
+				}
+				else if(Math.mod(i,3) == 2) {
+					relatedRecordsThree.add(relatedObjNameList[i]);
+				}
+			}
+		}
 	}
 
 	public Integer getNameListSize(){
 		return relatedObjNameList.size();
 	}
-	public Integer getOneThirdCutoff(){
-		return (Decimal.valueof(getNameListSize()/3)).round(System.RoundingMode.DOWN).intValue();
-	}
-	public Integer getTwoThirdsCutoff(){
-		return (Decimal.valueof(getNameListSize()*2/3)).round(System.RoundingMode.DOWN).intValue();
-	}
+
+	public List<String> relatedRecordsOne { get; private set; }
+	public List<String> relatedRecordsTwo { get; private set; }
+	public List<String> relatedRecordsThree { get; private set; }
 
 	/**
 	* Checks if Action Plan Tasks has cyclic dependency.
@@ -1008,7 +1026,6 @@ public inherited sharing class ActionPlanCreationController{
 					}
 					else {
 						//get Next task in dependency chain
-						//Integer tempIndex     = ;
 						destinyTask         = this.apTasks[ Integer.valueOf( destinyTask.Dependent__c ) ];
 					}
 				}
@@ -1027,7 +1044,7 @@ public inherited sharing class ActionPlanCreationController{
 	* action plans utilities
 	*/
 	public String getErrorMsg(){
-		//System.debug('ERROR MESSAGE: ' + errorMsg);
+		System.debug('ERROR MESSAGE: ' + errorMsg);
 		return errorMsg;
 	}
 
@@ -1042,7 +1059,6 @@ public inherited sharing class ActionPlanCreationController{
 			maxIndex = (Double)arList[0].get('m');
 			maxIndex = (maxIndex == null ? 0 : maxIndex);
 		}
-		//System.debug('maxIndex ' + maxIndex);
 		return maxIndex;
 	}
 
@@ -1057,7 +1073,6 @@ public inherited sharing class ActionPlanCreationController{
 			maxIndex = (Double)arList[0].get('m');
 			maxIndex = (maxIndex == null ? 0 : maxIndex);
 		}
-		//System.debug('maxIndex ' + maxIndex);
 		return maxIndex;
 	}
 
@@ -1186,7 +1201,7 @@ public inherited sharing class ActionPlanCreationController{
 		public  Boolean     displayLookUp   { get; set; }
 		public  Boolean     userRequired    { get; set; }
 
-		public ApTaskWrapper( APTaskTemplate__c apTask, Integer pos, Boolean looKp, Boolean userReq, Id defaultTaskRTId ){
+		public ApTaskWrapper( APTaskTemplate__c apTask, Integer pos, Boolean looKp, Boolean userReq, Id apTaskRTId ){
 			task            = apTask;
 			position        = pos;
 			isLast          = false;
@@ -1195,23 +1210,27 @@ public inherited sharing class ActionPlanCreationController{
 
 			Id taskRTID = null;
 			if(ActionPlansUtilities.HAS_RECORD_TYPE){
-				taskRTID = defaultTaskRTId;
+				if( ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().containsKey(apTaskRTId) ){
+					taskRTID = apTaskRTId;
+				} else {
+					taskRTID = ActionPlansUtilities.getDefaultTaskRecordTypeId();
+				}
 			}
 
 			if(task.Id == null){
-				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
-				task.Status__c = task.Status__c != null ? task.Status__c : ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(defaultTaskRTId);
-				task.Type__c = task.Type__c != null ? task.Type__c : ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
+				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(taskRTID);
+				task.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(taskRTID);
+				task.Type__c = task.Type__c != null ? task.Type__c : ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(taskRTID);
 			}
 		}
 
-		public String getReminderTime(){
+		/* public String getReminderTime(){
 			if( !task.Reminder__c ) { return ''; }
 			String hourVal = Math.mod(Integer.valueof(task.Minutes_Reminder__c)/60 , 12 ) == 0 ? '12' : String.valueof(Math.mod(Integer.valueof(task.Minutes_Reminder__c)/60, 12));
 			String minutesVal = Math.mod(Integer.valueof(task.Minutes_Reminder__c), 60) == 0 ? '00' : String.valueof(Math.mod(Integer.valueof(task.Minutes_Reminder__c), 60));
 			String suffix = Integer.valueof(task.Minutes_Reminder__c) >= 720 ? 'PM' : 'AM';
 			return hourVal + ':' + minutesVal + ' ' + suffix;
-		}
+		} */
 	}
 
 	public class FieldCustomValidationException extends Exception{
@@ -1233,12 +1252,5 @@ public inherited sharing class ActionPlanCreationController{
 			return message;
 		}
 	}
-
-	/**
-	* Pull maximum tasks from javascript to an Apex constant
-	*/
-	/* public Integer getMaxAPTasks(){
-		return ActionPlansUtilities.MAX_APTASKS;
-	} */
 
 }

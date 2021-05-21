@@ -212,7 +212,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 	public static void triggerHandler_ActionPlanTaskTemplate(List<APTaskTemplate__c> newRecords, List<APTaskTemplate__c> oldRecords, Map<Id, APTaskTemplate__c> newRecordsMap, Map<Id, APTaskTemplate__c> oldRecordsMap, System.TriggerOperation triggerEvent){
 
-		System.debug('In APTaskTemplate__c ' + triggerEvent.name());
+		//System.debug('In APTaskTemplate__c ' + triggerEvent.name());
 
 		switch on triggerEvent {
 
@@ -224,7 +224,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 				Set<Id> apIDs = new Set<Id>();
 				String aptPrefix = ActionPlansUtilities.getObjectKeyPrefix('APTaskTemplate__c');
-				//System.debug('aptPrefix ' + aptPrefix);
+
 				for(APTaskTemplate__c apt : newRecords){
 
 					if(oldRecords == null || (apt.Name == null  || apt.Name.startsWithIgnoreCase(aptPrefix) || (oldRecords != null && apt.Subject__c != oldRecordsMap.get(apt.Id).Subject__c)) || !apt.Name.endsWithIgnoreCase(apt.Subject__c) ){
@@ -246,6 +246,14 @@ global inherited sharing class ActionPlansTriggerHandlers {
 							apt.Name = ActionPlansUtilities.actionPlanSubjectToName(newSubject, taskTemplateNameLength);
 							System.debug('renaming aptaskTemplate to ' + newSubject);
 						}
+					}
+				}
+
+				for( APTaskTemplate__c a : newRecords ){
+					if(a.Reminder__c && String.isBlank(a.Minutes_Reminder__c)){
+						a.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
+					} else if( !a.Reminder__c ){
+						a.Minutes_Reminder__c = null;
 					}
 				}
 			}
@@ -333,6 +341,13 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						} else {
 							//System.debug('the task has NO template - figure this out');
 						}
+					}
+				}
+				for( APTTaskTemplate__c a : newRecords ){
+					if(a.Reminder__c && String.isBlank(a.Minutes_Reminder__c)){
+						a.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
+					} else if( !a.Reminder__c ){
+						a.Minutes_Reminder__c = null;
 					}
 				}
 			}

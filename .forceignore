@@ -30,6 +30,7 @@ force-app/main/default/lwc/jsconfig.json
 **/layouts/Global*
 Admin.profile
 Activities.settings
+TaskStatus.standardValueSet
 *.flow
 *.flowversion
 

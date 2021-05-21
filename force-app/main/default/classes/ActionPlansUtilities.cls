@@ -49,8 +49,23 @@ public inherited sharing class ActionPlansUtilities {
 	// Max number of Action Plans that can be deleted from list
 	public static final Integer MAX_APTODELETE = 1000;
 
-    public static final Boolean HAS_RECORD_TYPE = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
+    //public static final Boolean HAS_RECORD_TYPE = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
     public static final Id MASTER_RECORD_TYPE_ID = '012000000000000AAA';
+
+	public static final Boolean HAS_RECORD_TYPE = setHasRecordType();
+
+	/**
+	 * Allows us to force the environment variable checking if Task has a Record Type for testing. Increases code coverage.
+	 */
+	private static Boolean setHasRecordType(){
+		if(ActionPlansTestUtilities.forceHasRecordType != null){
+			return ActionPlansTestUtilities.forceHasRecordType;
+		} else {
+			ActionPlansTestUtilities.forceHasRecordType = Task.sObjectType.getDescribe().fields.getMap().containsKey('recordtypeid');
+		}
+		return ActionPlansTestUtilities.forceHasRecordType;
+	}
+
 
 	/**
 	 * Section to describe ActionPlan object to make custom relationship fields dynamic
@@ -99,7 +114,7 @@ public inherited sharing class ActionPlansUtilities {
 	 */
 	private static List<SObject> getTaskRecordTypes(){
 		if(taskRecordTypes == null){
-			String taskRTQuery = 'SELECT Id, Name FROM RecordType WHERE SObjectType = \'Task\' AND IsActive = true ORDER BY Name ASC';
+			String taskRTQuery = 'SELECT Id, IsActive, Name FROM RecordType WHERE SObjectType = \'Task\' AND IsActive = true ORDER BY Name ASC';
 			taskRecordTypes = Database.query(taskRTQuery);
 		}
 		return taskRecordTypes;
@@ -346,9 +361,10 @@ public inherited sharing class ActionPlansUtilities {
 		if(checkReminderByDefault == null){
 			checkReminderByDefault = false;
 			if(getCanDisplayReminder()){
-				String reminderQuery = 'SELECT Name, UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1';
-				User u = Database.query(reminderQuery);
-				checkReminderByDefault = (Boolean)u.get('UserPreferencesTaskRemindersCheckboxDefault');
+				// ### TODO: Fix this query
+				String reminderQuery = 'SELECT Name, UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = \'' + UserInfo.getUserId() + '\' LIMIT 1';
+				SObject s = Database.query(reminderQuery);
+				checkReminderByDefault = (Boolean)s.get('UserPreferencesTaskRemindersCheckboxDefault');
 			}
 		}
 		return checkReminderByDefault;
