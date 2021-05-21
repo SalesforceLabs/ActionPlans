@@ -1,8 +1,8 @@
 {
 	"orgName": "Action Plans",
 	"edition": "Developer",
-	"country": "US",
-	"language": "en_US",
+	"hasSampleData": true,
+	"description": "Scratch org for Action Plans",
 	"features": ["EnableSetPasswordInApi"],
 	"settings": {
 		"lightningExperienceSettings": {
