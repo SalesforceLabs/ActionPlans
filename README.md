@@ -179,8 +179,18 @@ This repository contains several files that are relevant if you want to add samp
 - (Optional) This repository comes with sample data. To load sample Accounts and Contacts, run the following:
 
     ```
-    sfdx force:data:tree:import -p ./data/data-plan.json
+    sfdx force:data:tree:import -p ./data/action-plan-data-plan.json
     ```
+
+- (Optional) To load a sample Action Plan Template for Account onboarding, run the following:
+	```
+	sfdx force:apex:execute -f ./data/sample-data.apex
+	```
+
+- (Optional but recommended) To load a sample Action Plan Template for use with the included Flow, go to the Import Action Plan Template tab and import the file in the data folder.
+  1. Make sure the Hot Lead Trade Show follow up Flow is active.
+  1. Create a Lead and set Rating to Hot.
+  1. Note the auto-created Action Plan.
 
 - This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
 

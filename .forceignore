@@ -2,6 +2,8 @@
 # More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
 #
 
+# .forceignore v2
+
 package.xml
 
 # LWC configuration files
@@ -31,8 +33,8 @@ force-app/main/default/lwc/jsconfig.json
 Admin.profile
 Activities.settings
 TaskStatus.standardValueSet
-*.flow
-*.flowversion
+Lead-Lead Layout.layout
 
 src
 metadata
+sfdx-out
