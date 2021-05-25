@@ -4,6 +4,8 @@
     <columns>NAME</columns>
     <columns>Description__c</columns>
     <columns>OWNER.ALIAS</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>LAST_UPDATE</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

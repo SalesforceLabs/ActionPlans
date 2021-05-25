@@ -5,6 +5,9 @@
     <columns>Description__c</columns>
     <columns>Action_Plan_Template__c</columns>
     <columns>StartDate__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>LAST_UPDATE</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>
