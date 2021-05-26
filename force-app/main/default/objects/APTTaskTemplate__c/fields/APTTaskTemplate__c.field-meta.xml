@@ -3,7 +3,7 @@
     <fullName>APTTaskTemplate__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <label>Task Dependency</label>
+    <label>Depends On</label>
     <referenceTo>APTTaskTemplate__c</referenceTo>
     <relationshipLabel>Dependent Tasks</relationshipLabel>
     <relationshipName>Dependent_APT_Tasks</relationshipName>
