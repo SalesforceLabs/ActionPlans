@@ -67,8 +67,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 			templateNameOrIdToTemplate.put(apt.Name, apt);
 		}
 
-
-
 		Set<Id> relatedIDs = new Set<Id>();
 		Map<Id, SObject> relatedObjects = new Map<Id, SObject>();
 		String relatedObjectName = requests[0].relatedRecordID.getSObjectType().getDescribe().getName();
@@ -83,7 +81,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 		}
 
 		Map<Id, ActionPlan__c> actionPlansToInsert = new Map<Id, ActionPlan__c>();
-		List<APTaskTemplate__c> aptasksToInsert = new List<APTaskTemplate__c>();
 
 		Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 
@@ -128,6 +125,8 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 		insert actionPlansToInsert.values();
 
+		Map<String, APTaskTemplate__c> planTaskIndexToTask = new Map<String, APTaskTemplate__c>();
+
 		for(CreateActionPlanRequest r : requests){
 
 			ActionPlan__c ap = actionPlansToInsert.get(r.relatedRecordID);
@@ -171,14 +170,14 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 				apTask.Action_Plan__c        = ap.Id;
 
-				if(ActionPlansUtilities.HAS_RECORD_TYPE){
+				//if(ActionPlansUtilities.HAS_RECORD_TYPE){
 					apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
-				} else {
+				/* } else {
 					apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
-				}
+				} */
 
 				if( apTask.Dependent__c != null && apTask.Dependent__c != 'None' ){
-					apTask.APTaskTemplate__c = actionPlanTemplate.apTasks__r[Integer.valueOf( apTask.Dependent__c )].Id;
+					//apTask.APTaskTemplate__c = actionPlanTemplate.apTasks__r[Integer.valueOf( apTask.Dependent__c )].Id;
 					apTask.ActivityDate__c = null;
 				}
 				else {
@@ -199,17 +198,34 @@ global inherited sharing class ActionPlanCreateInvocable {
 						apTask.ActivityDate__c = ap.StartDate__c.addDays( apTask.DaysFromStart__c.intValue() );
 					}
 				}
-				aptasksToInsert.add( apTask );
+				System.debug('Our uniqueID is ' + ap.Id + '' + apTask.TaskIndex__c);
+				planTaskIndexToTask.put(ap.Id + '' + apTask.TaskIndex__c, apTask);
 			}
 		}
-		insert aptasksToInsert;
+		insert planTaskIndexToTask.values();
+
+		// Now we have to update with the controlling/dependent task IDs
+
+		List<APTaskTemplate__c> dependentTasksToUpdate = new List<APTaskTemplate__c>();
+
+		for(APTaskTemplate__c apTask : planTaskIndexToTask.values()){
+			String actionPlanPlusIndex = apTask.Action_Plan__c + '' + apTask.Dependent__c;
+			System.debug('Looking for key ' + actionPlanPlusIndex);
+			if(planTaskIndexToTask.containsKey(actionPlanPlusIndex)){
+				apTask.APTaskTemplate__c = planTaskIndexToTask.get(actionPlanPlusIndex).Id;
+				dependentTasksToUpdate.add(apTask);
+			} else {
+				System.debug('No matching ' + actionPlanPlusIndex);
+			}
+		}
+		update dependentTasksToUpdate;
 
 		Map<Id,Task> mapApTasks              = new Map<Id,Task>();
 		List<Task> myTasksWithOutEmail       = new List<Task>();
 		List<Task>  myNewTasksWithEmail      = new List<Task>();
 
 		Map<Id, APTaskTemplate__c> mapAP = new Map<Id, APTaskTemplate__c>();
-		for(APTaskTemplate__c a : aptasksToInsert){
+		for(APTaskTemplate__c a : planTaskIndexToTask.values()){
 			mapAP.put(a.Id, a);
 		}
 
@@ -218,7 +234,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 			insertedActionPlans.put(ap.Id, ap);
 		}
 
-		for( APTaskTemplate__c apTask : aptasksToInsert ) {
+		for( APTaskTemplate__c apTask : planTaskIndexToTask.values() ) {
 			ActionPlan__c insertedAP;
 			// check if task exists already
 			Task t = new Task();
