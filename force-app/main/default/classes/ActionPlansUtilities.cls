@@ -396,14 +396,17 @@ public inherited sharing class ActionPlansUtilities {
 	* @return cSetting
 	*/
 	public static Action_Plans_Settings__c getCustomSetting(){
-		Action_Plans_Settings__c instance = Action_Plans_Settings__c.getInstance();
-		if(instance == null){
-			instance = new Action_Plans_Settings__c();
+		Action_Plans_Settings__c instance;
+		instance = Action_Plans_Settings__c.getOrgDefaults();
+		if(instance.Id == null){
+			instance = new Action_Plans_Settings__c(SetupOwnerId = UserInfo.getOrganizationId());
 			instance.Action_Plans_Business_Hours_ID__c = [SELECT Id FROM BusinessHours WHERE IsDefault = true].Id;
-
 			upsert instance;
 		}
+
+		instance = Action_Plans_Settings__c.getInstance();
 		return instance;
+
 	}
 
 	/**
