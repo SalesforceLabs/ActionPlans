@@ -407,8 +407,11 @@ public inherited sharing class ActionPlansTestUtilities{
 		List<APTTaskTemplate__c> auxTasks = new List<APTTaskTemplate__c>();
 		//Creates default tasks for Action Plan
 		for( Integer i = 0; i < numTasks; i++ ){
-			auxTasks.add(this.createNewActionPlanTemplateTask( apTemplate, i + 1, null, 'Email', 'High' ));
+			APTTaskTemplate__c a = this.createNewActionPlanTemplateTask( apTemplate, i + 1, null, 'Email', 'High' );
+			a.TaskIndex__c = i;
+			auxTasks.add(a);
 		}
+		// TODO: Add the index of the list to the TaskIndex here?
 
 		try{
 			insert auxTasks;
@@ -438,6 +441,8 @@ public inherited sharing class ActionPlansTestUtilities{
 		newAPTTask.Priority__c 	= priority;
 		newAPTTask.Minutes_Reminder__c = '510';
 		newAPTTask.Comments__c = 'Comment here';
+
+		// ## TODO : Include making some sort of TaskIndex value when making these tasks
 
 		return newAPTTask;
 	}
