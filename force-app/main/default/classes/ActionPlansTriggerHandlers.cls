@@ -568,7 +568,10 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 			when AFTER_UPDATE {
 				List<ActionPlan__c> leadAPs = [SELECT Id, Lead__c, Contact__c, Account__c, Opportunity__c, Description__c FROM ActionPlan__c WHERE Lead__c IN :newRecordsMap.keySet()];
+
 				Map<Id, ActionPlan__c> apMap = new Map<Id, ActionPlan__c>();
+				List<ActionPlan__c> toUpdate = new List<ActionPlan__c>();
+
 				for(ActionPlan__c ap : leadAPs){
 					apMap.put(ap.Lead__c, ap);
 				}
@@ -583,21 +586,25 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 
 				for(Lead l : newRecords){
-					ActionPlan__c ap = apMap.get(l.Id);
+					if(l.IsConverted && !oldRecordsMap.get(l.Id).IsConverted){
+						ActionPlan__c ap = apMap.get(l.Id);
 
-					switch on destinationObject {
-						when 'account' {
-							ap.Account__c = l.ConvertedAccountId;
+						switch on destinationObject {
+							when 'account' {
+								ap.Account__c = l.ConvertedAccountId;
+							}
+							when 'opportunity' {
+								ap.Opportunity__c = l.ConvertedOpportunityId;
+							} when else {
+								ap.Contact__c = l.ConvertedContactId;
+							}
 						}
-						when 'opportunity' {
-							ap.Opportunity__c = l.ConvertedOpportunityId;
-						} when else {
-							ap.Contact__c = l.ConvertedContactId;
-						}
+						ap.Lead__c = null;
+						toUpdate.add(ap);
 					}
-					ap.Lead__c = null;
 				}
-				update apMap.values();
+				//update apMap.values();
+				update toUpdate;
 			}
 		}
 	}
