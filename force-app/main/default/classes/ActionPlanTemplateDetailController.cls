@@ -100,7 +100,7 @@ public inherited sharing class ActionPlanTemplateDetailController {
 							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
 							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
 							 FROM APTTaskTemplate__c
-							 WHERE Action_Plan_Template__c = :actionPlanTemplate.Id  ORDER BY TaskIndex__c ASC];
+							 WHERE Action_Plan_Template__c = :actionPlanTemplate.Id  ORDER BY TaskIndex__c ASC NULLS FIRST];
 	}
 
 	/**

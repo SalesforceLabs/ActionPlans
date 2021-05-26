@@ -220,6 +220,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 
 				errorMsg = String.format(System.Label.ap_Errors_TaskLimitError, parameters);
 				//this.errorMsg = System.Label.ap_Errors_TaskLimitError;
+				return null;
 			}
 			else {
 				APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
@@ -312,7 +313,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	}
 
 	/**
-	 * Call method getTemplateTasks()
+	 * Iterate over aptTasks
 	 */
 	public List<ApTTaskWrapper> getTemplateWrappers(){
 
@@ -320,7 +321,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		List<ApTTaskWrapper> tasksList = new List<ApTTaskWrapper>();
 
 		Integer i = 0;
-		for( APTTaskTemplate__c aptTaskTemplate : getTemplateTasks() ){
+		for( APTTaskTemplate__c aptTaskTemplate : aptTasks ){ //getTemplateTasks() ){
 			System.debug('adding the ' + i + ' template for display');
 			ApTTaskWrapper = new ApTTaskWrapper( aptTaskTemplate, i , this.actionPlanTemplate.TaskRecordTypeID__c);
 			tasksList.add( ApTTaskWrapper );
@@ -334,9 +335,11 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		return tasksList;
 	}
 
-		public List<APTTaskTemplate__c> aptTasks {
+	@TestVisible
+	private List<APTTaskTemplate__c> aptTasks {
 		get {
 			if( aptTasks == null){
+				aptTasks = new List<APTTaskTemplate__c>();
 				aptTasks = getTemplateTasks();
 			}
 			return aptTasks;
@@ -350,38 +353,48 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	*/
 	public List<APTTaskTemplate__c> getTemplateTasks(){
 
-		Id tempApId = actionPlanTemplate.Id;
+		if( aptTasks.size() == 0 ){
 
-		if( tempApId != null ) {
-			aptTasks = [SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Minutes_Reminder__c,
-							User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
-							APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
-							FROM APTTaskTemplate__c
-							WHERE Action_Plan_Template__c = :tempApId  ORDER BY TaskIndex__c ASC];
-		}
-		else {
-			aptTasks 				= new List<APTTaskTemplate__c>();
-			APTTaskTemplate__c t    = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
-			t.Reminder__c	 		= false;
-			t.Priority__c           = (String)Task.Priority.getDescribe().getDefaultValue();
-			aptTasks.add( t );
-		}
+			if( actionPlanTemplate.Id != null ) {
+				aptTasks = [SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Minutes_Reminder__c,
+							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
+							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
+							 FROM APTTaskTemplate__c
+							 WHERE Action_Plan_Template__c = :actionPlanTemplate.Id  ORDER BY TaskIndex__c ASC];
+			}
+			else {
+				aptTasks 				= new List<APTTaskTemplate__c>();
+				APTTaskTemplate__c t    = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
+				t.Reminder__c           = false;
+				t.Priority__c           = (String)Task.Priority.getDescribe().getDefaultValue();
+				aptTasks.add( t );
+			}
 
-		// clone and clear ids
-		if( ApexPages.currentPage().getParameters().get( 'clone' ) == '1' ){
-			List<APTTaskTemplate__c> tC = aptTasks.deepClone( false );
-			aptTasks.clear();
-			aptTasks = tC;
+			// clone and clear ids
+			if( ApexPages.currentPage().getParameters().get( 'clone' ) == '1' ){
+				List<APTTaskTemplate__c> tC = aptTasks.deepClone( false );
+				aptTasks.clear();
+				aptTasks = tC;
 
-			// clear lookup relationship also
-			for( APTTaskTemplate__c t : aptTasks ){
-				if( t.Action_Plan_Template__c != null ){
-						t.Action_Plan_Template__c = null;
+				// clear lookup relationship also
+				for( APTTaskTemplate__c t : aptTasks ){
+					if( t.Action_Plan_Template__c != null ){
+						 t.Action_Plan_Template__c = null;
+					}
 				}
 			}
+
+			if(aptTasks.isEmpty()){
+				APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
+				t.Reminder__c	 		= false;
+				t.Priority__c           = (String)Task.Priority.getDescribe().getDefaultValue();
+				aptTasks.add( t );
+			}
+			System.debug('aptTasks size = ' + aptTasks.size());
+
 		}
 
-		return ( aptTasks.isEmpty() ) ? new List<APTTaskTemplate__c>() : aptTasks ;
+		return aptTasks;
 	}
 
 	/**
@@ -421,6 +434,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			return null;
 		}
 		else {
+			//System.debug('successful check - time to save');
 			return this.saveTemplate();
 		}
 	}
@@ -442,14 +456,17 @@ public inherited sharing class ActionPlanTemplateCreationController{
 
 				//task can not depend on themselves
 				if( Integer.valueOf( t.Dependent__c ) == index){
+					System.debug('self-dependency error');
 					this.errorMsg = System.Label.ap_ItselfDependencyError;
 					return true;
 				}
 
 				if( this.dependantCycle( t, link, index ) ){
+					System.debug('cyclic-dependency error');
 					this.errorMsg = System.Label.ap_Errors_RemoveCyclicDependency;
 					return true;
 				}
+				System.debug('No Cyclic Dependencies');
 			}
 			index++;
 		}

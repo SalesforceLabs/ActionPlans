@@ -59,7 +59,7 @@ public inherited sharing class ActionPlanCreationController{
 	public List<APTaskTemplate__c>  apTasks;
 	public List<APTaskTemplate__c>  apTasksOrg ;
 	public List<APTaskTemplate__c>  pendingDeletes;
-	public List<APTTaskTemplate__c> aptTasks;
+	@TestVisible private List<APTTaskTemplate__c> aptTasks;
 	private String                   cloneParam = '0';
 	public Boolean inVisualforceContext = false;
 
@@ -95,7 +95,6 @@ public inherited sharing class ActionPlanCreationController{
 		this.taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 
 		this.relatedFieldName = getRelatedObjectOptions()[0].getValue();
-
 	}
 
 	/**
@@ -667,11 +666,16 @@ public inherited sharing class ActionPlanCreationController{
 
 		List<ApTaskWrapper> tasksList = new List<ApTaskWrapper>();
 
-		ApTaskWrapper tmpAptask;
+		//ApTaskWrapper tmpAptask;
+
+		Action_Plans_Settings__c mySettings = Action_Plans_Settings__c.getInstance();
 
 		Integer i = 0;
 		for( APTaskTemplate__c apTaskTemplate : this.getAPTasks() ){
+			ApTaskWrapper tmpAptask;
+
 			//check if the lookUp has to be shown
+
 			if (apTaskTemplate.Id != null){
 				tmpAptask = this.mapTasksListBkp.get(apTaskTemplate.Id);
 			}
@@ -679,7 +683,6 @@ public inherited sharing class ActionPlanCreationController{
 			Boolean userRequired  = false;
 			Boolean displayLookUp = false;
 
-			Action_Plans_Settings__c mySettings = Action_Plans_Settings__c.getInstance();
 			// User is Required if the task id is null and we don't give unassigned to record owner
 			// We always display the lookup because we never FORCE the task to be assigned to the record owner
 
@@ -927,14 +930,18 @@ public inherited sharing class ActionPlanCreationController{
 		get {
 			if(relatedObjNameList == null){
 				relatedObjNameList = new List<String>();
-				relatedRecordsOne = new List<String>();
+				/* relatedRecordsOne = new List<String>();
 				relatedRecordsTwo = new List<String>();
-				relatedRecordsThree = new List<String>();
+				relatedRecordsThree = new List<String>(); */
 			}
+			/* relatedRecordsOne.sort();
+			relatedRecordsTwo.sort();
+			relatedRecordsThree.sort(); */
 			return relatedObjNameList;
 		}
 		set {
 			relatedObjNameList = value;
+			relatedObjNameList.sort();
 			relatedRecordsOne = new List<String>();
 			relatedRecordsTwo = new List<String>();
 			relatedRecordsThree = new List<String>();
@@ -1195,10 +1202,10 @@ public inherited sharing class ActionPlanCreationController{
 	public class ApTaskWrapper{
 
 		public APTaskTemplate__c task       { get; set; }
-		public  Integer     position        { get; set; }
-		public  Boolean     isLast          { get; set; }
-		public  Boolean     displayLookUp   { get; set; }
-		public  Boolean     userRequired    { get; set; }
+		public Integer     position        { get; set; }
+		public Boolean     isLast          { get; set; }
+		public Boolean     displayLookUp   { get; set; }
+		public Boolean     userRequired    { get; set; }
 
 		public ApTaskWrapper( APTaskTemplate__c apTask, Integer pos, Boolean looKp, Boolean userReq, Id apTaskRTId ){
 			task            = apTask;
