@@ -52,12 +52,13 @@ $RECYCLE.BIN/
 **/listViews/**
 
 # temporary files
+**/layouts/Contact*
+**/layouts/Global*
+**/layouts/Lead*
 **/objects/Account/Account.object-meta.xml
 **/objects/Account/fields/
-**/objects/Contact/fields/
 **/objects/Account/listViews/
-**/objects/Contact/listViews/
+**/objects/Activity/Activity.object-meta.xml
 **/objects/Contact/Contact.object-meta.xml
-**/layouts/Contact*
-**/layouts/Lead*
-**/layouts/Global*
+**/objects/Contact/fields/
+**/objects/Contact/listViews/
