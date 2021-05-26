@@ -74,11 +74,20 @@ global inherited sharing class ActionPlanCreateInvocable {
 			relatedIDs.add(r.relatedRecordID);
 		}
 
-		String objNameQuery = 'SELECT Id, Name FROM ' + relatedObjectName + ' WHERE Id IN :relatedIDs';
+		/* String nameField = 'Name';
+		if(relatedObjectName.equalsIgnoreCase('Case')){
+			nameField = 'CaseNumber';
+		}
+		else if(relatedObjectName.equalsIgnoreCase('Contract')){
+			nameField = 'ContractNumber';
+		}
+
+
+		String objNameQuery = 'SELECT Id, ' + nameField +' FROM ' + relatedObjectName + ' WHERE Id IN :relatedIDs';
 
 		for(SObject sobj : Database.query(objNameQuery)){
 			relatedObjects.put((Id)sobj.get('Id'), sobj);
-		}
+		} */
 
 		Map<Id, ActionPlan__c> actionPlansToInsert = new Map<Id, ActionPlan__c>();
 
