@@ -74,21 +74,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 			relatedIDs.add(r.relatedRecordID);
 		}
 
-		/* String nameField = 'Name';
-		if(relatedObjectName.equalsIgnoreCase('Case')){
-			nameField = 'CaseNumber';
-		}
-		else if(relatedObjectName.equalsIgnoreCase('Contract')){
-			nameField = 'ContractNumber';
-		}
-
-
-		String objNameQuery = 'SELECT Id, ' + nameField +' FROM ' + relatedObjectName + ' WHERE Id IN :relatedIDs';
-
-		for(SObject sobj : Database.query(objNameQuery)){
-			relatedObjects.put((Id)sobj.get('Id'), sobj);
-		} */
-
 		Map<Id, ActionPlan__c> actionPlansToInsert = new Map<Id, ActionPlan__c>();
 
 		Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
@@ -186,7 +171,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 				} */
 
 				if( apTask.Dependent__c != null && apTask.Dependent__c != 'None' ){
-					//apTask.APTaskTemplate__c = actionPlanTemplate.apTasks__r[Integer.valueOf( apTask.Dependent__c )].Id;
 					apTask.ActivityDate__c = null;
 				}
 				else {
@@ -336,8 +320,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 		for(CreateActionPlanRequest request : requests){
 			resultIDs.add(actionPlansToInsert.get(request.relatedRecordID).Id);
 		}
-
-		//System.debug('RETURNING RESULT IDs COUNT ' + resultIDs.size());
 
 		return resultIDs;
 	}

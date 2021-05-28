@@ -83,7 +83,7 @@ public inherited sharing class ActionPlanCreationController{
 
 		this.templateId         = ApexPages.currentPage().getParameters().get( 'templateId' );
 		this.refId              = ApexPages.currentPage().getParameters().get( 'refId' );
-		//System.debug('refId ' + refId);
+
 		this.refType            = ApexPages.currentPage().getParameters().get( 'refType' );
 
 		if ( cloneParam == '1' )                                            {initCloneActionPlan();}
@@ -206,8 +206,6 @@ public inherited sharing class ActionPlanCreationController{
 			Schema.SObjectType sot = dfr.getReferenceTo()[0];
 			Schema.DescribeSObjectResult dsr = sot.getDescribe();
 			this.relatedObjectName = dsr.getName();
-
-			//System.debug('Setting object name ' + dsr.getName() + ' from field ' + relatedFieldName);
 		}
 	}
 
@@ -286,7 +284,7 @@ public inherited sharing class ActionPlanCreationController{
 			}
 			//do not delete completed tasks
 			taskToDelete = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c IN :deleteApttIds AND IsClosed = false];
-			//System.debug('We will delete some open tasks: ' + taskToDelete);
+
 			delete taskToDelete;
 			delete pendingDeletes;
 		}
@@ -305,13 +303,10 @@ public inherited sharing class ActionPlanCreationController{
 
 		try{
 			if( !this.checkCycleDependent() ){
-				//System.debug('cycle dependence check is negative');
 				pageRef = this.saveHandler();
-				//System.debug('intended pageRef ' + pageRef);
 			}
 		}
 		catch( Exception e ){
-			//System.debug('caught save exception 1 ' + e.getMessage());
 			Apexpages.addMessages( e );
 			if(Test.isRunningTest()){
 				throw e;
@@ -360,26 +355,13 @@ public inherited sharing class ActionPlanCreationController{
 				this.apTasksOrg = new List<APTaskTemplate__c>();
 				this.apTasksOrg.addAll( this.apTasks );
 
-				//System.debug('checking actionPlan.Id ' + actionPlan.Id);
 				if (actionPlan.Id == null && !this.inVisualforceContext && !System.isFuture() && !System.isBatch()){
-					//System.debug('actionPlan.Id is null');
-					//System.debug('actionPlan ' + this.actionPlan);
-					//System.debug('apTasksOrg ' + apTasksOrg);
-					//System.debug('objName ' + objName);
-					//System.debug('oIdsList ' + oIdsList);
 					Database.ExecuteBatch( new ActionPlansBatchBuilder(this.actionPlan, this.apTasks, objName, parentIDs) );
 				} else {
-					//System.debug('actionPlan.Id is NOT null or we are going synchronous');
-					//System.debug('actionPlan ' + this.actionPlan);
-					//System.debug('apTasksOrg ' + apTasksOrg);
-					//System.debug('objName ' + objName);
-					//System.debug('oIdsList ' + oIdsList);
-					//System.debug('apTasks ' + apTasks);
 					ActionPlansBatchBuilderUtilities taskBatch = new ActionPlansBatchBuilderUtilities(this.actionPlan, this.apTasks, objName, parentIDs);
 					actionPlanId = taskBatch.generateActionPlans();
 				}
 			} catch( Exception e ){
-				//System.debug('saveAP Exception ' + e.getMessage());
 				Database.rollback( sp );
 				throw e;
 			}
@@ -406,7 +388,6 @@ public inherited sharing class ActionPlanCreationController{
 	* @return Pagereference
 	*/
 	public PageReference saveMultiple(){
-		//System.debug('in saveMultiple');
 		String oName                    = refType;
 		String oIds                     = ApexPages.currentPage().getParameters().get( 'refId' );
 		List<ActionPlan__c> apList      = new List<ActionPlan__c>();
@@ -429,7 +410,6 @@ public inherited sharing class ActionPlanCreationController{
 			}
 		}
 
-		//PageReference newPage = new PageReference( '/' + ActionPlansUtilities.getObjectKeyPrefix( oName ) + '/o' );
 		PageReference newPage = Page.ActionPlansHome;
 		String confirmation = oIdsList.size() + ' ' + ActionPlan__c.sObjectType.getDescribe().getLabelPlural() + ' ' + System.Label.ap_Created + ' ' + System.Label.ap_ConfirmationofCreation;
 		newPage.getParameters().put('message', confirmation);
@@ -450,11 +430,9 @@ public inherited sharing class ActionPlanCreationController{
 
 		if( oIds != null ){
 			oIdsList = oIds.split(',');
-			//System.debug('oids: ' + oIdsList);
 			return  ( oIdsList.size() > 1 ) ? this.saveMultiple() : this.savePageRef();
 		}
 		else {
-			//System.debug('in saveHandler_else');
 			return this.savePageRef();
 		}
 	}
@@ -505,9 +483,6 @@ public inherited sharing class ActionPlanCreationController{
 		String pageRef;
 		String aPlanListUrl;
 
-		//ActionPlansTestUtilities.showDebugParameters = true;
-		//ActionPlansTestUtilities.debugParameters('Creation Controller cancel');
-
 		// Reference action plan detail page
 		if( paramid != null ){
 			PageReference cancelPage = Page.ActionPlanDetail;
@@ -519,7 +494,6 @@ public inherited sharing class ActionPlanCreationController{
 
 		// Reference action plans template
 		else if( this.templateId != null ){
-			//aPlanListUrl = Schema.ActionPlanTemplate__c.sObjectType.getDescribe().getKeyPrefix();
 			pageRef = '/' + this.templateId;
 		}
 		else if( objectType != null && objectIds != null ){
@@ -569,8 +543,6 @@ public inherited sharing class ActionPlanCreationController{
 	* Creates a blank APTaskTemplate__c object and adds it to List<APTaskTemplate__c>
 	*/
 	public void addTask(){
-		//System.debug('Existing tasks: ' + this.apTasks);
-		//System.debug('existing taskIndex ' + this.taskIndex);
 		this.taskIndex++;
 
 		Boolean hasNoErrors = true;
@@ -586,17 +558,13 @@ public inherited sharing class ActionPlanCreationController{
 			t.Minutes_Reminder__c   = ActionPlansUtilities.getDefaultReminderMinutes();
 			t.Name                  = null;
 			t.TaskIndex__c          = this.taskIndex;
-			//t.Action_Plan__c        = this.actionPlan.Id;
 
 			// validate user, priority, subject and days before adding another
 			Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 			for( APTaskTemplate__c apt : apTasks ) {
 
-				//System.debug('apt.User: ' + apt.User__c);
-				//System.debug('taskDefault: ' + mySettings.Unassigned_Task_Default__c);
-				//System.debug('Subject: ' + apt.Subject__c);
 				hasNoErrors = ( ( apt.User__c != null || mySettings.Unassigned_Task_Default__c ) && apt.Subject__c != null );
-				//System.debug('do we have NO errors? ' + hasNoErrors);
+
 				apt.DaysFromStart__c     = ( apt.DaysFromStart__c < 0 ) ? 0 : apt.DaysFromStart__c;
 			}
 			if( hasNoErrors ){
@@ -607,7 +575,6 @@ public inherited sharing class ActionPlanCreationController{
 
 		this.addedTask = hasNoErrors;
 
-		//System.debug('New list of tasks: ' + this.apTasks);
 	}
 
 	/**
@@ -666,8 +633,6 @@ public inherited sharing class ActionPlanCreationController{
 
 		List<ApTaskWrapper> tasksList = new List<ApTaskWrapper>();
 
-		//ApTaskWrapper tmpAptask;
-
 		Action_Plans_Settings__c mySettings = Action_Plans_Settings__c.getInstance();
 
 		Integer i = 0;
@@ -716,15 +681,12 @@ public inherited sharing class ActionPlanCreationController{
 	* @return apTasks
 	*/
 	public List<APTaskTemplate__c> getAPTasks(){
-		//System.debug('in creationcontroller.getAPTasks');
 
 		if( this.apTasks == null || this.apTasks.size() == 0 ) {
 
 			if(templateId != null){
-				//System.debug('Template provided by variable');
 			} else if( ApexPages.currentPage().getParameters().get( 'templateId' ) != null ){
 				templateId = ApexPages.currentPage().getParameters().get( 'templateId' );
-				//System.debug('pulled template from page parameters ' + templateId);
 			}
 
 			if( templateId != null ){
@@ -743,7 +705,7 @@ public inherited sharing class ActionPlanCreationController{
 					//Read the Custom Settings in order to asign the User to that Task
 					if( aptTask.User__c != null ) {
 						userId = aptTask.User__c ;
-						//System.debug('USER WAS ALREADY FILLED!');
+						//System.debug('USER WAS ALREADY FILLED');
 					}
 					else if( aptTask.User__c == null && ( mySettings != null && !mySettings.Unassigned_Task_Default__c ) ) {
 						userId = UserInfo.getUserId();
@@ -781,7 +743,6 @@ public inherited sharing class ActionPlanCreationController{
 					this.apTasks.add( t );
 				}
 			} else if( actionPlan.Id != null ){
-				//System.debug('paramId != null');
 				this.apTasks = retrieveTaskFromExistingActionPlan( actionPlan.Id );
 				//check reminders and set 'send email' as false
 				String tmp_reminderDefaultTime = ActionPlansUtilities.getDefaultReminderMinutes();
@@ -793,7 +754,6 @@ public inherited sharing class ActionPlanCreationController{
 				}
 			}
 			else {
-				//System.debug('getTasks.else');
 				this.apTasks             = new List<APTaskTemplate__c>();
 				APTaskTemplate__c t      = new APTaskTemplate__c();
 				t.Reminder__c            = ActionPlansUtilities.getCheckReminderByDefault();
@@ -893,7 +853,6 @@ public inherited sharing class ActionPlanCreationController{
 		List<String> nameList = new List<String>();
 
 		String objectlower = relatedObjectName.toLowerCase();
-		//System.debug('related object name is ' + objectlower);
 
 		Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
 		Schema.SObjectType sot = gd.get(objectlower);
@@ -913,7 +872,7 @@ public inherited sharing class ActionPlanCreationController{
 			}
 			when else {
 					String relNameQuery = 'SELECT Id, Name FROM ' + relatedObjectName + ' WHERE Id IN :relatedObjIds';
-					//System.debug('relNameQuery ' + relNameQuery);
+
 					for(SObject so : Database.query(relNameQuery)){
 						nameList.add( (String)so.get('Name') );
 					}
@@ -924,19 +883,11 @@ public inherited sharing class ActionPlanCreationController{
 
 	private Map<Id, String> relatedObjectNameMap = new Map<Id, String>();
 
-	//public List<String> relatedObjNameList      { get; set; }
-
 	public List<String> relatedObjNameList {
 		get {
 			if(relatedObjNameList == null){
 				relatedObjNameList = new List<String>();
-				/* relatedRecordsOne = new List<String>();
-				relatedRecordsTwo = new List<String>();
-				relatedRecordsThree = new List<String>(); */
 			}
-			/* relatedRecordsOne.sort();
-			relatedRecordsTwo.sort();
-			relatedRecordsThree.sort(); */
 			return relatedObjNameList;
 		}
 		set {
@@ -1243,9 +1194,6 @@ public inherited sharing class ActionPlanCreationController{
 
 		private DmlException dmlException;
 
-		/**
-		* Constructor
-		*/
 		public FieldCustomValidationException( DmlException e ){
 
 			this.dmlException = e;
