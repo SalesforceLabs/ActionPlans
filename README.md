@@ -8,7 +8,7 @@
 
 -   [Installing the App using a Sandbox with source tracking (Developer/Developer Pro Sanbox)](#installing-the-app-using-a-sandbox-with-source-tracking-developerdeveloper-pro-sanbox): For testing prior to installing/updating in your Production environment
 
--   [Installing the app using a Developer Edition Org or a Trailhead Playground](#installing-the-app-using-a-developer-edition-org-or-a-trailhead-playground): Useful when tackling Trailhead Badges or if you want the app deployed to a more permanent environment than a Scratch org.
+-   [Installing the app using a Developer Edition Org or a Trailhead Playground](#installing-the-app-using-a-developer-edition-org-or-a-trailhead-playground): Useful when tackling Trailhead Badges or if you want the app deployed to a more permanent environment than a scratch org.
 
 -   [Optional installation instructions](#optional-installation-instructions)
 
@@ -176,27 +176,32 @@ This repository contains several files that are relevant if you want to add samp
 
 ### Data Import
 
-- (Optional) This repository creates sample data in the scratch org. To prevent this, go to [scratch org definition](https://github.com/dschach/ActionPlans/blob/main/config/project-scratch-def.json) and change `hasSampleData` to `false`.
+- (Optional) This repository creates sample data (Accounts, Contacts, Leads) in the scratch org. To prevent this, go to the [scratch org definition](https://github.com/dschach/ActionPlans/blob/main/config/project-scratch-def.json) and change `hasSampleData` to `false`.
     ```
 	"hasSampleData": false,
 	```
-	You can create other sample Account and Contact records by running the following command:
+	You can also create other sample Account and Contact records by running the following command:
 
     ```
     sfdx force:data:tree:import -p ./data/action-plan-data-plan.json
     ```
 
-- (Optional) To load a sample Action Plan Template for Account onboarding, run the following:
+- (Optional) To create a sample Action Plan Template for Account onboarding, run the following:
 	```
 	sfdx force:apex:execute -f ./data/sample-data.apex
 	```
 
-- (Optional but recommended) To load a sample Action Plan Template for use with the included Flow, go to the Import Action Plan Template tab and import the file in the data folder.
-  1. Make sure the Hot Lead Trade Show follow up Flow is active.
-  1. Create a Lead and set Rating to Hot.
-  1. Note the auto-created Action Plan.
+- Sample Action Plan Template and Flow
+    - This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
 
-- This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
+	- To use this Template with the included Flow,  edit or create a new Lead.
+		1. Make sure the `Hot Lead Trade Show follow up` Flow is active.
+		1. Create a Lead and set `Rating` to "Hot" and `Lead Source` to "Other".
+		1. Note the auto-created Action Plan.
+
+	- To use this Template with a Process Builder, use the `Create Action Plan From Template` Apex Action
+
+	- To use this Template with a trigger, see the in-app documentation tab `About Action Plans`
 
 ### Code formatting
 
