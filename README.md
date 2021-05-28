@@ -176,7 +176,11 @@ This repository contains several files that are relevant if you want to add samp
 
 ### Data Import
 
-- (Optional) This repository comes with sample data. To load sample Accounts and Contacts, run the following:
+- (Optional) This repository creates sample data in the scratch org. To prevent this, go to [scratch org definition](https://github.com/dschach/ActionPlans/blob/main/config/project-scratch-def.json) and change `hasSampleData` to `false`.
+    ```
+	"hasSampleData": false,
+	```
+	You can create other sample Account and Contact records by running the following command:
 
     ```
     sfdx force:data:tree:import -p ./data/action-plan-data-plan.json
