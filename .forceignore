@@ -32,6 +32,7 @@ force-app/main/default/lwc/jsconfig.json
 **/layouts/Global*
 Admin.profile
 Activities.settings
+Security.settings
 TaskStatus.standardValueSet
 Lead-Lead Layout.layout
 

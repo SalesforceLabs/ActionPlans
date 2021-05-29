@@ -641,14 +641,6 @@
 You may do this via Apex sharing, or you may use other automation, to assign ownership of the Action Plan itself to the related record owner or any desired user.&lt;/li&gt;&lt;/ul&gt;</value>
     </labels>
     <labels>
-        <fullName>ap_GettingStarted_section4P1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS4P1</shortDescription>
-        <value>&lt;h2&gt;Security&lt;/h2&gt;</value>
-    </labels>
-    <labels>
         <fullName>ap_GettingStarted_section4P2</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -823,6 +815,14 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <protected>true</protected>
         <shortDescription>Process_Builder</shortDescription>
         <value>Process Builder</value>
+    </labels>
+    <labels>
+        <fullName>ap_RecordOwner</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RecordOwner</shortDescription>
+        <value>Record Owner</value>
     </labels>
     <labels>
         <fullName>ap_RelObjUndeleteError</fullName>
