@@ -414,10 +414,10 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		List<Selectoption> options = apCreateController.getSubjectItems();
 
+		Test.StopTest();
+
 		System.assert( !options.isEmpty(), 'SELECT options is empty' );
 		System.assertEquals(TASK_COUNT + 1, options.size(), 'incorrect number of select options' );
-
-		Test.StopTest();
 	}
 
 	@IsTest

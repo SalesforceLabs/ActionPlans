@@ -117,11 +117,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		Account newAccount 	= new Account();
 		newAccount.Name 	= this.createRandomWord('AcctName');
 		if(insertRecord){
-			try{
-				insert newAccount;
-			}
-			catch( Exception ex ){System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Account.sObjectType.getDescribe().getLabel()} ) );
-			}
+			insert newAccount;
 		}
 
 		return newAccount;
@@ -146,11 +142,8 @@ public inherited sharing class ActionPlansTestUtilities{
 		newCampaign.Name		= this.createRandomWord();
 
 		if(insertRecord){
-			try{
 			insert newCampaign;
 		}
-		catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{ Campaign.sObjectType.getDescribe().getLabel()} ) );  }
-	}
 		return newCampaign;
 	}
 
@@ -174,10 +167,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		newCase.Origin	= 'Email';
 
 		if(insertRecord){
-			try{
-				insert newCase;
-			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Case.sObjectType.getDescribe().getLabel()} ) );  }
+			insert newCase;
 		}
 		return newCase;
 	}
@@ -201,12 +191,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		newContact.LastName = this.createRandomWord();
 
 		if(insertRecord){
-			try{
-				insert newContact;
-			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Contact.sObjectType.getDescribe().getLabel() } ) );
-
-			}
+			insert newContact;
 		}
 		return newContact;
 	}
@@ -233,10 +218,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		newContract.ContractTerm 	= 1;
 
 		if(insertRecord){
-			try{
-				insert newContract;
-			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Contract.sObjectType.getDescribe().getLabel() } ) ); }
+			insert newContract;
 		}
 		return newContract;
 	}
@@ -262,11 +244,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		//newLead.Status = [SELECT ApiName, Id, IsDefault, MasterLabel, SortOrder FROM LeadStatus WHERE IsDefault = true LIMIT 1].MasterLabel;
 
 		if(insertRecord){
-			try{
-				insert newLead;
-			}
-			catch( Exception ex ){System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Lead.sObjectType.getDescribe().getLabel() } ) );
-			}
+			insert newLead;
 		}
 		return newLead;
 	}
@@ -292,10 +270,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		newOpportunity.StageName	= 'Prospecting';
 
 		if(insertRecord){
-			try{
-				insert newOpportunity;
-			}
-			catch( Exception ex ){ System.assert( false, String.format(System.Label.ap_PreDeployError + ': ' + ex.getMessage(), new String[]{Opportunity.sObjectType.getDescribe().getLabel()}) ); }
+			insert newOpportunity;
 		}
 		return newOpportunity;
 	}
@@ -343,13 +318,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			newActionPlan.Opportunity__c = this.createNewOpportunity().Id;
 		}
 
-		//ShouldBeRefactored
-
-		try{
-			insert newActionPlan;
-		}
-		catch( Exception ex ){ System.assert( false, 'Inserting Action Plan failed: ' + ex );
-		}
+		insert newActionPlan;
 
 		APTaskTemplate__c auxTask = new APTaskTemplate__c();
 		User user = this.createTestUser();
@@ -360,11 +329,7 @@ public inherited sharing class ActionPlansTestUtilities{
 			apttToInsert.add(this.createNewActionPlanTask( newActionPlan, i+1, user, 'Email', 'High' ));
 		}
 
-		try{
-			insert apttToInsert;
-		}
-		catch( Exception ex ){ System.assert( false, 'Inserting Action Plan Task failed: ' + ex );
-		}
+		insert apttToInsert;
 
 		return newActionPlan;
 	}
@@ -398,11 +363,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		apTemplate.SkipWeekends__c = true;
 		apTemplate.SkipDay__c = 'End of previous week';
 
-		try{
-			insert apTemplate;
-		}
-		catch( Exception ex ){ System.assert( false, 'Inserting Action Plan Template failed: ' + ex );
-		}
+		insert apTemplate;
 
 		List<APTTaskTemplate__c> auxTasks = new List<APTTaskTemplate__c>();
 		//Creates default tasks for Action Plan
@@ -413,11 +374,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		}
 		// TODO: Add the index of the list to the TaskIndex here?
 
-		try{
-			insert auxTasks;
-		}
-		catch( Exception ex ){ System.assert( false, 'Inserting Action Plan Template tasks failed: ' + ex );
-		}
+		insert auxTasks;
 
 		return apTemplate;
 	}
