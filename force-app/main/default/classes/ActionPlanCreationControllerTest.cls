@@ -63,6 +63,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
 
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		apCreateController.onLoad();
 		apCreateController.save();
 		Test.stopTest();
 	}
