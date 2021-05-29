@@ -55,6 +55,16 @@ public inherited sharing class ActionPlansUtilities {
 	public static final Boolean HAS_RECORD_TYPE = setHasRecordType();
 
 	/**
+	 * @description Actions to perform whenever loading a Visualforce page
+	 * Ensures that Custom Setting is created for the org
+	 * @return   null PageReference
+	 */
+	public static PageReference onPageLoad(){
+		getCustomSetting();
+		return null;
+	}
+
+	/**
 	 * Allows us to force the environment variable checking if Task has a Record Type for testing. Increases code coverage.
 	 */
 	private static Boolean setHasRecordType(){

@@ -49,14 +49,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 		j$(".slds-page-header__name-meta").css("padding-top", "0rem");
     });
 </script>
-        <c:APSectionHeader sObjType="ActionPlan__c" title="{!$Label.ap_ActionPlansSetup}" subtitle="{!$ObjectType.ActionPlan__c.labelPlural}" />
+<c:APSectionHeader sObjType="ActionPlan__c" title="{!$Label.ap_ActionPlansSetup}" subtitle="{!$ObjectType.ActionPlan__c.labelPlural}" />
 <apex:slds />
 <div class="slds-scope">
-
-
-
-
-
 
     <div aria-labelledby="boxAbout" id="about">
 
@@ -67,7 +62,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
             <apex:outputText value="{!$Label.ap_AboutP1}" escape="false" />
             <apex:outputText value="{!$Label.ap_AboutP1a}" escape="false" />
             <apex:outputText value="{!$Label.ap_AboutP1b}" escape="false" />
-
 
         </fieldset>
     </div>
@@ -100,7 +94,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
 				<legend id="boxGettingStarted" class="slds-text-heading_large">
 					 {!$Label.ap_Security}
 				</legend>
-                <!-- <apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P1}"/> -->
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section3}" />
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P2}" />
 				<apex:outputText escape="false" value="{!$Label.ap_GettingStarted_section4P3}" />
