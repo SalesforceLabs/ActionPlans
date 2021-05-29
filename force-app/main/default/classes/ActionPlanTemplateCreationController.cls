@@ -325,8 +325,8 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			else {
 				aptTasks 				= new List<APTTaskTemplate__c>();
 				APTTaskTemplate__c t    = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
-				t.Reminder__c           = false;
-				t.Priority__c           = (String)Task.Priority.getDescribe().getDefaultValue();
+				t.Reminder__c           = ActionPlansUtilities.getCheckReminderByDefault();
+				t.Priority__c           = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(actionPlanTemplate.TaskRecordTypeID__c); //(String)Task.Priority.getDescribe().getDefaultValue();
 				aptTasks.add( t );
 			}
 
@@ -344,12 +344,12 @@ public inherited sharing class ActionPlanTemplateCreationController{
 				}
 			}
 
-			if(aptTasks.isEmpty()){
+			/* if(aptTasks.isEmpty()){
 				APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
 				t.Reminder__c	 		= false;
-				t.Priority__c           = (String)Task.Priority.getDescribe().getDefaultValue();
+				t.Priority__c           = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(actionPlanTemplate.TaskRecordTypeID__c); //(String)Task.Priority.getDescribe().getDefaultValue();
 				aptTasks.add( t );
-			}
+			} */
 			System.debug('aptTasks size = ' + aptTasks.size());
 
 		}
