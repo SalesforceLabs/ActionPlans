@@ -33,7 +33,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<apex:page id="thePage" tabStyle="ActionPlan__c" standardController="ActionPlan__c" extensions="ActionPlanCreationController" lightningStylesheets="true" docType="html-5.0" contentType="text/html"  applyBodyTag="false" >
+<apex:page id="thePage" tabStyle="ActionPlan__c" standardController="ActionPlan__c" extensions="ActionPlanCreationController" lightningStylesheets="true" docType="html-5.0" contentType="text/html"  applyBodyTag="false" action="{!onload}">
 <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
 
 <head>
@@ -50,18 +50,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_EditScripts.js')}" />
 	<script>
 		var j$ = jQuery.noConflict();
-		j$(document).ready(function () {
-
+		j$(function () {
+			console.log('onready');
 			checkSkipWeekend(j$("[id$=skipWeekendCheckbox]").attr('id'), j$("[id$=skipDayPicklist]").attr('id'));
 			checkReminderPicklists();
 			checkAllDependent('{!$Label.ap_ItselfDependencyError}', '{!$Label.ap_Error_Cyclic_Dependency_Found}');
 			j$('.helpOrb').css({ 'width': '12px', 'height': '12px' });
 			showErrors();
 			initSelectors();
-			j$('td')
-				.filter(function () {
-					return this.id.match(/taskTable/);
-				}).css("vertical-align", "middle");
+			j$("td [Id*=taskTable]").css("vertical-align", "middle");
 		});
 
 		function setSelectWidth() {
@@ -78,12 +75,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		function initSelectors() {
 			j$("[Id$=relatedObjLookup]").each(function () {
 				setSelectWidth.apply(this);
-			}).on('change', function () {
+			}).on("change", function () {
 				setSelectWidth.apply(this);
 			});
 			j$(".resize").each(function () {
 				setSelectWidth.apply(this);
-			}).on('change', function () {
+			}).on("change", function () {
 				setSelectWidth.apply(this);
 			});
 		}
@@ -96,6 +93,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		input.errorBorder{
 			border:2px solid #CC0000;
 		}
+		/* .slds-scope .slds-input {
+			width:unset;
+		} */
 	</style>
 	<apex:variable value="{!$User.UIThemeDisplayed == 'Theme4d' || $User.UIThemeDisplayed == 'Theme4u'}" var="lex" />
 <apex:slds rendered="{!lex}" />
@@ -323,10 +323,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			<apex:pageBlockSection title="{!$ObjectType.Task.labelPlural}" columns="2" collapsible="false" id="taskDetails" >
 
-				<!-- <apex:pageBlockSectionItem >
-					<apex:outputLabel value="{!$ObjectType.ActionPlanTemplate__c.fields.SkipWeekends__c.inlineHelpText}" />
-					<apex:inputField value="{!ActionPlan__c.SkipWeekends__c}" id="skipWeekendCheckbox" onclick="checkSkipWeekend('{!$Component.skipWeekendCheckbox}','{!$Component.taskDetails.skipDayPicklist}');" />
-				</apex:pageBlockSectionItem> -->
+				<!-- <apex:inputField value="{!ActionPlan__c.SkipWeekends__c}" id="skipWeekendCheckbox" onclick="checkSkipWeekend('{!$Component.skipWeekendCheckbox}','{!$Component.taskDetails.skipDayPicklist}');" />-->
 				<apex:pageBlockSectionItem>
 					<apex:outputPanel layout="none">
 						<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.label}" />
@@ -344,7 +341,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 								styleclass="slds-input slds-select resize"
 								multiselect="false"
 								size="1"
-								style="font-size:14px;"
+								style="font-size:14px;width:unset;"
 								required="true">
 								<apex:actionSupport event="onchange" reRender="taskSection" />
 							<apex:selectOptions value="{!TaskRTPicklistValues}" />
@@ -358,17 +355,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:pageBlockSectionItem>
 					<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipDay__c.label}" />
 					<apex:outputPanel layout="block" styleClass="slds-scope">
-						<apex:inputField id="skipDayPicklist" value="{!ActionPlan__c.SkipDay__c}" styleclass="slds-input slds-select resize" style="font-size:14px;" />
+						<apex:inputField id="skipDayPicklist" value="{!ActionPlan__c.SkipDay__c}" styleclass="slds-input slds-select" style="font-size:14px;width:unset;" />
 					</apex:outputPanel>
 				</apex:pageBlockSectionItem>
 
-				<!-- <apex:inputField id="skipDayPicklist" value="{!ActionPlan__c.SkipDay__c}" styleclass="slds-scope slds-input slds-select resize" style="font-size:14px;" /> -->
 			</apex:pageBlockSection>
 			<!-- Tasks Section -->
 			<apex:pageBlockSection id="taskSection" columns="1" collapsible="false">
 
 				<apex:outputPanel id="taskList" styleClass="slds-scope">
-					<apex:pageBlockTable value="{!Tasks}" var="wrapTask" id="taskTable" style="table-layout: auto;width:100%" rules="none"> <!-- columnClasses="first,second,third,fourth,fifth,sixth,septh,eight,ninth,tenth" styleClass="taskTable cardTable noBump pullTable" -->
+					<apex:pageBlockTable value="{!Tasks}" var="wrapTask" id="taskTable" style="table-layout:auto;width:100%" rules="all"> <!-- columnClasses="first,second,third,fourth,fifth,sixth,septh,eight,ninth,tenth" styleClass="taskTable cardTable noBump pullTable" -->
 					<!--  Tasks delete actions  -->
 					<apex:column style="width:0px;vertical-align:middle;" headerValue="" id="columnOne" rendered="{!Tasks.size > 1 && $ObjectType.ActionPlan__c.deletable}">
 						<!-- , nameSection, lookupSectionOutPanel, templateLookupSection -->
@@ -380,20 +376,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 								onclick="if (confirmTaskDeletion('{!$Component.taskTable.dependent}','{!$Label.ap_Confirm_Tasks_Deletion}')) {return false;}"
 								oncomplete="showErrors(); checkReminderPicklists(); ">
 								<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'ActionPlans_cross.gif')}" alt="{!$Label.ap_Remove}" title="{!$Label.ap_Remove}" />
-							<!-- <img src="{!URLFOR($Resource.ActionPlan_Resources, 'ActionPlans_cross.gif')}" alt="{!$Label.ap_Remove} " /> -->
 							<apex:param name="remove" value="{!wrapTask.position}" />
 						</apex:commandLink>
 					</apex:column>
 
-					<!--  Tasks subject  -->
+					<!--  Task subject  -->
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Subject__c.label}" style="padding-right:10px;">
-						<apex:inputField required="true" value="{!wrapTask.task.Subject__c}" rendered="{!!wrapTask.task.IsClosed__c}" />
+						<apex:inputField required="true" value="{!wrapTask.task.Subject__c}" styleClass="slds-scope slds-input" rendered="{!!wrapTask.task.IsClosed__c}" style="width:100%;"/>
 						<apex:outputField value="{!wrapTask.task.Subject__c}" rendered="{!wrapTask.task.IsClosed__c}" />
 					</apex:column>
 
-					<!--  Tasks depending status  -->
+					<!--  Dependent task  -->
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.APTaskTemplate__c.label}" rendered="{!Tasks.Size > 1}" styleClass="third">
-						<apex:selectList id="dependent" value="{!wrapTask.task.Dependent__c}" multiselect="false" size="1"
+						<apex:selectList id="dependent" value="{!wrapTask.task.Dependent__c}" multiselect="false" size="1" style="min-width:85px;max-width:80%"
 							onchange="javascript:checkDependent('{!$Component.taskTable.dependent}','{!$Label.ap_ItselfDependencyError}','{!$Label.ap_Error_Cyclic_Dependency_Found}');"
 							styleClass="selectDepending" disabled="{!wrapTask.task.IsClosed__c}" >
 							<apex:selectOptions value="{!SubjectItems}" />
@@ -401,30 +396,39 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:inputHidden value="{!wrapTask.task.TaskIndex__c}" id="theHiddenInput" />
 					</apex:column>
 
-					<!--  Tasks Days After  -->
+					<!--  Task Days After  -->
 					<apex:column>
 						<apex:facet name="header">
 							<span>
 								{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.label}
-								<!-- <apex:image styleclass="helpOrb" style="vertical-align: top;" url="/apexpages/slds/latest/assets/icons/utility/info_60.png" height="12px" width="12px" title="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" /> -->
 								<img class="helpOrb" title="{!$ObjectType.APTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" style="vertical-align: top;" />
 							</span>
 						</apex:facet>
 							<apex:inputField id="daysFromStart" value="{!wrapTask.task.DaysFromStart__c}" styleClass="daysInput" style="width:50%" rendered="{!!wrapTask.task.IsClosed__c}" />
-							<apex:outputField value="{!wrapTask.task.DaysFromStart__c}" styleClass="daysInput" style="width:50%" rendered="{!wrapTask.task.IsClosed__c}" />
+							<apex:outputField value="{!wrapTask.task.DaysFromStart__c}" styleClass="daysInput" rendered="{!wrapTask.task.IsClosed__c}" />
 							<apex:inputField id="activityDate" value="{!wrapTask.task.ActivityDate__c}" rendered="false" />
 					</apex:column>
 
 					<!--  Tasks Assigned To  -->
-					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.User__c.label}">
-						<apex:outputPanel id="userPanel" layout="block" rendered="{!!wrapTask.task.IsClosed__c}">
-							<apex:outputPanel rendered="{!wrapTask.displayLookUp && $ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userLookup">
+					<apex:column >
+						<apex:facet name="header">
+							<span>
+								{!$ObjectType.APTaskTemplate__c.fields.User__c.label}
+								<img class="helpOrb" title="{!$ObjectType.APTaskTemplate__c.fields.User__c.inlineHelpText}" src="/s.gif" style="vertical-align: top;" />
+							</span>
+						</apex:facet>
+						<apex:outputPanel id="userEditPanel" layout="block" rendered="{!!wrapTask.task.IsClosed__c}">
+							<apex:outputPanel rendered="{!$ObjectType.APTaskTemplate__c.fields.User__c.updateable && wrapTask.displayLookup}" id="userLookupPanel">
 								<apex:inputField required="{!wrapTask.userRequired}" value="{!wrapTask.task.User__c}" rendered="{!!lex}" />
 								<c:APLightningLookup field="User__c" sObj="{!wrapTask.task}" sObjType="User" for="{!wrapTask.position}rowuserlookup" where="AND IsActive = true AND ProfileId != null" fieldStyle="width:100%" required="{!wrapTask.userRequired}" rendered="{!lex}" />
 							</apex:outputPanel>
-							<apex:outputText rendered="{!!wrapTask.displayLookUp || !$ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userDisplay">[ {!$ObjectType.APTaskTemplate__c.fields.User__c.label} ]</apex:outputText>
-							<!-- TODO: Show a placeholder if the template has no set user and the running user cannot edit this field -->
+
+							<apex:outputPanel rendered="{!!$ObjectType.APTaskTemplate__c.fields.User__c.updateable}" id="userDisplayPanel">
+								<apex:outputText rendered="{!!$Setup.Action_Plans_Settings__c.Unassigned_Task_Default__c}" id="userNameDisplay">[ {!$User.FirstName}&nbsp;{!$User.LastName} ]</apex:outputText>
+								<apex:outputText rendered="{!$Setup.Action_Plans_Settings__c.Unassigned_Task_Default__c}" id="recordOwnerPlaceholder">[ {!$Label.ap_RecordOwner} ]</apex:outputText>
+							</apex:outputPanel>
 						</apex:outputPanel>
+
 						<apex:outputField value="{!wrapTask.task.User__c}" rendered="{!wrapTask.task.IsClosed__c}" />
 					</apex:column>
 
@@ -469,7 +473,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:outputPanel style="vertical-align:middle;">
 							<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left; display:inline-block; vertical-align:middle;"
 								onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');" disabled="{!wrapTask.task.IsClosed__c}" />
-							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" rendered="{!!wrapTask.task.IsClosed__c}">
+							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" rendered="{!!wrapTask.task.IsClosed__c}" disabled="{!!wrapTask.task.Reminder__c}">
 								<apex:selectOptions value="{!hoursOption}" />
 							</apex:selectList>
 							<apex:outputText value="{!wrapTask.task.Time_Reminder__c}" rendered="{!wrapTask.task.IsClosed__c && wrapTask.task.Reminder__c}" />
@@ -477,9 +481,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					</apex:column>
 
 					<!--  Tasks comments  -->
-					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}">
-						<apex:outputPanel rendered="{!!wrapTask.task.IsClosed__c}"	>
-							<apex:inputField id="commentPanel" styleClass="bd" style="width:250px;display:none;" value="{!wrapTask.task.Comments__c}" />
+					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}" style="vertical-align:middle;">
+						<apex:outputPanel rendered="{!!wrapTask.task.IsClosed__c}"	layout="none">
+							<apex:inputField id="commentPanel" style="width:250px;display:none;" value="{!wrapTask.task.Comments__c}" />
 								( <a id="{!wrapTask.position}commentLink" onclick="toggleComments('{!$Component.commentPanel}', '{!$Component.actionLinks}', '{!$Label.ap_Add}', '{!$Label.ap_Edit}','{!$Label.ap_Close}');" style="text-decoration:underline">
 								<apex:outputPanel id="actionLinks">
 									<apex:outputText rendered="{!wrapTask.task.Comments__c != null}">{!$Label.ap_Edit}</apex:outputText>
@@ -487,7 +491,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 								</apex:outputPanel>
 							</a> )
 						</apex:outputPanel>
-						<apex:outputPanel rendered="{!wrapTask.task.IsClosed__c}" >
+						<apex:outputPanel rendered="{!wrapTask.task.IsClosed__c}" layout="none">
 							<apex:outputPanel id="closedCommentPanel" style="display:none" onclick="toggleVisibility('{!$Component.closedCommentPanel}');">
 								<apex:outputField value="{!wrapTask.task.Comments__c}" />
 								<br/>
@@ -506,16 +510,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:panelGrid columns="2" id="linkpanelgrid" style="margin-bottom: 160px;">
 				 <!-- , nameSection, lookupSectionOutPanel, templateLookupSection -->
 						<apex:commandLink action="{!addTask}" style="font-weight:bold" id="addnewtasklink"
-								rerender="taskList, taskStatus, pageMessages"
+								rerender="taskList, pageMessages"
 								status="taskStatus"
-								oncomplete="javascript:showErrors();checkAllDependent();checkReminderPicklists();"
+								oncomplete="showErrors();checkAllDependent('{!$Label.ap_ItselfDependencyError}','{!$Label.ap_Error_Cyclic_Dependency_Found}');checkReminderPicklists();"
 								rendered="{!$ObjectType.APTaskTemplate__c.createable}">
 							<apex:outputText value="{!$Label.ap_AddNewTask}"/>
 						</apex:commandLink>
 						<div class="slds-scope" >
 							<apex:actionStatus id="taskStatus">
 								<apex:facet name="start">
-									<div class="slds-scope">
+									<!-- <div class="slds-scope"> -->
 									<div class="slds-spinner_container slds-is-fixed" style="position:fixed;">
 										<div role="status" class="slds-spinner slds-spinner_large slds-spinner_brand">
 											<span class="slds-assistive-text">Loading</span>
@@ -523,7 +527,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 											<div class="slds-spinner__dot-b"></div>
 										</div>
 									</div>
-									</div>
+									<!-- </div> -->
 								</apex:facet>
 								<apex:facet name="stop">
 									<apex:outputText value="{!$Label.ap_Error}: {!ErrorMsg}" styleClass="errorMessage" rendered="{!(ErrorMsg != null)}" style="color:#cc0000 !important;" />

@@ -220,6 +220,9 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 				for( APTaskTemplate__c a : newRecords ){
 					a.IsClosed__c = ActionPlansUtilities.getClosedTaskStatuses().contains(a.Status__c);
+					if(a.User__c == null){
+						a.User__c = UserInfo.getUserId();
+					}
 				}
 
 				Set<Id> apIDs = new Set<Id>();

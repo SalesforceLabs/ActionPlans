@@ -103,15 +103,13 @@ function enableDisableReminderPicklist ( reminder, reminderPicklistId ){
 }
 
 function checkReminderPicklists () {
-	j$(".reminderColumn").each(
-		function (  ) {
-			if(j$("[id$=reminder]").is(":checked")){
-				j$("[id$=reminderPickList]").prop("disabled", false);
-			} else {
-				j$("[id$=reminderPickList]").prop("disabled", true);
-			}
+	j$(".reminderColumn").each( function () {
+		if(j$("[id$=reminder]").is(":checked")){
+			j$("[id$=reminderPickList]").prop("disabled", false);
+		} else {
+			j$("[id$=reminderPickList]").prop("disabled", true);
 		}
-	);
+	});
 }
 
 function reloadActionPlan(templateId, selectedTemplateId) {

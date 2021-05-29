@@ -50,7 +50,7 @@ public inherited sharing class ActionPlanCreationController{
 
 	public String                   relatedObjectName       { get; private set; }
 	public String                   throwError              { get; set; }
-	public Boolean                  addedTask;
+	//public Boolean                  addedTask;
 	public Boolean                  canDisplayReminder      { get; set; }
 	private Map<Id, ApTaskWrapper>   mapTasksListBkp;
 	public Boolean                   taskHasRecordType        { get; set; }
@@ -70,7 +70,7 @@ public inherited sharing class ActionPlanCreationController{
 		this.inVisualforceContext = true;
 
 		this.taskIndex          = 0;
-		this.addedTask          = false;
+		//this.addedTask          = false;
 		this.hasRelated         = false;
 		this.hasRelatedObject   = false;
 		this.relatedObjIds      = new Set<Id>();
@@ -200,13 +200,21 @@ public inherited sharing class ActionPlanCreationController{
 			if(relatedFieldName == null){
 				relatedFieldName = getRelatedObjectOptions()[0].getValue();
 			}
-			System.debug('relatedFieldName ' + value);
 			if(!relatedFieldName.endsWithIgnoreCase('__c')){ relatedFieldName += '__c'; }
 			Schema.DescribeFieldResult dfr = Schema.sObjectType.ActionPlan__c.fields.getMap().get(relatedFieldName).getDescribe();
 			Schema.SObjectType sot = dfr.getReferenceTo()[0];
 			Schema.DescribeSObjectResult dsr = sot.getDescribe();
 			this.relatedObjectName = dsr.getName();
 		}
+	}
+
+	/**
+	 * @description Action on page load to ensure custom setting is created
+	 * @return   null
+	 */
+	public PageReference onLoad(){
+		ActionPlansUtilities.onPageLoad();
+		return null;
 	}
 
 	/**
@@ -239,7 +247,7 @@ public inherited sharing class ActionPlanCreationController{
 	}
 
 	/**
-	* Returns the related object Id FROM lookup fields.
+	* Returns the related object Id from lookup fields.
 	* @return the related object id
 	*/
 	public Id relatedObjectId(){
@@ -326,7 +334,7 @@ public inherited sharing class ActionPlanCreationController{
 		Id objId;
 		String objName;
 		List<Id> oIdsList     = new List<Id>();
-		Savepoint sp = Database.setSavepoint();
+		//Savepoint sp = Database.setSavepoint();
 		if (refId == null){
 			for(String s : ActionPlansUtilities.getCustomRelationshipFields()){
 				if(actionPlan.get(s) != null){
@@ -350,7 +358,7 @@ public inherited sharing class ActionPlanCreationController{
 		if( String.isNotBlank(objName) &&  oIdsList.size() == 1 ){
 			Set<Id> parentIDs = new Set<Id>();
 			parentIDs.addAll(oIdsList);
-			try{
+			//try{
 				//Now for each inserted AP we should run through tasks and create them
 				this.apTasksOrg = new List<APTaskTemplate__c>();
 				this.apTasksOrg.addAll( this.apTasks );
@@ -361,10 +369,10 @@ public inherited sharing class ActionPlanCreationController{
 					ActionPlansBatchBuilderUtilities taskBatch = new ActionPlansBatchBuilderUtilities(this.actionPlan, this.apTasks, objName, parentIDs);
 					actionPlanId = taskBatch.generateActionPlans();
 				}
-			} catch( Exception e ){
+			/* } catch( Exception e ){
 				Database.rollback( sp );
 				throw e;
-			}
+			} */
 		}
 		return actionPlanId;
 	}
@@ -559,11 +567,11 @@ public inherited sharing class ActionPlanCreationController{
 			t.Name                  = null;
 			t.TaskIndex__c          = this.taskIndex;
 
-			// validate user, priority, subject and days before adding another
+			// validate subject and days before adding another
 			Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 			for( APTaskTemplate__c apt : apTasks ) {
 
-				hasNoErrors = ( ( apt.User__c != null || mySettings.Unassigned_Task_Default__c ) && apt.Subject__c != null );
+				hasNoErrors = ( apt.Subject__c != null );
 
 				apt.DaysFromStart__c     = ( apt.DaysFromStart__c < 0 ) ? 0 : apt.DaysFromStart__c;
 			}
@@ -573,7 +581,7 @@ public inherited sharing class ActionPlanCreationController{
 
 		}
 
-		this.addedTask = hasNoErrors;
+		//this.addedTask = hasNoErrors;
 
 	}
 
@@ -622,7 +630,7 @@ public inherited sharing class ActionPlanCreationController{
 			}
 			removedTask = true;
 		}
-		addedTask = !removedTask;
+		//addedTask = !removedTask;
 	}
 
 	/**
@@ -637,28 +645,26 @@ public inherited sharing class ActionPlanCreationController{
 
 		Integer i = 0;
 		for( APTaskTemplate__c apTaskTemplate : this.getAPTasks() ){
-			ApTaskWrapper tmpAptask;
+			ApTaskWrapper newTaskWrapper;
 
 			//check if the lookUp has to be shown
 
 			if (apTaskTemplate.Id != null){
-				tmpAptask = this.mapTasksListBkp.get(apTaskTemplate.Id);
+				newTaskWrapper = this.mapTasksListBkp.get(apTaskTemplate.Id);
 			}
 
 			Boolean userRequired  = false;
-			Boolean displayLookUp = false;
+			Boolean displayLookUp = Schema.sObjectType.APTaskTemplate__c.fields.User__c.isUpdateable();
 
 			// User is Required if the task id is null and we don't give unassigned to record owner
 			// We always display the lookup because we never FORCE the task to be assigned to the record owner
 
 			// userRequired is TRUE if not "unassigned defaults to record owner"
 
-			if (tmpAptask == null){
-				displayLookUp   = apTaskTemplate.User__c != null || (apTaskTemplate.User__c == null && !mySettings.Unassigned_Task_Default__c);
-				userRequired    = !mySettings.Unassigned_Task_Default__c; // true if not unassigned to record owner
+			if (newTaskWrapper == null){
+				userRequired    = !mySettings.Unassigned_Task_Default__c || actionPlan.get(relatedFieldName) == null; // true if not assigned to record owner. User may have been set via template, but is still required.
 			} else { // editing existing task
-				displayLookUp   = tmpAptask.displayLookUp; // false if user is filled and don't default to record owner
-				userRequired    = tmpAptask.userRequired; // true if not unassigned to record owner
+				userRequired    = newTaskWrapper.userRequired;
 			}
 
 			ApTaskWrapper apTWrapper = new ApTaskWrapper( apTaskTemplate, i, displayLookup, userRequired, actionPlan.TaskRecordTypeID__c );
@@ -669,9 +675,8 @@ public inherited sharing class ActionPlanCreationController{
 
 			i++;
 		}
-		if( addedTask ){
-			tasksList.get( i - 1 ).isLast = true;
-		}
+		tasksList[ i - 1 ].isLast = true;
+
 
 		return tasksList;
 	}
@@ -681,6 +686,8 @@ public inherited sharing class ActionPlanCreationController{
 	* @return apTasks
 	*/
 	public List<APTaskTemplate__c> getAPTasks(){
+
+		Action_Plans_Settings__c mySettings = Action_Plans_Settings__c.getInstance();
 
 		if( this.apTasks == null || this.apTasks.size() == 0 ) {
 
@@ -699,7 +706,7 @@ public inherited sharing class ActionPlanCreationController{
 
 				this.apTasks = new List<APTaskTemplate__c>();
 
-				Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
+
 				Id userId;
 				for( APTTaskTemplate__c aptTask : aptTasks ){
 					//Read the Custom Settings in order to asign the User to that Task
@@ -1178,6 +1185,10 @@ public inherited sharing class ActionPlanCreationController{
 				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(taskRTID);
 				task.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(taskRTID);
 				task.Type__c = task.Type__c != null ? task.Type__c : ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(taskRTID);
+			}
+
+			if(task.User__c == null && displayLookUp && userRequired){
+				task.User__c = UserInfo.getUserId();
 			}
 		}
 

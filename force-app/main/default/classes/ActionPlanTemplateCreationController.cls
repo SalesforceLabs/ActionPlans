@@ -42,7 +42,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	private Double					taskIndex;
 	@testvisible private ActionPlanTemplate__c	actionPlanTemplate;
 	public String					subTitle				{ get; private set; }
-	@testvisible private Boolean					addedTask;
 	public Boolean					canDisplayReminder			{ get; private set; }
 	public Boolean					taskHasRecordType		{ get; private set; }
 	public List<APTTaskTemplate__c> 		pendingTemplateDeletes;
@@ -57,7 +56,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	public ActionPlanTemplateCreationController( ApexPages.StandardController stdController ){
 
 		this.taskIndex = 0;
-		this.addedTask = false;
 
 		if( System.currentPageReference().getParameters().get( 'clone' ) == '1' ){
 			//System.debug('CLONING ACTION PLAN TEMPLATE');
@@ -197,7 +195,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			newPage.getParameters().put('Id', actionPlanTemplate.Id);
 		}
 		newPage.setRedirect( true );
-		System.debug('cancel Page: ' + newPage);
+
 		return newPage;
 	}
 
@@ -205,61 +203,27 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 * Call method addTemplateTask()
 	 */
 	public PageReference addTemplateTask(){
+
 		System.debug('in addTemplateTask');
 
 		this.taskIndex++;
 
 		Boolean hasNoErrors = false;
+		//in case the task LIMIT is reached set a message error to display
+		if( this.aptTasks.size() >= ActionPlansUtilities.MAX_APTASKS ){
+			List<String> parameters = new List<String>();
+			parameters.add(String.valueof(ActionPlansUtilities.MAX_APTASKS));
 
-		//if( ApexPages.currentPage().getParameters().get( 'add' ) == '1' ){
+			errorMsg = String.format(System.Label.ap_Errors_TaskLimitError, parameters);
 
-			//in case the task LIMIT is reached set a message error to display
-			if( this.aptTasks.size() >= ActionPlansUtilities.MAX_APTASKS ){
-				List<String> parameters = new List<String>();
-				parameters.add(String.valueof(ActionPlansUtilities.MAX_APTASKS));
-
-				errorMsg = String.format(System.Label.ap_Errors_TaskLimitError, parameters);
-				//this.errorMsg = System.Label.ap_Errors_TaskLimitError;
-				return null;
-			}
-			else {
-				APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
-				t.Reminder__c 	= false;
-				t.TaskIndex__c 	= this.taskIndex;
-				t.Priority__c   = (String)Task.Priority.getDescribe().getDefaultValue();
-				t.Type__c   = (String)Task.Type.getDescribe().getDefaultValue();
-				//System.debug('taskIndex ' + t.TaskIndex__c);
-				//System.debug('t.Priority__c ' + t.Priority__c);
-				//System.debug('aptTasks: ' + aptTasks);
-
-				// validate user, priority, subject and days before adding another
-				hasNoErrors = true;
-
-				for( APTTaskTemplate__c aptt : aptTasks ){
-					System.debug('aptt Priority ' + aptt.Priority__c);
-					System.debug('aptt Subject ' + aptt.Subject__c);
-
-					hasNoErrors = ( aptt.Priority__c != null && aptt.Subject__c != null );
-					if( aptt.DaysFromStart__c < 0 ) {
-						aptt.DaysFromStart__c = 0;
-					}
-				}
-				if( hasNoErrors ){
-					this.aptTasks.add( t );
-					System.debug('we have no errors');
-					hasNoErrors = true;
-				}
-				else {
-					System.debug('apparently we have errors');
-					hasNoErrors = false;
-				}
-			}
-		/* }
+			return null;
+		}
 		else {
-			System.debug('added but no page parameter');
-		} */
+			APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
+			t.TaskIndex__c 	= this.taskIndex;
 
-		this.addedTask =  hasNoErrors;
+				this.aptTasks.add( t );
+		}
 
 		return null;
 	}
@@ -292,7 +256,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 				}
 			}
 
-			// before remove check if it's exists in the DB, if so, add to pendingTemplateDeletes to be deleted on save.
+			// before remove check if it exists in the DB. If so, add to pendingTemplateDeletes to be deleted on save.
 			if( this.aptTasks[taskIndex].Id != null ){
 				if( pendingTemplateDeletes == null ){
 					 pendingTemplateDeletes = new List<APTTaskTemplate__c>();
@@ -308,15 +272,13 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			}
 			removedTask = true;
 		}
-
-		addedTask = !removedTask;
 	}
 
 	/**
 	 * Iterate over aptTasks
 	 */
 	public List<ApTTaskWrapper> getTemplateWrappers(){
-
+		System.debug('in getTemplateWrappers');
 		ApTTaskWrapper apTTaskWrapper;
 		List<ApTTaskWrapper> tasksList = new List<ApTTaskWrapper>();
 
@@ -327,9 +289,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			tasksList.add( ApTTaskWrapper );
 			i++;
 		}
-		if( this.addedTask ){
-			tasksList.get( i - 1 ).isLast = true;
-		}
+		tasksList[ i - 1 ].isLast = true;
 
 		System.debug('tasksList: ' + tasksList);
 		return tasksList;
@@ -603,19 +563,24 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		public Integer	position	{ get; set; }
 		public Boolean	isLast		{ get; set; }
 
-		public ApTTaskWrapper( APTTaskTemplate__c apTask, Integer pos, Id defaultTaskRTId ){
+		public ApTTaskWrapper( APTTaskTemplate__c apTask, Integer pos, Id apTTaskRTId ){
 			task		= apTask;
 			position	= pos;
 			isLast		= false;
-			if(task.Id == null && task.Subject__c == null){
-				System.debug('passing RTID ' + defaultTaskRTId);
-				if(ActionPlansUtilities.HAS_RECORD_TYPE){
-					task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(defaultTaskRTId);
-					task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(defaultTaskRTId);
+
+			Id taskRTID = null;
+			if(ActionPlansUtilities.HAS_RECORD_TYPE){
+				if( ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().containsKey(apTTaskRTId) ){
+					taskRTID = apTTaskRTId;
 				} else {
-					task.Priority__c = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(null);
-					task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(null);
+					taskRTID = ActionPlansUtilities.getDefaultTaskRecordTypeId();
 				}
+			}
+
+			if(task.Id == null && task.Subject__c == null){
+				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(taskRTID);
+				task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(taskRTID);
+				task.Reminder__c = true;
 				task.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
 			}
 		}
