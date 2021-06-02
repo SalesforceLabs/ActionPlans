@@ -104,7 +104,7 @@ public inherited sharing class ActionPlansUtilities {
 			}
 			apCustomRelationshipFields = referenceFieldNames;
 		}
-		System.debug('Related Fields: ' + apCustomRelationshipFields);
+		//System.debug('Related Fields: ' + apCustomRelationshipFields);
 		return apCustomRelationshipFields;
 	}
 
@@ -500,7 +500,7 @@ public inherited sharing class ActionPlansUtilities {
 			addDays = addDays + daysToAdjust;
 		}
 		/* if(addDays != 0){
-			//System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
+			System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
 		} */
 		return dueDate.addDays( addDays );
 	}

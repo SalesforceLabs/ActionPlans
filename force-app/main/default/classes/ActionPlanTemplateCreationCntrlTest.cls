@@ -146,7 +146,6 @@ private class ActionPlanTemplateCreationCntrlTest {
 		aptcc.addTemplateTask();
 		Test.stopTest();
 		String errorMsg = aptcc.getErrorMsg();
-		System.debug('ErrorMsg ' + errorMsg);
 		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansUtilities.MAX_APTASKS)));
 
 	}

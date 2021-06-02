@@ -422,7 +422,6 @@ public inherited sharing class ImportActionPlanTemplate{
 	* @return String
 	*/
 	private String getDecodedString( Xmlstreamreader reader ){
-		//System.debug(reader.getText());
 		return EncodingUtil.urlDecode( reader.getText(), 'UTF-8' ).trim();
 	}
 

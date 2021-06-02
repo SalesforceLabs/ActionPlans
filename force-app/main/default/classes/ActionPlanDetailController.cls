@@ -165,7 +165,6 @@ public inherited sharing class ActionPlanDetailController{
 				break;
 			}
 		}
-
 		return objLabel;
 	}
 
@@ -176,8 +175,6 @@ public inherited sharing class ActionPlanDetailController{
 		Id objId;
 
 		for( String f : ActionPlansUtilities.getCustomRelationshipFields() ){
-			//System.debug('evaluating string ' + f + ' value ' + actionPlan.get(f));
-
 			if(actionPlan.get(f) != null){
 				objId = (Id)actionPlan.get(f);
 				Schema.DescribeSObjectResult dsr = objId.getSObjectType().getDescribe();

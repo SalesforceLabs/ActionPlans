@@ -44,11 +44,14 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	private static List<Task> tasksSendNoEmail = new List<Task>();
 
 	/**
-	* Initialize the functionalities to create All dependent Tasks
+	* Initialize the functionalities to create all dependent Tasks
 	* @param cTasks
 	*/
 	//@future
 	public static void initDependentTaskWork( Map<Id, String> cTasks) {
+
+		tasksSendEmail  = new List<Task>();
+		tasksSendNoEmail = new List<Task>();
 
 		Set<Id> closedTasks = cTasks.keyset();
 
@@ -110,7 +113,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 		Task auxTask;
 
 		Map<Id, Task> taskMap = new Map<Id, Task>();
-		for(Task t : [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c = :dependentApttList]){
+		for(Task t : [SELECT Id, TaskAPTaskTemplate__c FROM Task WHERE TaskAPTaskTemplate__c = :dependentApttList]){
 			taskMap.put(t.TaskAPTaskTemplate__c, t);
 		}
 
@@ -195,7 +198,6 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				t2.put('RecordTypeId', dependentAptt.Task_RecordTypeId__c);
 			}
 
-			//Date d = this.getCompletedATPTaskDate(dependentAptt.Id);
 			Date d = Date.today();
 			if(dependentAptt.APTaskTemplate__c != null &&  controllingTasks.containsKey(dependentAptt.APTaskTemplate__c) && controllingTasks.get(dependentAptt.APTaskTemplate__c).ActivityDate__c != null){
 				d = controllingTasks.get(dependentAptt.APTaskTemplate__c).ActivityDate__c;
@@ -233,13 +235,10 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 			}
 
 			t2.Type = dependentAptt.Type__c;
-			String defaultStatus;
-			if(ActionPlansUtilities.HAS_RECORD_TYPE){
-				defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
-			} else {
-				defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
-			}
+
+			String defaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
 			t2.Status = defaultStatus;
+
 			t2.ActivityDate = dependentAptt.ActivityDate__c;
 
 			updateApttsList.add( dependentAptt ) ;
@@ -288,6 +287,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	/**
 	* Delete Action Plan Tasks
 	* @param aPTasks
+	* We are changing this to synchronous; can make future later
 	*/
 	//@future
 	public static void deleteAPTasks( Set<Id> aPTasks ) {
@@ -360,7 +360,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 			List<APTaskTemplate__c> updList = populateNewTaskMap(dependentAptts);
 
 			//Finally, Create all New Tasks and Send DMLOption Emails
-			populateUpdateApttsList(dependentAptts);
+			List<APTaskTemplate__c> updateApttsList = populateUpdateApttsList(dependentAptts);
 
 			Database.DMLOptions dmlo = new Database.DMLOptions();
 
@@ -383,7 +383,10 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	* Before deleting an APTemplate task, initialize the functionalities to create all dependent Tasks and reset index
 	* @param cTasks list with Task templates to be deleted
 	*/
-	public static void initDependentTasksAndReset( Set<Id> cTasks ) {
+	public static void actionsOnTaskBeforeDelete( Set<Id> cTasks ) {
+
+		tasksSendEmail  = new List<Task>();
+		tasksSendNoEmail = new List<Task>();
 
 		// Uncommenting this so we surface our errors
 		//try{

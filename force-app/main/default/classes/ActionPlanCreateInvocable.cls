@@ -107,7 +107,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 			}
 
 			if(!Schema.SObjectType.ActionPlan__c.fields.getMap().containsKey(relObjField)){
-				//System.debug('Field not present. ' + relObjField);
+				System.debug('Field not present. ' + relObjField);
 				continue;
 			}
 
@@ -203,9 +203,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 				apTask.APTaskTemplate__c = planTaskIndexToTask.get(actionPlanPlusIndex).Id;
 				dependentTasksToUpdate.add(apTask);
 			}
-			/* else {
-				//System.debug('No matching ' + actionPlanPlusIndex);
-			} */
 		}
 		update dependentTasksToUpdate;
 

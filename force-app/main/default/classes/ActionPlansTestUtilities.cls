@@ -453,10 +453,8 @@ public inherited sharing class ActionPlansTestUtilities{
 		for(RecordTypeInfo info : recordTypeInfoList) {
 			//Check default record type
 			if(!info.isDefaultRecordTypeMapping() && info.isAvailable() && info.getRecordTypeId() != ActionPlansUtilities.MASTER_RECORD_TYPE_ID){
-				//System.debug('not default ' + info.getName() + ' ' + info.getRecordTypeId());
 				notdefaultRecordTypeId = info.getRecordTypeId();
 			} else if (info.isDefaultRecordTypeMapping()){
-				//System.debug('default ' + info.getName() + ' ' + info.getRecordTypeId());
 				defaultRecordTypeId = info.getRecordTypeId();
 			}
 		}

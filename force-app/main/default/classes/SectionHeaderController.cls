@@ -82,7 +82,6 @@ global inherited sharing class SectionHeaderController {
 		}
 		for(Schema.DescribeTabResult tr : tabDesc) {
 			if( sObjectName == tr.getSobjectName() ) {
-				//System.debug(tr.getIcons());
 				if(!tr.getIcons().isEmpty()){
 					iconDesc.addAll(tr.getIcons());
 				} else {

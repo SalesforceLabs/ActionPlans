@@ -195,8 +195,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 */
 	public PageReference addTemplateTask(){
 
-		System.debug('in addTemplateTask');
-
 		this.taskIndex++;
 
 		Boolean hasNoErrors = false;
@@ -269,20 +267,16 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 * Iterate over aptTasks
 	 */
 	public List<ApTTaskWrapper> getTemplateWrappers(){
-		System.debug('in getTemplateWrappers');
 		ApTTaskWrapper apTTaskWrapper;
 		List<ApTTaskWrapper> tasksList = new List<ApTTaskWrapper>();
 
 		Integer i = 0;
-		for( APTTaskTemplate__c aptTaskTemplate : aptTasks ){ //getTemplateTasks() ){
-			System.debug('adding the ' + i + ' template for display');
+		for( APTTaskTemplate__c aptTaskTemplate : aptTasks ){
 			ApTTaskWrapper = new ApTTaskWrapper( aptTaskTemplate, i , this.actionPlanTemplate.TaskRecordTypeID__c);
 			tasksList.add( ApTTaskWrapper );
 			i++;
 		}
 		tasksList[ i - 1 ].isLast = true;
-
-		System.debug('tasksList: ' + tasksList);
 		return tasksList;
 	}
 
@@ -334,9 +328,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 					}
 				}
 			}
-
-			//System.debug('aptTasks size = ' + aptTasks.size());
-
 		}
 
 		return aptTasks;
@@ -379,7 +370,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			return null;
 		}
 		else {
-			//System.debug('successful check - time to save');
 			return this.saveTemplate();
 		}
 	}
@@ -400,17 +390,16 @@ public inherited sharing class ActionPlanTemplateCreationController{
 
 				//task can not depend on themselves
 				if( Integer.valueOf( t.Dependent__c ) == index){
-					//System.debug('self-dependency error');
+					System.debug('self-dependency error ' + System.Label.ap_ItselfDependencyError);
 					this.errorMsg = System.Label.ap_ItselfDependencyError;
 					return true;
 				}
 
 				if( this.dependantCycle( link, index ) ){
-					//System.debug('cyclic-dependency error');
+					System.debug('cyclic-dependency error ' + System.Label.ap_Errors_RemoveCyclicDependency);
 					this.errorMsg = System.Label.ap_Errors_RemoveCyclicDependency;
 					return true;
 				}
-				//System.debug('No Cyclic Dependencies');
 			}
 			index++;
 		}

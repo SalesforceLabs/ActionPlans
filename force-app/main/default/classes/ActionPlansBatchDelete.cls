@@ -98,6 +98,7 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 		Map<Id, APTaskTemplate__c> relTaskTemplateMap = new Map<Id, APTaskTemplate__c>([SELECT Id FROM APTaskTemplate__c WHERE Action_Plan__c IN :relActionPlansIds]);
 		List<Task> relTaskList = [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__c IN :relTaskTemplateMap.keySet()];
 
+		delete relActionPlans;
 		// Tasks should have been deleted by the trigger handler, but we will be sure here
 		delete relTaskList;
 

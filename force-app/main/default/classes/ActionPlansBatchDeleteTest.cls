@@ -97,7 +97,7 @@ private with sharing class ActionPlansBatchDeleteTest {
 		Test.startTest();
 
 		ActionPlansTestUtilities aptu = new ActionPlansTestUtilities();
-		ActionPlan__c ap =   aptu.createNewActionPlan('account',1);
+		ActionPlan__c ap = aptu.createNewActionPlan('account',1);
 
 		APTaskTemplate__c at = new APTaskTemplate__c();
 		at.Action_Plan__c 	 = ap.Id;
@@ -129,7 +129,6 @@ private with sharing class ActionPlansBatchDeleteTest {
 
 		Task x 				= new Task();
 		x.Priority 			= at.Priority__c;
-		//x.Status			= 'Open';
 		x.TaskAPTaskTemplate__c	= at.Id;
 		x.Subject			= at.Subject__c;
 		insert x;

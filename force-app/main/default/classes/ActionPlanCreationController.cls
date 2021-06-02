@@ -53,7 +53,6 @@ public inherited sharing class ActionPlanCreationController{
 	public String                   throwError              { get; set; }
 	public Boolean                  canDisplayReminder      { get; set; }
 	private Map<Id, ApTaskWrapper>  mapTasksListBkp;
-	public Boolean                  taskHasRecordType        { get; set; }
 	public String                   subtitle                { get; set; }
 
 	public List<APTaskTemplate__c>  apTasks;
@@ -187,6 +186,15 @@ public inherited sharing class ActionPlanCreationController{
 		this.subtitle = System.Label.ap_New + ' ' + Schema.getGlobalDescribe().get( 'ActionPlan__c' ).getDescribe().getLabel();
 	}
 
+	public Boolean taskHasRecordType {
+		get{
+			if(taskHasRecordType == null){
+				taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
+			}
+			return taskHasRecordType;
+		} private set;
+	}
+
 	public String relatedFieldName {
 		get {
 			if(relatedFieldName == null){
@@ -236,10 +244,8 @@ public inherited sharing class ActionPlanCreationController{
 			if( refType == null && refId != null){
 				Id shortId = refId.left(15);
 				refType = shortId.getSobjectType().getDescribe().getName();
-				//System.debug('refType from Id: ' + refType);
 			} else if(refId == null) {
 				refType = ApexPages.currentPage().getParameters().get( 'refType' );
-				//System.debug('refType from URL: ' + refType);
 			}
 			return refType;
 		} set;
@@ -452,7 +458,7 @@ public inherited sharing class ActionPlanCreationController{
 			newApId = saveAp();
 		}
 		catch ( DmlException e ){
-			//System.debug('savePageRef_dmlexception ' + e.getMessage());
+			System.debug('savePageRef_dmlexception ' + e.getMessage());
 			Apexpages.addMessages( e );
 			return null;
 		}
@@ -1050,12 +1056,10 @@ public inherited sharing class ActionPlanCreationController{
 				Boolean hasActivities = dsr.fields.getMap().containsKey('lastactivitydate');
 				Boolean canSeeRelatedObject = dsr.isAccessible();
 				Boolean canUpdateLookupField = dfr.isUpdateable();
-				//System.debug('Checking object name ' + dsr.getName() + ' from field ' + s);
 
 				if(canSeeRelatedObject && canUpdateLookupField && hasActivities){
 					String value = dfr.getName();
 					String label = dsr.getLabel();
-					//System.debug('RELATED OBJECT OPTION: VALUE : ' + value + ' LABEL: ' + label);
 					relatedObjectOptions.add( new SelectOption( value, label ));
 				}
 			}

@@ -39,15 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 @IsTest
 private class ActionPlansTaskTriggerUtilitiesTest {
-
-	private static String testClosedStatus;
-
-	@TestSetup
-	static void makeData(){
-		List<String> closedStatuses = new List<String>(ActionPlansUtilities.getClosedTaskStatuses());
-		testClosedStatus = closedStatuses[0];
-	}
-
+	static String testClosedStatus;
 	/**
 	test trigger without skipweekends
 	method for testing Task After Update trigger
@@ -57,12 +49,15 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 	@IsTest
 	private static void testTaskAfterUpdateToCompleted() {
 
+		List<String> closedStatuses = new List<String>(ActionPlansUtilities.getClosedTaskStatuses());
+		String testClosedStatus = closedStatuses[0];
+
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 		ActionPlan__c ap 			= testutil.createNewActionPlan( 'account', 0 );
 
 		List<Id> apTTaskIds 		= new List<Id>();
-		List<Task> apTask 			= new List<Task>();
-		List<APTaskTemplate__c> aptt = new List<APTaskTemplate__c>();
+		List<Task> apTaskList 			= new List<Task>();
+		List<APTaskTemplate__c> apttList = new List<APTaskTemplate__c>();
 
 		for( Integer i = 0; i < 4; i++ ){
 			APTaskTemplate__c at = new APTaskTemplate__c();
@@ -76,9 +71,9 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 			at.Subject__c		 = 'Test ' + i;
 			at.Type__c			 = 'Email';
 			at.Priority__c		 = 'Low';
-			at.APTaskTemplate__c = ( i > 0 ) ? aptt[i-1].Id : null;
+			at.APTaskTemplate__c = ( i > 0 ) ? apttList[i-1].Id : null;
 			insert at;
-			aptt.add(at);
+			apttList.add(at);
 			apTTaskIds.add( at.Id );
 
 			if( i == 0 ){
@@ -91,17 +86,17 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		}
 
 		Test.startTest();
-		apTask = [SELECT Status, Id FROM Task WHERE TaskAPTaskTemplate__c IN :apTTaskIds];
+		apTaskList = [SELECT Status, Id FROM Task WHERE TaskAPTaskTemplate__c IN :apTTaskIds];
 
-		for( Task t : apTask ){
+		for( Task t : apTaskList ){
 			t.Status = testClosedStatus;
 		}
 
-		update apTask;
-		apTask = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c = :apTTaskIds[0]];
+		update apTaskList;
+		apTaskList = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c = :apTTaskIds[0]];
 
 		Test.stopTest();
-		System.assert( !apTask.isEmpty() );
+		System.assert( !apTaskList.isEmpty() );
 	}
 
 	/**
@@ -196,6 +191,9 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 				insert x;
 			}
 		}
+
+		List<String> closedStatuses = new List<String>(ActionPlansUtilities.getClosedTaskStatuses());
+		String testClosedStatus = closedStatuses[0];
 
 		apTask = [SELECT Status, Id FROM Task WHERE TaskAPTaskTemplate__c IN :apTTaskIds];
 		for( Task t : apTask ){
@@ -372,7 +370,6 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		Test.startTest();
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 		ActionPlan__c ap = testutil.createNewActionPlan( 'account', 0 );
-		System.debug('ActionPlan ' + ap);
 
 		Id testUserId = testutil.createTestUser().Id;
 
@@ -415,7 +412,9 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 
 		x = [SELECT Id, Status, Subject, TaskAPTaskTemplate__r.Name, WhatId FROM Task WHERE Id = :x.Id LIMIT 1];
 
-		//TODO: Update this so it checks if we have record types, and set to a completed value for user default RT
+		List<String> closedStatuses = new List<String>(ActionPlansUtilities.getClosedTaskStatuses());
+		String testClosedStatus = closedStatuses[0];
+
 		x.Status = testClosedStatus;
 		update x;
 		Test.stopTest();
@@ -423,8 +422,10 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		delete x;
 
 		//check if the dependent task was created
-		List<Task> newTask = [SELECT Status, Id FROM Task WHERE TaskAPTaskTemplate__c = :at2.Id];
-		System.assert( !newTask.isEmpty() );
+		List<Task> newTaskList = [SELECT Status, Id FROM Task WHERE TaskAPTaskTemplate__c = :at2.Id];
+		System.assert( !newTaskList.isEmpty() );
+		newTaskList = [SELECT Id FROM Task WHERE IsClosed = false];
+		System.assertEquals( 1, newTaskList.size() );
 
 	}
 }
