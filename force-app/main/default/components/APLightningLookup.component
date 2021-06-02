@@ -117,7 +117,7 @@
 						'<div aria-selected="true" id="norecords" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term" role="option">' +
 						'<span class="slds-media__body"><span class="slds-listbox__option-text slds-listbox__option-text_entity">{!$Label.ap_NoRecords}</span></span></div></li>';
 				}
-				//Appending all the created result List Elements t the UL tag
+				//Appending all the created result List Elements to the UL tag
 				j$('[id$=searchResultsUL{!for}]').html(searchList);
 			}
 		}
