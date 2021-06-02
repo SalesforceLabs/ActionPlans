@@ -51,8 +51,6 @@ public inherited sharing class ActionPlanDetailController{
 
 		actionPlan = ( ActionPlan__c ) stdController.getRecord();
 
-		System.debug('constructor actionplanId ' + this.actionPlan.Id);
-
 		hasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 
 		canDisplayReminder = ActionPlansUtilities.getCanDisplayReminder();
@@ -63,8 +61,6 @@ public inherited sharing class ActionPlanDetailController{
 	* @return newPage
 	*/
 	public PageReference deletePlan(){
-
-		System.debug('retURL: ' + ApexPages.currentPage().getParameters().get('retURL'));
 
 		//delete ap, which will also delete apts via master-detail relationship
 		try{
@@ -81,7 +77,7 @@ public inherited sharing class ActionPlanDetailController{
 		if(ApexPages.currentPage().getParameters().get('templateId') != null){
 			retUrl = '/' + ApexPages.currentPage().getParameters().get('templateId');
 		}
-		else if(ApexPages.currentPage().getParameters().get('retURL') != null && (theme == 'Theme2' || theme == 'Theme3')){
+		else if(ApexPages.currentPage().getParameters().get('retURL') != null && !ActionPlansUtilities.getIsLex()){
 			retURL = ApexPages.currentPage().getParameters().get('retURL');
 		}
 		// Send the user to the tab.
@@ -92,30 +88,18 @@ public inherited sharing class ActionPlanDetailController{
 	}
 
 	/**
-	* Gets all tasks for a given ActionPlan
-	*/
-	/* private List<APTaskTemplate__c> apTasks;
-
-	public List<APTaskTemplate__c> getTasks(){
-
-		System.debug('existing apTasks ' + this.aptasks);
-		if( apTasks == null || apTasks.isEmpty() ) {
-			apTasks = [SELECT Action_Plan__c, ActivityDate__c, APTaskTemplate__c, APTaskTemplate__r.Subject__c, Comments__c, DaysFromStart__c, Dependent__c, Id,
-							IsClosed__c, Minutes_Reminder__c, Name, Priority__c, Reminder__c, Time_Reminder__c, SendEmail__c, Status__c, Subject__c, Task_RecordTypeId__c,
-							TaskIndex__c, Type__c, User__c, User__r.Name //, (SELECT Id, Subject FROM Template_Tasks__r)
-							FROM APTaskTemplate__c WHERE Action_Plan__c = :actionPlan.Id WITH SECURITY_ENFORCED ORDER BY TaskIndex__c ASC];
-		}
-		return apTasks;
-	} */
-
+	 * Collect and return all TaskWrappers
+	 */
 	private List<TaskWrapper> apTaskWrapperList;
 	public List<TaskWrapper> getActionPlanTasks(){
 		if(apTaskWrapperList == null){
 			apTaskWrapperList = new List<TaskWrapper>();
-			Map<Id, APTaskTemplate__c> apTaskMap = new Map<Id, APTaskTemplate__c>([SELECT Action_Plan__c, ActivityDate__c, APTaskTemplate__c, APTaskTemplate__r.Subject__c, Comments__c, DaysFromStart__c, Dependent__c, Id,
+			Map<Id, APTaskTemplate__c> apTaskMap = new Map<Id, APTaskTemplate__c>([SELECT Action_Plan__c, ActivityDate__c, APTaskTemplate__c, APTaskTemplate__r.Subject__c,
+							Comments__c, DaysFromStart__c, Dependent__c, Id,
 							IsClosed__c, Minutes_Reminder__c, Name, Priority__c, Reminder__c, Time_Reminder__c, SendEmail__c, Status__c, Subject__c, Task_RecordTypeId__c,
 							TaskIndex__c, Type__c, User__c, User__r.Name
-							FROM APTaskTemplate__c WHERE Action_Plan__c = :actionPlan.Id WITH SECURITY_ENFORCED ORDER BY TaskIndex__c ASC]);
+							FROM APTaskTemplate__c
+							WHERE Action_Plan__c = :actionPlan.Id WITH SECURITY_ENFORCED ORDER BY TaskIndex__c ASC]);
 			Map<Id, Id> taskTaskMap = new Map<Id, Id>();
 			for(Task t : [SELECT Id, TaskAPTaskTemplate__c FROM Task WHERE TaskAPTaskTemplate__c IN :apTaskMap.keyset()]){
 				taskTaskMap.put(t.TaskAPTaskTemplate__c, t.Id);
@@ -123,9 +107,6 @@ public inherited sharing class ActionPlanDetailController{
 			for(APTaskTemplate__c a : apTaskMap.values()){
 				TaskWrapper tw;
 				Id relatedTaskId = taskTaskMap.get(a.Id);
-				/* if(apTaskMap.containsKey(a.Id)){
-					relatedTaskId = taskTaskMap.get(a.Id);
-				}  */
 				tw = new TaskWrapper(a, relatedTaskId);
 				apTaskWrapperList.add(tw);
 			}
@@ -191,9 +172,7 @@ public inherited sharing class ActionPlanDetailController{
 
 	public String getrelatedRecordName(){
 
-		System.debug(actionPlan);
-
-		String objName='';
+		String objName = '';
 		Id objId;
 
 		for( String f : ActionPlansUtilities.getCustomRelationshipFields() ){
@@ -201,17 +180,11 @@ public inherited sharing class ActionPlanDetailController{
 
 			if(actionPlan.get(f) != null){
 				objId = (Id)actionPlan.get(f);
-				//System.debug('we have a value objId ' + objId);
 				Schema.DescribeSObjectResult dsr = objId.getSObjectType().getDescribe();
 				objName = dsr.getName();
-				//System.debug('object name is ' + objName);
 				break;
-			} else {
-				System.debug('no value in field ' + f);
 			}
 		}
-
-
 
 		switch on objName {
 			when 'Case' {
@@ -224,7 +197,6 @@ public inherited sharing class ActionPlanDetailController{
 			}
 			when else {
 				String relNameQuery = 'SELECT Id, Name FROM ' + objName + ' WHERE Id = \'' + objId + '\'';
-				System.debug('relNameQuery ' + relNameQuery);
 				SObject so = Database.query(relNameQuery)[0];
 
 				return (String)so.get('Name');

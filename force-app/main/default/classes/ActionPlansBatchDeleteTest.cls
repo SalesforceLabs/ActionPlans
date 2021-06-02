@@ -143,9 +143,5 @@ private with sharing class ActionPlansBatchDeleteTest {
 		Test.stopTest();
 		undelete ap;
 
-
-
-		//System.assert([SELECT Count() FROM Task] > 0);
-
 	}
 }

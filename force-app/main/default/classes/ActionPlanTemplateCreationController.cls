@@ -40,11 +40,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 public inherited sharing class ActionPlanTemplateCreationController{
 
 	private Double					taskIndex;
-	@testvisible private ActionPlanTemplate__c	actionPlanTemplate;
+	@testVisible private ActionPlanTemplate__c	actionPlanTemplate;
 	public String					subTitle				{ get; private set; }
 	public Boolean					canDisplayReminder			{ get; private set; }
 	public Boolean					taskHasRecordType		{ get; private set; }
-	public List<APTTaskTemplate__c> 		pendingTemplateDeletes;
+	public List<APTTaskTemplate__c> pendingTemplateDeletes;
 
 
 	/**
@@ -58,7 +58,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		this.taskIndex = 0;
 
 		if( System.currentPageReference().getParameters().get( 'clone' ) == '1' ){
-			//System.debug('CLONING ACTION PLAN TEMPLATE');
 
  			ActionPlanTemplate__c apC = [SELECT Name, Description__c, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c FROM ActionPlanTemplate__c WHERE Id = :ApexPages.currentPage().getParameters().get('id') LIMIT 1];
 
@@ -68,10 +67,8 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			actionPlanTemplate.SkipDay__c = apC.SkipDay__c;
 			actionPlanTemplate.SkipWeekends__c = apC.SkipWeekends__c;
 			actionPlanTemplate.TaskRecordTypeID__c = apC.TaskRecordTypeID__c;
-			//System.debug('cloned aptemplate ' + actionPlanTemplate);
 		} else {
 			actionPlanTemplate = ( ActionPlanTemplate__c )stdController.getRecord();
-			//System.debug('did not clone');
 		}
 
 		this.canDisplayReminder = ActionPlansUtilities.getCanDisplayReminder();
@@ -80,7 +77,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		if( actionPlanTemplate.Id != null ){
 			taskIndex = calculateTaskIndexValue();
 			subTitle = ActionPlanTemplate.Name;
-			//System.debug('subtitle ' + subTitle);
 		}
 		else {
 			if(taskHasRecordType){
@@ -101,20 +97,16 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	*/
 	public PageReference saveTemplate(){
 
-		//Savepoint sp = Database.setSavepoint();
-
 		// check for pendingDeletes, if something is pending send it to delete
 		if( pendingTemplateDeletes != null ){
 			delete pendingTemplateDeletes;
 		}
 
-		// update Action Plan Template object, in case of Exception then rollback the actions with the database
+		// update Action Plan Template object
 		try{
-			System.debug('upserting ' + actionPlanTemplate);
 			upsert actionPlanTemplate;
 		} catch( Exception e ){
 			ApexPages.addMessages(e);
-			//Database.rollback( sp );
 			return null;
 		}
 
@@ -132,7 +124,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		try{
 			upsert aptTasks;
 		} catch( Exception e ){
-			//Database.rollback( sp );
 			ApexPages.addMessages(e);
 			return null;
 		}
@@ -209,7 +200,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 		this.taskIndex++;
 
 		Boolean hasNoErrors = false;
-		//in case the task LIMIT is reached set a message error to display
+		//in case the task limit is reached set a message error to display
 		if( this.aptTasks.size() >= ActionPlansUtilities.MAX_APTASKS ){
 			List<String> parameters = new List<String>();
 			parameters.add(String.valueof(ActionPlansUtilities.MAX_APTASKS));
@@ -219,7 +210,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			return null;
 		}
 		else {
-			APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
+			APTTaskTemplate__c t = new APTTaskTemplate__c();
 			t.TaskIndex__c 	= this.taskIndex;
 
 				this.aptTasks.add( t );
@@ -344,13 +335,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 				}
 			}
 
-			/* if(aptTasks.isEmpty()){
-				APTTaskTemplate__c t = new APTTaskTemplate__c(); //(APTTaskTemplate__c)APTTaskTemplate__c.getSObjectType().newSObject(null, true);
-				t.Reminder__c	 		= false;
-				t.Priority__c           = ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(actionPlanTemplate.TaskRecordTypeID__c); //(String)Task.Priority.getDescribe().getDefaultValue();
-				aptTasks.add( t );
-			} */
-			System.debug('aptTasks size = ' + aptTasks.size());
+			//System.debug('aptTasks size = ' + aptTasks.size());
 
 		}
 
@@ -401,46 +386,44 @@ public inherited sharing class ActionPlanTemplateCreationController{
 
 	/**
 	* Checks if Action Plans Tasks has cyclic dependency.
-	* @return exists
+	* @return Boolean cyclicErrorExists
 	*/
 	public Boolean templateCycleDependent(){
 
 		this.errorMsg   = null;
-		Boolean exists  = false;
 		Integer index   = 0;
 
 		for( APTTaskTemplate__c t : this.aptTasks ){
 			if( t.Dependent__c != null && t.Dependent__c != 'None' ){
-				//Integer tempIndex   	= ;
+
 				APTTaskTemplate__c link = this.aptTasks[ Integer.valueOf( t.Dependent__c ) ];
 
 				//task can not depend on themselves
 				if( Integer.valueOf( t.Dependent__c ) == index){
-					System.debug('self-dependency error');
+					//System.debug('self-dependency error');
 					this.errorMsg = System.Label.ap_ItselfDependencyError;
 					return true;
 				}
 
-				if( this.dependantCycle( t, link, index ) ){
-					System.debug('cyclic-dependency error');
+				if( this.dependantCycle( link, index ) ){
+					//System.debug('cyclic-dependency error');
 					this.errorMsg = System.Label.ap_Errors_RemoveCyclicDependency;
 					return true;
 				}
-				System.debug('No Cyclic Dependencies');
+				//System.debug('No Cyclic Dependencies');
 			}
 			index++;
 		}
-		return exists;
+		return false;
 	}
 
 	/**
 	*
-	* @param originTask
 	* @param destinyTask
 	* @param index
 	* @return Boolean
 	*/
-	private Boolean dependantCycle( APTTaskTemplate__c originTask, APTTaskTemplate__c destinyTask, Integer index ){
+	private Boolean dependantCycle( APTTaskTemplate__c destinyTask, Integer index ){
 
 		Boolean hasDependency = false;
 		Set<Integer> visitedTasks = new Set<Integer>();
@@ -466,8 +449,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 						break;
 					}
 					else {
-						//get Next task in dependency chain
-						//Integer tempIndex 	= ;
+						//get next task in dependency chain
 						destinyTask 		= this.aptTasks[ Integer.valueOf( destinyTask.Dependent__c ) ];
 					}
 				}
@@ -490,7 +472,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	*/
 	private String errorMsg;
 	public String getErrorMsg(){
-		return this.errorMsg;
+		return errorMsg;
 	}
 
 	/**
@@ -501,7 +483,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 
 		Double maxIndex = 0;
 		for( APTTaskTemplate__c tsk : [SELECT Id, TaskIndex__c FROM APTTaskTemplate__c
-												WHERE Action_Plan_Template__c = :actionPlanTemplate.Id] ){
+										WHERE Action_Plan_Template__c = :actionPlanTemplate.Id] ){
 			if( tsk.TaskIndex__c > maxIndex ){
 				maxIndex = tsk.TaskIndex__c;
 			}
@@ -529,7 +511,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 */
 	private List<SelectOption> taskTypes;
 	public List<SelectOption> getTaskTypes(){
-		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Type.getDescribe().getDefaultValue());
 		if(taskTypes == null){
 			taskTypes = ActionPlansUtilities.getFieldOptions('Task', 'Type', null);
 		}
@@ -541,7 +522,6 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	 */
 	private List<SelectOption> taskPriorities;
 	public List<SelectOption> getTaskPriorities(){
-		//Boolean hasDefaultValue = String.isNotBlank((String)Task.Priority.getDescribe().getDefaultValue());
 		if(taskPriorities == null){
 			taskPriorities = ActionPlansUtilities.getFieldOptions('Task', 'Priority', null);
 		}
@@ -556,6 +536,8 @@ public inherited sharing class ActionPlanTemplateCreationController{
 	* Inner Wrapper Class for Action Plan Template Tasks
 	* @author Matias Menafra
 	* @createddate 08/08/2010
+	* @author David Schach
+	* @updateddate 05/2021
 	*/
 	public class ApTTaskWrapper{
 
@@ -580,7 +562,7 @@ public inherited sharing class ActionPlanTemplateCreationController{
 			if(task.Id == null && task.Subject__c == null){
 				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(taskRTID);
 				task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(taskRTID);
-				task.Reminder__c = true;
+				task.Reminder__c = ActionPlansUtilities.getCheckReminderByDefault();
 				task.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
 			}
 		}

@@ -277,8 +277,6 @@ private class ActionPlanCreateInvocableTest {
 				break;
 			}
 		}
-		//System.debug(upcomingWeekendDay + ' is a WeekendDay');
-		//System.debug('There are this many days to WeekendDay: ' + daysToWeekendDay);
 
 		Action_Plans_Settings__c aps = Action_Plans_Settings__c.getOrgDefaults();
 		aps.Chatter_Object_Brag__c = false;

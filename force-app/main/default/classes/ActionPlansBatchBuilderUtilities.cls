@@ -40,7 +40,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 	private List<SObject> relObjects                { get; set; }
-	//private ActionPlan__c baseAPlan                 { get; set; }
 	private List<APTaskTemplate__c> baseAPTaskList  { get; set; }
 
 	private List<ActionPlan__c> relActionPlans      { get; set; }
@@ -50,7 +49,6 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 	private Set<Id> relatedRecordIDs                { get; set; }
 
 	private Id newActionPlanId;
-	//private String mode;
 
 	public enum ApEditMode { MODE_EDIT_SINGLE, MODE_NEW }
 	private ApEditMode mode;
@@ -59,7 +57,6 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 	private List<Task>  myOldTasksWithEmail         { get; set; }
 	private List<Task>  myNewTasksWithEmail         { get; set; }
 
-	//constructor
 	public ActionPlansBatchBuilderUtilities (ActionPlan__c baseObj, List<APTaskTemplate__c> aPTListparam, String refType, Set<Id> oIdsLIst){
 
 		this.baseAPTaskList = aPTListparam;
@@ -87,7 +84,6 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 				for(String s : apRefFields){
 					if(s.equalsIgnoreCase( refType ) || (s.removeEndIgnoreCase('__c').equalsIgnoreCase( refType ))){
 						ap.put( s, relObjId);
-						System.debug('We have a match on object ' + s);
 						break;
 					}
 				}
@@ -126,14 +122,12 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		Map<Id,Id> objectOwnersMap = retrieveOwnersDataRelatedObject( this.relatedRecordIDs, this.relatedObjectName );
 
 		//insert Action Plans to DB
-		//System.debug('about to upsert ' + relActionPlans.size() + ' action plans');
 		upsert relActionPlans;
 
 		//create ActionPlanTemplatetasks && tasks from base ActionPlan Task List
 		if (this.mode == ApEditMode.MODE_NEW){
 
 			// Working on multiple APs from oidsList
-
 			for(ActionPlan__c ap : relActionPlans){
 				mapIDAP.put(ap.Id, ap);
 
@@ -149,11 +143,10 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 					aptList.add( nt );
 				}
 			}
-			System.debug('first loop done. Upserting ' + aptList.size() + ' APTasks');
 			upsert aptList;
 		}
 		else {
-			//relActionPlans size == 1
+
 			System.assertEquals(1, relActionPlans.size());
 
 			for(ActionPlan__c ap : relActionPlans){
@@ -173,21 +166,16 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		List<APTaskTemplate__c> aptsToUpsert = new List<APTaskTemplate__c>();
 
 		for(ActionPlan__c ap : relActionPlans){
-			System.debug('for this action plan, we may upsert ' + aptList.size() + ' tasks');
+
 			for(APTaskTemplate__c at : aptList ){
-				if(at.Action_Plan__c == null){
-					System.debug('WHY DO WE HAVE A TASK WITHOUT A PARENT ACTION PLAN?');
-				}
+
 				if(at.Action_Plan__c != null && at.Action_Plan__c != ap.Id){continue;}
 
 				aptTOTALListId.add(at.Id);
 
-				//APTaskTemplate__c at = apt.clone();
-
 				if(at.Action_Plan__c == null && ap.Id != null){
-					System.debug('APTaskTemplate ActionPlan was not set in the controller. Setting now.');
 					at.Action_Plan__c = ap.Id;
-				} // DS: This Id can be null because we may not have set it in the controller
+				} // This Id can be null because we may not have set it in the controller
 
 				if( at.Status__c == null ){
 					if(!String.isBlank(at.Task_RecordTypeId__c) && at.Task_RecordTypeId__c instanceof Id && at.Task_RecordTypeId__c.startsWithIgnoreCase('012')){
@@ -242,7 +230,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 			Task t = mapApTasks.get( t_t.Id);
 			if (t == null){
 				//Create the new task and template
-				t   = new Task();
+				t = new Task();
 			}
 			t.Subject           = t_t.Subject__c;
 			t.Priority          = t_t.Priority__c;
@@ -269,13 +257,10 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 			if ( apt != null ){
 
 				apAux = mapIDAP.get(apt.Action_Plan__c);
-				//System.debug('apAux is first set to ' + apAux);
 			}
 
 			if ( apAux == null ){
-				//System.debug('apAux is still null');
 				apAux = t_t.Action_Plan__r;
-				//System.debug('apAux is now ' + apAux);
 			}
 
 			//link to Action Plan's Related To Object
@@ -341,7 +326,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		}
 
 		//If we Only Create an Action Plan save the Id of the new object
-		if (relActionPlans.size()==1){
+		if (relActionPlans.size() == 1 ){
 			this.newActionPlanId = relActionPlans[0].Id;
 		}
 
@@ -401,8 +386,8 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 			ownerValue = relObjOwners.get( objId );
 
 			return ownerValue;
-		} else {
 
+		} else {
 			return null;
 		}
 	}
@@ -419,7 +404,6 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 		if( !relatedObjIds.isEmpty() ){
 			queryRetrieveOwnerIds = 'SELECT Id, OwnerId FROM ' + relatedObjectName + ' WHERE Id IN :relatedObjIds';
-			//Database.query( queryRetrieveOwnerIds );
 
 			for( SObject obj : Database.query(queryRetrieveOwnerIds) ){
 				relatedObjOwners.put( (Id)(obj.get('Id')), (Id)(obj.get('OwnerId')));
@@ -454,7 +438,6 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 				if(ap.get(f) != null){
 					objId = (Id)ap.get(f);
 					chatter_enabled = objId.getSObjectType().getDescribe().isFeedEnabled();
-					//System.debug(objName + ' OBJECT IS FEED ENABLED? ' + chatter_enabled);
 					break;
 				}
 			}
@@ -465,12 +448,11 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 				SObject objPost = token.newSObject();
 				objPost.put('Type', 'TextPost');
 				objPost.put('ParentId', objId);
-				//objPost.put('Body', getPostObjectBody( objName ));
 				objPost.put('Body', getPostObjectBody( objId, (String)ap.get('Name') ));
 
 				chatterPosts.add(objPost);
 
-				// to use this, it requires @seealldata=true, and we want to avoid that.
+				// to use this requires @seealldata=true, and we want to avoid that.
 				//ConnectApi.FeedElement feedElement = ConnectApi.ChatterFeeds.postFeedElement(Network.getNetworkId(), objId , ConnectApi.FeedElementType.FeedItem, this.getPostObjectBody( objName ));
 			}
 		}

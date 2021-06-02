@@ -57,15 +57,15 @@ global inherited sharing class ActionPlansBatchTaskBuilder implements Database.B
 	global Database.QueryLocator start( Database.BatchableContext bc ){
 
 		//Add Action Plan custom object reference Field.
-		String soql = 'SELECT a.User__c, a.Type__c, a.Subject__c, a.Status__c, a.SendEmail__c, a.Reminder__c, a.Minutes_Reminder__c,' +
-					  'a.Priority__c, a.Name, a.Id, a.Dependent__c, a.Comments__c, a.ActivityDate__c,' +
-					  'a.Action_Plan__c, ';
+		String soql = 'SELECT User__c, Type__c, Subject__c, Status__c, SendEmail__c, Reminder__c, Minutes_Reminder__c,' +
+					  'Priority__c, Name, Id, Dependent__c, Comments__c, ActivityDate__c,' +
+					  'Action_Plan__c, ';
 
 		for(String s : ActionPlansUtilities.getCustomRelationshipFields()){
-			soql += 'a.Action_Plan__r.' + s + ', ';
+			soql += 'Action_Plan__r.' + s + ', ';
 		}
 
-		soql += ' a.APTaskTemplate__c FROM APTaskTemplate__c a WHERE a.Id IN :aptIds';
+		soql += ' APTaskTemplate__c FROM APTaskTemplate__c WHERE Id IN :aptIds';
 
 		return Database.getQueryLocator( soql );
 	}
@@ -130,7 +130,6 @@ global inherited sharing class ActionPlansBatchTaskBuilder implements Database.B
 			}
 
 			t.Type          = apTask.Type__c;
-			//t.Status        = 'Not Started'; // set via record type and default value
 			t.ActivityDate  = apTask.ActivityDate__c;
 
 			if( apTask.Dependent__c == null || apTask.Dependent__c == 'None' ){
@@ -157,9 +156,6 @@ global inherited sharing class ActionPlansBatchTaskBuilder implements Database.B
 		}
 	}
 
-	/**
-	*
-	*/
 	global void finish( Database.BatchableContext bc ){
 
 	}

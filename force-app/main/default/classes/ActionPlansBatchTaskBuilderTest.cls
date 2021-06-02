@@ -56,8 +56,8 @@ private class ActionPlansBatchTaskBuilderTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();
-	   		ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'account' ) );
-	        ID batchID = Database.executeBatch(testBatch, 20);
+			ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'account' ) );
+			Id batchID = Database.executeBatch(testBatch, 20);
 		Test.stopTest();
 
 		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];
@@ -71,8 +71,8 @@ private class ActionPlansBatchTaskBuilderTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();
-	   		ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'contact' ) );
-	        ID batchID = Database.executeBatch(testBatch, 20);
+			ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'contact' ) );
+			Id batchID = Database.executeBatch(testBatch, 20);
 		Test.stopTest();
 
 		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];
@@ -87,8 +87,8 @@ private class ActionPlansBatchTaskBuilderTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();
-	   		ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'opportunity' ) );
-	        ID batchID = Database.executeBatch(testBatch, 20);
+			ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'opportunity' ) );
+			Id batchID = Database.executeBatch(testBatch, 20);
 		Test.stopTest();
 
 		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];
@@ -103,8 +103,8 @@ private class ActionPlansBatchTaskBuilderTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();
-	   		ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'lead' ) );
-	        ID batchID = Database.executeBatch(testBatch, 20);
+			ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'lead' ) );
+			Id batchID = Database.executeBatch(testBatch, 20);
 		Test.stopTest();
 
 		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];
@@ -119,8 +119,8 @@ private class ActionPlansBatchTaskBuilderTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();
-	   		ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'campaign' ) );
-	        ID batchID = Database.executeBatch(testBatch, 20);
+			ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'campaign' ) );
+			Id batchID = Database.executeBatch(testBatch, 20);
 		Test.stopTest();
 
 		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];
@@ -135,8 +135,8 @@ private class ActionPlansBatchTaskBuilderTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();
-	   		ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'case' ) );
-	        ID batchID = Database.executeBatch(testBatch, 20);
+			ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'case' ) );
+			Id batchID = Database.executeBatch(testBatch, 20);
 		Test.stopTest();
 
 		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];
@@ -151,8 +151,8 @@ private class ActionPlansBatchTaskBuilderTest {
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();
-	   		ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'contract' ) );
-	        ID batchID = Database.executeBatch(testBatch, 20);
+			ActionPlansBatchTaskBuilder testBatch = new ActionPlansBatchTaskBuilder( testutil.batchIds( 'contract' ) );
+			Id batchID = Database.executeBatch(testBatch, 20);
 		Test.stopTest();
 
 		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];

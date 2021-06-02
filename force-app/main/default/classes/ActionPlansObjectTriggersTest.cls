@@ -86,7 +86,7 @@ private class ActionPlansObjectTriggersTest {
 		// Verifies that action plans that are in recycle bin are removed when deleting the related object
 		delete ap;
 		delete a;
-		lAp = [SELECT Id, Name, LastModifiedDate FROM ActionPlan__c WHERE Account__c = :a.Id AND isDeleted = true ALL ROWS];
+		lAp = [SELECT Id, Name, LastModifiedDate FROM ActionPlan__c WHERE Account__c = :a.Id AND IsDeleted = true ALL ROWS];
 		System.assert(lAp.size() == 0);
 	}
 

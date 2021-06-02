@@ -57,7 +57,6 @@ private class ActionPlansCreateMultipleAPsExtTest {
         std.setSelected(accts);
         ActionPlansCreateMultipleAPsExtension ctrl = new ActionPlansCreateMultipleAPsExtension(std);
 
-        // When
         PageReference newAPPage = ctrl.doRedirect();
 
         System.assert(newAPPage.geturl().containsIgnoreCase('%2C0'));
@@ -66,12 +65,12 @@ private class ActionPlansCreateMultipleAPsExtTest {
     @IsTest
     public static void givenNoRecordsToDeleteThenNotDeleted() {
 
-        // Given
-        ApexPages.StandardSetController std = new ApexPages.StandardSetController(new List<Account> { });
+        Test.startTest();
+		ApexPages.StandardSetController std = new ApexPages.StandardSetController(new List<Account> { });
         ActionPlansCreateMultipleAPsExtension ctrl = new ActionPlansCreateMultipleAPsExtension(std);
 
-        // When
         PageReference newAPPage = ctrl.doRedirect();
+		Test.stopTest();
 
         System.assertEquals(null, newAPPage);
     }

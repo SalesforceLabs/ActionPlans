@@ -58,7 +58,6 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 		String soql = 'SELECT Id FROM ActionPlan__c WHERE Id IN :relActionPlansIds';
 		return Database.getQueryLocator( soql );
 
-		//return this.apBatchDeleteUtil.getObjects(bc);
 	}
 
 	/**
@@ -70,8 +69,6 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 		Set<Id> actionPlanIDs = new Set<Id>();
 		for( SObject s : data ){
 			actionPlanIDs.add((Id)s.get('Id'));
-			//ActionPlan__c a = (ActionPlan__c)s;
-			//actionPlanIDs.add(a.Id);
 		}
 		try{
 			deleteActionPlans(actionPlanIDs);
@@ -98,12 +95,7 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 	global void deleteActionPlans(Set<Id> relActionPlansIds) {
 
 		List<ActionPlan__c> relActionPlans = [SELECT Id FROM ActionPlan__c WHERE Id IN :relActionPlansIds LIMIT :ActionPlansUtilities.MAX_APTODELETE];
-
-		// 	task templates probably don't need to be deleted as they are the detail part of the relationship
 		Map<Id, APTaskTemplate__c> relTaskTemplateMap = new Map<Id, APTaskTemplate__c>([SELECT Id FROM APTaskTemplate__c WHERE Action_Plan__c IN :relActionPlansIds]);
-
-		delete relActionPlans;
-
 		List<Task> relTaskList = [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__c IN :relTaskTemplateMap.keySet()];
 
 		// Tasks should have been deleted by the trigger handler, but we will be sure here

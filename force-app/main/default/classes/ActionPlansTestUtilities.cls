@@ -101,7 +101,6 @@ public inherited sharing class ActionPlansTestUtilities{
 		for(PermissionSet ps : pslist){
 			psalist.add(new PermissionSetAssignment(AssigneeId = testUser.Id, PermissionSetId = ps.Id));
 		}
-		System.debug('psalist: ' + psalist);
 		Database.insert(psalist, false);
 
 		return testUser;
@@ -326,7 +325,7 @@ public inherited sharing class ActionPlansTestUtilities{
 		List<APTaskTemplate__c> apttToInsert = new List<APTaskTemplate__c>();
 		//Creates default tasks for Action Plan
 		for( Integer i = 0; i < numTasks; i++ ){
-			apttToInsert.add(this.createNewActionPlanTask( newActionPlan, i+1, user, 'Email', 'High' ));
+			apttToInsert.add(this.createNewActionPlanTask( newActionPlan, i + 1, user, 'Email', 'High' ));
 		}
 
 		insert apttToInsert;
@@ -454,10 +453,10 @@ public inherited sharing class ActionPlansTestUtilities{
 		for(RecordTypeInfo info : recordTypeInfoList) {
 			//Check default record type
 			if(!info.isDefaultRecordTypeMapping() && info.isAvailable() && info.getRecordTypeId() != ActionPlansUtilities.MASTER_RECORD_TYPE_ID){
-				System.debug('not default ' + info.getName() + ' ' + info.getRecordTypeId());
+				//System.debug('not default ' + info.getName() + ' ' + info.getRecordTypeId());
 				notdefaultRecordTypeId = info.getRecordTypeId();
 			} else if (info.isDefaultRecordTypeMapping()){
-				System.debug('default ' + info.getName() + ' ' + info.getRecordTypeId());
+				//System.debug('default ' + info.getName() + ' ' + info.getRecordTypeId());
 				defaultRecordTypeId = info.getRecordTypeId();
 			}
 		}

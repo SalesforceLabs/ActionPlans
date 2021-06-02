@@ -38,48 +38,33 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 public inherited sharing class ActionPlansCreateMultipleAPsExtension {
 
-    private ApexPages.StandardSetController standardController;
+	private ApexPages.StandardSetController standardController;
 
-    public String objIDs { get; private set; }
+	public String objIDs { get; private set; }
 
-    public ActionPlansCreateMultipleAPsExtension(ApexPages.StandardSetController standardController) {
-        this.standardController = standardController;
-        Set<Id> selected = new Map<Id, SObject>(standardController.getSelected()).keySet();
-        List<Id> objIDsList = new List<Id>(selected);
-        /* for(Id i : selected){
-            objIDsList.add((String)i);
-        } */
-        objIDs = String.join(objIDsList,',');
-    }
+	public ActionPlansCreateMultipleAPsExtension(ApexPages.StandardSetController standardController) {
+		this.standardController = standardController;
+		Set<Id> selected = new Map<Id, SObject>(standardController.getSelected()).keySet();
+		List<Id> objIDsList = new List<Id>(selected);
+		objIDs = String.join(objIDsList,',');
+	}
 
-    public PageReference doRedirect() {
-        if(String.isBlank(objIDs)){
-            return null;
-        }
+	public PageReference doRedirect() {
+		if(String.isBlank(objIDs)){
+			return null;
+		}
 
-        Pagereference pageRef = Page.ActionPlanCreation;
+		Pagereference pageRef = Page.ActionPlanCreation;
 
-        Id firstId = objIDs.split(',')[0];
-        String objType = firstId.getSobjectType().getDescribe().getLabel();
-        String objPrefix = firstId.getSobjectType().getDescribe().getKeyPrefix();
-        System.debug('refids ' + objIDs);
-        System.debug('reftype ' + objType);
-        pageRef.getParameters().put('refType', objType);
-        pageRef.getParameters().put('refId', objIDs);
-        pageRef.getParameters().put('retURL', '/' + objPrefix + '/o' );
-        pageRef.setRedirect(true);
-        System.debug('redirecting to new page ' + pageRef.getURL());
-        return pageRef;
+		Id firstId = objIDs.split(',')[0];
+		String objType = firstId.getSobjectType().getDescribe().getLabel();
+		String objPrefix = firstId.getSobjectType().getDescribe().getKeyPrefix();
 
+		pageRef.getParameters().put('refType', objType);
+		pageRef.getParameters().put('refId', objIDs);
+		pageRef.getParameters().put('retURL', '/' + objPrefix + '/o' );
+		pageRef.setRedirect(true);
+		return pageRef;
 
-        /* Set<Id> selected = new Map<Id, SObject>(standardController.getSelected()).keySet();
-        //delete [SELECT Id FROM ActionPlan__c WHERE Id IN :selected];
-
-        List<Id> recordIds = new List<Id>();
-        recordIds.addAll(selected);
-        ActionPlansBatchDelete aPBatch = new ActionPlansBatchDelete(recordIds);
-        Database.ExecuteBatch( aPBatch );
-
-        return standardController.cancel(); */
-    }
+	}
 }

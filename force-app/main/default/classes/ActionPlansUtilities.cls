@@ -85,7 +85,7 @@ public inherited sharing class ActionPlansUtilities {
 
 	public static List<String> getCustomRelationshipFields(){
 		if(apCustomRelationshipFields == null){
-			List<String> refrerenceFieldNames = new List<String>();
+			List<String> referenceFieldNames = new List<String>();
 
 			Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.ActionPlan__c.fields.getMap();
 
@@ -98,11 +98,11 @@ public inherited sharing class ActionPlansUtilities {
 					String relatedObjectName = dfr.getReferenceTo()[0].getDescribe().getName();
 					if( !relatedObjectName.startsWithIgnoreCase('ActionPlan') )
 					{
-						refrerenceFieldNames.add(s);
+						referenceFieldNames.add(s);
 					}
 				}
 			}
-			apCustomRelationshipFields = refrerenceFieldNames;
+			apCustomRelationshipFields = referenceFieldNames;
 		}
 		System.debug('Related Fields: ' + apCustomRelationshipFields);
 		return apCustomRelationshipFields;
@@ -221,11 +221,8 @@ public inherited sharing class ActionPlansUtilities {
 	public static List<SelectOption> getTaskRTPicklistValues(){
 		if(taskRTs == null){
 			taskRTs = new List<SelectOption>();
-			//String taskRTQuery = 'SELECT Id, Name, IsActive FROM RecordType WHERE SObjectType = \'Task\' ORDER BY Name ASC';
 			for( SObject rt : getTaskRecordTypes()){
 				SelectOption so = new SelectOption((String)rt.get('Id'), (String)rt.get('Name'), !(Boolean)rt.get('IsActive'));
-				//so.setValue(rt.Id);
-				//so.setLabel(rt.Name);
 				taskRTs.add(so);
 			}
 		}
@@ -244,7 +241,6 @@ public inherited sharing class ActionPlansUtilities {
 				openTaskStatuses.add(ts.MasterLabel);
 			}
 		}
-		System.debug('Open Statuses: ' + openTaskStatuses);
 		return openTaskStatuses;
 	}
 	private static Set<String> openTaskStatuses;
@@ -261,7 +257,6 @@ public inherited sharing class ActionPlansUtilities {
 				closedTaskStatuses.add(ts.MasterLabel);
 			}
 		}
-		System.debug('Closed Statuses: ' + closedTaskStatuses);
 		return closedTaskStatuses;
 	}
 
@@ -371,10 +366,9 @@ public inherited sharing class ActionPlansUtilities {
 		if(checkReminderByDefault == null){
 			checkReminderByDefault = false;
 			if(getCanDisplayReminder()){
-				// ### TODO: Fix this query
-				String reminderQuery = 'SELECT Name, UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = \'' + UserInfo.getUserId() + '\' LIMIT 1';
-				SObject s = Database.query(reminderQuery);
-				checkReminderByDefault = (Boolean)s.get('UserPreferencesTaskRemindersCheckboxDefault');
+				String reminderQuery = 'SELECT Name, UserPreferencesTaskRemindersCheckboxDefault FROM User WHERE Id = \'' + UserInfo.getUserId() + '\'';
+				List<SObject> sList = Database.query(reminderQuery);
+				checkReminderByDefault = (Boolean)sList[0].get('UserPreferencesTaskRemindersCheckboxDefault');
 			}
 		}
 		return checkReminderByDefault;
@@ -467,10 +461,6 @@ public inherited sharing class ActionPlansUtilities {
 		Integer dayOfWeek = Math.mod(monday.daysBetween(d), 7);
 		return dayOfWeekEnglish.get(dayOfWeek);
 
-		/* Datetime dt = DateTime.newInstance( d.year(), d.month(), d.day(), 1, 1, 1 );
-		String dayOfWeek = dt.format('EEEE'); //This returns - Monday, Tuesday, Wednesday, etc..
-		System.debug(dayOfWeek);
-		return dayOfWeek; */
 	}
 
 	public static Map<Integer, String> dayOfWeekEnglish = new Map<Integer, String>{
@@ -479,7 +469,6 @@ public inherited sharing class ActionPlansUtilities {
 
 	public static Weekend_Day__mdt getWeekendDay(String developerName){
 		return Weekend_Day__mdt.getInstance(developerName);
-		//return getWeekendDay(developerName, 0, 0);
 	}
 
 	/**
@@ -489,38 +478,30 @@ public inherited sharing class ActionPlansUtilities {
 	 * @return the new task due date
 	 */
 	public static Date adjustTaskDueDate(Date actionPlanStartDate, Integer taskDaysFromStart, String apSkipDay){
-		System.debug('start Date ' + actionPlanStartDate);
-		System.debug('taskDaysFromStart ' + taskDaysFromStart);
-		Date dueDate = actionPlanStartDate.addDays( taskDaysFromStart );
 
+		Date dueDate = actionPlanStartDate.addDays( taskDaysFromStart );
 
 		// find if the due date fall on a Saturday or Sunday.  Add 1 day for Sunday and 2 for Saturday
 		//Date refDate        = Date.newInstance(1900, 1, 7);  // Jan 7 1900 = Sun
 		//Integer dayOfWeek   = Math.mod(refDate.daysBetween(dueDate), 7); // 0 = Sun ... 6 = Sat
 
 		String dayName = ActionPlansUtilities.getDayOfWeek( dueDate );
-		System.debug('Task is originally due on a ' + dayName);
 
 		Weekend_Day__mdt cmdt = ActionPlansUtilities.getWeekendDay(dayName);  //Weekend_Day__mdt.getInstance(dayName);
-		System.debug('cmdt: ' + cmdt);
 
 		Integer addDays = 0;
 
 		if( apSkipDay != null && apSkipDay.startsWithIgnoreCase('End')){
-			System.debug('Template is set to skip back to end of the previous week');
 			Integer daysToAdjust = cmdt.Days_from_end_of_previous_week__c.intValue();
 			addDays = addDays - daysToAdjust;
-			System.debug('Removing ' + daysToAdjust + ' days from ' + dueDate);
 		}
 		else if( apSkipDay != null && apSkipDay.startsWithIgnoreCase('Start')){
-			System.debug('Template is set to skip forward to beginning of the next week');
 			Integer daysToAdjust = cmdt.Days_to_start_of_next_week__c.intValue();
-			System.debug('Adding ' + daysToAdjust + ' days to ' + dueDate);
 			addDays = addDays + daysToAdjust;
 		}
-		if(addDays != 0){
-			System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
-		}
+		/* if(addDays != 0){
+			//System.debug('Task is now due on a ' + ActionPlansUtilities.getDayOfWeek( dueDate.addDays( addDays ) ));
+		} */
 		return dueDate.addDays( addDays );
 	}
 
@@ -528,6 +509,6 @@ public inherited sharing class ActionPlansUtilities {
 	 * Detect user theme
 	 */
 	public static Boolean getIsLex(){
-		return ( UserInfo.getUiThemeDisplayed().equalsIgnoreCase('theme4d') || UserInfo.getUiThemeDisplayed().equalsIgnoreCase('theme4u'));
+		return ( UserInfo.getUiThemeDisplayed().containsIgnoreCase('theme4') );
 	}
 }

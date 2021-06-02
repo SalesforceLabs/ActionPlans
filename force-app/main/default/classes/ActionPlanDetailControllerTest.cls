@@ -95,6 +95,8 @@ private class ActionPlanDetailControllerTest {
 		ActionPlanDetailController apDetailController = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
 		boolean versionName = apDetailController.getVersion();
 
+		Test.StopTest();
+
 		//Checks if Action Plan Template has not been changed since the creation of the Action Plan.
 		System.assert( !versionName );
 
@@ -109,7 +111,8 @@ private class ActionPlanDetailControllerTest {
 		//Will fail because tests run too fast on Salesforce Platform
 		//System.assert( versionName );
 
-		Test.StopTest();
+
+
 	}
 
 	@IsTest
@@ -126,10 +129,9 @@ private class ActionPlanDetailControllerTest {
 
 		List<ActionPlan__c> actionPlanList = [SELECT Id FROM ActionPlan__c WHERE Id = :actionPlan.Id LIMIT 1];
 
-		//Checks if Action Plan Template has been changed since the creation of the Action Plan.
-		System.assert( actionPlanList.isEmpty(), 'Action Plan was not deleted' );
-
 		Test.StopTest();
+
+		System.assert( actionPlanList.isEmpty(), 'Action Plan was not deleted' );
 	}
 
 	@IsTest
@@ -139,45 +141,45 @@ private class ActionPlanDetailControllerTest {
 
 		ActionPlan__c actionPlan = testUtil.createNewActionPlan( 'account', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		ActionPlanDetailController APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		String name = APDC.getrelatedRecordName();
-		System.assert(name != null);
+		ActionPlanDetailController apdc = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
+		String recName = apdc.getrelatedRecordName();
+		System.assert(recName != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'campaign', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getrelatedRecordName();
-		System.assert(name != null);
+		apdc = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
+		recName = apdc.getrelatedRecordName();
+		System.assert(recName != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'case', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getrelatedRecordName();
-		System.assert(name != null);
+		apdc = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
+		recName = apdc.getrelatedRecordName();
+		System.assert(recName != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'contact', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getrelatedRecordName();
-		System.assert(name != null);
+		apdc = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
+		recName = apdc.getrelatedRecordName();
+		System.assert(recName != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'contract', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getrelatedRecordName();
-		System.assert(name != null);
+		apdc = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
+		recName = apdc.getrelatedRecordName();
+		System.assert(recName != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'lead', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getrelatedRecordName();
-		System.assert(name != null);
+		apdc = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
+		recName = apdc.getrelatedRecordName();
+		System.assert(recName != null);
 
 		actionPlan = testUtil.createNewActionPlan( 'opportunity', 0 );
 		System.currentPageReference().getParameters().put( 'id', actionPlan.Id );
-		APDC = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
-		name = APDC.getrelatedRecordName();
-		System.assert(name != null);
+		apdc = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
+		recName = apdc.getrelatedRecordName();
+		System.assert(recName != null);
 	}
 
 	@IsTest

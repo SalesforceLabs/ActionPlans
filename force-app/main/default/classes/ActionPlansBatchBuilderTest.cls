@@ -245,19 +245,6 @@ private class ActionPlansBatchBuilderTest {
 	@IsTest
 	private static void runBatchException(){
 		ActionPlansTestUtilities.forceError = true;
-/*		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
-
-		ActionPlan__c ap = testutil.createNewActionPlan( 'lead', 2);
-		List<APTaskTemplate__c> apTasks = new List<APTaskTemplate__c>();
-		Set<Id> oIdsList = new Set<Id>();
-
-		Test.startTest();
-	   		ActionPlansBatchBuilder testBatch = new ActionPlansBatchBuilder( ap, apTasks,'Opportunity', oIdsList );
-	        ID batchID = Database.executeBatch(testBatch, 20);
-		Test.stopTest();
-
-		AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed, TotalJobItems, CreatedBy.Email from AsyncApexJob WHERE Id = :batchId];
-		System.AssertEquals('Completed', a.status);*/
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
 
 		Test.startTest();

@@ -98,8 +98,6 @@ global inherited sharing class ActionPlanCreateInvocable {
 				ap.put(s, null);
 			}
 
-			// TODO: Check if we have the proper object relationship on ActionPlan
-
 			Id relatedId = r.relatedRecordID;
 			Schema.SObjectType token = relatedId.getSObjectType();
 			String relObjName = token.getDescribe().getName().toLowerCase();
@@ -109,7 +107,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 			}
 
 			if(!Schema.SObjectType.ActionPlan__c.fields.getMap().containsKey(relObjField)){
-				System.debug('Field not present. ' + relObjField);
+				//System.debug('Field not present. ' + relObjField);
 				continue;
 			}
 
@@ -164,15 +162,12 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 				apTask.Action_Plan__c        = ap.Id;
 
-				//if(ActionPlansUtilities.HAS_RECORD_TYPE){
-					apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
-				/* } else {
-					apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(null);
-				} */
+				apTask.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(ActionPlansUtilities.getDefaultTaskRecordTypeId());
 
 				if( apTask.Dependent__c != null && apTask.Dependent__c != 'None' ){
 					apTask.ActivityDate__c = null;
 				}
+
 				else {
 
 					apTask.APTaskTemplate__c = null;
@@ -191,7 +186,7 @@ global inherited sharing class ActionPlanCreateInvocable {
 						apTask.ActivityDate__c = ap.StartDate__c.addDays( apTask.DaysFromStart__c.intValue() );
 					}
 				}
-				System.debug('Our uniqueID is ' + ap.Id + '' + apTask.TaskIndex__c);
+				//System.debug('Our uniqueID is ' + ap.Id + '' + apTask.TaskIndex__c);
 				planTaskIndexToTask.put(ap.Id + '' + apTask.TaskIndex__c, apTask);
 			}
 		}
@@ -203,13 +198,14 @@ global inherited sharing class ActionPlanCreateInvocable {
 
 		for(APTaskTemplate__c apTask : planTaskIndexToTask.values()){
 			String actionPlanPlusIndex = apTask.Action_Plan__c + '' + apTask.Dependent__c;
-			System.debug('Looking for key ' + actionPlanPlusIndex);
+			//System.debug('Looking for key ' + actionPlanPlusIndex);
 			if(planTaskIndexToTask.containsKey(actionPlanPlusIndex)){
 				apTask.APTaskTemplate__c = planTaskIndexToTask.get(actionPlanPlusIndex).Id;
 				dependentTasksToUpdate.add(apTask);
-			} else {
-				System.debug('No matching ' + actionPlanPlusIndex);
 			}
+			/* else {
+				//System.debug('No matching ' + actionPlanPlusIndex);
+			} */
 		}
 		update dependentTasksToUpdate;
 

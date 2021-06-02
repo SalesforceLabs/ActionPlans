@@ -69,7 +69,6 @@ private class ActionPlanTemplateCreationCntrlTest {
 		Test.StartTest();
 
 		aptcc.pendingTemplateDeletes = new List<APTTaskTemplate__c>();
-		//aptcc.aptTasks = new List<APTTaskTemplate__c>();
 		aptcc.pendingTemplateDeletes.add( testutil.createNewActionPlanTemplateTask(apt, 3, tUser, 'Email', 'High') );
 		insert aptcc.pendingTemplateDeletes;
 		aptcc.aptTasks.add( testutil.createNewActionPlanTemplateTask(apt, 3, null, 'Email', 'High') );
@@ -147,8 +146,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		aptcc.addTemplateTask();
 		Test.stopTest();
 		String errorMsg = aptcc.getErrorMsg();
-		System.debug(errorMsg);
-		System.debug(String.valueof(ActionPlansUtilities.MAX_APTASKS));
+		System.debug('ErrorMsg ' + errorMsg);
 		System.assert(errorMsg.containsIgnoreCase(String.valueOf(ActionPlansUtilities.MAX_APTASKS)));
 
 	}
@@ -182,7 +180,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		aptcc.addTemplateTask();
 
-		System.assert( aptcc.geterrorMsg() == null, 'A error was returned when adding a template task ');
+		System.assert( aptcc.geterrorMsg() == null, 'An error was returned when adding a template task ');
 
 		ActionPlanTemplate__c actionPlanTemplate2 = testUtil.createNewActionPlanTemplate( ActionPlansUtilities.MAX_APTASKS );
 		aptcc = new ActionPlanTemplateCreationController(new ApexPages.StandardController(actionPlanTemplate2));
@@ -191,7 +189,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		aptcc.addTemplateTask();
 
-		System.assert( aptcc.geterrorMsg() != null, 'A error was not returned when adding a template task' );
+		System.assert( aptcc.geterrorMsg() != null, 'An error was not returned when adding a template task' );
 
 		Test.StopTest();
 	}
@@ -224,8 +222,6 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.assertEquals(5, [SELECT Count() FROM APTTaskTemplate__c], 'We created 5 tasks');
 
-
-
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController(new ApexPages.StandardController(actionPlanTemplate));
 		aptcc.getTemplateTasks();
 		System.assertEquals(5, aptcc.aptTasks.size(), 'Should have 5 tasks on the template');
@@ -255,7 +251,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		List<ActionPlanTemplateCreationController.ApTTaskWrapper> taskList =  aptcc.getTemplateWrappers();
 
 		//checks that the list is not empty
-		System.assert( !taskList.isEmpty(), 'Task list was not Empty' );
+		System.assert( !taskList.isEmpty(), 'Task list was not empty' );
 
 		Test.StopTest();
 	}
@@ -282,7 +278,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		List<ActionPlanTemplateCreationController.ApTTaskWrapper> taskList =  aptcc.getTemplateWrappers();
 
 		//checks that the list is not empty
-		System.assert( !taskList.isEmpty(), 'Task list was not Empty' );
+		System.assert( !taskList.isEmpty(), 'Task list was not empty' );
 
 		Test.StopTest();
 	}
@@ -300,7 +296,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		Integer numTasks = aptcc.getTemplateTaskSize();
 
 		//checks that the list is not empty
-		System.assert( !taskList.isEmpty(), 'Task list was not Empty' );
+		System.assert( !taskList.isEmpty(), 'Task list was not empty' );
 
 		//Checks to see if both methods return same task size
 		System.assertEquals( taskList.size(), numTasks );

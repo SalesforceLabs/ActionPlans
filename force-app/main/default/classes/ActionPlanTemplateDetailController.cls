@@ -41,7 +41,7 @@ public inherited sharing class ActionPlanTemplateDetailController {
 
 	@TestVisible private ActionPlanTemplate__c 	actionPlanTemplate;
 	public Id                       actionPlanExportXMLId { get; private set; }
-	public Boolean					taskHasRecordType      { get; set; }
+	public Boolean					taskHasRecordType      { get; private set; }
 	public Boolean					canDisplayReminder    { get; private set; }
 
 	/**
@@ -122,7 +122,6 @@ public inherited sharing class ActionPlanTemplateDetailController {
 	*/
 	public void exportTemplateToXMLDoc(){
 		ExportActionPlanTemplate utility = new ExportActionPlanTemplate( actionPlanTemplate.Id );
-
 		actionPlanExportXMLId = utility.export();
 	}
 

@@ -122,7 +122,7 @@ public inherited sharing class ExportActionPlanTemplate{
 		out.writeStartElement( null, 'export', null );
 		out.writeStartElement( null, 'meta', null );
 
-		writeElement( out, 'exportPackage', 'Action Plan Template' );
+		writeElement( out, 'exportPackage', Schema.getGlobalDescribe().get( 'ActionPlanTemplate__c' ).getDescribe().getLabel() );
 		writeElement( out, 'exportAuthor', UserInfo.getName() );
 		writeElement( out, 'exportOrganization', UserInfo.getOrganizationName() );
 		writeElement( out, 'exportCreateDate', '' + System.now() );

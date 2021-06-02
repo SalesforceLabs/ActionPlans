@@ -192,7 +192,7 @@ public inherited sharing class ImportActionPlanTemplate{
 					throw new ImportException( System.Label.ap_Errors_xmlMetaData );
 				}
 			}
-			//handle Description field
+			//handle Author field
 			if( reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'exportAuthor' ){
 				reader.next();
 				String author = getDecodedString( reader );
@@ -422,7 +422,7 @@ public inherited sharing class ImportActionPlanTemplate{
 	* @return String
 	*/
 	private String getDecodedString( Xmlstreamreader reader ){
-		System.debug(reader.getText());
+		//System.debug(reader.getText());
 		return EncodingUtil.urlDecode( reader.getText(), 'UTF-8' ).trim();
 	}
 

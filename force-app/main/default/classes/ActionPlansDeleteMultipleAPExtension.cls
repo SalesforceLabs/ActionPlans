@@ -38,25 +38,16 @@ public inherited sharing class ActionPlansDeleteMultipleAPExtension {
 
 	public PageReference deleteRecords() {
 		Set<Id> selected = new Map<Id, SObject>(standardController.getSelected()).keySet();
-		//delete [SELECT Id FROM ActionPlan__c WHERE Id IN :selected];
 
 		Set<Id> recordIds = new Set<Id>();
 		recordIds.addAll(selected);
 		delete [SELECT Id FROM ActionPlan__c WHERE Id IN :recordIds];
 
-		//ActionPlansBatchDelete aPBatch = new ActionPlansBatchDelete(recordIds);
-		//Database.ExecuteBatch( aPBatch );
-
-
-		//PageReference newPage = new PageReference( '/' + ActionPlansUtilities.getObjectKeyPrefix( oName ) + '/o' );
 		PageReference newPage = Page.ActionPlansHome;
 		String confirmation = System.Label.ap_ConfirmationofDeletion;
 		newPage.getParameters().put('message', confirmation);
 		newPage.getParameters().put('severity','success');
 		newPage.setRedirect( true );
 		return newPage;
-
-		// uncomment if replacing batch deletion with synchronous deletion
-		//return standardController.cancel();
 	}
 }

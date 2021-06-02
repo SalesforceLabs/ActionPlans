@@ -204,8 +204,7 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		List<Contact> contacts = new List<Contact>();
 		for(Integer i = 0; i < CONCOUNT; i++){
-			Contact newContact 	= new Contact();
-			newContact.LastName = 'con' + math.rint(math.random() * 100000);
+			Contact newContact 	= new Contact( LastName = 'con' + math.rint(math.random() * 100000) );
 			contacts.add(newContact);
 		}
 
@@ -405,12 +404,12 @@ private with sharing class ActionPlanCreationControllerTest {
 
 		ApexPages.currentPage().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
-		apCreateController.apTasks = [SELECT a.Type__c, a.Subject__c, a.ActivityDate__c, a.Priority__c, a.Status__c, a.Dependent__c,
-														a.Name, a.User__c, a.User__r.Name, a.Id, a.DaysFromStart__c, a.CreatedById, a.APTaskTemplate__r.Name,
-														a.APTaskTemplate__r.Subject__c, a.APTaskTemplate__c, a.Action_Plan__c, a.Reminder__c,
-														a.SendEmail__c, a.Comments__c
-														FROM APTaskTemplate__c a
-														WHERE a.Action_Plan__c = :actionPlan.Id ORDER BY a.createdDate asc];
+		apCreateController.apTasks = [SELECT Type__c, Subject__c, ActivityDate__c, Priority__c, Status__c, Dependent__c,
+											Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, APTaskTemplate__r.Name,
+											APTaskTemplate__r.Subject__c, APTaskTemplate__c, Action_Plan__c, Reminder__c,
+											SendEmail__c, Comments__c
+											FROM APTaskTemplate__c
+										WHERE Action_Plan__c = :actionPlan.Id ORDER BY createdDate asc];
 
 		List<Selectoption> options = apCreateController.getSubjectItems();
 

@@ -10,19 +10,14 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 		switch on triggerEvent {
 
-			when BEFORE_DELETE {
-				relationshipName = getRelationshipName((Id)oldRecordsMap.values()[0].get('Id'));
+			when BEFORE_DELETE, AFTER_UNDELETE {
+				relationshipName = getRelationshipName( (Id)oldRecordsMap.values()[0].get('Id') );
 			}
-			when AFTER_UNDELETE {
-				relationshipName = getRelationshipName((Id)newRecordsMap.values()[0].get('Id'));
-			}
-			when ELSE {
+			when else {
 				return;
 			}
 		}
 		if(relationshipName == null) { return; }
-
-		System.debug('relationshipName: ' + relationshipName);
 
 		//Delete related action plans
 		switch on triggerEvent {
@@ -30,16 +25,15 @@ global inherited sharing class ActionPlansTriggerHandlers {
 			when BEFORE_DELETE {
 
 				Set<Id>  apIds  = new Set<Id>();
-				List<ActionPlan__c> deletePermantently_apIds= new List<ActionPlan__c>();
+				List<ActionPlan__c> deletePermenantly_apIds= new List<ActionPlan__c>();
 
-				// GET Action Plans to delete in recycle bin
+				// Query Action Plans to delete in recycle bin
 				String deleteQueryString = 'SELECT Id, Name FROM ActionPlan__c WHERE ' +
 				                           relationshipName + ' IN :oldRecords AND isDeleted = true ALL ROWS';
-				//System.debug('Query1: ' + deleteQueryString);
-				deletePermantently_apIds = Database.query(deleteQueryString);
+				deletePermenantly_apIds = Database.query(deleteQueryString);
 
-				if ( deletePermantently_apIds.size() >0 ){
-					Database.emptyRecycleBin(deletePermantently_apIds);
+				if ( deletePermenantly_apIds.size() >0 ){
+					Database.emptyRecycleBin(deletePermenantly_apIds);
 				}
 
 				deleteQueryString = 'SELECT Id FROM ActionPlan__c WHERE ' + relationshipName + ' IN :oldRecords';
@@ -48,7 +42,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					apIds.add( ap.Id );
 				}
 
-				if ( apIds.size() >0 ){
+				if ( apIds.size() > 0 ){
 					ActionPlansBatchDelete aPBatch = new ActionPlansBatchDelete(apIds);
 					Database.ExecuteBatch( aPBatch );
 				}
@@ -64,7 +58,6 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						//throw dmlException
 						insert new Contact();
 					}
-					//undelete aPs;
 					Database.undelete( aPs, false);
 				} catch ( Dmlexception e ){
 					for (SObject c: newRecords){
@@ -97,18 +90,16 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 	public static void triggerHandler_ActionPlan(List<ActionPlan__c> newRecords, List<ActionPlan__c> oldRecords, Map<Id,ActionPlan__c> newRecordsMap, Map<Id,ActionPlan__c> oldRecordsMap, System.TriggerOperation triggerEvent){
 
-		//System.debug('IN ActionPlan__c ' + triggerEvent.name());
+		//System.debug('In ActionPlan__c ' + triggerEvent.name());
 
 		switch on triggerEvent {
 
 			when BEFORE_INSERT {
-				System.debug('before insert action plan');
 
 				Id defaultTaskRTId = ActionPlansUtilities.getDefaultTaskRecordTypeId();
 
 				Set<Id> aptemplates = new Set<Id>();
 				for(ActionPlan__c ap : newRecords){
-					//System.debug('Action plan in insert: ' + ap);
 					if(ap.Action_Plan_Template__c != null && ap.TaskRecordTypeID__c == null){
 						aptemplates.add(ap.Action_Plan_Template__c);
 					}
@@ -121,7 +112,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 					for(ActionPlan__c ap : newRecords){
 						if(ap.TaskRecordTypeID__c == null || !(ap.TaskRecordTypeID__c instanceOf Id)){
-							//System.debug('no task record type set');
+
 							if(templateMap.containsKey(ap.Action_Plan_Template__c)){
 								ap.TaskRecordTypeID__c = templateMap.get(ap.Action_Plan_Template__c).TaskRecordTypeID__c;
 							} else {
@@ -172,7 +163,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 			when AFTER_UNDELETE {
 
-				Database.UndeleteResult[] unDel_errors;
+				Database.UndeleteResult[] unDel_results;
 
 				//get Id of all deleted Action Plan Task Templates
 				Map<Id,APTaskTemplate__c> map_APTasks = new Map<Id,APTaskTemplate__c>([SELECT Id, Action_Plan__c
@@ -181,10 +172,10 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				//get all tasks asociated to this APTasks
 				List<Task> taskList = [SELECT Id, TaskAPTaskTemplate__c, IsDeleted
 										FROM Task
-										WHERE TaskAPTaskTemplate__c IN :map_APTasks.keySet() AND isDeleted = true ALL ROWS ];
+										WHERE TaskAPTaskTemplate__c IN :map_APTasks.keySet() AND IsDeleted = true ALL ROWS ];
 
 				if (!taskList.isEmpty()){
-					unDel_errors = Database.undelete( taskList,false);
+					unDel_results = Database.undelete( taskList,false );
 				}
 			}
 		}
@@ -231,11 +222,12 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				for(APTaskTemplate__c apt : newRecords){
 
 					if(oldRecords == null || (apt.Name == null  || apt.Name.startsWithIgnoreCase(aptPrefix) || (oldRecords != null && apt.Subject__c != oldRecordsMap.get(apt.Id).Subject__c)) || !apt.Name.endsWithIgnoreCase(apt.Subject__c) ){
-						System.debug('Renaming ' + apt.Name + ' from subject ' + apt.Subject__c + ' on ' + triggerEvent.name());
+						//System.debug('Renaming ' + apt.Name + ' from subject ' + apt.Subject__c + ' on ' + triggerEvent.name());
 						apIDs.add(apt.Action_Plan__c);
-					} else {
-						System.debug('SKIPPING ' + apt.Name + ' with subject ' + apt.Subject__c + ' on ' + triggerEvent.name());
 					}
+					/* else {
+						//System.debug('SKIPPING ' + apt.Name + ' with subject ' + apt.Subject__c + ' on ' + triggerEvent.name());
+					} */
 				}
 				if(!apIDs.isEmpty()){
 					Map<Id, ActionPlan__c> nameMap = new Map<Id, ActionPlan__c>([SELECT Id, Name FROM ActionPlan__c WHERE Id IN :apIDs]);
@@ -243,11 +235,9 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					Integer taskTemplateNameLength	= APTaskTemplate__c.Name.getDescribe().getLength();
 					for(APTaskTemplate__c apt : newRecords){
 						if(nameMap.containsKey(apt.Action_Plan__c)){
-							//System.debug('the task has a template and we will rename');
 							String apName = nameMap.get(apt.Action_Plan__c).Name;
 							String newSubject = apName + ' - ' + apt.Subject__c;
 							apt.Name = ActionPlansUtilities.actionPlanSubjectToName(newSubject, taskTemplateNameLength);
-							System.debug('renaming aptaskTemplate to ' + newSubject);
 						}
 					}
 				}
@@ -263,7 +253,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 			when BEFORE_DELETE {
 				try{
-				delete [SELECT t.Id FROM Task t WHERE t.TaskAPTaskTemplate__c IN :oldRecordsMap.keyset() AND t.IsClosed = false];
+					delete [SELECT t.Id FROM Task t WHERE t.TaskAPTaskTemplate__c IN :oldRecordsMap.keyset() AND t.IsClosed = false];
 				} catch (Exception e){
 					System.debug('Error when deleting Tasks related to APTaskTemplate');
 				}
@@ -317,7 +307,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 	public static void triggerHandler_ActionPlanTemplateTaskTemplate(List<APTTaskTemplate__c> newRecords, List<APTTaskTemplate__c> oldRecords, Map<Id, APTTaskTemplate__c> oldRecordsMap, System.TriggerOperation triggerEvent){
 
-		//System.debug('IN APTTaskTemplate__c ' + triggerEvent.name());
+		//System.debug('In APTTaskTemplate__c ' + triggerEvent.name());
 
 		switch on triggerEvent {
 
@@ -359,7 +349,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 	public static void triggerHandler_ActionPlanTask(List<Task> newRecords, List<Task> oldRecords, Map<Id, Task> newRecordsMap, Map<Id, Task> oldRecordsMap, System.TriggerOperation triggerEvent){
 
-		//System.debug('IN Task ' + triggerEvent.name());
+		//System.debug('In Task ' + triggerEvent.name());
 
 		switch on triggerEvent {
 
@@ -375,11 +365,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 				Boolean taskHasRecordType = ActionPlansUtilities.HAS_RECORD_TYPE;
 
-				//System.debug('do we have a task record type? ' + taskHasRecordType);
-
 				Set<String> closedStatuses = ActionPlansUtilities.getClosedTaskStatuses();
-
-				// Map of record ID to "true" if the related task template is OPEN
 
 				Set<Id> tasktemplatesToValidate = new Set<Id>();
 
@@ -388,9 +374,12 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						tasktemplatesToValidate.add(t.TaskAPTaskTemplate__c);
 					}
 				}
+
+				// Map of record ID to "true" if the related task template is OPEN
 				Map<Id, Boolean> allowMap = allowChangeParentStatus(tasktemplatesToValidate);
 
-				// TODO: Fix the check for an open parent task status
+				Map<Id, String> rtIdToDefaultStatus = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues();
+
 				//Get all my Updated complete Task Id's.
 				for( Task t : newRecords ) {
 
@@ -402,22 +391,22 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						String defaultTaskStatus;
 
 						if(!taskHasRecordType){
-							defaultTaskStatus = (String)Task.Status.getDescribe().getDefaultValue();
+							defaultTaskStatus = rtIdToDefaultStatus.get(null); //(String)Task.Status.getDescribe().getDefaultValue();
 						} else {
-							Task tsk = (Task)Task.sObjectType.newSObject((String)t.get('recordtypeid'), true);
-							defaultTaskStatus = tsk.Status;
+							defaultTaskStatus = rtIdToDefaultStatus.get((Id)t.get('recordtypeid'));
+							//Task tsk = (Task)Task.sObjectType.newSObject((String)t.get('recordtypeid'), true);
+							//defaultTaskStatus = tsk.Status;
 						}
-						//System.debug('defaultTaskStatus: ' + defaultTaskStatus);
 
 						if( t.Status != defaultTaskStatus ){
-							//if (allowChangeParentStatus(t.TaskAPTaskTemplate__c))
+
 							if(allowMap.containsKey(t.TaskAPTaskTemplate__c) && allowMap.get(t.TaskAPTaskTemplate__c)){
 								if( !t.IsClosed){
 									inProgressTasksMap.put( t.TaskAPTaskTemplate__c, t.Status );
-									//System.debug('task is in progress');
+
 								} else if (t.IsClosed) {
 									closedTasksMap.put( t.TaskAPTaskTemplate__c, t.Status );
-									//System.debug('task is closed');
+
 								}
 							} else {
 								//throw exception
@@ -583,7 +572,6 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				String destinationObject = mysettings.Default_Object_on_Lead_Conversion__c;
 				if(destinationObject != null){
 					destinationObject = destinationObject.toLowerCase();
-					System.debug('destinationObject: ' + destinationObject);
 				} else {
 					return;
 				}
@@ -620,10 +608,10 @@ global inherited sharing class ActionPlansTriggerHandlers {
 			when BEFORE_DELETE {
 
 				// GET Action Plans to delete in recycle bin
-				List<ActionPlan__c>  deletePermantently_apIds = [SELECT Id FROM ActionPlan__c WHERE (Contact__r.AccountId IN :oldRecords OR Case__r.AccountId IN :oldRecords OR Contract__r.AccountId IN :oldRecords OR Opportunity__r.AccountId IN :oldRecords) AND isDeleted = true ALL ROWS];
+				List<ActionPlan__c>  deletePermenantly_apIds = [SELECT Id FROM ActionPlan__c WHERE (Contact__r.AccountId IN :oldRecords OR Case__r.AccountId IN :oldRecords OR Contract__r.AccountId IN :oldRecords OR Opportunity__r.AccountId IN :oldRecords) AND isDeleted = true ALL ROWS];
 
-				if ( deletePermantently_apIds.size() >0 ){
-					Database.emptyRecycleBin(deletePermantently_apIds);
+				if ( deletePermenantly_apIds.size() >0 ){
+					Database.emptyRecycleBin(deletePermenantly_apIds);
 				}
 
 				Set<Id>  apIds  = new Set<Id>();

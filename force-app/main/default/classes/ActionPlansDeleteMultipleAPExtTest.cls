@@ -88,10 +88,8 @@ private class ActionPlansDeleteMultipleAPExtTest {
         ActionPlansDeleteMultipleAPExtension ctrl = new ActionPlansDeleteMultipleAPExtension(std);
 
         Test.startTest();
-        // When
         ctrl.deleteRecords();
         Test.stopTest();
-        // Then
         System.assertEquals(APS_TO_CREATE - 2, [SELECT Count() FROM ActionPlan__c]);
     }
 
@@ -105,11 +103,9 @@ private class ActionPlansDeleteMultipleAPExtTest {
         ActionPlansDeleteMultipleAPExtension ctrl = new ActionPlansDeleteMultipleAPExtension(std);
 
         Test.startTest();
-        // When
         ctrl.deleteRecords();
         Test.stopTest();
 
-        // Then
         System.assertEquals(APS_TO_CREATE, [SELECT Count() FROM ActionPlan__c]);
     }
 }

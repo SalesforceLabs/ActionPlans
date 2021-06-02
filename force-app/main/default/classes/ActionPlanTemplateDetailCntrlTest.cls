@@ -18,8 +18,6 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		ActionPlanTemplateDetailController apTemplateDetailController = new ActionPlanTemplateDetailController( new ApexPages.StandardController( new ActionPlanTemplate__c() ) );
 
-		//apTemplate = [SELECT Id FROM ActionPlanTemplate__c WHERE Id = :apTemplate.Id LIMIT 1];
-
 		Test.setCurrentPage(Page.ActionPlanTemplateDetail);
 
 		System.currentPageReference().getParameters().put( 'id', apTemplate.Id );
@@ -72,12 +70,13 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		apTemplateDetailController.deleteTemplate();
 
+		Test.StopTest();
+
 		List<ActionPlanTemplate__c> auxTemplate = [SELECT Id FROM ActionPlanTemplate__c WHERE Id = :apTemplate.Id];
 
 		//Checks to see if action plan template has been deleted
 		System.assert( auxTemplate.isEmpty(), 'action plan Template was not deleted' );
 
-		Test.StopTest();
 	}
 
 	@IsTest
@@ -90,18 +89,17 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		Test.StartTest();
 		Test.setCurrentPage(Page.ActionPlanTemplateDetail);
-		//System.currentPageReference().getParameters().put( 'id', apTemplate.Id );
 		ActionPlanTemplateDetailController apTemplateDetailController = new ActionPlanTemplateDetailController( new ApexPages.StandardController( apTemplate ) );
 
 		List<APTTaskTemplate__c> taskList = apTemplateDetailController.getTemplateTasks();
+
+		Test.StopTest();
 
 		//Checks to see if template tasks is not empty
 		System.assert( !taskList.isEmpty(), 'action plan Template tasks is empty' );
 
 		//checks that list contains total number of created tasks
 		System.assertEquals( 3, taskList.size() );
-
-		Test.StopTest();
 	}
 
 	@IsTest
@@ -117,13 +115,14 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		ActionPlanTemplate__c apTemplate2 = apTemplateDetailController.actionPlanTemplate;
 
+		Test.StopTest();
+
 		//Checks to see if action plan template is retrieved
 		System.assert( apTemplate2 != null, 'action plan Template tasks is empty' );
 
 		//checks to see if both action plan templates are the same
 		System.assertEquals( apTemplate2.Id, apTemplate.Id  );
 
-		Test.StopTest();
 	}
 
 	@IsTest
@@ -138,10 +137,11 @@ private class ActionPlanTemplateDetailCntrlTest {
 
 		controller.exportTemplateToXMLDoc();
 
+		Test.StopTest();
+
 		System.assert( controller.actionPlanExportXMLId != null );
 
 		System.assertNotEquals(null, controller.getSuccessMessage());
 
-		Test.StopTest();
 	}
 }
