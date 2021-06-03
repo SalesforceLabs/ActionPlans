@@ -587,7 +587,7 @@ public inherited sharing class ActionPlanCreationController{
 	* Action for removing a existing task
 	*/
 	public void removeTask(){
-		Boolean removedTask = false;
+
 		if( ApexPages.currentPage().getParameters().get( 'remove' ) != null ){
 			Integer taskIndex       = Integer.valueOf( ApexPages.currentPage().getParameters().get( 'remove' ) );
 
@@ -626,7 +626,6 @@ public inherited sharing class ActionPlanCreationController{
 			if( this.apTasks.size() < ActionPlansUtilities.MAX_APTASKS ){
 				errorMsg = null;
 			}
-			removedTask = true;
 		}
 	}
 

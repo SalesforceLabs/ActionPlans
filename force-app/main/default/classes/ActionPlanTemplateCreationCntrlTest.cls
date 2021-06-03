@@ -48,6 +48,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.currentPageReference().getParameters().put( 'id', null );
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( new ActionPlanTemplate__c() ) );
+		aptcc.getTemplateTasks();
 
 		System.currentPageReference().getParameters().put( 'id', apTemplate.Id );
 		aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
@@ -55,6 +56,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.currentPageReference().getParameters().put( 'clone', '1' );
 		aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
+		aptcc.getTemplateTasks();
 		aptcc.getTemplateWrappers();
 		aptcc.getDefaultTaskRecordTypeId();
 		aptcc.getTaskRTPicklistValues();
@@ -322,11 +324,14 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 	@IsTest
 	private static void checkTemplateTaskSize(){
+
+		final Integer TEMPLATE_TASKS = 2;
+
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
 		Test.StartTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
-		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
+		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( TEMPLATE_TASKS );
 
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
 		List<ActionPlanTemplateCreationController.ApTTaskWrapper> taskList =  aptcc.getTemplateWrappers();
@@ -335,10 +340,11 @@ private class ActionPlanTemplateCreationCntrlTest {
 		//checks that the list is not empty
 		System.assert( !taskList.isEmpty(), 'Task list was not empty' );
 
-		//Checks to see if both methods return same task size
-		System.assertEquals( taskList.size(), numTasks );
-
 		Test.StopTest();
+
+		//Checks to see if both methods return same task size
+		System.assertEquals( numTasks, taskList.size() );
+		System.assertEquals(TEMPLATE_TASKS, taskList.size());
 	}
 
 	@IsTest

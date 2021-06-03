@@ -57,12 +57,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			onLoad();
 		});
 		function onLoad(){
-			console.log('onready');
+			console.log('onLoad');
 			checkSkipWeekend(j$("[id$=skipWeekendCheckbox]").attr('id'), j$("[id$=skipDayPicklist]").attr('id'));
 			checkAllDependent('{!$Label.ap_ItselfDependencyError}', '{!$Label.ap_Error_Cyclic_Dependency_Found}');
-			checkReminderPicklists();
 			showErrors();
 			j$("td [Id*=taskTable]").css("vertical-align", "middle");
+			checkReminderPicklists();
 		}
 	</script>
 	<script type="text/javascript">
@@ -91,7 +91,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:commandButton id="save" action="{!checkCycleDependent}" value="{!$Label.ap_Save}" reRender="pageMessages" />
 				<apex:commandButton id="saveandnew" action="{!saveAndNew}" value="{!$Label.ap_SaveAndNew}" reRender="pageMessages" />
 				<apex:actionRegion >
-					<apex:commandButton id="cancel" action="{!cancelTemplate}" value="{!$Label.ap_Cancel}" html-formnovalidate="novalidate"/>
+					<apex:commandButton id="cancel" action="{!cancelTemplate}" value="{!$Label.ap_Cancel}" html-formnovalidate="novalidate" immediate="true"/>
 				</apex:actionRegion>
 			</apex:pageBlockButtons>
 
@@ -135,28 +135,29 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:outputPanel id="taskList" styleClass="slds-scope" layout="inline">
 					<apex:pageBlockTable value="{!TemplateWrappers}" var="wrapTask" id="taskTable" rules="none" style="table-layout: auto;width:100%" > <!-- columnClasses="first,second,third,fourth,fifth,sixth, seventh, eighth" styleClass="taskTable cardTable noBump pullTable" -->
 						<!--  Tasks delete actions  -->
-						<apex:column style="width:0px;vertical-align:middle;" headerValue="" id="columnOne" rendered="{!TemplateWrappers.size > 1 && $ObjectType.ActionPlanTemplate__c.deletable}">
-
-							<apex:commandLink id="deleteLink"
-								rerender="taskList, pageMessages"
-								status="taskStatus"
-								immediate="{!wrapTask.isLast}"
+						<apex:column style="vertical-align:middle;" headerValue="" id="columnOne" rendered="{!TemplateWrappers.size > 1 && $ObjectType.APTTaskTemplate__c.deletable}" >
+							<apex:commandLink
 								action="{!removeTemplateTask}"
+								id="deleteLink"
+								immediate="{!wrapTask.isLast}"
 								onclick="if (confirmTaskDeletion('{!$Component.taskTable.dependent}', '{!$Label.ap_Confirm_Tasks_Deletion}')) return false;"
 								oncomplete="showErrors();onLoad();"
-								rendered="{!(wrapTask.task.Id != null && $ObjectType.APTTaskTemplate__c.deletable) || wrapTask.task.Id == null}">
+								rendered="{!(wrapTask.task.Id != null && $ObjectType.APTTaskTemplate__c.deletable) || wrapTask.task.Id == null}"
+								rerender="taskList, pageMessages"
+								status="taskStatus"
+								>
 								<apex:image url="{!URLFOR($Resource.ActionPlan_Resources, 'ActionPlans_cross.gif')}" alt="{!$Label.ap_Remove}" title="{!$Label.ap_Remove}" />
 								<apex:param name="remove" value="{!wrapTask.position}" />
 							</apex:commandLink>
 						</apex:column>
 
 						<!--  Tasks subject  -->
-						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Subject__c.label}" style="padding-right:20px;">
-							<apex:inputField id="subject" required="true" value="{!wrapTask.task.Subject__c}" />
+						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Subject__c.label}" style="padding-right:10px;">
+							<apex:inputField id="subject" required="true" value="{!wrapTask.task.Subject__c}" style="width:100%;" />
 						</apex:column>
 
 						<!--  Tasks depending status  -->
-						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.APTTaskTemplate__c.label}" rendered="{!TemplateTaskSize > 1}" styleClass="third">
+						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.APTTaskTemplate__c.label}" rendered="{!TemplateWrappers.size > 1}" styleClass="third">
 							<apex:selectList id="dependent" value="{!wrapTask.task.Dependent__c}" multiselect="false" size="1" style="min-width:85px;"
 							onchange="checkDependent('{!$Component.taskTable.dependent}','{!$Label.ap_ItselfDependencyError}','{!$Label.ap_Error_Cyclic_Dependency_Found}');" styleClass="selectDepending">
 								<apex:selectOptions value="{!TemplateSubjectItems}" />
@@ -200,20 +201,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							<apex:inputField id="sendEmailCheckbox" value="{!wrapTask.task.SendEmail__c}" />
 						</apex:column>
 
-						<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" style="vertical-align:middle;">
+						<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" style="vertical-align:middle;" id="reminderCol">
 							<apex:facet name="header">
 								{!$ObjectType.APTTaskTemplate__c.fields.Reminder__c.label} <br/>
 								<a id="reminderAll" onclick="javascript:checkReminder(1);" class="all-none">{!$Label.ap_All}</a> |
 								<a id="reminderNone" onclick="javascript:checkReminder(0);" class="all-none">{!$Label.ap_None}</a>
 							</apex:facet>
 
-							<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display:inline-block;vertical-align:middle;" onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');"/>
+							<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display:inline-block;vertical-align:middle;"
+								onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');"/>
 							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" disabled="{!!wrapTask.task.Reminder__c}">
 								<apex:selectOptions value="{!hoursOption}" />
 							</apex:selectList>
 						</apex:column>
 
-						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Comments__c.label}">
+						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Comments__c.label}" id="commentCol">
 							<apex:inputField id="commentPanel" style="width:250px;display:none;" value="{!wrapTask.task.Comments__c}" />
 							<div style="clear:left">
 							(
@@ -230,14 +232,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				</apex:outputPanel>
 
 				<apex:panelGrid columns="2">
-					<apex:commandLink action="{!addTemplateTask}"
-						rerender="taskList,pageMessages"
-						status="taskStatus"
+					<apex:commandLink
+						action="{!addTemplateTask}"
+						id="addLink"
 						immediate="false"
+						onclick="console.log('addclick');"
+						oncomplete="checkReminderPicklists();console.log('add completed');"
+						rendered="{!$ObjectType.APTTaskTemplate__c.createable}"
+						rerender="taskList, pageMessages"
+						status="taskStatus"
 						style="font-weight:bold"
-						html-formnovalidate="novalidate"
-						oncomplete="javascript:onLoad();console.log('completed');"
-						rendered="{!$ObjectType.APTTaskTemplate__c.createable}">
+						>
 						<apex:outputText value="{!$Label.ap_AddNewTask}" />
 					</apex:commandLink>
 					<apex:actionStatus id="taskStatus">

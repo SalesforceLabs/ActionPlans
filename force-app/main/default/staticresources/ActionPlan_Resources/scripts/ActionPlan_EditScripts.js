@@ -25,7 +25,7 @@ function checkSkipWeekend(checkboxId, skipDayTableId) {
 }
 
 function checkDependent (dependent, dependentErrorText, cyclicErrorText){
-	//var index = ( dependent.split( ":" ) );
+
 	var currentDependentPicklist = document.getElementById( dependent );
 	var cycle = false;
 	var visitedTasks = new Array();
@@ -76,10 +76,12 @@ function getRowFromVisualforceId( elementId ){
 function checkReminder (type){
 	if(type == "1"){
 		j$("[id$=\\:reminder]").prop( "checked", true );
+		j$("[id$=reminderPickList]").prop("disabled", false);
 	} else {
 		j$("[id$=\\:reminder]").prop( "checked", false );
+		j$("[id$=reminderPickList]").prop("disabled", true);
 	}
-	this.checkReminderPicklists();
+	//this.checkReminderPicklists();
 }
 
 function checkEmail (type){
@@ -95,20 +97,20 @@ function enableDisableReminderPicklist ( reminder, reminderPicklistId ){
 	var reminderPicklist = document.getElementById( reminderPicklistId );
 
 	if( reminderCheckbox.checked ){
-		reminderPicklist.disabled = false;
+		j$(reminderPicklist).prop("disabled", false);
+		//reminderPicklist.disabled = false;
 	}
 	else{
-		reminderPicklist.disabled = true;
+		j$(reminderPicklist).prop("disabled", true);
+		//reminderPicklist.disabled = true;
 	}
 }
 
 function checkReminderPicklists () {
 	j$(".reminderColumn").each( function () {
-		if(j$("[id$=reminder]").is(":checked")){
-			j$("[id$=reminderPickList]").prop("disabled", false);
-		} else {
-			j$("[id$=reminderPickList]").prop("disabled", true);
-		}
+		var reminderBox = j$("[id$=reminder]");
+		var reminderPL  = j$("[id$=reminderPickList]").attr('id');
+		enableDisableReminderPicklist(reminderBox, reminderPL);
 	});
 }
 
