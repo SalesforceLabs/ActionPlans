@@ -346,7 +346,6 @@ private class ActionPlansUtilitiesTest {
 
 			update apt;
 
-			// TODO: Delete these lines?
 			ApexPages.currentPage().getParameters().put( 'id', null );
 
 			ApexPages.currentPage().getParameters().put( 'templateId', apt.Id );
