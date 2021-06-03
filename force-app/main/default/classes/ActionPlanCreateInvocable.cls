@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 global inherited sharing class ActionPlanCreateInvocable {
 
-	@InvocableMethod(label='Create Action Plan From Template' description='Takes a Template Name and Record Id and makes an Action Plan.' category='ActionPlans')
+	@InvocableMethod(label='Create Action Plan From Template' description='Takes a Template Name and Record Id and makes an Action Plan for that record.' category='ActionPlans')
 	global static List<Id> makeActionPlanFromTemplate(List<CreateActionPlanRequest> requests) {
 
 		List<Id> resultIDs = new List<Id>();
