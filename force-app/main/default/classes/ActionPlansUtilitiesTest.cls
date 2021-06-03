@@ -1,11 +1,6 @@
 /*
 Action Plans v4
-Updated by David Schach 2021
-
-
-Action Plans v3
-Force.com Labs 2011
-http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003HcINEA0
+David Schach 2021
 
 BSD 3-Clause License
 

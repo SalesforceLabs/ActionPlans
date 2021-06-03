@@ -1,7 +1,6 @@
 /*
 Action Plans v4
-Updated by David Schach 2021
-
+David Schach 2021
 
 Action Plans v3
 Force.com Labs 2011

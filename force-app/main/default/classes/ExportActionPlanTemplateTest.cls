@@ -1,6 +1,6 @@
 /**
  * Action Plans v4
- * Updated by David Schach 2021
+ * David Schach 2021
  */
 @IsTest
 private class ExportActionPlanTemplateTest {
