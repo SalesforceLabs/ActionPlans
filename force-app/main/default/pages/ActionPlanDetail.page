@@ -88,13 +88,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					<apex:outputField value="{!ActionPlan__c[f.FieldPath]}" rendered="{!(ActionPlan__c[f.FieldPath] != null)}" />
 				</apex:repeat>
 
-				<!-- <apex:pageBlockSectionItem>
-					<apex:outputPanel style="vertical-align: top;">
-						<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.StartDate__c.label}"/>&nbsp;
-						<apex:image style="vertical-align: top;" url="/apexpages/slds/latest/assets/icons/utility/info_120.png" height="12px" width="12px" title="{!$ObjectType.ActionPlan__c.fields.StartDate__c.inlineHelpText}"/>
-					</apex:outputPanel>
-					<apex:outputField value="{!ActionPlan__c.StartDate__c}" />
-				</apex:pageBlockSectionItem> -->
 				<apex:outputField value="{!ActionPlan__c.StartDate__c}" />
 
 				<apex:outputField value="{!ActionPlan__c.Description__c}" />
@@ -106,16 +99,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<!-- END INFORMATION SECTION -->
 
 				<!-- TASKS SECTION -->
-				<!-- <apex:pageBlockSectionItem>
-					<apex:outputPanel layout="block" style="vertical-align: top;">
-
-						<apex:outputLabel value="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.label} " style="float:left;"/>
-						<apex:image style="vertical-align: top;float:right;" url="/apexpages/slds/latest/assets/icons/utility/info_60.png" height="12px" width="12px" title="{!$ObjectType.ActionPlan__c.fields.SkipWeekends__c.inlineHelpText}" />
-					</apex:outputPanel>
-					<apex:outputField value="{!ActionPlan__c.SkipWeekends__c}" />
-				</apex:pageBlockSectionItem> -->
 				<apex:outputField value="{!ActionPlan__c.SkipWeekends__c}" />
-
 
 				<apex:pageBlockSectionItem rendered="{!ActionPlan__c.Action_Plan_Template__c != null}">
 					<apex:outputLabel value="{!$ObjectType.ActionPlanTemplate__c.label}" />
@@ -158,7 +142,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							<apex:outputText value="{!wrap.apt.Subject__c}" />
 						</apex:outputLink>
 						<apex:outputText id="subject" value="{!wrap.apt.Subject__c}" rendered="{!wrap.taskId == null}" />
-						<!-- <apex:outputText id="subject" value="{!wrap.apt.Subject__c}" /> -->
 					</apex:column>
 					<apex:column id="indexColumn" headerValue="{!$ObjectType.APTaskTemplate__c.fields.TaskIndex__c.label}" rendered="false">
 						<apex:variable value="{!wrap.apt.TaskIndex__c + 1}" var="row" />
