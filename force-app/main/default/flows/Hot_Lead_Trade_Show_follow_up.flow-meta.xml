@@ -29,7 +29,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>51.0</apiVersion>
+    <apiVersion>52.0</apiVersion>
     <description>Actions to take when a Hot Lead is created and Lead Source is &quot;Other&quot;</description>
     <interviewLabel>Hot Lead Trade Show follow up {!$Flow.CurrentDateTime}</interviewLabel>
     <isTemplate>true</isTemplate>
