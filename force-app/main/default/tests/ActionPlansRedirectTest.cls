@@ -34,7 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 @IsTest
-public inherited sharing class ActionPlansRedirectTest {
+public class ActionPlansRedirectTest {
 
 	@TestSetup
 	static void makeData(){

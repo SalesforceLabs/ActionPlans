@@ -37,7 +37,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-public inherited sharing class ActionPlanTemplateDetailController {
+public with sharing class ActionPlanTemplateDetailController {
 
 	@TestVisible private ActionPlanTemplate__c 	actionPlanTemplate;
 	public Id                       actionPlanExportXMLId { get; private set; }

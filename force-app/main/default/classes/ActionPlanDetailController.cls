@@ -37,7 +37,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-public inherited sharing class ActionPlanDetailController{
+public with sharing class ActionPlanDetailController{
 
 	private ActionPlan__c            actionPlan;
 	public Boolean                  hasRecordType   { get; set; }

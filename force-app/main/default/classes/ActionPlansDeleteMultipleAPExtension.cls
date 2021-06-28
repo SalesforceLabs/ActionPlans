@@ -63,7 +63,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **/
 
-public inherited sharing class ActionPlansDeleteMultipleAPExtension {
+public with sharing class ActionPlansDeleteMultipleAPExtension {
 
 	private ApexPages.StandardSetController standardController;
 

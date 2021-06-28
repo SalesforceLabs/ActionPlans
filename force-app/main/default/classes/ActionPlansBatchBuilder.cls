@@ -71,20 +71,21 @@ global inherited sharing class ActionPlansBatchBuilder implements Database.Batch
 				str.toLowerCase();
 			}
 		} catch(Exception e){
-
-			AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed,
-								TotalJobItems, CreatedBy.Email, ExtendedStatus
-								FROM AsyncApexJob WHERE Id = :bc.getJobId()];
-			// If there were any errors Send an email to the Apex job submitter
-			// notifying of job completion
-			Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-			String[] toAddresses = new String[] {a.CreatedBy.Email};
-			mail.setToAddresses(toAddresses);
-			mail.setSubject('EXCEPTION during Action Plans Batch creation ' + a.Status);
-			mail.setPlainTextBody ('The batch Apex job processed ' + a.TotalJobItems + ' batches.\nError :' +e);
-			if(ActionPlansUtilities.canSendEmails()){
-				Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
-			}
+			//if(CanTheUser.read(new AsyncApexJob())){
+				AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed,
+									TotalJobItems, CreatedBy.Email, ExtendedStatus
+									FROM AsyncApexJob WHERE Id = :bc.getJobId()];
+				// If there were any errors Send an email to the Apex job submitter
+				// notifying of job completion
+				Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+				String[] toAddresses = new String[] {a.CreatedBy.Email};
+				mail.setToAddresses(toAddresses);
+				mail.setSubject('EXCEPTION during Action Plans Batch creation ' + a.Status);
+				mail.setPlainTextBody ('The batch Apex job processed ' + a.TotalJobItems + ' batches.\nError :' +e);
+				if(ActionPlansUtilities.canSendEmails()){
+					Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+				}
+			//}
 		}
 	}
 
