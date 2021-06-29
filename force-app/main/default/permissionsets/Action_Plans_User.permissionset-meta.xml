@@ -12,6 +12,10 @@
         <apexClass>SectionHeaderController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>Weekend_Day__mdt</name>
+    </customMetadataTypeAccesses>
     <description>End-users who can access and work with Action Plans but cannot modify the Action Plan Tasks directly. Their Task updates will be reflected in the Action Plan Tasks.</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -244,6 +248,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ActionPlanPrint</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ActionPlanTaskOverride</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

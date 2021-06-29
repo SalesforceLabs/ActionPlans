@@ -64,6 +64,10 @@
         <apexClass>SectionHeaderController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>Weekend_Day__mdt</name>
+    </customMetadataTypeAccesses>
     <customPermissions>
         <enabled>true</enabled>
         <name>Action_Plan_Template_Export</name>
@@ -196,6 +200,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ActionPlanTemplateImport</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ActionPlanTemplateTaskOverride</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

@@ -64,6 +64,10 @@
         <apexClass>SectionHeaderController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>Weekend_Day__mdt</name>
+    </customMetadataTypeAccesses>
     <description>Users can create Action Plans directly or from Templates</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -412,6 +416,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ActionPlanPrint</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ActionPlanTaskOverride</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
