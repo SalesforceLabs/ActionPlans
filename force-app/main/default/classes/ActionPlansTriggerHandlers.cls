@@ -38,6 +38,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 global inherited sharing class ActionPlansTriggerHandlers {
 
+	/**
+	 * Global so that if in managed package, these methods are the only ones available
+	 */
 	global static void actionPlansSObjectTriggerHandler(String sObjectName){
 		actionPlansSObjectTriggerHandler(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap, Trigger.operationType, sObjectName);
 	}

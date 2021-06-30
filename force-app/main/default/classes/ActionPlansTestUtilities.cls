@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-public inherited sharing class ActionPlansTestUtilities{
+public with sharing class ActionPlansTestUtilities{
 
 	public static Boolean forceError = false;
 	public static Boolean forceHasRecordType;
@@ -55,7 +55,6 @@ public inherited sharing class ActionPlansTestUtilities{
 	}
 	public String createRandomWord(String prefix){
 		String ret = prefix + math.rint(math.random() * 100000);
-
 		return ret;
 	}
 
@@ -63,9 +62,9 @@ public inherited sharing class ActionPlansTestUtilities{
 	* A random user is useful for testing in order to be
 	* sure that you are able to see data across posts regardless
 	* of follow status.
+	* Permission Set would still be required
 	*/
 	public User createTestUser() {
-		//for( Profile p : [SELECT Id, PermissionsModifyAllData, Name from Profile WHERE Name = 'System Administrator' AND UserType = 'Standard' LIMIT 100] ){
 		for( Profile p : [SELECT Id, PermissionsModifyAllData, Name from Profile WHERE PermissionsModifyAllData = true AND UserType = 'Standard' LIMIT 1] ){
 			if( p.PermissionsModifyAllData ){
 				return this.createTestUser( p );
@@ -162,7 +161,7 @@ public inherited sharing class ActionPlansTestUtilities{
 	public Case createNewCase(Boolean insertRecord){
 
 		Case newCase 	= new Case();
-		newCase.Status	= 'New';
+		newCase.Status	= (String)Case.Status.getDescribe().getDefaultValue();
 		newCase.Origin	= 'Email';
 
 		if(insertRecord){
@@ -263,10 +262,10 @@ public inherited sharing class ActionPlansTestUtilities{
 	*/
 	public Opportunity createNewOpportunity(Boolean insertRecord){
 
-		Opportunity newOpportunity 	= new Opportunity();
+		Opportunity newOpportunity 	= (Opportunity)Opportunity.sObjectType.newSObject(null, true);
 		newOpportunity.Name			= this.createRandomWord();
 		newOpportunity.CloseDate	= Date.today();
-		newOpportunity.StageName	= 'Prospecting';
+		newOpportunity.StageName	= (String)Opportunity.StageName.getDescribe().getPicklistValues()[0].getValue();
 
 		if(insertRecord){
 			insert newOpportunity;
