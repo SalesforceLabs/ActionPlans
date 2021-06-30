@@ -34,7 +34,9 @@ Admin.profile
 Activities.settings
 Security.settings
 TaskStatus.standardValueSet
+TaskPriority.standardValueSet
 Lead-Lead Layout.layout
+Global-Global Layout.layout
 
 src
 metadata

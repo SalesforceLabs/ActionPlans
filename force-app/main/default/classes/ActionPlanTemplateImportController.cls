@@ -36,14 +36,14 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-public with sharing class ImportTemplateController{
+public with sharing class ActionPlanTemplateImportController{
 
 	public Attachment attachment { get; set; }
 
 	/**
 	* Constructor
 	*/
-	public ImportTemplateController(){
+	public ActionPlanTemplateImportController(){
 		this.attachment = new Attachment();
 	}
 
@@ -53,7 +53,7 @@ public with sharing class ImportTemplateController{
 	*/
 	public PageReference importTemplate(){
 
-		ImportActionPlanTemplate importUtil = new ImportActionPlanTemplate();
+		ActionPlanTemplateImport importUtil = new ActionPlanTemplateImport();
 
 		try{
 			String templateId = importUtil.processImportedDocument( this.attachment );

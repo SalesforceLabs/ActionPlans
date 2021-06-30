@@ -37,7 +37,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 @IsTest
-private class ImportTemplateControllerTest {
+private class ActionPlanTemplateImportCntrlTest {
 
 	private static String xmlImport 				= '<?xml version="1.0"?><export><meta><exportPackage>Action+Plan+Template</exportPackage><exportAuthor>mat+men</exportAuthor><exportOrganization>Force.com+Labs</exportOrganization><exportCreateDate>2010-08-10+19%3A24%3A49</exportCreateDate></meta><ActionPlanTemplate><id>a025000000DGr9DAAT</id><name>Test+new+Import+Order</name><description>null</description><skipWeekend>true</skipWeekend><skipday>End of previous week</skipday></ActionPlanTemplate><ActionPlanTemplateTasks><TaskTemplate><id>a005000000IJPlZAAX</id><templateId>a025000000DGr9DAAT</templateId><subject>task+1</subject><dependent>None</dependent><taskIndex>0</taskIndex><apttemplate>null</apttemplate><daysFromStart>1</daysFromStart><category>Email</category><priority>Medium</priority><sendEmail>false</sendEmail><reminder>true</reminder><reminderTime>510</reminderTime><comments>null</comments></TaskTemplate><TaskTemplate><id>a005000000IJPyqAAH</id><templateId>a025000000DGr9DAAT</templateId><subject>task+3</subject><dependent>0</dependent><taskIndex>2</taskIndex><apttemplate>a005000000IJPlZAAX</apttemplate><daysFromStart>1</daysFromStart><category>Phone+Call</category><priority>Medium</priority><sendEmail>false</sendEmail><reminder>true</reminder><reminderTime>30</reminderTime><comments>null</comments></TaskTemplate><TaskTemplate><id>a005000000IJPlaAAH</id><templateId>a025000000DGr9DAAT</templateId><subject>task2</subject><dependent>0</dependent><taskIndex>1</taskIndex><apttemplate>a005000000IJPlZAAX</apttemplate><daysFromStart>2</daysFromStart><category>Email</category><priority>Medium</priority><sendEmail>false</sendEmail><reminder>true</reminder><reminderTime>30</reminderTime><comments>null</comments></TaskTemplate></ActionPlanTemplateTasks></export>';
 	private static String xmlImportWrongAPTemplate 	= '<?xml version="1.0"?><export><meta><exportPackage>Action+Plan+Template</exportPackage><exportAuthor>mat+men</exportAuthor><exportOrganization>Force.com+Labs</exportOrganization><exportCreateDate>2010-08-10+19%3A24%3A49</exportCreateDate></meta><ActionPlanTemplate><id></id><description>null</description><skipWeekend></skipWeekend><skipday>End of previous week</></ActionPlanTemplate><ActionPlanTemplateTasks><TaskTemplate><id>a005000000IJPlZAAX</id><templateId>a025000000DGr9DAAT</templateId><subject>task+1</subject><dependent>None</dependent><taskIndex>0</taskIndex><apttemplate>null</apttemplate><daysFromStart>1</daysFromStart><category>Email</category><priority>Medium</priority><sendEmail>false</sendEmail><reminder>true</reminder><reminderTime>510</reminderTime><comments>null</comments></TaskTemplate><TaskTemplate><id>a005000000IJPyqAAH</id><templateId>a025000000DGr9DAAT</templateId><subject>task+3</subject><dependent>0</dependent><taskIndex>2</taskIndex><apttemplate>a005000000IJPlZAAX</apttemplate><daysFromStart>1</daysFromStart><category>Phone+Call</category><priority>Medium</priority><sendEmail>false</sendEmail><reminder>true</reminder><reminderTime>30</reminderTime><comments>null</comments></TaskTemplate><TaskTemplate><id>a005000000IJPlaAAH</id><templateId>a025000000DGr9DAAT</templateId><subject>task2</subject><dependent>0</dependent><taskIndex>1</taskIndex><apttemplate>a005000000IJPlZAAX</apttemplate><daysFromStart>2</daysFromStart><category>Email</category><priority>Medium</priority><sendEmail>false</sendEmail><reminder>true</reminder><reminderTime>30</reminderTime><comments>null</comments></TaskTemplate></ActionPlanTemplateTasks></export>';
@@ -51,7 +51,7 @@ private class ImportTemplateControllerTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
 
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		Attachment att = new Attachment( Name = 'Test Xml', Body = Blob.valueOf( xmlImport ), ContentType = 'plain/text' );
 		controller.attachment = att;
@@ -66,7 +66,7 @@ private class ImportTemplateControllerTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
 
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		controller.attachment = null;
 
@@ -80,7 +80,7 @@ private class ImportTemplateControllerTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
 
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		Attachment att = new Attachment( Name = 'Test Xml', Body = Blob.valueOf( '' ), ContentType = 'plain/text' );
 		controller.attachment = att;
@@ -95,7 +95,7 @@ private class ImportTemplateControllerTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
 
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		Attachment att = new Attachment( Name = 'Test Xml', Body = Blob.valueOf( xmlImportWrongAPTemplate ), ContentType = 'plain/text' );
 		controller.attachment = att;
@@ -110,7 +110,7 @@ private class ImportTemplateControllerTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
 
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		Attachment att = new Attachment( Name = 'Test Xml', Body = Blob.valueOf( xmlImportWrongAPTask ), ContentType = 'plain/text' );
 		controller.attachment = att;
@@ -125,7 +125,7 @@ private class ImportTemplateControllerTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
 
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		Attachment att = new Attachment( Name = 'Test Xml', Body = Blob.valueOf( xmlImportWrongMetaData ), ContentType = 'plain/text' );
 		controller.attachment = att;
@@ -140,7 +140,7 @@ private class ImportTemplateControllerTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
 
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		Attachment att = new Attachment( Name = 'Test Xml', Body = Blob.valueOf( xmlImportFromExport ), ContentType = 'plain/text' );
 		controller.attachment = att;
@@ -158,13 +158,13 @@ private class ImportTemplateControllerTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 3 );
 
-		ExportActionPlanTemplate exportTemplate = new ExportActionPlanTemplate( actionPlanTemplate.Id );
+		ActionPlanTemplateExport exportTemplate = new ActionPlanTemplateExport( actionPlanTemplate.Id );
 		String xml = exportTemplate.buildXmlString( actionPlanTemplate );
 
 		Id xmlId = exportTemplate.saveToDocument('templateName', xml);
 
 		Test.setCurrentPage(Page.ActionPlanTemplateImport);
-		ImportTemplateController controller = new ImportTemplateController();
+		ActionPlanTemplateImportController controller = new ActionPlanTemplateImportController();
 
 		Attachment att = new Attachment( Name = 'Test Xml', Body = Blob.valueOf( xml ), ContentType = 'plain/text' );
 		controller.attachment = att;

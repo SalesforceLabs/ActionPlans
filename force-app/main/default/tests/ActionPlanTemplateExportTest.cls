@@ -3,7 +3,7 @@
  * David Schach 2021
  */
 @IsTest
-private class ExportActionPlanTemplateTest {
+private class ActionPlanTemplateExportTest {
     @IsTest
 	private static void exportTest(){
 
@@ -12,7 +12,7 @@ private class ExportActionPlanTemplateTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 3 );
 
-		ExportActionPlanTemplate exportTemplate = new ExportActionPlanTemplate( actionPlanTemplate.Id );
+		ActionPlanTemplateExport exportTemplate = new ActionPlanTemplateExport( actionPlanTemplate.Id );
 		Id xmlId = exportTemplate.export();
 
 		Test.StopTest();
@@ -28,7 +28,7 @@ private class ExportActionPlanTemplateTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 3 );
 
-		ExportActionPlanTemplate exportTemplate = new ExportActionPlanTemplate( actionPlanTemplate.Id );
+		ActionPlanTemplateExport exportTemplate = new ActionPlanTemplateExport( actionPlanTemplate.Id );
 		String xml = exportTemplate.buildXmlString( actionPlanTemplate );
 
 		Id xmlId = exportTemplate.saveToDocument('templateName', xml);
@@ -46,7 +46,7 @@ private class ExportActionPlanTemplateTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 3 );
 
-		ExportActionPlanTemplate exportTemplate = new ExportActionPlanTemplate( actionPlanTemplate.Id );
+		ActionPlanTemplateExport exportTemplate = new ActionPlanTemplateExport( actionPlanTemplate.Id );
 		String xml = exportTemplate.buildXmlString( actionPlanTemplate );
 
 		Id xmlId = exportTemplate.saveToContent('templateName', xml);

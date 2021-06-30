@@ -121,7 +121,7 @@ public with sharing class ActionPlanTemplateDetailController {
 	* Method exports the Action Plan template into a new XML document
 	*/
 	public void exportTemplateToXMLDoc(){
-		ExportActionPlanTemplate utility = new ExportActionPlanTemplate( actionPlanTemplate.Id );
+		ActionPlanTemplateExport utility = new ActionPlanTemplateExport( actionPlanTemplate.Id );
 		actionPlanExportXMLId = utility.export();
 	}
 

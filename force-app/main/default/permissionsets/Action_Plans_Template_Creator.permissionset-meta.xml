@@ -25,6 +25,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ActionPlanTemplateExport</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ActionPlanTemplateImport</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ActionPlansBatchBuilder</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -37,6 +45,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ActionPlansCanTheUser</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ActionPlansTaskTriggerUtilities</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -46,18 +58,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ActionPlansUtilities</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ExportActionPlanTemplate</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ImportActionPlanTemplate</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ImportTemplateController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
