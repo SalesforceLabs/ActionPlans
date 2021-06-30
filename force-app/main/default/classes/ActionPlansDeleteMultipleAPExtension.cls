@@ -67,20 +67,29 @@ public with sharing class ActionPlansDeleteMultipleAPExtension {
 
 	private ApexPages.StandardSetController standardController;
 
-	public List<ActionPlan__c> ActionPlansToShow { get; private set; }
+	public List<ActionPlan__c> actionPlansToShow { get; private set; }
 
 	public ActionPlansDeleteMultipleAPExtension(ApexPages.StandardSetController standardController) {
 		this.standardController = standardController;
 		Set<Id> selected = new Map<Id, SObject>(standardController.getSelected()).keySet();
-		ActionPlansToShow = [SELECT Id, Name FROM ActionPlan__c WHERE Id IN :selected];
+		actionPlansToShow = [SELECT Id, Name FROM ActionPlan__c WHERE Id IN :selected];
 	}
 
 	public PageReference deleteRecords() {
+
+		if(actionPlansToShow.isEmpty()){
+			return null;
+		}
+
 		Set<Id> selected = new Map<Id, SObject>(standardController.getSelected()).keySet();
 
 		Set<Id> recordIds = new Set<Id>();
 		recordIds.addAll(selected);
-		delete [SELECT Id FROM ActionPlan__c WHERE Id IN :recordIds];
+		if(ActionPlansCanTheUser.destroy(actionPlansToShow[0] )) {
+			delete [SELECT Id FROM ActionPlan__c WHERE Id IN :recordIds];
+		} else {
+			return null;
+		}
 
 		PageReference newPage = Page.ActionPlansHome;
 		String confirmation = System.Label.ap_ConfirmationofDeletion;

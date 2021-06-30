@@ -50,9 +50,12 @@ public with sharing class ActionPlansCreateMultipleAPsExtension {
 	}
 
 	public PageReference doRedirect() {
+
 		if(String.isBlank(objIDs)){
 			return null;
 		}
+
+		if( !ActionPlansCanTheUser.create(new ActionPlan__c()) ) { return null; }
 
 		Pagereference pageRef = Page.ActionPlanCreation;
 

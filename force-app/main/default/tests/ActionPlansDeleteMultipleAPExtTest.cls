@@ -107,5 +107,6 @@ private class ActionPlansDeleteMultipleAPExtTest {
         Test.stopTest();
 
         System.assertEquals(APS_TO_CREATE, [SELECT Count() FROM ActionPlan__c]);
+		System.assertEquals(null, ctrl.deleteRecords());
     }
 }
