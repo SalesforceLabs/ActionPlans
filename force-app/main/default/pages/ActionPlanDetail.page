@@ -75,13 +75,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<!-- END PAGE BUTTTONS -->
 
 			<!-- INFORMATION SECTION -->
-			<apex:pageBlockSection title="{!$Label.ap_Information}" columns="2" collapsible="false">
+			<apex:pageBlockSection columns="2" collapsible="false">
 
 				<apex:outputField value="{!ActionPlan__c.Name}" />
 				<apex:pageBlockSectionItem>
-					<apex:outputText value="{!$Label.ap_Owner}" />
-					<apex:outputText>{!ActionPlan__c.Owner.Name}&nbsp;[
-						<apex:outputLink value="/{!ActionPlan__c.Id}/a?retURL={!$CurrentPage.URL}">{!$Label.ap_Change}</apex:outputLink>]</apex:outputText>
+					<apex:outputLabel value="{!$Label.ap_Owner}" />
+					<apex:outputPanel>
+						<apex:outputField value="{!ActionPlan__c.OwnerId}" />
+						<apex:outputPanel rendered="{!$ObjectType.ActionPlan__c.updateable}">
+							&nbsp;[<apex:outputLink value="/{!ActionPlan__c.Id}/a?retURL={!$CurrentPage.URL}">{!$Label.ap_Change}</apex:outputLink>]
+						</apex:outputPanel>
+					</apex:outputPanel>
 				</apex:pageBlockSectionItem>
 
 				<apex:repeat value="{!$ObjectType.ActionPlan__c.FieldSets.Related_Objects}" var="f">

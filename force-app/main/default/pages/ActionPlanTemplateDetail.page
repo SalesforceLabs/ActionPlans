@@ -63,12 +63,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<apex:commandButton id="export" action="{!$Page.ActionPlanTemplateExport}?Id={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_Export}" rendered="{!$Permission.Action_Plan_Template_Export}" />
 			</apex:pageBlockButtons>
 
-			<apex:pageBlockSection title="{!$Label.ap_Information}" columns="2" collapsible="false">
+			<apex:pageBlockSection columns="2" collapsible="false">
 				<apex:outputField value="{!ActionPlanTemplate__c.Name}" />
-				<apex:pageBlockSectionItem >
-					<apex:outputLabel value="Owner" />
-					<apex:outputPanel >
-						<apex:outputText >{!ActionPlanTemplate__c.Owner.Name}&nbsp;[<a href="/{!ActionPlanTemplate__c.Id}/a?retURL={!$CurrentPage.URL}">{!$Label.ap_Change}</a>]</apex:outputText>
+				<apex:pageBlockSectionItem>
+					<apex:outputLabel value="{!$Label.ap_Owner}" />
+					<apex:outputPanel>
+						<apex:outputField value="{!ActionPlanTemplate__c.OwnerId}" />
+						<apex:outputPanel rendered="{!$ObjectType.ActionPlanTemplate__c.updateable}">
+							&nbsp;[
+							<apex:outputLink value="/{!ActionPlanTemplate__c.Id}/a?retURL={!$CurrentPage.URL}">{!$Label.ap_Change}</apex:outputLink>]
+						</apex:outputPanel>
 					</apex:outputPanel>
 				</apex:pageBlockSectionItem>
 

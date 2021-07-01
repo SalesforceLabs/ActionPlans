@@ -96,7 +96,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			</apex:pageBlockButtons>
 
 			<!-- Information Section -->
-			<apex:pageBlockSection id="informationSection" title="{!$Label.ap_Information}" columns="1" collapsible="false">
+			<apex:pageBlockSection id="informationSection" columns="1" collapsible="false">
 
 				<apex:pageBlockSectionItem >
 					<apex:outputLabel value="{!$ObjectType.ActionPlanTemplate__c.fields.Name.label}" />
