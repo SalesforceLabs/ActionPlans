@@ -57,6 +57,7 @@ private class ActionPlanDetailControllerTest {
 		ActionPlanDetailController apDetailController2 = new ActionPlanDetailController( new ApexPages.StandardController( actionPlan ) );
 
 		Test.StopTest();
+		System.assertNotEquals(null, apDetailController2.hasRecordType);
 	}
 
 	@IsTest

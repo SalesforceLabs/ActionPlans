@@ -54,6 +54,8 @@ private class ActionPlansBatchDeleteTest {
 		Database.ExecuteBatch( taskBatch );
 
 		Test.stopTest();
+
+		System.assert([SELECT Id FROM ActionPlan__c].isEmpty());
 	}
 
 	@IsTest
@@ -70,6 +72,8 @@ private class ActionPlansBatchDeleteTest {
 		delete ap;
 
 		Test.stopTest();
+
+		System.assert([SELECT Id FROM ActionPlan__c].isEmpty());
 	}
 
 	@IsTest
@@ -89,6 +93,8 @@ private class ActionPlansBatchDeleteTest {
 		Database.ExecuteBatch( taskBatch );
 
 		Test.stopTest();
+
+		System.assert([SELECT Id FROM ActionPlan__c].isEmpty());
 	}
 
     @IsTest
@@ -141,6 +147,8 @@ private class ActionPlansBatchDeleteTest {
 
 		Test.stopTest();
 		undelete ap;
+
+		System.assert(![SELECT Id FROM ActionPlan__c].isEmpty());
 
 	}
 }

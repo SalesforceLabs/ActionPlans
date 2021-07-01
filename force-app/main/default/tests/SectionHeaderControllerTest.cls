@@ -40,7 +40,6 @@ private class SectionHeaderControllerTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		User u = testUtil.createTestUser();
 
-		Test.startTest();
 		System.runAs(u){
 			SectionHeaderController shc = new SectionHeaderController();
 			shc.objectName = 'ActionPlan__c';
@@ -54,8 +53,10 @@ private class SectionHeaderControllerTest {
 			shc.objectName = 'Account';
 			shc.getIsCustom();
 			shc.getObjectIconInfo();
+			System.assert(!shc.getIsCustom(), 'Account is a standard object');
 		}
-		Test.stopTest();
+
+
 
 	}
 
@@ -64,14 +65,13 @@ private class SectionHeaderControllerTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		User u = testUtil.createTestUser();
 
-		Test.startTest();
 		System.runAs(u){
 			SectionHeaderController shc = new SectionHeaderController();
 			shc.objectName = 'CaseComment';
 			shc.getIsCustom();
 			shc.getObjectIconInfo();
+			System.assert(!shc.getIsCustom(), 'CaseComment is a standard object');
 		}
-		Test.stopTest();
 
 	}
 
@@ -80,13 +80,14 @@ private class SectionHeaderControllerTest {
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		User u = testUtil.createTestUser();
 
-		Test.startTest();
 		System.runAs(u){
 			SectionHeaderController shc = new SectionHeaderController();
 			shc.objectName = null;
 			shc.getIsCustom();
 			shc.getObjectIconInfo();
+			String nullIconTag = shc.getObjectIconInfo().get('iconTag');
+			System.assertEquals('No Lightning Icon Found', nullIconTag, 'Should have reached null section of header controller');
 		}
-		Test.stopTest();
+
 	}
 }

@@ -41,7 +41,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 	@IsTest
 	private static void testContructor(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -64,13 +64,15 @@ private class ActionPlanTemplateCreationCntrlTest {
 		aptcc.getTaskPriorities();
 		aptcc.getHoursOption();
 
-		Test.StopTest();
+		Test.stopTest();
+
+		System.assert(!aptcc.getTemplateTasks().isEmpty());
 	}
 
 	@IsTest
 	private static void testSave(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = new ActionPlanTemplate__c();
@@ -89,7 +91,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		aptcc.aptTasks.add( newAPTTask );
 		Pagereference page = aptcc.saveTemplate();
 
-		Test.StopTest();
+		Test.stopTest();
 
 		System.assert( page != null );
 		System.assert( aptcc.saveAndNew() != null);
@@ -106,7 +108,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		ActionPlanTemplate__c   apt = testutil.createNewActionPlanTemplate( 5 );
 		User tUser = testutil.createTestUser();
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController(new ApexPages.StandardController(apt));
-		Test.StartTest();
+		Test.startTest();
 
 		aptcc.pendingTemplateDeletes = new List<APTTaskTemplate__c>();
 		aptcc.pendingTemplateDeletes.add( testutil.createNewActionPlanTemplateTask(apt, 3, tUser, 'Email', 'High') );
@@ -132,13 +134,13 @@ private class ActionPlanTemplateCreationCntrlTest {
 		aptcc.saveTemplate();
 		System.assert( !aptcc.aptTasks.isEmpty());
 
-		Test.StopTest();
+		Test.stopTest();
 	}
 
 	@IsTest
 	private static void testCancel(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( new ActionPlanTemplate__c() ) );
 		aptcc.cancelTemplate();
@@ -148,9 +150,13 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.currentPageReference().getParameters().put( 'id', apTemplate.Id );
 		aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
-		aptcc.cancelTemplate();
+		PageReference cancelPage = aptcc.cancelTemplate();
 
-		Test.StopTest();
+		Test.stopTest();
+
+		String urlVal = cancelPage.getUrl();
+		System.assert(urlVal.containsIgnoreCase(apTemplate.Id));
+
 	}
 
 	@IsTest
@@ -159,14 +165,14 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
 
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate(5);
 
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
 
-		Test.StopTest();
+		Test.stopTest();
 
 		System.assertEquals(false, aptcc.taskHasRecordType);
 	}
@@ -174,7 +180,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 	@IsTest
 	static void checkMaxTasksError(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( ActionPlansUtilities.MAX_APTASKS + 1 );
@@ -193,7 +199,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 	@IsTest
 	private static void testAddTemplateTask(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -204,13 +210,16 @@ private class ActionPlanTemplateCreationCntrlTest {
 		System.currentPageReference().getParameters().put( 'add ', '1' );
 		aptcc.addTemplateTask();
 
-		Test.StopTest();
+		Test.stopTest();
+
+		Integer taskCount = aptcc.getTemplateTaskSize();
+		System.assert(taskCount > 2);
 	}
 
 	@IsTest
 	private static void testAddNewActionPlanTemplateTask(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 3 );
@@ -230,13 +239,13 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.assert( aptcc.geterrorMsg() != null, 'An error was not returned when adding a template task' );
 
-		Test.StopTest();
+		Test.stopTest();
 	}
 
 	@IsTest
 	private static void testRemoveTemplateTask(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 4 );
@@ -247,14 +256,16 @@ private class ActionPlanTemplateCreationCntrlTest {
 		System.currentPageReference().getParameters().put( 'remove', '1' );
 		aptcc.removeTemplateTask();
 
-		Test.StopTest();
+		Test.stopTest();
+
+		System.assertEquals(3, aptcc.getTemplateTaskSize(), 'Should have removed 1 task from 4');
 	}
 
 	@IsTest
 	private static void testRemovingActionPlanTemplateTask(){
 
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c actionPlanTemplate = testUtil.createNewActionPlanTemplate( 5 );
@@ -270,7 +281,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		aptcc.saveTemplate();
 
-		Test.StopTest();
+		Test.stopTest();
 		aptcc.getTemplateTasks();
 
 		System.assert( aptcc.aptTasks.size() == 4, 'Task was not deleted correctly' );
@@ -280,7 +291,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 	@IsTest
 	private static void testRetrievingTemplateTasks(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -289,16 +300,16 @@ private class ActionPlanTemplateCreationCntrlTest {
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
 		List<ActionPlanTemplateCreationController.ApTTaskWrapper> taskList =  aptcc.getTemplateWrappers();
 
+		Test.stopTest();
+
 		//checks that the list is not empty
 		System.assert( !taskList.isEmpty(), 'Task list was not empty' );
-
-		Test.StopTest();
 	}
 
 	@IsTest
 	private static void testLongNameTemplateTasks(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -316,10 +327,12 @@ private class ActionPlanTemplateCreationCntrlTest {
 		ActionPlanTemplateCreationController aptcc = new ActionPlanTemplateCreationController( new ApexPages.StandardController( apTemplate ) );
 		List<ActionPlanTemplateCreationController.ApTTaskWrapper> taskList =  aptcc.getTemplateWrappers();
 
+		Test.stopTest();
+
 		//checks that the list is not empty
 		System.assert( !taskList.isEmpty(), 'Task list was not empty' );
 
-		Test.StopTest();
+
 	}
 
 	@IsTest
@@ -328,7 +341,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		final Integer TEMPLATE_TASKS = 2;
 
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( TEMPLATE_TASKS );
@@ -340,7 +353,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		//checks that the list is not empty
 		System.assert( !taskList.isEmpty(), 'Task list was not empty' );
 
-		Test.StopTest();
+		Test.stopTest();
 
 		//Checks to see if both methods return same task size
 		System.assertEquals( numTasks, taskList.size() );
@@ -350,7 +363,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 	@IsTest
 	private static void checkTemplateSubjectItem(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -360,13 +373,15 @@ private class ActionPlanTemplateCreationCntrlTest {
 		List<ActionPlanTemplateCreationController.ApTTaskWrapper> taskList = aptcc.getTemplateWrappers();
 		List<SelectOption> subjectItems = aptcc.getTemplateSubjectItems();
 
-		Test.StopTest();
+		Test.stopTest();
+
+		System.assert(subjectItems.size() > 1, 'We have a task to select for dependency');
 	}
 
 	@IsTest
 	private static void testCyclicDependencyFail(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -408,13 +423,13 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.assert( aptcc.getErrorMsg() != null, 'dependency check failed' );
 
-		Test.StopTest();
+		Test.stopTest();
 	}
 
 	@IsTest
 	private static void testItselfCyclicDependencyFail(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -438,13 +453,13 @@ private class ActionPlanTemplateCreationCntrlTest {
 
 		System.assert( aptcc.getErrorMsg() != null, 'dependency check failed' );
 
-		Test.StopTest();
+		Test.stopTest();
 	}
 
 	@IsTest
 	private static void testCyclicDependencySuccess(){
 		Test.setCurrentPage(Page.ActionPlanTemplateCreation);
-		Test.StartTest();
+		Test.startTest();
 
 		ActionPlansTestUtilities testUtil = new ActionPlansTestUtilities();
 		ActionPlanTemplate__c apTemplate = testUtil.createNewActionPlanTemplate( 2 );
@@ -498,7 +513,7 @@ private class ActionPlanTemplateCreationCntrlTest {
 		aptcc.removeTemplateTask();
 		aptcc.saveTemplate();
 
-		Test.StopTest();
+		Test.stopTest();
 	}
 
 }
