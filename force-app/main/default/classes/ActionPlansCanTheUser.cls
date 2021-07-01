@@ -14,7 +14,7 @@
   * https://github.com/codefriar/CanTheUser
   * https://github.com/trailheadapps/apex-recipes
   */
-public with sharing class ActionPlansCanTheUser {
+public inherited sharing class ActionPlansCanTheUser {
     @testVisible
     private static Map<String, Set<String>> accessibleFieldsByObject = new Map<String, Set<String>>();
     @testVisible
@@ -59,6 +59,9 @@ public with sharing class ActionPlansCanTheUser {
      **/
     @testVisible
     private static Boolean crud(SObject obj, CrudType permission) {
+		if(obj == null){
+			return true;
+		}
         switch on permission {
             when CREATE {
                 return obj.getSObjectType().getDescribe().isCreateable();
