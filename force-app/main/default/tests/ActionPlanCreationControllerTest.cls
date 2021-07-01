@@ -64,6 +64,7 @@ private with sharing class ActionPlanCreationControllerTest {
 		System.assertNotEquals(null, apCreateController.relatedFieldName, 'should have lazy loaded relatedFieldName');
 
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
+		Id recId = apCreateController.relatedObjectId();
 		apCreateController.save();
 		Test.stopTest();
 	}
@@ -535,6 +536,8 @@ private with sharing class ActionPlanCreationControllerTest {
 		Account account2        = testUtil.createNewAccount();
 		Lead lead               = testUtil.createNewLead();
 		Opportunity opportunity = testUtil.createNewOpportunity();
+		Case testCase           = testUtil.createNewCase();
+		Contract contract       = testUtil.createNewContract();
 
 		ApexPages.currentPage().getParameters().put( 'id', null );
 		ApexPages.currentPage().getParameters().put( 'refId', contact.id );
@@ -570,6 +573,22 @@ private with sharing class ActionPlanCreationControllerTest {
 		ApexPages.currentPage().getParameters().put( 'id', null );
 		ApexPages.currentPage().getParameters().put( 'refId', opportunity.Id );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Opportunity' );
+
+		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
+		apCreateController.referedObjectInit();
+
+		ApexPages.currentPage().getParameters().put( 'id', null );
+		ApexPages.currentPage().getParameters().put( 'refId', testCase.Id );
+		ApexPages.currentPage().getParameters().put( 'refType', 'Case' );
+
+		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
+		apCreateController.referedObjectInit();
+
+		System.assertEquals( 1, apCreateController.relatedObjNameList.size() );
+
+		ApexPages.currentPage().getParameters().put( 'id', null );
+		ApexPages.currentPage().getParameters().put( 'refId', contract.Id );
+		ApexPages.currentPage().getParameters().put( 'refType', 'Contract' );
 
 		apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
 		apCreateController.referedObjectInit();
