@@ -33,6 +33,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
+
 @IsTest
 private class ActionPlansUtilitiesTest {
 
@@ -52,7 +53,7 @@ private class ActionPlansUtilitiesTest {
 	static void testDebugParameters(){
 		Test.setCurrentPage(Page.ActionPlanCreation);
 		Test.startTest();
-		ActionPlanCreationController apu = new ActionPlanCreationController(new ApexPages.StandardController( new ActionPlan__c() ) );
+		ActionPlanCreationController apcc = new ActionPlanCreationController(new ApexPages.StandardController( new ActionPlan__c() ) );
 		ActionPlansTestUtilities.showDebugParameters = true;
 		ActionPlansTestUtilities.debugParameters('testDebugParameters');
 		Test.stopTest();
@@ -76,12 +77,12 @@ private class ActionPlansUtilitiesTest {
 		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
 		ApexPages.currentPage().getParameters().put( 'refId',  ap.Account__c);
 
-		ActionPlanCreationController apu = new ActionPlanCreationController(new ApexPages.StandardController( ap) );
-		apu.apTasks = aptl;
+		ActionPlanCreationController apcc = new ActionPlanCreationController(new ApexPages.StandardController( ap) );
+		apcc.apTasks = aptl;
 
-		System.assert(apu.hasRelatedObject(), 'Should be a related object Account');
+		System.assert(apcc.hasRelatedObject(), 'Should be a related object Account');
 
-		apu.save();
+		apcc.save();
 
 		ActionPlan__c rap = [SELECT Id FROM ActionPlan__c WHERE Id = :ap.Id];
 		System.assert( rap != null );
@@ -110,9 +111,9 @@ private class ActionPlansUtilitiesTest {
 		Test.setCurrentPage(Page.ActionPlanCreation);
 		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
 		ApexPages.currentPage().getParameters().put( 'refId',  ap.Account__c);
-		ActionPlanCreationController apu = new ActionPlanCreationController(new ApexPages.StandardController( ap) );
-		apu.apTasks = aptl;
-		apu.saveMultiple();
+		ActionPlanCreationController apcc = new ActionPlanCreationController(new ApexPages.StandardController( ap) );
+		apcc.apTasks = aptl;
+		apcc.saveMultiple();
 		ActionPlan__c rap = [SELECT Id, Account__c FROM ActionPlan__c WHERE Id = :ap.Id];
 		System.assert( rap.Account__c == ap.Account__c );
 
@@ -184,8 +185,8 @@ private class ActionPlansUtilitiesTest {
 
 		Test.setCurrentPage(Page.ActionPlanCreation);
 
-		ActionPlanCreationController apu = new ActionPlanCreationController(new ApexPages.StandardController( new ActionPlan__c() ) );
-		PageReference page = apu.cancel();
+		ActionPlanCreationController apcc = new ActionPlanCreationController(new ApexPages.StandardController( new ActionPlan__c() ) );
+		PageReference page = apcc.cancel();
 		System.assert( page != null, 'Cancel page is null. Unexpected.' );
 
 		ActionPlansTestUtilities testutil =  new ActionPlansTestUtilities();
@@ -193,36 +194,36 @@ private class ActionPlansUtilitiesTest {
 		ActionPlan__c ap = testutil.createNewActionPlan( 'account', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
 		ApexPages.currentPage().getParameters().put( 'refId',  ap.Account__c + ',' + testutil.createNewAccount().id);
-		page = apu.cancel();
+		page = apcc.cancel();
 		System.assert( page!= null );
 
 		testutil.createNewActionPlan( 'contact', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Contact' );
 		ApexPages.currentPage().getParameters().put( 'refId',  ap.Contact__c + ',' + testutil.createNewContact().id);
-		page = apu.cancel();
+		page = apcc.cancel();
 		System.assert( page!= null );
 
 		testutil.createNewActionPlan( 'lead', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Lead' );
 		ApexPages.currentPage().getParameters().put( 'refId',  ap.Lead__c + ',' + testutil.createNewLead().id);
-		page = apu.cancel();
+		page = apcc.cancel();
 		System.assert( page!= null );
 
 		testutil.createNewActionPlan( 'opportunity', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Opportunity' );
 		ApexPages.currentPage().getParameters().put( 'refId',  ap.Opportunity__c + ',' + testutil.createNewOpportunity().id);
-		page = apu.cancel();
+		page = apcc.cancel();
 		System.assert( page!= null );
 
 		testutil.createNewActionPlan( 'account', 0 );
 		ApexPages.currentPage().getParameters().put( 'refType', 'Account' );
 		ApexPages.currentPage().getParameters().put( 'refId',  ap.Account__c);
-		page = apu.cancel();
+		page = apcc.cancel();
 		System.assert( page!= null );
 
 		ActionPlanTemplate__c apt = testutil.createNewActionPlanTemplate( 0 );
 		ApexPages.currentPage().getParameters().put( 'templateId', apt.Id );
-		page = apu.cancel();
+		page = apcc.cancel();
 		System.assert( page!= null );
 		Test.stopTest();
 	}
@@ -234,23 +235,23 @@ private class ActionPlansUtilitiesTest {
 		ActionPlansTestUtilities testutil =  new ActionPlansTestUtilities();
 
 		ActionPlan__c ap = testutil.createNewActionPlan( 'account', 0 );
-		ActionPlanCreationController apu = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
-		Id recId = apu.relatedObjectId();
+		ActionPlanCreationController apcc = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
+		Id recId = apcc.relatedObjectId();
 		System.assert( ap.Account__c == recId);
 
 		ap = testutil.createNewActionPlan( 'contact', 0 );
-		apu = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
-		recId = apu.relatedObjectId();
+		apcc = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
+		recId = apcc.relatedObjectId();
 		System.assert( ap.Contact__c == recId);
 
 		ap = testutil.createNewActionPlan( 'lead', 0 );
-		apu = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
-		recId = apu.relatedObjectId();
+		apcc = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
+		recId = apcc.relatedObjectId();
 		System.assert( ap.Lead__c == recId);
 
 		ap = testutil.createNewActionPlan( 'opportunity', 0 );
-		apu = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
-		recId = apu.relatedObjectId();
+		apcc = new ActionPlanCreationController(new ApexPages.StandardController( ap ) );
+		recId = apcc.relatedObjectId();
 		System.assert( ap.Opportunity__c == recId);
 	}
 
@@ -268,10 +269,10 @@ private class ActionPlansUtilitiesTest {
 
 		Test.startTest();
 		Test.setCurrentPage(Page.ActionPlanDetail);
-		ActionPlanDetailController apu = new ActionPlanDetailController(new ApexPages.StandardController( ap ) );
+		ActionPlanDetailController apdc = new ActionPlanDetailController(new ApexPages.StandardController( ap ) );
 		ApexPages.currentPage().getParameters().put('retURL', url);
 		ApexPages.currentPage().getParameters().put('records', records);
-		PageReference page = apu.deletePlan();
+		PageReference page = apdc.deletePlan();
 		Test.stopTest();
 
 		List<ActionPlan__c> lAp2 = [SELECT Id FROM ActionPlan__c WHERE Id IN :lAp];
@@ -344,16 +345,16 @@ private class ActionPlansUtilitiesTest {
 			ApexPages.currentPage().getParameters().put( 'id', null );
 
 			ApexPages.currentPage().getParameters().put( 'templateId', apt.Id );
-			ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
-			apCreateController.refreshRelatedObjectsLookUp();
+			ActionPlanCreationController apcc = new ActionPlanCreationController( new Apexpages.StandardController( new ActionPlan__c() ) );
+			apcc.refreshRelatedObjectsLookUp();
 
-			apCreateController.actionPlan.SkipWeekends__c = true;
-			apCreateController.actionPlan.SkipDay__c = 'End of previous week';
-			apCreateController.getTasks();
+			apcc.actionPlan.SkipWeekends__c = true;
+			apcc.actionPlan.SkipDay__c = 'End of previous week';
+			apcc.getTasks();
 
-			System.assert( !apCreateController.getTasks().isEmpty() );
+			System.assert( !apcc.getTasks().isEmpty() );
 
-			apCreateController.save();
+			apcc.save();
 		}
 
 		Test.stopTest();
