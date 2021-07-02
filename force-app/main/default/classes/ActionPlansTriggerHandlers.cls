@@ -203,7 +203,10 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						ActionPlansTaskTriggerUtilities.deleteTasks( taskIds );
 					}
 				} else {
-					delete [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__r.Action_Plan__c IN :oldRecordsMap.keyset() ];
+					List<Task> toDelete = [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__r.Action_Plan__c IN :oldRecordsMap.keyset() ];
+					//if(!toDelete.isEmpty()){
+						new ActionPlansSafely().allOrNothing().doDelete(toDelete);
+					//}
 				}
 			}
 
@@ -295,7 +298,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 			when BEFORE_DELETE {
 				try{
-					delete [SELECT t.Id FROM Task t WHERE t.TaskAPTaskTemplate__c IN :oldRecordsMap.keyset() AND t.IsClosed = false];
+					new ActionPlansSafely().doDelete([SELECT t.Id FROM Task t WHERE t.TaskAPTaskTemplate__c IN :oldRecordsMap.keyset() AND t.IsClosed = false]);
 				} catch (Exception e){
 					System.debug('Error when deleting Tasks related to APTaskTemplate');
 				}
@@ -516,7 +519,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 				if (!finalIds.isEmpty()){
 					if ( System.isBatch() || System.isFuture() ){
-						delete [SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :finalIds];
+						new ActionPlansSafely().doDelete([SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :finalIds]);
 					} else {
 						ActionPlansTaskTriggerUtilities.deleteAPTasks( finalIds );
 					}
@@ -563,25 +566,16 @@ global inherited sharing class ActionPlansTriggerHandlers {
 		Map<Id, Boolean> allowTasksMap = new Map<Id, Boolean>();
 		Set<String> openStatuses = ActionPlansUtilities.getOpenTaskStatuses();
 
-		/* List<APTaskTemplate__c> aptList =  [SELECT Status__c, APTaskTemplate__c, APTaskTemplate__r.Status__c
-											FROM APTaskTemplate__c
-											WHERE Id = :apTaskIds]; */
-
 		for(APTaskTemplate__c apt : [SELECT Status__c, APTaskTemplate__c, APTaskTemplate__r.Status__c
 											FROM APTaskTemplate__c
 											WHERE Id IN :apTaskTemplateIds]){
-			//if( apt.APTaskTemplate__c != null ){
+
 				allowTasksMap.put(apt.Id, apt.APTaskTemplate__c == null || !openStatuses.contains(apt.APTaskTemplate__r.Status__c) );
-			//}
+
 		}
 
 		return allowTasksMap;
 	}
-
-	/**
-	 * If the user's action plans setting says to move to next open business hour day, we shift the due date to the next available work day
-	 * @param List<Task> tasks
-	 */
 
 	/**
 	 * Handle ActionPlans related to Leads after conversion
@@ -633,26 +627,29 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 	public static void triggerHandler_ActionPlanAccount(List<Account> newRecords, List<Account> oldRecords, Map<Id,Account> newRecordsMap, Map<Id,Account> oldRecordsMap, System.TriggerOperation triggerEvent){
 
+
 		//Delete related action plans
 		switch on triggerEvent {
 
 			when BEFORE_DELETE {
 
+				Set<Id> oldRecordIDs = oldRecordsMap.keyset();
+
 				// GET Action Plans to delete in recycle bin
-				List<ActionPlan__c>  deletePermenantly_apIds = [SELECT Id FROM ActionPlan__c WHERE (Contact__r.AccountId IN :oldRecords OR Case__r.AccountId IN :oldRecords OR Contract__r.AccountId IN :oldRecords OR Opportunity__r.AccountId IN :oldRecords) AND isDeleted = true ALL ROWS];
+				List<ActionPlan__c>  deletePermenantly_apIds = [SELECT Id FROM ActionPlan__c WHERE (Contact__r.AccountId IN :oldRecordIDs OR Case__r.AccountId IN :oldRecordIDs OR Contract__r.AccountId IN :oldRecordIDs OR Opportunity__r.AccountId IN :oldRecordIDs) AND isDeleted = true ALL ROWS];
 
 				if ( deletePermenantly_apIds.size() >0 ){
 					Database.emptyRecycleBin(deletePermenantly_apIds);
 				}
 
 				Set<Id>  apIds  = new Set<Id>();
-				for( ActionPlan__c ap : [SELECT Id FROM ActionPlan__c WHERE (Contact__r.AccountId IN :oldRecords OR Case__r.AccountId IN :oldRecords OR Contract__r.AccountId IN :oldRecords OR Opportunity__r.AccountId IN :oldRecords)] ){
+				for( ActionPlan__c ap : [SELECT Id FROM ActionPlan__c WHERE (Contact__r.AccountId IN :oldRecordIDs OR Case__r.AccountId IN :oldRecordIDs OR Contract__r.AccountId IN :oldRecordIDs OR Opportunity__r.AccountId IN :oldRecordIDs)] ){
 					apIds.add( ap.Id );
 				}
 
 				if ( apIds.size() > 0 ){
 					ActionPlansBatchDelete aPBatch = new ActionPlansBatchDelete(apIds);
-					Database.ExecuteBatch( aPBatch );
+					Database.executeBatch( aPBatch );
 				}
 			}
 
@@ -666,11 +663,14 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				for(Contract c : [SELECT Id FROM Contract WHERE AccountId IN :newRecordsMap.keySet()]){
 					relatedIDs.add(c.Id);
 				}
+				for(Case c : [SELECT Id FROM Case WHERE AccountId IN :newRecordsMap.keySet()]){
+					relatedIDs.add(c.Id);
+				}
 				for(Opportunity c : [SELECT Id FROM Opportunity WHERE AccountId IN :newRecordsMap.keySet()]){
 					relatedIDs.add(c.Id);
 				}
 
-				List<ActionPlan__c> aPs = [SELECT Id FROM ActionPlan__c WHERE Contact__c IN :relatedIDs OR Contract__c IN :relatedIDs OR Opportunity__c IN :relatedIDs ALL ROWS];
+				List<ActionPlan__c> aPs = [SELECT Id FROM ActionPlan__c WHERE Contact__c IN :relatedIDs OR Contract__c IN :relatedIDs OR Case__c IN :relatedIDs OR Opportunity__c IN :relatedIDs ALL ROWS];
 
 				try{
 					if(ActionPlansTestUtilities.forceError){

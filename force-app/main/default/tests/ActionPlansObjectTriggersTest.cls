@@ -333,7 +333,7 @@ private class ActionPlansObjectTriggersTest {
 
 		System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Contact__c != null]);
 
-		delete [SELECT Id FROM Account];
+		new ActionPlansSafely().doDelete([SELECT Id FROM Account]);
 
 		Test.stopTest();
 

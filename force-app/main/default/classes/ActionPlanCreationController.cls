@@ -40,7 +40,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 public with sharing class ActionPlanCreationController{
 
 	private Double                  taskIndex;
-	public ActionPlan__c            actionPlan;
+	@TestVisible
+	private ActionPlan__c            actionPlan;
 	private Id                      templateId;
 	public Set<Id>                  relatedObjIds           { get; set; }
 	public String                   relatedObjLabelPlural   { get; set; }
@@ -289,17 +290,22 @@ public with sharing class ActionPlanCreationController{
 	public void checkPendingDeletes(){
 
 		if( this.pendingDeletes != null ) {
-			List<Task>  taskToDelete    = new List<Task>();
-			Set<Id>    deleteApttIds   = new Set<Id>();
+			List<Task>  tasksToDelete    = new List<Task>();
+			Set<Id>     deleteApttIds    = new Set<Id>();
 
 			for( APTaskTemplate__c deleteAptt : this.pendingDeletes ){
 				deleteApttIds.add(deleteAptt.Id);
 			}
 			//do not delete completed tasks
-			taskToDelete = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c IN :deleteApttIds AND IsClosed = false];
-
-			delete taskToDelete;
-			delete pendingDeletes;
+			tasksToDelete = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c IN :deleteApttIds AND IsClosed = false];
+			if(ActionPlansCanTheUser.destroy('Task') ){
+				//delete tasksToDelete;
+				new ActionPlansSafely().doDelete(tasksToDelete);
+			}
+			if(ActionPlansCanTheUser.destroy('APTaskTemplate__c')){
+				new ActionPlansSafely().doDelete(pendingDeletes);
+				//delete pendingDeletes;
+			}
 		}
 	}
 
@@ -539,12 +545,11 @@ public with sharing class ActionPlanCreationController{
 	public Integer getCompleted(){
 		if(actionPlan.Id == null){ return 0; }
 
-		List<APTaskTemplate__c> ts = [SELECT Id
+		return [SELECT Count()
 			FROM APTaskTemplate__c
 			WHERE Status__c IN :ActionPlansUtilities.getClosedTaskStatuses()
 			AND ActivityDate__c != null AND Action_Plan__c = :actionPlan.Id];
 
-		return ( ts != null ) ? ts.size() : 0;
 	}
 
 	/**
@@ -788,7 +793,12 @@ public with sharing class ActionPlanCreationController{
 			Task_RecordTypeId__c, IsClosed__c
 			FROM APTaskTemplate__c
 			WHERE Action_Plan__c = :actionPlanId ORDER BY TaskIndex__c ASC];
-		return myList;
+
+			SObjectAccessDecision decision = Security.stripInaccessible(
+				AccessType.READABLE,
+				myList);
+
+			return decision.getRecords();
 	}
 
 	/**
@@ -857,21 +867,26 @@ public with sharing class ActionPlanCreationController{
 		switch on objectlower{
 
 			when 'case' {
-				for( Case ca : [SELECT Subject, CaseNumber FROM Case WHERE Id IN :relatedObjIds] ){
-					nameList.add( (ca.Subject != null) ?  ca.CaseNumber + ': ' + ca.Subject : ca.CaseNumber );
+				if(ActionPlansCanTheUser.read('Case')){
+					for( Case ca : [SELECT Subject, CaseNumber FROM Case WHERE Id IN :relatedObjIds] ){
+						nameList.add( (ca.Subject != null) ?  ca.CaseNumber + ': ' + ca.Subject : ca.CaseNumber );
+					}
 				}
 			}
 			when 'contract' {
-				for( Contract contr : [SELECT ContractNumber FROM Contract WHERE Id IN :relatedObjIds] ){
-					nameList.add( Contract.Name.getDescribe().getLabel() + ': ' + contr.ContractNumber );
+				if(ActionPlansCanTheUser.read('Contract')){
+					for( Contract contr : [SELECT ContractNumber FROM Contract WHERE Id IN :relatedObjIds] ){
+						nameList.add( Contract.Name.getDescribe().getLabel() + ': ' + contr.ContractNumber );
+					}
 				}
 			}
 			when else {
-					String relNameQuery = 'SELECT Id, Name FROM ' + relatedObjectName + ' WHERE Id IN :relatedObjIds';
-
-					for(SObject so : Database.query(relNameQuery)){
+				System.debug('querying related record for object ' + relatedObjectName);
+				if(ActionPlansCanTheUser.read(relatedObjectName)){
+					for(SObject so : Database.query('SELECT Id, Name FROM ' + relatedObjectName + ' WHERE Id IN :relatedObjIds')){
 						nameList.add( (String)so.get('Name') );
 					}
+				}
 			}
 		}
 		return nameList;
@@ -1048,10 +1063,8 @@ public with sharing class ActionPlanCreationController{
 					continue; // only look at custom references one object up
 				}
 
-				Schema.SObjectField sof = fsm.getSObjectField();
-				Schema.DescribeFieldResult dfr = sof.getDescribe();
-				Schema.SObjectType sot = dfr.getReferenceTo()[0];
-				Schema.DescribeSObjectResult dsr = sot.getDescribe();
+				Schema.DescribeFieldResult dfr = fsm.getSObjectField().getDescribe();
+				Schema.DescribeSObjectResult dsr = dfr.getReferenceTo()[0].getDescribe();
 				Boolean hasActivities = dsr.fields.getMap().containsKey('lastactivitydate');
 				Boolean canSeeRelatedObject = dsr.isAccessible();
 				Boolean canUpdateLookupField = dfr.isUpdateable();

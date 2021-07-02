@@ -100,7 +100,7 @@ public with sharing class ActionPlanTemplateCreationController{
 
 		// check for pendingDeletes, if something is pending send it to delete
 		if( pendingTemplateDeletes != null ){
-			delete pendingTemplateDeletes;
+			new ActionPlansSafely().doDelete(pendingTemplateDeletes);
 		}
 
 		// update Action Plan Template object

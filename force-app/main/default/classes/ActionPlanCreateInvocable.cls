@@ -115,7 +115,9 @@ global inherited sharing class ActionPlanCreateInvocable {
 			actionPlansToInsert.put(r.relatedRecordID, ap);
 		}
 
-		insert actionPlansToInsert.values();
+		if(ActionPlansCanTheUser.create(actionPlansToInsert.values())){
+			insert actionPlansToInsert.values();
+		}
 
 		Map<String, APTaskTemplate__c> planTaskIndexToTask = new Map<String, APTaskTemplate__c>();
 
@@ -190,7 +192,10 @@ global inherited sharing class ActionPlanCreateInvocable {
 				planTaskIndexToTask.put(ap.Id + '' + apTask.TaskIndex__c, apTask);
 			}
 		}
-		insert planTaskIndexToTask.values();
+
+		if(ActionPlansCanTheUser.create(planTaskIndexToTask.values())){
+			insert planTaskIndexToTask.values();
+		}
 
 		// Now we have to update with the controlling/dependent task IDs
 
@@ -289,11 +294,11 @@ global inherited sharing class ActionPlanCreateInvocable {
 		Database.DMLOptions dmlo2   = new Database.DMLOptions();
 		dmlo2.EmailHeader.triggerUserEmail = false;
 
-		if( myNewTasksWithEmail.size() > 0 ){
+		if( myNewTasksWithEmail.size() > 0  && ActionPlansCanTheUser.create(myNewTasksWithEmail) ){
 			Database.insert( myNewTasksWithEmail, dmlo );
 		}
 
-		if( myTasksWithOutEmail.size() > 0 ){
+		if( myTasksWithOutEmail.size() > 0  && ActionPlansCanTheUser.create(myTasksWithOutEmail) ){
 			Database.insert( myTasksWithOutEmail, dmlo2 );
 		}
 

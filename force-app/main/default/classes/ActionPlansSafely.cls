@@ -6,7 +6,7 @@
   * https://github.com/codefriar/ActionPlansCanTheUser
   * https://github.com/trailheadapps/apex-recipes
   */
-public with sharing class ActionPlansSafely {
+public inherited sharing class ActionPlansSafely {
     @testVisible
     private Boolean allOrNothing = false;
     @testVisible
@@ -27,6 +27,9 @@ public with sharing class ActionPlansSafely {
 
     /// Insert
     public List<Database.SaveResult> doInsert(List<SObject> records) {
+		if(records.isEmpty()){
+			return new List<Database.SaveResult>();
+		}
         if (ActionPlansCanTheUser.create(records)) {
             return doDML(System.AccessType.CREATABLE, records);
         }
@@ -39,6 +42,9 @@ public with sharing class ActionPlansSafely {
 
     /// Update
     public List<Database.SaveResult> doUpdate(List<SObject> records) {
+		if(records.isEmpty()){
+			return new List<Database.SaveResult>();
+		}
         if (ActionPlansCanTheUser.edit(records)) {
             return doDML(System.AccessType.UPDATABLE, records);
         }
@@ -51,6 +57,9 @@ public with sharing class ActionPlansSafely {
 
     /// Upsert
     public List<Database.UpsertResult> doUpsert(List<SObject> records) {
+		if(records.isEmpty()){
+			return new List<Database.UpsertResult>();
+		}
         if (ActionPlansCanTheUser.edit(records) && ActionPlansCanTheUser.create(records)) {
             SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
                 AccessType.UPSERTABLE,
@@ -71,6 +80,9 @@ public with sharing class ActionPlansSafely {
 
     /// Delete
     public List<Database.DeleteResult> doDelete(List<SObject> records) {
+		if(records.isEmpty()){
+			return new List<Database.DeleteResult>();
+		}
         if (ActionPlansCanTheUser.destroy(records)) {
             return Database.delete(records, this.allOrNothing);
         }

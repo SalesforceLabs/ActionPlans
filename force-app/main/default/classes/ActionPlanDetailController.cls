@@ -63,9 +63,7 @@ public with sharing class ActionPlanDetailController{
 
 		//delete ap, which will also delete apts via master-detail relationship
 		try{
-
-			delete actionPlan;
-
+			new ActionPlansSafely().allOrNothing().doDelete(actionPlan);
 		} catch( Exception e ){
 			ApexPages.addMessages(e);
 		}
@@ -77,10 +75,10 @@ public with sharing class ActionPlanDetailController{
 			retUrl = '/' + ApexPages.currentPage().getParameters().get('templateId');
 		}
 		else if(ApexPages.currentPage().getParameters().get('retURL') != null && !ActionPlansUtilities.getIsLex()){
-			retURL = ApexPages.currentPage().getParameters().get('retURL');
+			retURL = '' + ApexPages.currentPage().getParameters().get('retURL');
 		}
 		// Send the user to the tab.
-		PageReference newPage = new PageReference( retURL );
+		PageReference newPage = new PageReference( '' + retURL );
 		newPage.setRedirect( true );
 
 		return newPage;

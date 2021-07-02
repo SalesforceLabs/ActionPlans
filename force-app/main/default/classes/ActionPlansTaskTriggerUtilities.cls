@@ -292,7 +292,8 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	//@future
 	public static void deleteAPTasks( Set<Id> aPTasks ) {
 		try{
-			delete [SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :aPTasks];
+			List<APTaskTemplate__c> toDelete =  [SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :aPTasks];
+			new ActionPlansSafely().allOrNothing().doDelete(toDelete);
 		} catch (Exception e){
 			System.debug('Error deleting APTTemplate - probably a circular error when deleting a APTTemplate, then its Task, then the template again.');
 		}
@@ -304,7 +305,8 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	*/
 	//@future
 	public static void deleteTasks( Set<Id> apttIds ) {
-		delete [SELECT Id FROM Task WHERE IsClosed = false AND Id IN :apttIds];
+		List<Task> toDelete = [SELECT Id FROM Task WHERE IsClosed = false AND Id IN :apttIds];
+		new ActionPlansSafely().allOrNothing().doDelete(toDelete);
 	}
 
 	/*

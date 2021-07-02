@@ -55,7 +55,7 @@ public with sharing class ActionPlansCreateMultipleAPsExtension {
 			return null;
 		}
 
-		if( !ActionPlansCanTheUser.create(new ActionPlan__c()) ) { return null; }
+		if( !ActionPlansCanTheUser.create(new ActionPlan__c()) ) { return standardcontroller.cancel(); }
 
 		Pagereference pageRef = Page.ActionPlanCreation;
 
