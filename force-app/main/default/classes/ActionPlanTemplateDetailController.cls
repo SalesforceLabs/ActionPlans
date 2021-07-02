@@ -141,9 +141,7 @@ public with sharing class ActionPlanTemplateDetailController {
 				if(tr.getSobjectName() == 'Document' && !tr.isCustom()){
 					docLabel = tr.getLabel();
 				}
-				if(docLabel != '' && fileLabel != ''){
-					break;
-				}
+				if(docLabel != '' && fileLabel != ''){ break; }
 			}
 		}
 
