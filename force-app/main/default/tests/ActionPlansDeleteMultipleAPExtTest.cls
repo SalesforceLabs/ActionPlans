@@ -109,4 +109,59 @@ private class ActionPlansDeleteMultipleAPExtTest {
         System.assertEquals(APS_TO_CREATE, [SELECT Count() FROM ActionPlan__c]);
 		System.assertEquals(null, ctrl.deleteRecords());
     }
+
+	@IsTest
+	private static void noDeletePermission() {
+		Id pId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'Minimum Access - Salesforce'
+        ]
+        .Id;
+		User minAccessUser = new User(
+            profileId = pId,
+            LastName = 'last',
+            Email = 'Testuser@test.example.com',
+            Username = 'Testuser@test.example.com' + Crypto.getRandomInteger(),
+            CompanyName = 'TEST',
+            Title = 'title',
+            Alias = 'alias',
+            TimeZoneSidKey = 'America/Los_Angeles',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US'
+        );
+		insert minAccessUser;
+
+		PermissionSet ps = new PermissionSet(
+            Label = 'testPermSet',
+            Name = 'testPermSet'
+        );
+        insert ps;
+        ObjectPermissions op = new ObjectPermissions(
+            ParentId = ps.Id,
+            SobjectType = 'ActionPlan__c'
+        );
+        op.PermissionsRead = true;
+        op.PermissionsViewAllRecords = true;
+        insert op;
+        insert new PermissionSetAssignment(
+            PermissionSetId = ps.Id,
+            AssigneeId = minAccessUser.Id
+        );
+
+		System.RunAs(minAccessUser){
+			List<ActionPlan__c> listActionPlan = [SELECT Id, Name FROM ActionPlan__c];
+			System.assertEquals(APS_TO_CREATE, [SELECT COUNT() FROM ActionPlan__c]);
+			ApexPages.StandardSetController std = new ApexPages.StandardSetController(listActionPlan );
+			std.setSelected(new List<ActionPlan__c> { listActionPlan[0], listActionPlan[1] });
+			ActionPlansDeleteMultipleAPExtension ctrl = new ActionPlansDeleteMultipleAPExtension(std);
+			Test.startTest();
+			ctrl.deleteRecords();
+			Test.stopTest();
+
+		}
+		System.assertEquals(APS_TO_CREATE, [SELECT Count() FROM ActionPlan__c]);
+
+	}
 }
