@@ -387,6 +387,22 @@ private class ActionPlansSafelyTest {
         }
     }
 
+	@IsTest
+	static void emptyCollections(){
+
+		Test.startTest();
+		List<Database.SaveResult> insertResults = new ActionPlansSafely().doInsert(new List<Account>());
+		List<Database.SaveResult> updateResults = new ActionPlansSafely().doUpdate(new List<Account>());
+		List<Database.UpsertResult> upsertResults = new ActionPlansSafely().doUpsert(new List<Account>());
+		List<Database.DeleteResult> deleteResults = new ActionPlansSafely().doDelete(new List<Account>());
+		Test.stopTest();
+
+		System.assert(insertResults.isEmpty());
+		System.assert(updateResults.isEmpty());
+		System.assert(upsertResults.isEmpty());
+		System.assert(deleteResults.isEmpty());
+	}
+
 	/**
 	 * Data setup
 	 */

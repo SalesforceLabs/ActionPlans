@@ -152,7 +152,7 @@ private class ActionPlansCanTheUserTest {
     static void getFLSofAccountNamePositive() {
         System.assert(
             ActionPlansCanTheUser.flsAccessible('Account', 'Name'),
-            'Expected the name field to be accesible on Account'
+            'Expected the name field to be accessible on Account'
         );
     }
 
@@ -174,7 +174,7 @@ private class ActionPlansCanTheUserTest {
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
-                'Expected the field ' + field + ' to be accesible on Account'
+                'Expected the field ' + field + ' to be accessible on Account'
             );
         }
     }
@@ -189,12 +189,12 @@ private class ActionPlansCanTheUserTest {
 
         System.assert(
             bulkCheck.get('name'),
-            'Expected the name ' + 'field to be accesible on Account'
+            'Expected the name ' + 'field to be accessible on Account'
         );
 
         System.assert(
             !bulkCheck.get('nonExistingField__c'),
-            'Expected the nonExistingField__c ' + 'field not to be accesible on Account'
+            'Expected the nonExistingField__c ' + 'field not to be accessible on Account'
         );
     }
 
@@ -208,7 +208,7 @@ private class ActionPlansCanTheUserTest {
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
-                'Expected the field ' + field + ' to be accesible on Account'
+                'Expected the field ' + field + ' to be accessible on Account'
             );
         }
     }
@@ -223,12 +223,12 @@ private class ActionPlansCanTheUserTest {
 
         System.assert(
             bulkCheck.get('name'),
-            'Expected the name ' + 'field to be accesible on Account'
+            'Expected the name ' + 'field to be accessible on Account'
         );
 
         System.assert(
             !bulkCheck.get('nonExistingField__c'),
-            'Expected the nonExistingField__c ' + 'field not to be accesible on Account'
+            'Expected the nonExistingField__c ' + 'field not to be accessible on Account'
         );
     }
 }
