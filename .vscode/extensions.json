@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "salesforce.salesforcedx-vscode",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
