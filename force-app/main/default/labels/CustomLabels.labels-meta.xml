@@ -409,6 +409,14 @@
         <value>A cyclic dependency on tasks has been found</value>
     </labels>
     <labels>
+        <fullName>ap_Error_InsufficientPrivileges</fullName>
+        <categories>Action Plans</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ap_Error_InsufficientPrivileges</shortDescription>
+        <value>Error: Insufficient Privileges</value>
+    </labels>
+    <labels>
         <fullName>ap_Errors_ImportingXMLTask</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>

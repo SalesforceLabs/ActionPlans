@@ -100,15 +100,14 @@ public with sharing class ActionPlanTemplateCreationController{
 
 		// check for pendingDeletes, if something is pending send it to delete
 		if( pendingTemplateDeletes != null ){
-			new ActionPlansSafely().doDelete(pendingTemplateDeletes);
+			Database.delete(pendingTemplateDeletes);
 		}
 
 		// update Action Plan Template object
 		try{
-			upsert actionPlanTemplate;
+			Database.upsert ( actionPlanTemplate );
 		} catch( Exception e ){
-			ApexPages.addMessages(e);
-			return null;
+			ApexPages.addMessages(e); return null;
 		}
 
 		// save tasks to the template and attach relation to Action Plan
@@ -123,16 +122,15 @@ public with sharing class ActionPlanTemplateCreationController{
 		}
 
 		try{
-			upsert aptTasks;
+			Database.upsert ( aptTasks );
 		} catch( Exception e ){
-			ApexPages.addMessages(e);
-			return null;
+			ApexPages.addMessages(e); return null;
 		}
 
 		// run through the tasks and take care of dependents
 		for( APTTaskTemplate__c t : aptTasks ){
 			if( t.Dependent__c != null && t.Dependent__c != 'None' ){
-				t.APTTaskTemplate__c 	= aptTasks[ Integer.valueOf( t.Dependent__c ) ].Id;
+				t.APTTaskTemplate__c = aptTasks[ Integer.valueOf( t.Dependent__c ) ].Id;
 			}
 			else {
 				t.APTTaskTemplate__c = null;
@@ -140,11 +138,9 @@ public with sharing class ActionPlanTemplateCreationController{
 		}
 
 		try{
-			update aptTasks;
+			Database.update(aptTasks);
 		} catch( Exception e ){
-			//Database.rollback( sp );
-			ApexPages.addMessages(e);
-			return null;
+			ApexPages.addMessages(e); return null;
 		}
 
 		// Send the user to the detail page for the new account.

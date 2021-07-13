@@ -37,7 +37,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-global inherited sharing class ActionPlansBatchTaskBuilder implements Database.Batchable<SObject>, Database.Stateful{
+global without sharing class ActionPlansBatchTaskBuilder implements Database.Batchable<SObject>, Database.Stateful{
 
 	private List<APTaskTemplate__c> apTasks             { get; set; }
 	private List<Id>            aptIds              { get; set; }
@@ -142,18 +142,18 @@ global inherited sharing class ActionPlansBatchTaskBuilder implements Database.B
 			}
 		}
 
-		Database.DMLOptions dmlo    = new Database.DMLOptions();
-		Database.DMLOptions dmlo2   = new Database.DMLOptions();
+			Database.DMLOptions dmlo    = new Database.DMLOptions();
+			Database.DMLOptions dmlo2   = new Database.DMLOptions();
 
-		if( this.myTasksWithEmail.size() > 0 ){
-			dmlo.EmailHeader.triggerUserEmail = true;
-			Database.insert( this.myTasksWithEmail, dmlo );
-		}
+			if( this.myTasksWithEmail.size() > 0 ){
+				dmlo.EmailHeader.triggerUserEmail = true;
+				Database.insert( this.myTasksWithEmail, dmlo );
+			}
 
-		if( this.myTasksWithOutEmail.size() > 0 ){
-			dmlo2.EmailHeader.triggerUserEmail = false;
-			Database.insert( this.myTasksWithOutEmail, dmlo2 );
-		}
+			if( this.myTasksWithOutEmail.size() > 0 ){
+				dmlo2.EmailHeader.triggerUserEmail = false;
+				Database.insert( this.myTasksWithOutEmail, dmlo2 );
+			}
 	}
 
 	global void finish( Database.BatchableContext bc ){

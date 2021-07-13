@@ -81,7 +81,7 @@ public with sharing class ActionPlanTemplateDetailController {
 	 */
 	public PageReference deleteTemplate(){
 		try{
-			delete actionPlanTemplate;
+			new ActionPlansSafely().doDelete( actionPlanTemplate );
 		} catch( Exception e ){	Apexpages.addMessages( e );	return null; }
 
 		// Send the user to the detail page for the new account.

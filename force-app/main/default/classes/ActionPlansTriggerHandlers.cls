@@ -36,7 +36,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-global inherited sharing class ActionPlansTriggerHandlers {
+global without sharing class ActionPlansTriggerHandlers {
 
 	/**
 	 * Global so that if in managed package, these methods are the only ones available
@@ -114,26 +114,6 @@ global inherited sharing class ActionPlansTriggerHandlers {
 		}
 	}
 
-	private static String getRelationshipName(Id recordId) {
-		Schema.SObjectType token = recordId.getSObjectType();
-		String sObjectName = token.getDescribe().getName().toLowerCase();
-
-		Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.ActionPlan__c.fields.getMap();
-
-		for(String s : fieldMap.keyset()){
-			Schema.DescribeFieldResult dfr = fieldMap.get(s).getDescribe();
-			Schema.DisplayType dt = dfr.getType();
-			if(dt.name().equalsIgnoreCase('Reference') && s.endsWithIgnoreCase('__c')){
-				String relationshipObjectName = dfr.getReferenceTo()[0].getDescribe().getName();
-				if( sObjectName.equalsIgnoreCase(relationshipObjectName) ){
-					return s;
-				}
-			}
-		}
-		return null;
-
-	}
-
 	public static void triggerHandler_ActionPlan(List<ActionPlan__c> newRecords, List<ActionPlan__c> oldRecords, Map<Id,ActionPlan__c> newRecordsMap, Map<Id,ActionPlan__c> oldRecordsMap, System.TriggerOperation triggerEvent){
 
 		//System.debug('In ActionPlan__c ' + triggerEvent.name());
@@ -186,6 +166,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 					for(APTaskTemplate__c a : templateTasks){
 						a.Name = null;
 					}
+					// no permissions check because trigger handler must run in system mode
 					update templateTasks;
 				}
 			}
@@ -203,20 +184,16 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						ActionPlansTaskTriggerUtilities.deleteTasks( taskIds );
 					}
 				} else {
-					List<Task> toDelete = [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__r.Action_Plan__c IN :oldRecordsMap.keyset() ];
-					//if(!toDelete.isEmpty()){
-						new ActionPlansSafely().allOrNothing().doDelete(toDelete);
-					//}
+					// no permissions check because trigger handler must run in system mode
+					delete [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__r.Action_Plan__c IN :oldRecordsMap.keyset() ];
 				}
 			}
 
 			when AFTER_UNDELETE {
 
-				Database.UndeleteResult[] unDel_results;
-
 				//get Id of all deleted Action Plan Task Templates
-				Map<Id,APTaskTemplate__c> map_APTasks = new Map<Id,APTaskTemplate__c>([SELECT Id, Action_Plan__c
-				FROM APTaskTemplate__c WHERE Action_Plan__c IN :newRecordsMap.keyset() ALL ROWS ]);
+				Map<Id, APTaskTemplate__c> map_APTasks = new Map<Id, APTaskTemplate__c>([SELECT Id, Action_Plan__c
+										FROM APTaskTemplate__c WHERE Action_Plan__c IN :newRecordsMap.keyset() ALL ROWS ]);
 
 				//get all tasks asociated to this APTasks
 				List<Task> taskList = [SELECT Id, TaskAPTaskTemplate__c, IsDeleted
@@ -224,28 +201,8 @@ global inherited sharing class ActionPlansTriggerHandlers {
 										WHERE TaskAPTaskTemplate__c IN :map_APTasks.keySet() AND IsDeleted = true ALL ROWS ];
 
 				if (!taskList.isEmpty()){
-					unDel_results = Database.undelete( taskList,false );
+					List<Database.UndeleteResult> unDel_results = Database.undelete( taskList, false );
 				}
-			}
-		}
-	}
-
-	private static void validateActionPlans(List<ActionPlan__c> actionPlans){
-
-		List<String> actionPlanReferenceFields = ActionPlansUtilities.getCustomRelationshipFields();
-
-		// Validate that 1 and only 1 custom reference field is filled
-
-		for(ActionPlan__c ap : actionPlans){
-			Integer filledReferences = 0;
-
-			for(String s : actionPlanReferenceFields){
-				if(ap.get(s) != null){
-					filledReferences++;
-				}
-			}
-			if(filledReferences != 1){
-				ap.addError(System.Label.ap_RelatedCount);
 			}
 		}
 	}
@@ -298,7 +255,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 
 			when BEFORE_DELETE {
 				try{
-					new ActionPlansSafely().doDelete([SELECT t.Id FROM Task t WHERE t.TaskAPTaskTemplate__c IN :oldRecordsMap.keyset() AND t.IsClosed = false]);
+					Database.delete([SELECT Id FROM Task WHERE TaskAPTaskTemplate__c IN :oldRecordsMap.keyset() AND IsClosed = false]);
 				} catch (Exception e){
 					System.debug('Error when deleting Tasks related to APTaskTemplate');
 				}
@@ -309,7 +266,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				List<Task> aP_tasks = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c IN :newRecordsMap.keyset() AND isDeleted = true ALL ROWS ];
 
 				try{
-					undelete aP_tasks;
+					Database.undelete (aP_tasks);
 				} catch ( Dmlexception e ){
 					for (APTaskTemplate__c a: newRecords){
 						a.addError(System.Label.ap_Error + ' ' + Task.sObjectType.getDescribe().getLabel() + ' ' + triggerEvent + ': ' + e);
@@ -423,7 +380,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				for( Task t : newRecords ) {
 
 					if (t.TaskAPTaskTemplate__c != null){
-						//store APTasks Id in a list to obtain all asociated APTasks objects
+
 						APTasksIds.add(t.TaskAPTaskTemplate__c);
 
 						// Find default task status
@@ -484,6 +441,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						}
 					}
 					if (!lUpsert.isEmpty()){
+						// no permission check because in trigger handler
 						upsert lUpsert;
 					}
 				}
@@ -518,8 +476,8 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 
 				if (!finalIds.isEmpty()){
-					if ( System.isBatch() || System.isFuture() ){
-						new ActionPlansSafely().doDelete([SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :finalIds]);
+					if ( System.isBatch() || System.isFuture()){
+						Database.delete([SELECT Id FROM APTaskTemplate__c WHERE Id IN :finalIds]);
 					} else {
 						ActionPlansTaskTriggerUtilities.deleteAPTasks( finalIds );
 					}
@@ -556,28 +514,6 @@ global inherited sharing class ActionPlansTriggerHandlers {
 	}
 
 	/**
-	* Validates if the given tasks can change status to in progress or completed.
-	* If the task : depends on another that is open, returns false
-	* This bulkified method avoids SOQL queries in a loop
-	* @param apTaskTemplateIds - bulkified set of task IDs to consider
-	* @return dependsOnInProgressTask
-	*/
-	public static Map<Id, Boolean> allowChangeParentStatus(Set<Id> apTaskTemplateIds){
-		Map<Id, Boolean> allowTasksMap = new Map<Id, Boolean>();
-		Set<String> openStatuses = ActionPlansUtilities.getOpenTaskStatuses();
-
-		for(APTaskTemplate__c apt : [SELECT Status__c, APTaskTemplate__c, APTaskTemplate__r.Status__c
-											FROM APTaskTemplate__c
-											WHERE Id IN :apTaskTemplateIds]){
-
-				allowTasksMap.put(apt.Id, apt.APTaskTemplate__c == null || !openStatuses.contains(apt.APTaskTemplate__r.Status__c) );
-
-		}
-
-		return allowTasksMap;
-	}
-
-	/**
 	 * Handle ActionPlans related to Leads after conversion
 	 */
 	public static void triggerHandler_ActionPlanLead(List<Lead> newRecords, List<Lead> oldRecords, Map<Id,Lead> newRecordsMap, Map<Id,Lead> oldRecordsMap, System.TriggerOperation triggerEvent){
@@ -594,11 +530,10 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 
 				Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
+				System.debug('mySettings ' + mySettings);
 				String destinationObject = mysettings.Default_Object_on_Lead_Conversion__c;
 				if(destinationObject != null){
 					destinationObject = destinationObject.toLowerCase();
-				} else {
-					return;
 				}
 
 				for(Lead l : newRecords){
@@ -619,7 +554,7 @@ global inherited sharing class ActionPlansTriggerHandlers {
 						toUpdate.add(ap);
 					}
 				}
-				//update apMap.values();
+				System.debug('APs to Update pre-update: ' + toUpdate);
 				update toUpdate;
 			}
 		}
@@ -686,5 +621,66 @@ global inherited sharing class ActionPlansTriggerHandlers {
 				}
 			}
 		}
+	}
+
+	private static void validateActionPlans(List<ActionPlan__c> actionPlans){
+
+		List<String> actionPlanReferenceFields = ActionPlansUtilities.getCustomRelationshipFields();
+
+		// Validate that 1 and only 1 custom reference field is filled
+
+		for(ActionPlan__c ap : actionPlans){
+			Integer filledReferences = 0;
+
+			for(String s : actionPlanReferenceFields){
+				if(ap.get(s) != null){
+					filledReferences++;
+				}
+			}
+			if(filledReferences != 1){
+				ap.addError(System.Label.ap_RelatedCount);
+			}
+		}
+	}
+
+	private static String getRelationshipName(Id recordId) {
+		Schema.SObjectType token = recordId.getSObjectType();
+		String sObjectName = token.getDescribe().getName().toLowerCase();
+
+		Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.ActionPlan__c.fields.getMap();
+
+		for(String s : fieldMap.keyset()){
+			Schema.DescribeFieldResult dfr = fieldMap.get(s).getDescribe();
+			Schema.DisplayType dt = dfr.getType();
+			if(dt.name().equalsIgnoreCase('Reference') && s.endsWithIgnoreCase('__c')){
+				String relationshipObjectName = dfr.getReferenceTo()[0].getDescribe().getName();
+				if( sObjectName.equalsIgnoreCase(relationshipObjectName) ){
+					return s;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	* Validates if the given tasks can change status to in progress or completed.
+	* If the task : depends on another that is open, returns false
+	* This bulkified method avoids SOQL queries in a loop
+	* @param apTaskTemplateIds - bulkified set of task IDs to consider
+	* @return dependsOnInProgressTask
+	*/
+	private static Map<Id, Boolean> allowChangeParentStatus(Set<Id> apTaskTemplateIds){
+		Map<Id, Boolean> allowTasksMap = new Map<Id, Boolean>();
+		Set<String> openStatuses = ActionPlansUtilities.getOpenTaskStatuses();
+
+		for(APTaskTemplate__c apt : [SELECT Status__c, APTaskTemplate__c, APTaskTemplate__r.Status__c
+											FROM APTaskTemplate__c
+											WHERE Id IN :apTaskTemplateIds]){
+
+				allowTasksMap.put(apt.Id, apt.APTaskTemplate__c == null || !openStatuses.contains(apt.APTaskTemplate__r.Status__c) );
+
+		}
+
+		return allowTasksMap;
 	}
 }

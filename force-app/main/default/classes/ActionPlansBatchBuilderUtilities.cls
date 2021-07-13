@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 public inherited sharing class ActionPlansBatchBuilderUtilities {
 
-	private List<SObject> relObjects                { get; set; }
+	//private List<SObject> relObjects                { get; set; }
 	private List<APTaskTemplate__c> baseAPTaskList  { get; set; }
 
 	private List<ActionPlan__c> relActionPlans      { get; set; }
@@ -48,7 +48,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 	private String relatedObjectName                { get; set; }
 	private Set<Id> relatedRecordIDs                { get; set; }
 
-	private Id newActionPlanId;
+	//private Id newActionPlanId;
 
 	public enum ApEditMode { MODE_EDIT_SINGLE, MODE_NEW }
 	private ApEditMode mode;
@@ -96,9 +96,9 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		}
 	}
 
-	public Id getNewActionPlanId(){
+	/* public Id getNewActionPlanId(){
 		return this.newActionPlanId;
-	}
+	} */
 
 	public Iterable<sObject> getObjects( Database.BatchableContext bc ){
 		return relActionPlans;
@@ -143,6 +143,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 					aptList.add( nt );
 				}
 			}
+
 			upsert aptList;
 		}
 		else {
@@ -302,33 +303,34 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 			}
 
 		}
+		if(ActionPlansCanTheUser.ups('Task')){
+			Database.DMLOptions dmlo    = new Database.DMLOptions();
+			Database.DMLOptions dmlo2   = new Database.DMLOptions();
 
-		Database.DMLOptions dmlo    = new Database.DMLOptions();
-		Database.DMLOptions dmlo2   = new Database.DMLOptions();
+			if( this.myNewTasksWithEmail.size() > 0 ){
+				dmlo.EmailHeader.triggerUserEmail = true;
+				Database.insert( this.myNewTasksWithEmail, dmlo );
+			}
 
-		if( this.myNewTasksWithEmail.size() > 0 ){
-			dmlo.EmailHeader.triggerUserEmail = true;
-			Database.insert( this.myNewTasksWithEmail, dmlo );
-		}
+			if( this.myOldTasksWithEmail.size() > 0 ){
+				dmlo.EmailHeader.triggerUserEmail = true;
+				Database.update( this.myOldTasksWithEmail, dmlo );
+			}
 
-		if( this.myOldTasksWithEmail.size() > 0 ){
-			dmlo.EmailHeader.triggerUserEmail = true;
-			Database.update( this.myOldTasksWithEmail, dmlo );
-		}
-
-		if( this.myTasksWithOutEmail.size() > 0 ){
-			if (this.mode ==ApEditMode.MODE_EDIT_SINGLE){
-				upsert( this.myTasksWithOutEmail );
-			} else {
-				dmlo2.EmailHeader.triggerUserEmail = false;
-				Database.insert( this.myTasksWithOutEmail, dmlo2 );
+			if( this.myTasksWithOutEmail.size() > 0 ){
+				if (this.mode == ApEditMode.MODE_EDIT_SINGLE){
+					Database.upsert( this.myTasksWithOutEmail );
+				} else {
+					dmlo2.EmailHeader.triggerUserEmail = false;
+					Database.insert( this.myTasksWithOutEmail, dmlo2 );
+				}
 			}
 		}
 
 		//If we Only Create an Action Plan save the Id of the new object
-		if (relActionPlans.size() == 1 ){
+		/* if (relActionPlans.size() == 1 ){
 			this.newActionPlanId = relActionPlans[0].Id;
-		}
+		} */
 
 		if (this.mode != ApEditMode.MODE_EDIT_SINGLE){
 		 //Execution When a Action Plan is Created, that check the Custom Setings in order to Post a new Feed ( Object )

@@ -56,20 +56,31 @@ public with sharing class ActionPlanDetailController{
 	}
 
 	/**
-	* Deletes the current Action Plan loaded and redirects to the AP Template List
+	* Deletes the current Action Plan loaded and redirects to the AP List
 	* @return newPage
 	*/
 	public PageReference deletePlan(){
 
 		//delete ap, which will also delete apts via master-detail relationship
 		try{
-			new ActionPlansSafely().allOrNothing().doDelete(actionPlan);
+			new ActionPlansSafely().doDelete(actionPlan);
 		} catch( Exception e ){
-			ApexPages.addMessages(e);
+			ApexPages.addMessages(e); return null;
 		}
-		String retURL = '/' + ActionPlansUtilities.getObjectKeyPrefix( 'ActionPlan__c' ) + '/o' ;
 
-		String theme = UserInfo.getUiThemeDisplayed();
+		SetupEntityAccess[] accessSettings =
+			[SELECT Id
+			FROM SetupEntityAccess
+			WHERE SetupEntityId IN (SELECT Id
+									FROM ApexPage
+									WHERE
+									//NamespacePrefix = :your_namespace AND
+									Name = 'ActionPlansHome')
+			AND ParentId IN (SELECT PermissionSetId
+							FROM PermissionSetAssignment
+							WHERE AssigneeId = :UserInfo.getUserId())];
+		Boolean useString = true;
+		String retURL = '/' + ActionPlansUtilities.getObjectKeyPrefix( 'ActionPlan__c' ) + '/o' ;
 
 		if(ApexPages.currentPage().getParameters().get('templateId') != null){
 			retUrl = '/' + ApexPages.currentPage().getParameters().get('templateId');
@@ -77,8 +88,7 @@ public with sharing class ActionPlanDetailController{
 		else if(ApexPages.currentPage().getParameters().get('retURL') != null && !ActionPlansUtilities.getIsLex()){
 			retURL = '' + ApexPages.currentPage().getParameters().get('retURL');
 		}
-		// Send the user to the tab.
-		PageReference newPage = new PageReference( '' + retURL );
+		Pagereference newPage = new PageReference( '' + retURL );
 		newPage.setRedirect( true );
 
 		return newPage;

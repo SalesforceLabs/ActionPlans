@@ -285,11 +285,11 @@ public with sharing class ActionPlanCreationController{
 	}
 
 	/**
-	* Check if have Task pending to delete
+	* Check if have pending Tasks to delete
 	*/
 	public void checkPendingDeletes(){
 
-		if( this.pendingDeletes != null ) {
+		if( this.pendingDeletes != null && !pendingDeletes.isEmpty()) {
 			List<Task>  tasksToDelete    = new List<Task>();
 			Set<Id>     deleteApttIds    = new Set<Id>();
 
@@ -298,14 +298,14 @@ public with sharing class ActionPlanCreationController{
 			}
 			//do not delete completed tasks
 			tasksToDelete = [SELECT Id FROM Task WHERE TaskAPTaskTemplate__c IN :deleteApttIds AND IsClosed = false];
-			if(ActionPlansCanTheUser.destroy('Task') ){
-				//delete tasksToDelete;
-				new ActionPlansSafely().doDelete(tasksToDelete);
-			}
-			if(ActionPlansCanTheUser.destroy('APTaskTemplate__c')){
-				new ActionPlansSafely().doDelete(pendingDeletes);
-				//delete pendingDeletes;
-			}
+			/* if(ActionPlansCanTheUser.destroy('Task') ){
+				delete tasksToDelete;
+			} */
+			Database.delete(tasksToDelete);
+			/* if(ActionPlansCanTheUser.destroy('APTaskTemplate__c')){
+				delete pendingDeletes;
+			} */
+			Database.delete(pendingDeletes);
 		}
 	}
 

@@ -33,7 +33,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-public inherited sharing class ActionPlansUtilities {
+public without sharing class ActionPlansUtilities {
 
 	/*************
 	 * CONSTANTS *
@@ -401,6 +401,7 @@ public inherited sharing class ActionPlansUtilities {
 		if(instance.Id == null){
 			instance = new Action_Plans_Settings__c(SetupOwnerId = UserInfo.getOrganizationId());
 			instance.Action_Plans_Business_Hours_ID__c = [SELECT Id FROM BusinessHours WHERE IsDefault = true].Id;
+			instance.Default_Object_on_Lead_Conversion__c = 'Contact';
 			upsert instance;
 		}
 

@@ -98,11 +98,11 @@ global inherited sharing class ActionPlansBatchDelete implements Database.Batcha
 		Map<Id, APTaskTemplate__c> relTaskTemplateMap = new Map<Id, APTaskTemplate__c>([SELECT Id FROM APTaskTemplate__c WHERE Action_Plan__c IN :relActionPlansIds]);
 		List<Task> relTaskList = [SELECT Id FROM Task WHERE IsClosed = false AND TaskAPTaskTemplate__c IN :relTaskTemplateMap.keySet()];
 
-		if(ActionPlan__c.sObjectType.getDescribe().isDeletable() && !relActionPlans.isEmpty()){
+		if(!relActionPlans.isEmpty()){
 			List<Database.DeleteResult> results = Database.delete( relActionPlans );
 		}
 
-		if(Task.sObjectType.getDescribe().isDeletable() && !relTaskList.isEmpty()){
+		if(!relTaskList.isEmpty()){
 			List<Database.DeleteResult> results = Database.delete( relTaskList );
 		}
 	 }

@@ -36,7 +36,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-global inherited sharing class ActionPlanCreateInvocable {
+global without sharing class ActionPlanCreateInvocable {
 
 	@InvocableMethod(label='Create Action Plan From Template' description='Takes a Template Name and Record Id and makes an Action Plan for that record.' category='ActionPlans')
 	global static List<Id> makeActionPlanFromTemplate(List<CreateActionPlanRequest> requests) {
@@ -209,7 +209,8 @@ global inherited sharing class ActionPlanCreateInvocable {
 				dependentTasksToUpdate.add(apTask);
 			}
 		}
-		update dependentTasksToUpdate;
+
+		Database.update (dependentTasksToUpdate);
 
 		Map<Id,Task> mapApTasks              = new Map<Id,Task>();
 		List<Task> myTasksWithOutEmail       = new List<Task>();
@@ -294,11 +295,11 @@ global inherited sharing class ActionPlanCreateInvocable {
 		Database.DMLOptions dmlo2   = new Database.DMLOptions();
 		dmlo2.EmailHeader.triggerUserEmail = false;
 
-		if( myNewTasksWithEmail.size() > 0  && ActionPlansCanTheUser.create(myNewTasksWithEmail) ){
+		if( myNewTasksWithEmail.size() > 0 ){
 			Database.insert( myNewTasksWithEmail, dmlo );
 		}
 
-		if( myTasksWithOutEmail.size() > 0  && ActionPlansCanTheUser.create(myTasksWithOutEmail) ){
+		if( myTasksWithOutEmail.size() > 0 ){
 			Database.insert( myTasksWithOutEmail, dmlo2 );
 		}
 

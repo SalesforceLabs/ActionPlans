@@ -37,7 +37,12 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-public inherited sharing class ActionPlansTaskTriggerUtilities {
+
+
+/**
+ * Set to WITHOUT sharing because this is only called from a trigger handler
+ */
+public without sharing class ActionPlansTaskTriggerUtilities {
 
 	private static List<APTaskTemplate__c> dependentAptts = new List<APTaskTemplate__c>();
 	private static List<Task> tasksSendEmail  = new List<Task>();
@@ -81,7 +86,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				Database.insert( tasksSendNoEmail, dmlo );
 			}
 
-			Database.update( updateApttsList );
+			update updateApttsList;
 		}
 	}
 
@@ -157,7 +162,8 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 		} // end for loop
 
 		if (!updList.isEmpty()){
-			upsert updList;
+			// no permission checks because trigger handlers should run in system mode
+			upsert updList ;
 		}
 		return updList;
 	}
@@ -280,7 +286,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				aptt.Status__c = cTasks.get(aptt.Id);
 			}
 
-			update updateApttList ;
+			update updateApttList;
 		}
 	}
 
@@ -293,7 +299,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	public static void deleteAPTasks( Set<Id> aPTasks ) {
 		try{
 			List<APTaskTemplate__c> toDelete =  [SELECT aPT.Id FROM APTaskTemplate__c aPT WHERE aPT.Id IN :aPTasks];
-			new ActionPlansSafely().allOrNothing().doDelete(toDelete);
+			delete toDelete;
 		} catch (Exception e){
 			System.debug('Error deleting APTTemplate - probably a circular error when deleting a APTTemplate, then its Task, then the template again.');
 		}
@@ -306,7 +312,7 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 	//@future
 	public static void deleteTasks( Set<Id> apttIds ) {
 		List<Task> toDelete = [SELECT Id FROM Task WHERE IsClosed = false AND Id IN :apttIds];
-		new ActionPlansSafely().allOrNothing().doDelete(toDelete);
+		delete toDelete;
 	}
 
 	/*
@@ -375,10 +381,9 @@ public inherited sharing class ActionPlansTaskTriggerUtilities {
 				dmlo.EmailHeader.triggerUserEmail = false;
 				Database.insert( tasksSendNoEmail, dmlo );
 			}
-
 		}
 
-		Database.update(apTasks);
+		update apTasks;
 	}
 
 	/**
