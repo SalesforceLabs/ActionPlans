@@ -33,7 +33,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 @IsTest
-private class SectionHeaderControllerTest {
+private class ActionPlansSectionHeaderControllerTest {
 
 	@IsTest
 	static void testObjectTabDescribe(){
@@ -41,7 +41,7 @@ private class SectionHeaderControllerTest {
 		User u = testUtil.createTestUser();
 
 		System.runAs(u){
-			SectionHeaderController shc = new SectionHeaderController();
+			ActionPlansSectionHeaderController shc = new ActionPlansSectionHeaderController();
 			shc.objectName = 'ActionPlan__c';
 			shc.getIsCustom();
 			shc.getObjectIconInfo();
@@ -66,7 +66,7 @@ private class SectionHeaderControllerTest {
 		User u = testUtil.createTestUser();
 
 		System.runAs(u){
-			SectionHeaderController shc = new SectionHeaderController();
+			ActionPlansSectionHeaderController shc = new ActionPlansSectionHeaderController();
 			shc.objectName = 'CaseComment';
 			shc.getIsCustom();
 			shc.getObjectIconInfo();
@@ -81,7 +81,7 @@ private class SectionHeaderControllerTest {
 		User u = testUtil.createTestUser();
 
 		System.runAs(u){
-			SectionHeaderController shc = new SectionHeaderController();
+			ActionPlansSectionHeaderController shc = new ActionPlansSectionHeaderController();
 			shc.objectName = null;
 			shc.getIsCustom();
 			shc.getObjectIconInfo();
