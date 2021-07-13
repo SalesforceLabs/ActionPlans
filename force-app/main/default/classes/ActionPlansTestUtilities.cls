@@ -94,15 +94,19 @@ public with sharing class ActionPlansTestUtilities{
 		testUser.EmailEncodingKey 	= 'UTF-8';
 
 		insert testUser;
+		return testUser;
+	}
+
+	public List<PermissionSetAssignment> assignAPPermissionSets(Id testUserId, Boolean allOrNone){
 
 		List<PermissionSet> pslist = [SELECT Id FROM PermissionSet WHERE Name Like 'Action_Plans%'];
 		List<PermissionSetAssignment> psalist = new List<PermissionSetAssignment>();
 		for(PermissionSet ps : pslist){
-			psalist.add(new PermissionSetAssignment(AssigneeId = testUser.Id, PermissionSetId = ps.Id));
+			psalist.add(new PermissionSetAssignment(AssigneeId = testUserId, PermissionSetId = ps.Id));
 		}
-		Database.insert(psalist, false);
+		Database.insert(psalist, allOrNone);
 
-		return testUser;
+		return psalist;
 	}
 
 	/**

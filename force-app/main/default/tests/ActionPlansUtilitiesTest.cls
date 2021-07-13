@@ -259,6 +259,9 @@ private class ActionPlansUtilitiesTest {
 	private static void testDeleteActionPlans() {
 
 		ActionPlansTestUtilities testutil =  new ActionPlansTestUtilities();
+		System.runAs(new User(Id = UserInfo.getUserId())){
+			testutil.assignAPPermissionSets(UserInfo.getUserId(), false);
+		}
 		ActionPlan__c ap = testutil.createNewActionPlan( 'account', 0 );
 		ActionPlan__c ap2 = testutil.createNewActionPlan( 'account', 0 );
 		List<ActionPlan__c> lAp = new List<ActionPlan__c>();
@@ -277,7 +280,9 @@ private class ActionPlansUtilitiesTest {
 
 		List<ActionPlan__c> lAp2 = [SELECT Id FROM ActionPlan__c WHERE Id IN :lAp];
 		System.assert(lAp2.size() == 1);
-		System.assertEquals(page.getUrl(), url);
+		if( !ActionPlansUtilities.getIsLex() ){
+			System.assertEquals(page.getUrl(), url);
+		}
 	}
 
 	@IsTest

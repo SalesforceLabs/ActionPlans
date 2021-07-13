@@ -15,15 +15,15 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
+list of conditions and the following disclaimer.
 
 2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
 
 3. Neither the name of the copyright holder nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -300,67 +300,26 @@ private class ActionPlansObjectTriggersTest {
 
 	@IsTest
 	static void testLeadConversionContact(){
-
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
-		ActionPlan__c ap = testutil.createNewActionPlan( 'lead', 1 );
-		Lead l = [SELECT Id FROM Lead WHERE Id = :ap.Lead__c];
-
-		Action_Plans_Settings__c aps = Action_Plans_Settings__c.getInstance();
-		aps.Default_Object_on_Lead_Conversion__c = 'Contact';
-		try{
-			upsert aps;
-		} catch (Exception e){
-			update aps;
-		}
-
 		User u = testutil.createTestUser();
+		testutil.assignAPPermissionSets(u.Id, true);
 
-		Test.startTest();
-		System.runAs(u){
-			System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Lead__c != null]);
-
-			Database.LeadConvert lc = new Database.LeadConvert();
-			lc.setDoNotCreateOpportunity(true);
-			lc.setLeadId(l.id);
-
-			LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = true LIMIT 1];
-			lc.setConvertedStatus(convertStatus.MasterLabel);
-
-			Database.LeadConvertResult lcr = Database.convertLead(lc);
-			System.assert(lcr.isSuccess());
+		System.runAs(new User(Id = UserInfo.getUserId())){
+			ActionPlan__c ap = testutil.createNewActionPlan( 'lead', 1 );
 		}
-
-
-		System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Contact__c != null]);
-
-		new ActionPlansSafely().doDelete([SELECT Id FROM Account]);
-
-		Test.stopTest();
-
-		System.assertEquals(0, [SELECT Count() FROM ActionPlan__c]);
-
-	}
-
-	@IsTest
-	static void testLeadConversionAccount(){
-
-		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
-		ActionPlan__c ap = testutil.createNewActionPlan( 'lead', 1 );
-		Lead l = [SELECT Id FROM Lead WHERE Id = :ap.Lead__c];
-
-		User u = testutil.createTestUser();
 
 		Test.startTest();
 		System.runAs(u){
 			Action_Plans_Settings__c aps = Action_Plans_Settings__c.getInstance();
-			aps.Default_Object_on_Lead_Conversion__c = 'Account';
+			aps.Default_Object_on_Lead_Conversion__c = 'Contact';
 			try{
 				upsert aps;
 			} catch (Exception e){
 				update aps;
 			}
-
+			Lead l = [SELECT Id FROM Lead LIMIT 1];
 			System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Lead__c != null]);
+			System.assertEquals(l.Id, [SELECT Lead__c FROM ActionPlan__c LIMIT 1].Lead__c, 'Our only lead should be on this action plan');
 
 			Database.LeadConvert lc = new Database.LeadConvert();
 			lc.setDoNotCreateOpportunity(true);
@@ -373,30 +332,72 @@ private class ActionPlansObjectTriggersTest {
 			System.assert(lcr.isSuccess());
 		}
 
-		System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Account__c != null]);
-
 		Test.stopTest();
 
-		List<Account> aList = [SELECT Id FROM Account WHERE IsDeleted = true ALL ROWS];
+		System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Contact__c != null]);
 
-		undelete aList;
+	}
 
-		System.assertNotEquals(0, [SELECT Count() FROM ActionPlan__c]);
+	@IsTest
+	static void testLeadConversionAccount(){
+		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
+		User u = testutil.createTestUser();
+		testutil.assignAPPermissionSets(u.Id, true);
+
+		System.runAs(new User(Id = UserInfo.getUserId())){
+			ActionPlan__c ap = testutil.createNewActionPlan( 'lead', 1 );
+		}
+
+		Test.startTest();
+		System.runAs(u){
+			Lead l = [SELECT Id FROM Lead LIMIT 1];
+			Action_Plans_Settings__c aps = Action_Plans_Settings__c.getInstance();
+			aps.Default_Object_on_Lead_Conversion__c = 'Account';
+			try{
+				upsert aps;
+			} catch (Exception e){
+				System.debug('exception on settings upsert. updating. ' + e.getMessage());
+				update aps;
+			}
+
+			System.assert(Schema.sObjectType.ActionPlan__c.fields.Account__c.isUpdateable());
+
+			System.assertEquals(0, [SELECT Count() FROM Account]);
+			System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Lead__c != null]);
+
+			Database.LeadConvert lc = new Database.LeadConvert();
+			lc.setDoNotCreateOpportunity(true);
+			lc.setLeadId(l.id);
+
+			LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = true LIMIT 1];
+			lc.setConvertedStatus(convertStatus.MasterLabel);
+
+			Database.LeadConvertResult lcr = Database.convertLead(lc);
+			System.assert(lcr.isSuccess());
+			System.assertEquals(1, [SELECT Count() FROM Account]);
+			System.debug('ActionPlan by test user: ' + [SELECT Id, Account__c, Contact__c, Lead__c FROM ActionPlan__c]);
+		}
+		Test.stopTest();
+
+		System.debug('ActionPlan by my user: ' + [SELECT Id, Account__c, Contact__c, Lead__c FROM ActionPlan__c]);
+
+		System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Account__c != null]);
 
 	}
 
 	@IsTest
 	static void testLeadConversionOpportunity(){
-
 		ActionPlansTestUtilities testutil = new ActionPlansTestUtilities();
-		ActionPlan__c ap = testutil.createNewActionPlan( 'lead', 1 );
-		Lead l = [SELECT Id FROM Lead WHERE Id = :ap.Lead__c];
-
 		User u = testutil.createTestUser();
+		//testutil.assignAPPermissionSets(u.Id, true);
+
+		System.runAs(new User(Id = UserInfo.getUserId())){
+			ActionPlan__c ap = testutil.createNewActionPlan( 'lead', 1 );
+		}
 
 		Test.startTest();
 		System.runAs(u){
-
+			Lead l = [SELECT Id FROM Lead LIMIT 1];
 			Action_Plans_Settings__c aps = ActionPlansUtilities.getCustomSetting();
 			aps.Default_Object_on_Lead_Conversion__c = 'Opportunity';
 			try{
@@ -418,9 +419,9 @@ private class ActionPlansObjectTriggersTest {
 			System.assert(lcr.isSuccess());
 		}
 
-		System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Opportunity__c != null]);
-
 		Test.stopTest();
+
+		System.assertEquals(1, [SELECT Count() FROM ActionPlan__c WHERE Opportunity__c != null]);
 
 	}
 }
