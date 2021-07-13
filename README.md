@@ -1,5 +1,10 @@
 # Action Plans
 
+## Badges
+![License: BSD-3](https://img.shields.io/github/license/SalesforceLabs/ActionPlans)
+![Twitter](https://img.shields.io/twitter/follow/SalesforceLabs.svg?style=social)
+
+
 ## Table of Contents
 
 -   [Direct deployment to an org](#direct-deployment-to-an-org): Quickest option to install this unmanaged code into your org
