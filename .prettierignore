@@ -7,6 +7,7 @@
 .sfdx
 .vscode
 
+node_modules/
 coverage/
 docs/
 force-app/main/default/prompts/*.prompt-meta.xml
