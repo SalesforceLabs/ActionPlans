@@ -88,7 +88,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 					}
 				}
 
-				//add Action Plan to list that will be inserted later and referenced FROM ActionPlanTasks
+				//add Action Plan to list that will be inserted later and referenced by ActionPlanTasks
 				relActionPlans.add(ap);
 			}
 
@@ -333,7 +333,7 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		} */
 
 		if (this.mode != ApEditMode.MODE_EDIT_SINGLE){
-		 //Execution When a Action Plan is Created, that check the Custom Setings in order to Post a new Feed ( Object )
+		 //Execution When a Action Plan is created, that checks the Custom Setings in order to post a new FeedPost ( Object )
 			Action_Plans_Settings__c mySettings = ActionPlansUtilities.getCustomSetting();
 
 			Set<Id> relObjectIDs = new Set<Id>();

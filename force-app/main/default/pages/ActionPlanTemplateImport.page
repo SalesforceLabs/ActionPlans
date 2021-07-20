@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <apex:inputFile id="fileInput" value="{!attachment.body}" filename="{!attachment.name}" />
             <br />
             <apex:commandButton id="btnImport" value="{!$Label.ap_Import}" action="{!importTemplate}" disabled="{!!$ObjectType.ActionPlanTemplate__c.createable}"/>
-			<apex:pageMessages id="errorMsgs" style="color:white;" />
+			<apex:pageMessages id="errorMsgs" />
 			<apex:messages id="errorMsg" style="color:white;" />
             <div id="errors" style="color:red;"></div>
           </apex:pageBlockSection>
