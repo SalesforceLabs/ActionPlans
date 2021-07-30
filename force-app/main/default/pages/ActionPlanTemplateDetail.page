@@ -49,7 +49,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		});
 	</script>
 
-
 	<c:APSectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!ActionPlanTemplate__c.Name}" />
 
 	<apex:form id="detailForm">
@@ -58,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<apex:pageBlockButtons id="buttons" location="top">
 				<apex:commandButton id="edit" action="{!$Page.ActionPlanTemplateCreation}?id={!ActionPlanTemplate__c.Id}&retURL={!$CurrentPage.URL}" value="{!$Label.ap_Edit}" rendered="{!$ObjectType.ActionPlanTemplate__c.updateable}" />
 				<apex:commandButton id="delete" action="{!deleteTemplate}" value="Delete" onclick="return confirm('{!$Label.ap_AreYouSureAsk}');" rendered="{!$ObjectType.ActionPlanTemplate__c.deletable}" />
-				<apex:commandButton id="clone" action="{!$Page.ActionPlanTemplateCreation}?clone=1&Id={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_Clone}" />
+				<apex:commandButton id="clone" action="{!$Page.ActionPlanTemplateCreation}?clone=1&templateId={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_Clone}" rendered="{!$ObjectType.ActionPlanTemplate__c.createable}"/>
 				<apex:commandButton id="newActionPlan" action="{!$Page.ActionPlanCreation}?templateId={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_New} {!$ObjectType.ActionPlan__c.label}" rendered="{!$ObjectType.ActionPlan__c.createable}" />
 				<apex:commandButton id="export" action="{!$Page.ActionPlanTemplateExport}?Id={!ActionPlanTemplate__c.Id}" value="{!$Label.ap_Export}" rendered="{!$Permission.Action_Plan_Template_Export}" />
 			</apex:pageBlockButtons>
