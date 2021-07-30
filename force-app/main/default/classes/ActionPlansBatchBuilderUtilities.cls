@@ -462,18 +462,6 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 		insert chatterPosts;
 	}
 
-	/**
-	* Returns the plain Text for the ObjectFeed
-	* @parm : objName
-	* @return fText
-	*/
-	// Using a parameterized label is better
-	/* public static String getPostObjectBody( String objName, String apName ){
-		String chatterPostMessage = UserInfo.getName();
-		Schema.DescribeSObjectResult obj = Schema.getGlobalDescribe().get( objName ).getDescribe();
-		return System.Label.ap_PostMessage + ' ' + obj.getLabel() + '!';
-	} */
-
 	public static String getPostObjectBody( Id recID, String apName ){
 
 		String objName = recID.getSObjectType().getDescribe().getLabel();

@@ -71,7 +71,6 @@ global inherited sharing class ActionPlansBatchBuilder implements Database.Batch
 				str.toLowerCase();
 			}
 		} catch(Exception e){
-			//if(ActionPlansCanTheUser.read(new AsyncApexJob())){
 				AsyncApexJob a = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed,
 									TotalJobItems, CreatedBy.Email, ExtendedStatus
 									FROM AsyncApexJob WHERE Id = :bc.getJobId()];
@@ -85,7 +84,6 @@ global inherited sharing class ActionPlansBatchBuilder implements Database.Batch
 				if(ActionPlansUtilities.canSendEmails()){
 					Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
 				}
-			//}
 		}
 	}
 
