@@ -99,17 +99,22 @@ function enableDisableReminderPicklist ( reminder, reminderPicklistId ){
 	if( reminderCheckbox.checked ){
 		j$(reminderPicklist).prop("disabled", false);
 		//reminderPicklist.disabled = false;
+		console.log('checked');
 	}
 	else{
 		j$(reminderPicklist).prop("disabled", true);
 		//reminderPicklist.disabled = true;
+		console.log('unchecked');
 	}
 }
 
 function checkReminderPicklists () {
+	console.log('in checkReminderPicklists');
 	j$(".reminderColumn").each( function () {
 		var reminderBox = j$("[id$=reminder]");
+		console.log('found a reminder');
 		var reminderPL  = j$("[id$=reminderPickList]").attr('id');
+		console.log('reminderPLID: ' + reminderPL);
 		enableDisableReminderPicklist(reminderBox, reminderPL);
 	});
 }
@@ -126,9 +131,9 @@ function reloadActionPlan(templateId, selectedTemplateId) {
 		if( templateId != "" ){
 			// Replaces current selected template id into the URL
 			if (new_location.match('templateId')){
-				//new_location = new_location.replace(templateId, selectedTemplateId);
+				new_location = new_location.replace(templateId, selectedTemplateId);
 
-				new_location = '/apex/ActionPlanCreation?templateId=' + selectedTemplateId;
+				//new_location = '/apex/ActionPlanCreation?templateId=' + selectedTemplateId;
 
 				reload = 1;
 			// Adds current selected template id into the URL
