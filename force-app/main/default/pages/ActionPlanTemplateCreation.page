@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	<apex:includeScript value="{!URLFOR($Resource.ActionPlan_Resources, 'scripts/ActionPlan_EditScripts.js')}" />
 	<script>
 		var j$ = jQuery.noConflict();
-		j$(function () {
+		j$(document).ready(function () {
 			onLoad();
 		});
 		function onLoad(){
@@ -79,7 +79,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </head>
 <body>
 
-<c:APSectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!subtitle}" />
+<c:APSectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!subtitle}{!$CurrentPage.Parameters.clone}" />
 
 	<apex:pageMessages id="pageMessages" />
 
@@ -218,14 +218,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Comments__c.label}" id="commentCol">
 							<apex:inputField id="commentPanel" style="width:250px;display:none;" value="{!wrapTask.task.Comments__c}" />
 							<div style="clear:left">
-							(
-							<a id="{!wrapTask.position}commentLink" onclick="toggleComments('{!$Component.commentPanel}', '{!$Component.actionLinks}', '{!$Label.ap_Add}', '{!$Label.ap_Edit}','{!$Label.ap_Close}');"
-							 style="text-decoration:underline;clear:left;">
-								<apex:outputPanel id="actionLinks">
+							(&nbsp;<a id="{!wrapTask.position}commentLink" onclick="toggleComments('{!$Component.commentPanel}', '{!$Component.actionLinks}', '{!$Label.ap_Add}', '{!$Label.ap_Edit}','{!$Label.ap_Close}');"
+							 style="text-decoration:underline;clear:left;"><apex:outputPanel id="actionLinks">
 									<apex:outputText rendered="{!wrapTask.task.Comments__c != null}">{!$Label.ap_Edit}</apex:outputText>
 									<apex:outputText rendered="{!wrapTask.task.Comments__c == null}">{!$Label.ap_Add}</apex:outputText>
-								</apex:outputPanel>
-							</a> )
+								</apex:outputPanel></a>&nbsp;)
 							</div>
 						</apex:column>
 					</apex:pageBlockTable>

@@ -294,7 +294,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 							<apex:outputPanel layout="block" rendered="{!!hasRelatedObject}" id="lookupSectionOutPanel">
 								<apex:outputPanel layout="none" rendered="{!lex}" >
-									<c:APLightningLookup sObj="{!ActionPlan__c}" field="{!relatedFieldName}" sObjType="{!relatedObjectName}" required="true" for="{!relatedFieldName}lookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" />
+									<c:APLightningLookup sObj="{!ActionPlan__c}" field="{!relatedFieldName}" sObjType="{!relatedObjectName}" displayField="{!relatedObjDisplayField}" required="true" for="{!relatedFieldName}lookup" fieldClass="{!IF(throwError != null,'errorBorder','')}" />
 								</apex:outputPanel>
 								<apex:outputPanel layout="none" rendered="{!!lex}">
 									<apex:inputField id="classicRelated" required="true" value="{!ActionPlan__c[relatedFieldName]}" styleClass="{!IF(throwError !=null,'errorBorder','')}" />

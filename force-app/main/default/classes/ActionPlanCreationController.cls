@@ -49,6 +49,7 @@ public with sharing class ActionPlanCreationController{
 	public Boolean                  hasRelated              { get; set; }
 	public Boolean                  hasRelatedObject        { get; set; }
 	public String                   relatedObjectName       { get; private set; }
+	public String                   relatedObjDisplayField  { get; set; }
 
 	private String                  errorMsg;
 	public String                   throwError              { get; set; }
@@ -213,6 +214,23 @@ public with sharing class ActionPlanCreationController{
 			Schema.SObjectType sot = dfr.getReferenceTo()[0];
 			Schema.DescribeSObjectResult dsr = sot.getDescribe();
 			this.relatedObjectName = dsr.getName();
+			System.debug('relatedObjectName: ' + this.relatedObjectName);
+			this.relatedObjDisplayField = chooseDisplayField(this.relatedObjectName);
+			System.debug('objectDisplayField: ' + this.relatedObjDisplayField);
+		}
+	}
+
+	private String chooseDisplayField(String objectName){
+		switch on objectName {
+			when 'Case' {
+				return 'CaseNumber';
+			}
+			when 'Contract' {
+				return 'ContractNumber';
+			}
+			when else {
+				return 'Name';
+			}
 		}
 	}
 
@@ -750,6 +768,7 @@ public with sharing class ActionPlanCreationController{
 				String tmp_reminderDefaultTime = ActionPlansUtilities.getDefaultReminderMinutes();
 				for( APTaskTemplate__c t : this.apTasks ){
 					if (t.Reminder__c == null || t.Reminder__c == false){
+						t.Reminder__c = false;
 						t.Minutes_Reminder__c    = tmp_reminderDefaultTime;
 					}
 					t.SendEmail__c = false;
@@ -1055,6 +1074,8 @@ public with sharing class ActionPlanCreationController{
 			// Describe the fieldSet so we can make sure that we only add SelectOptions for desired records
 			Schema.FieldSet fs = Schema.SObjectType.ActionPlan__c.fieldSets.Related_Objects;
 
+			Set<String> activityEnabledObjects = findActivityEnabledObjects();
+
 			for(Schema.FieldSetMember fsm : fs.getFields()){
 				//System.debug('Field Set field ' + fsm.getFieldPath());
 				String s = fsm.getFieldPath();
@@ -1065,7 +1086,7 @@ public with sharing class ActionPlanCreationController{
 
 				Schema.DescribeFieldResult dfr = fsm.getSObjectField().getDescribe();
 				Schema.DescribeSObjectResult dsr = dfr.getReferenceTo()[0].getDescribe();
-				Boolean hasActivities = dsr.fields.getMap().containsKey('lastactivitydate');
+				Boolean hasActivities = activityEnabledObjects.contains(dsr.getName());
 				Boolean canSeeRelatedObject = dsr.isAccessible();
 				Boolean canUpdateLookupField = dfr.isUpdateable();
 
@@ -1079,6 +1100,18 @@ public with sharing class ActionPlanCreationController{
 			relatedObjectOptions.sort();
 		}
 		return relatedObjectOptions;
+	}
+
+	private Set<String> findActivityEnabledObjects(){
+		Set<Schema.SObjectType> objectsWithActivitiesEnabled = new Set<Schema.SObjectType>();
+		Set<String> relatedToObjects = new Set<String>();
+		for (Schema.SObjectType objectType : Task.WhatId.getDescribe().getReferenceTo()) {
+			relatedToObjects.add(objectType.getDescribe().getName());
+		}
+		for (Schema.SObjectType objectType : Task.WhoId.getDescribe().getReferenceTo()) {
+			relatedToObjects.add(objectType.getDescribe().getName());
+		}
+		return relatedToObjects;
 	}
 
 	/**
@@ -1180,7 +1213,8 @@ public with sharing class ActionPlanCreationController{
 				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(taskRTID);
 				task.Status__c = ActionPlansUtilities.getTaskRecordTypeStatusDefaultValues().get(taskRTID);
 				task.Type__c = task.Type__c != null ? task.Type__c : ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(taskRTID);
-				if(task.Reminder__c){ task.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes(); }
+				task.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
+				task.Reminder__c = ActionPlansUtilities.getCheckReminderByDefault();
 			}
 
 			if(task.User__c == null && displayLookUp && userRequired){

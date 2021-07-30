@@ -45,6 +45,7 @@ public with sharing class ActionPlanTemplateCreationController{
 	public Boolean					canDisplayReminder			{ get; private set; }
 	public Boolean					taskHasRecordType		{ get; private set; }
 	public List<APTTaskTemplate__c> pendingTemplateDeletes;
+	private Id                      templateId;
 
 
 	/**
@@ -56,20 +57,23 @@ public with sharing class ActionPlanTemplateCreationController{
 	public ActionPlanTemplateCreationController( ApexPages.StandardController stdController ){
 
 		this.taskIndex = 0;
+		actionPlanTemplate = ( ActionPlanTemplate__c )stdController.getRecord();
 
-		if( System.currentPageReference().getParameters().get( 'clone' ) == '1' ){
+		if( ApexPages.currentPage().getParameters().get( 'clone' ) == '1' ){
+			System.debug('CLONING');
 
- 			ActionPlanTemplate__c apC = [SELECT Name, Description__c, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c FROM ActionPlanTemplate__c WHERE Id = :ApexPages.currentPage().getParameters().get('id') LIMIT 1];
+ 			ActionPlanTemplate__c apC = [SELECT Name, Description__c, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c FROM ActionPlanTemplate__c WHERE Id = :ApexPages.currentPage().getParameters().get('templateid') LIMIT 1];
 
-			actionPlanTemplate = new ActionPlanTemplate__c();
 			actionPlanTemplate.Name = apC.Name;
 			actionPlanTemplate.Description__c = apC.Description__c;
 			actionPlanTemplate.SkipDay__c = apC.SkipDay__c;
 			actionPlanTemplate.SkipWeekends__c = apC.SkipWeekends__c;
 			actionPlanTemplate.TaskRecordTypeID__c = apC.TaskRecordTypeID__c;
 
-		} else {
-			actionPlanTemplate = ( ActionPlanTemplate__c )stdController.getRecord();
+			templateId = ApexPages.currentPage().getParameters().get('templateId');
+
+			ApexPages.currentPage().getParameters().put('id', null);
+
 		}
 
 		this.canDisplayReminder = ActionPlansUtilities.getCanDisplayReminder();
@@ -312,9 +316,9 @@ public with sharing class ActionPlanTemplateCreationController{
 							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
 							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
 							 FROM APTTaskTemplate__c
-							 WHERE Action_Plan_Template__c = :ApexPages.currentPage().getParameters().get('id') ORDER BY TaskIndex__c ASC];
+							 WHERE Action_Plan_Template__c = :templateId ORDER BY TaskIndex__c ASC];
 
-				List<APTTaskTemplate__c> tempTaskList = aptTasks.deepClone( false );
+				List<APTTaskTemplate__c> tempTaskList = aptTasks.deepClone( false, false, false );
 				aptTasks.clear();
 				aptTasks = tempTaskList;
 
@@ -545,12 +549,18 @@ public with sharing class ActionPlanTemplateCreationController{
 				}
 			}
 
-			if(task.Id == null && task.Subject__c == null){
+			if(task.Id == null && task.Subject__c == null ){
 				task.Priority__c = task.Priority__c != null ? task.Priority__c : ActionPlansUtilities.getTaskRecordTypePriorityDefaultValues().get(taskRTID);
 				task.Type__c = ActionPlansUtilities.getTaskRecordTypeTypeDefaultValues().get(taskRTID);
-				task.Reminder__c = ActionPlansUtilities.getCheckReminderByDefault();
+
+				if(System.currentPageReference().getParameters().get( 'clone' ) != '1'){
+					task.Reminder__c = ActionPlansUtilities.getCheckReminderByDefault();
+				}
+			}
+			if(task.Id == null || !task.Reminder__c){
 				task.Minutes_Reminder__c = ActionPlansUtilities.getDefaultReminderMinutes();
 			}
+
 		}
 	}
 }

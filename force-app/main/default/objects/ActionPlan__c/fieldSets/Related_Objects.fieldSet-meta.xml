@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FieldSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Related_Objects</fullName>
-    <availableFields>
-        <field>Case__c</field>
-        <isFieldManaged>false</isFieldManaged>
-        <isRequired>false</isRequired>
-    </availableFields>
-    <availableFields>
+    <description>All object lookup fields for relating Action Plans to standard or custom objects</description>
+    <displayedFields>
         <field>Contract__c</field>
         <isFieldManaged>false</isFieldManaged>
         <isRequired>false</isRequired>
-    </availableFields>
-    <description>All object lookup fields for relating Action Plans to standard or custom objects</description>
+    </displayedFields>
+    <displayedFields>
+        <field>Case__c</field>
+        <isFieldManaged>false</isFieldManaged>
+        <isRequired>false</isRequired>
+    </displayedFields>
     <displayedFields>
         <field>Campaign__c</field>
         <isFieldManaged>false</isFieldManaged>

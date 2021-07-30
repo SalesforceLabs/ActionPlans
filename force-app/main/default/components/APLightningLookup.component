@@ -35,6 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <apex:component id="lightninglookupcomponent" controller="ActionPlansSectionHeaderController">
 	<apex:attribute name="sObj" type="sObject" description="The record the field belongs to." required="true" />
 	<apex:attribute name="field" type="String" description="The lookup field to put the Id into" required="true" />
+	<apex:attribute name="displayfield" type="String" description="The field to display as the record (Name for Account, CaseNumber for Case, etc.)" default="Name" />
 	<apex:attribute name="sObjType" type="String" description="The sObject type." assignTo="{!objectName}" required="true" />
 	<apex:attribute name="for" type="String" description="Unique ID of the input field" required="false" default="" />
 	<apex:attribute name="where" type="String" description="WHERE clause for SOQL (if desired)" required="false" default="" />
@@ -44,10 +45,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 	<apex:variable var="customObject" value="{!$ObjectType[sObjType].custom}" />
 	<script>
-		/* j$("#{!for}sldsscopediv [id$=searchInput]").blur(function () {
-			console.log('Blurring');
-			clearLookup(j$("#{!for}sldsscopediv [id$=searchInput]"));
-		}); */
 		function checkEscape(key, e) {
 			if (e.keyCode === 27) { // escape key maps to keycode `27`
 				clearLookup(key);
@@ -71,10 +68,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							 html-role="combobox" html-aria-expanded="true" html-aria-controls="SrchDrpDwn{!for}" html-placeholder="{!$Label.ap_Search}" html-aria-activedescendant="SrchDrpDwn{!for}" required="{!IF(required == true, 'true', '')}" value="{!sObj[field]}">
 								<apex:componentBody />
 							</apex:inputField>
-							<!-- <input id="searchInput" class="slds-input slds-combobox__input {!fieldClass}" style="{!fieldStyle}" type="text" autocomplete="off"
-						onkeyup="LightningLookupScripts{!for}.searchRecords(j$(this), '{!sObjType}', '{!customObject}');"
-						aria-autocomplete="list" role="combobox" aria-expanded="true" aria-controls="SrchDrpDwn{!for}" placeholder="{!$Label.ap_Search}"
-						aria-activedescendant="SrchDrpDwn{!for}"/> -->
 						</div>
 					</div>
 				</div>
@@ -99,8 +92,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				j$(recInfoIdInput).val(recId);
 				j$('[id$=SrchDrpDwn{!for}]').fadeOut();
 				//ID Based Retrieval Instead Of Query to Get Record Details Of The Selected Record
-				result = sforce.connection.retrieve("Name,Id", sObjType, [recId]);
-				j$('#{!for}sldsscopediv [id$=searchInput]').val(result[0].Name);
+				result = sforce.connection.retrieve("{!displayField},Id", sObjType, [recId]);
+				j$('#{!for}sldsscopediv [id$=searchInput]').val(result[0].{!displayField});
 			},
 			searchRecords: function  (key, sObjType, cObject) {
 
@@ -113,7 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					j$('#' + key.attr('aria-activedescendant')).hide();
 				}
 				//Querying For Records In Objects Name Matching The Input in The Text Field
-				var queryText = "SELECT Id, Name FROM " + sObjType + " WHERE Name LIKE '%" + searchKey + "%' {!where} ORDER BY Name ASC LIMIT 8";
+				var queryText = "SELECT Id, {!displayField} FROM " + sObjType + " WHERE {!displayField} LIKE '%" + searchKey + "%' {!where} ORDER BY {!displayField} ASC LIMIT 8";
 				result = sforce.connection.query(queryText);
 				records = result.getArray("records");
 				var searchList = "";
@@ -143,7 +136,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 						searchList += '<li onclick="LightningLookupScripts{!for}.recInfo(\'' + records[i].Id + '\'' + ', \'' + sObjType.toLowerCase() + '\');" class="slds-lookup__item">';
 						searchList += '<a id="' + records[i].Id + '" href="#" role="option"><svg aria-hidden="true" class="slds-icon ' + iconStyle + ' slds-icon_small">'
-							+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].Name + '</a>';
+							+ '<use xlink:href="' + objectIcon + '"></use></svg>' + records[i].{!displayField} + '</a>';
 						searchList += '</li>';
 					}
 				} else {
