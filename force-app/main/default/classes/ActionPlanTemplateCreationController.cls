@@ -60,20 +60,31 @@ public with sharing class ActionPlanTemplateCreationController{
 		actionPlanTemplate = ( ActionPlanTemplate__c )stdController.getRecord();
 
 		if( ApexPages.currentPage().getParameters().get( 'clone' ) == '1' ){
-			System.debug('CLONING');
 
- 			ActionPlanTemplate__c apC = [SELECT Name, Description__c, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c FROM ActionPlanTemplate__c WHERE Id = :ApexPages.currentPage().getParameters().get('templateid') LIMIT 1];
+			if(ApexPages.currentPage().getParameters().containsKey( 'templateId')){
+				templateId = ApexPages.currentPage().getParameters().get( 'templateId');
+				//System.debug('we have a template : ' + templateId);
+			} else if( ApexPages.currentPage().getParameters().containsKey( 'Id' ) &&  ApexPages.currentPage().getParameters().get( 'Id' ) != null){
+				templateId = ApexPages.currentPage().getParameters().get( 'Id' );
+				//System.debug('using Id parameter : ' + templateId);
+			}
 
-			actionPlanTemplate.Name = apC.Name;
-			actionPlanTemplate.Description__c = apC.Description__c;
-			actionPlanTemplate.SkipDay__c = apC.SkipDay__c;
-			actionPlanTemplate.SkipWeekends__c = apC.SkipWeekends__c;
-			actionPlanTemplate.TaskRecordTypeID__c = apC.TaskRecordTypeID__c;
+			if(templateId != null){
+				//System.debug('templateId ' + templateId);
+				//System.debug('CLONING');
 
-			templateId = ApexPages.currentPage().getParameters().get('templateId');
+				ActionPlanTemplate__c apC = [SELECT Name, Description__c, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c FROM ActionPlanTemplate__c WHERE Id = :templateId LIMIT 1];
 
-			ApexPages.currentPage().getParameters().put('id', null);
+				actionPlanTemplate.Name = apC.Name;
+				actionPlanTemplate.Description__c = apC.Description__c;
+				actionPlanTemplate.SkipDay__c = apC.SkipDay__c;
+				actionPlanTemplate.SkipWeekends__c = apC.SkipWeekends__c;
+				actionPlanTemplate.TaskRecordTypeID__c = apC.TaskRecordTypeID__c;
 
+				//templateId = ApexPages.currentPage().getParameters().get('templateId');
+
+				ApexPages.currentPage().getParameters().put('id', null);
+			}
 		}
 
 		this.canDisplayReminder = ActionPlansUtilities.getCanDisplayReminder();
