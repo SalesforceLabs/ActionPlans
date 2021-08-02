@@ -79,7 +79,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </head>
 <body>
 
-<c:APSectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!subtitle}{!$CurrentPage.Parameters.clone}" />
+<c:APSectionHeader sObjType="ActionPlanTemplate__c" subtitle="{!$ObjectType.ActionPlanTemplate__c.label}" title="{!subtitle}" />
 
 	<apex:pageMessages id="pageMessages" />
 

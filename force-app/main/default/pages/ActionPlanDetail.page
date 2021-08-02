@@ -171,8 +171,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:outputField value="{!wrap.apt.User__c}" />
 					</apex:column>
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Type__c.label}" value="{!wrap.apt.Type__c}" style="vertical-align:middle;" />
-					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}" value="{!wrap.apt.Status__c}" style="vertical-align:middle;" />
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Priority__c.label}" value="{!wrap.apt.Priority__c}" style="vertical-align:middle;" />
+					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Status__c.label}" value="{!wrap.apt.Status__c}" style="vertical-align:middle;" />
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.SendEmail__c.label}" value="{!wrap.apt.SendEmail__c}" style="vertical-align:middle;" />
 
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Reminder__c.label}" style="vertical-align:middle;" rendered="{!canDisplayReminder}">
