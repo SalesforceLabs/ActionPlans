@@ -94,7 +94,7 @@ function checkEmail (type){
 
 function enableDisableReminderPicklist ( reminder, reminderPicklistId, checked ){
 	var reminderPicklist = document.getElementById( reminderPicklistId );
-	console.log('reminderCheckbox ' + j$(reminder).attr('id') + ' is now ' + reminder.checked);
+	//console.log('reminderCheckbox ' + j$(reminder).attr('id') + ' is now ' + reminder.checked);
 	if( reminder.checked || checked ){
 		//console.log('reminderpicklist CHECKED: ' + j$(reminderPicklist).attr('id'));
 		j$(reminder).attr("checked", "checked");
@@ -111,13 +111,13 @@ function enableDisableReminderPicklist ( reminder, reminderPicklistId, checked )
 }
 
 function checkReminderPicklists () {
-	console.log('in checkReminderPicklists');
+	//console.log('in checkReminderPicklists');
 	var allReminderColumns = j$(".reminderColumn");
 	allReminderColumns.each( function (index, element) {
 		//console.log('index' + index);
 		var reminderBox = j$("[id$=" + index.toString() + "\\:reminder]"); // j$("[id$=reminder]");
 		//console.log('found a reminder ' + reminderBox.attr('id')); // j$(reminderBox).attr('id'));
-		console.log('is it checked? ' + reminderBox.attr('checked'));
+		//console.log('is it checked? ' + reminderBox.attr('checked'));
 		var checked = reminderBox.attr('checked');
 		var reminderPL  = j$("[id$=" + index.toString() + "\\:reminderPickList]").attr('id');
 		//console.log('reminderPLID: ' + reminderPL);
