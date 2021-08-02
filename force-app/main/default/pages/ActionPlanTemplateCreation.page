@@ -62,7 +62,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			checkAllDependent('{!$Label.ap_ItselfDependencyError}', '{!$Label.ap_Error_Cyclic_Dependency_Found}');
 			showErrors();
 			j$("td [Id*=taskTable]").css("vertical-align", "middle");
-			checkReminderPicklists();
+			//checkReminderPicklists();
 		}
 	</script>
 	<script type="text/javascript">
@@ -201,18 +201,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							<apex:inputField id="sendEmailCheckbox" value="{!wrapTask.task.SendEmail__c}" />
 						</apex:column>
 
-						<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" style="vertical-align:middle;" id="reminderCol">
+						<apex:column rendered="{!canDisplayReminder}"  style="vertical-align:middle;" id="reminderCol">
 							<apex:facet name="header">
 								{!$ObjectType.APTTaskTemplate__c.fields.Reminder__c.label} <br/>
 								<a id="reminderAll" onclick="javascript:checkReminder(1);" class="all-none">{!$Label.ap_All}</a> |
 								<a id="reminderNone" onclick="javascript:checkReminder(0);" class="all-none">{!$Label.ap_None}</a>
 							</apex:facet>
-
-							<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display:inline-block;vertical-align:middle;"
-								onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');"/>
-							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" disabled="{!!wrapTask.task.Reminder__c}">
-								<apex:selectOptions value="{!hoursOption}" />
-							</apex:selectList>
+							<apex:outputPanel styleClass="reminderColumn" id="reminderCell" style="vertical-align:middle;">
+								<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display:inline-block;vertical-align:middle;"
+									onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');"/>
+								<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" disabled="{!!wrapTask.task.Reminder__c}">
+									<apex:selectOptions value="{!hoursOption}" />
+								</apex:selectList>
+							</apex:outputPanel>
 						</apex:column>
 
 						<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.Comments__c.label}" id="commentCol">

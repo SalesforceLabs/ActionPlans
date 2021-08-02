@@ -92,30 +92,36 @@ function checkEmail (type){
 	}
 }
 
-function enableDisableReminderPicklist ( reminder, reminderPicklistId ){
-	var reminderCheckbox = reminder;
+function enableDisableReminderPicklist ( reminder, reminderPicklistId, checked ){
 	var reminderPicklist = document.getElementById( reminderPicklistId );
-
-	if( reminderCheckbox.checked ){
+	console.log('reminderCheckbox ' + j$(reminder).attr('id') + ' is now ' + reminder.checked);
+	if( reminder.checked || checked ){
+		//console.log('reminderpicklist CHECKED: ' + j$(reminderPicklist).attr('id'));
+		j$(reminder).attr("checked", "checked");
 		j$(reminderPicklist).prop("disabled", false);
-		//reminderPicklist.disabled = false;
-		console.log('checked');
+		j$(reminderPicklist).removeAttr("disabled");
+		//console.log('checked');
 	}
 	else{
+		//console.log('reminderpicklist UNCHECKED: ' + j$(reminderPicklist).attr('id'));
 		j$(reminderPicklist).prop("disabled", true);
-		//reminderPicklist.disabled = true;
-		console.log('unchecked');
+		j$(reminder).removeAttr("checked");
+		//console.log('unchecked');
 	}
 }
 
 function checkReminderPicklists () {
 	console.log('in checkReminderPicklists');
-	j$(".reminderColumn").each( function () {
-		var reminderBox = j$("[id$=reminder]");
-		console.log('found a reminder');
-		var reminderPL  = j$("[id$=reminderPickList]").attr('id');
-		console.log('reminderPLID: ' + reminderPL);
-		enableDisableReminderPicklist(reminderBox, reminderPL);
+	var allReminderColumns = j$(".reminderColumn");
+	allReminderColumns.each( function (index, element) {
+		//console.log('index' + index);
+		var reminderBox = j$("[id$=" + index.toString() + "\\:reminder]"); // j$("[id$=reminder]");
+		//console.log('found a reminder ' + reminderBox.attr('id')); // j$(reminderBox).attr('id'));
+		console.log('is it checked? ' + reminderBox.attr('checked'));
+		var checked = reminderBox.attr('checked');
+		var reminderPL  = j$("[id$=" + index.toString() + "\\:reminderPickList]").attr('id');
+		//console.log('reminderPLID: ' + reminderPL);
+		enableDisableReminderPicklist(reminderBox, reminderPL, checked);
 	});
 }
 

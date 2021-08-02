@@ -469,12 +469,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					</apex:column>
 
 					<!--  Tasks reminder settings  -->
-					<apex:column rendered="{!canDisplayReminder}" styleClass="reminderColumn" style="vertical-align:middle;" id="reminderCol">
+					<apex:column rendered="{!canDisplayReminder}"  style="vertical-align:middle;" id="reminderCol">
 						<apex:facet name="header">{!$ObjectType.APTaskTemplate__c.fields.Reminder__c.label} <br/>
 							<a id="reminderAll" onclick="javascript:checkReminder(1);" class="all-none">{!$Label.ap_All}</a> |
 							<a id="reminderNone" onclick="javascript:checkReminder(0);" class="all-none">{!$Label.ap_None}</a>
 						</apex:facet>
-						<apex:outputPanel style="vertical-align:middle;">
+						<apex:outputPanel styleClass="reminderColumn" style="vertical-align:middle;" id="reminderCell">
 							<apex:inputCheckbox id="reminder" value="{!wrapTask.task.Reminder__c}" style="float:left;display:inline-block;vertical-align:middle;"
 								onclick="javascript:enableDisableReminderPicklist(this, '{!$Component.reminderPickList}');" disabled="{!wrapTask.task.IsClosed__c}" />
 							<apex:selectList id="reminderPickList" size="1" value="{!wrapTask.task.Minutes_Reminder__c}" style="float:left;" rendered="{!!wrapTask.task.IsClosed__c}" disabled="{!!wrapTask.task.Reminder__c}">
@@ -488,12 +488,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					<apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.Comments__c.label}" style="vertical-align:middle;">
 						<apex:outputPanel rendered="{!!wrapTask.task.IsClosed__c}"	layout="none">
 							<apex:inputField id="commentPanel" style="width:250px;display:none;" value="{!wrapTask.task.Comments__c}" />
-								( <a id="{!wrapTask.position}commentLink" onclick="toggleComments('{!$Component.commentPanel}', '{!$Component.actionLinks}', '{!$Label.ap_Add}', '{!$Label.ap_Edit}','{!$Label.ap_Close}');" style="text-decoration:underline">
+								(&nbsp;<a id="{!wrapTask.position}commentLink" onclick="toggleComments('{!$Component.commentPanel}', '{!$Component.actionLinks}', '{!$Label.ap_Add}', '{!$Label.ap_Edit}','{!$Label.ap_Close}');" style="text-decoration:underline">
 								<apex:outputPanel id="actionLinks">
 									<apex:outputText rendered="{!wrapTask.task.Comments__c != null}">{!$Label.ap_Edit}</apex:outputText>
 									<apex:outputText rendered="{!wrapTask.task.Comments__c == null}">{!$Label.ap_Add}</apex:outputText>
-								</apex:outputPanel>
-							</a> )
+								</apex:outputPanel></a>&nbsp;)
 						</apex:outputPanel>
 						<apex:outputPanel rendered="{!wrapTask.task.IsClosed__c}" layout="none">
 							<apex:outputPanel id="closedCommentPanel" style="display:none" onclick="toggleVisibility('{!$Component.closedCommentPanel}');">
@@ -502,8 +501,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 							</apex:outputPanel>
 
 							<apex:outputPanel rendered="{!wrapTask.task.Comments__c != null}" onclick="toggleVisibility('{!$Component.closedCommentPanel}');">
-								(
-								<apex:outputText style="text-decoration:underline" value="..." />)
+								(&nbsp;<apex:outputText style="text-decoration:underline" value="..." />&nbsp;)
 							</apex:outputPanel>
 						</apex:outputPanel>
 					</apex:column>
