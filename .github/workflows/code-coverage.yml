@@ -1,0 +1,30 @@
+name: code-coverage
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout source code'
+      uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: npm install sfdx-cli
+    - name: Populate auth file
+      run: 'echo "${{ secrets.SALESFORCE_AUTH_URL }}" > ./SALESFORCE_AUTH_URL.txt'
+    - name: Authenticate Dev Hub
+      run: 'node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -a DevHub -d'
+    - name: Create Scratch Org
+      run: node_modules/sfdx-cli/bin/run force:org:create --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --durationdays 1
+    - name: Deploy source
+      run: node_modules/sfdx-cli/bin/run force:source:push
+    - name: assign permissions
+      run: node_modules/sfdx-cli/bin/run force:user:permset:assign -n Action_Plans_Admin
+    - name: Run Apex tests
+      run: node_modules/sfdx-cli/bin/run force:apex:test:run --codecoverage --resultformat human -d ./
+    - name: Delete coverage file (temporary fix)
+      run: rm ./test-result-707*-codecoverage.json
+    - name: 'Upload code coverage for Apex to Codecov.io'
+      uses: codecov/codecov-action@v2.0.2
+      with:
+        flags: Apex
+    - name: Delete Scratch Org
+      run: node_modules/sfdx-cli/bin/run force:org:delete --noprompt

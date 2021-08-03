@@ -2,6 +2,7 @@
 
 ## Badges
 ![License: BSD-3](https://img.shields.io/github/license/SalesforceLabs/ActionPlans)
+[![codecov](https://codecov.io/gh/dschach/ActionPlans/branch/main/graph/badge.svg?token=CRGAI2J4E0)](https://codecov.io/gh/dschach/ActionPlans)
 ![Twitter](https://img.shields.io/twitter/follow/SalesforceLabs.svg?style=social)
 
 
