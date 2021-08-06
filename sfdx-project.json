@@ -5,7 +5,8 @@
       "default": true
     }
   ],
-  "namespace": "",
+  "name": "Action Plans 4",
+  "namespace": "actionplans2gp",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "52.0"
 }
