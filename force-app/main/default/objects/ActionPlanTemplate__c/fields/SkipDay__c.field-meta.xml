@@ -4,7 +4,7 @@
     <description>If a Due Date lands on a weekend it should be pushed to this day.</description>
     <externalId>false</externalId>
     <inlineHelpText>If a Due Date lands on a weekend it should be pushed to this day.</inlineHelpText>
-    <label>Default weekend due dates to</label>
+    <label>Default Weekend Due Dates To</label>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>

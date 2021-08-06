@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>End_of_previous_week</fullName>
+        <fullName>End of previous week</fullName>
         <default>false</default>
         <label>End of previous week</label>
     </customValue>
     <customValue>
-        <fullName>Start_of_next_week</fullName>
+        <fullName>Start of next week</fullName>
         <default>false</default>
         <label>Start of next week</label>
     </customValue>
-    <customValue>
-        <fullName>Friday</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Friday</label>
-    </customValue>
-    <customValue>
-        <fullName>Monday</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Monday</label>
-    </customValue>
-    <description>Action Plans: Adjust task due dates to avoid weekends.</description>
+    <description>Action Plans: Adjust task due dates to avoid weekends or any other non-working day.</description>
     <masterLabel>Skip Day</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
