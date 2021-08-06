@@ -97,8 +97,8 @@ public with sharing class ActionPlanTemplateDetailController {
 	 */
 	public List<APTTaskTemplate__c> getTemplateTasks(){
 		return [SELECT Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Type__c, Time_Reminder__c,
-							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
-							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
+							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, TController__c,
+							 TController__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
 							 FROM APTTaskTemplate__c
 							 WHERE Action_Plan_Template__c = :actionPlanTemplate.Id  ORDER BY TaskIndex__c ASC NULLS FIRST];
 	}

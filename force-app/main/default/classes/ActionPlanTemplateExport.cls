@@ -57,7 +57,7 @@ public inherited sharing class ActionPlanTemplateExport {
     public Id export(){
 
         ActionPlanTemplate__c apTemplate = [SELECT SkipWeekends__c, SkipDay__c, Name, Id, Description__c,
-                                                ( SELECT Id, Name, Action_Plan_Template__c, APTTaskTemplate__c, Comments__c, DaysFromStart__c, Dependent__c, Type__c,
+                                                ( SELECT Id, Name, Action_Plan_Template__c, TController__c, Comments__c, DaysFromStart__c, Dependent__c, Type__c,
                                                     Priority__c, Reminder__c, SendEmail__c, Subject__c, Minutes_Reminder__c, TaskIndex__c FROM apTasks__r )
                                                 FROM ActionPlanTemplate__c WHERE Id = :this.templateId];
 
@@ -152,7 +152,7 @@ public inherited sharing class ActionPlanTemplateExport {
                 writeElement( out, 'dependent', '' + currentTask.Dependent__c );
                 writeElement( out, 'taskIndex', '' + String.valueOf( currentTask.TaskIndex__c ) );
             }
-            writeElement( out, 'apttemplate', '' + currentTask.APTTaskTemplate__c );
+            writeElement( out, 'taskcontroller', '' + currentTask.TController__c );
             writeElement( out, 'daysFromStart', '' + String.valueOf( currentTask.DaysFromStart__c ) );
             writeElement( out, 'category', '' + currentTask.Type__c );
             writeElement( out, 'priority', '' + currentTask.Priority__c );

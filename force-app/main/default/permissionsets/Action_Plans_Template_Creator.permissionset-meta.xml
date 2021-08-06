@@ -79,7 +79,7 @@
     <description>Permissions to create Action Plan Templates for others to use</description>
     <fieldPermissions>
         <editable>true</editable>
-        <field>APTTaskTemplate__c.APTTaskTemplate__c</field>
+					<field>APTTaskTemplate__c.TController__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

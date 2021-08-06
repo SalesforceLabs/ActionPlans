@@ -145,10 +145,10 @@ public with sharing class ActionPlanTemplateCreationController{
 		// run through the tasks and take care of dependents
 		for( APTTaskTemplate__c t : aptTasks ){
 			if( t.Dependent__c != null && t.Dependent__c != 'None' ){
-				t.APTTaskTemplate__c = aptTasks[ Integer.valueOf( t.Dependent__c ) ].Id;
+				t.TController__c = aptTasks[ Integer.valueOf( t.Dependent__c ) ].Id;
 			}
 			else {
-				t.APTTaskTemplate__c = null;
+				t.TController__c = null;
 			}
 		}
 
@@ -232,7 +232,7 @@ public with sharing class ActionPlanTemplateCreationController{
 			Integer taskIndex = Integer.valueOf( ApexPages.currentPage().getParameters().get( 'remove' ) );
 
 			//check for dependent children and clear them since the parent is being removed.
-			aptTasks[ taskIndex ].APTTaskTemplate__c    = null;
+			aptTasks[ taskIndex ].TController__c    = null;
 			aptTasks[ taskIndex ].Dependent__c          = null;
 
 			Integer dependentApTask;
@@ -246,7 +246,7 @@ public with sharing class ActionPlanTemplateCreationController{
 						aptTask.Dependent__c = String.valueOf( dependentApTask - 1 );
 					} else if( dependentApTask == taskIndex ){
 						aptTask.Dependent__c = 'None';
-						aptTask.APTTaskTemplate__c    = null;
+						aptTask.TController__c    = null;
 					}
 				}
 			}
@@ -307,8 +307,8 @@ public with sharing class ActionPlanTemplateCreationController{
 
 			if( actionPlanTemplate.Id != null ) {
 				aptTasks = [SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Minutes_Reminder__c,
-							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
-							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
+							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, TController__c,
+							 TController__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
 							 FROM APTTaskTemplate__c
 							 WHERE Action_Plan_Template__c = :actionPlanTemplate.Id  ORDER BY TaskIndex__c ASC];
 			}
@@ -324,8 +324,8 @@ public with sharing class ActionPlanTemplateCreationController{
 			if( ApexPages.currentPage().getParameters().get( 'clone' ) == '1' ){
 
 				aptTasks = [SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, TaskIndex__c, Minutes_Reminder__c,
-							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__c,
-							 APTTaskTemplate__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
+							 User__r.Name, Id, DaysFromStart__c, CreatedById, Action_Plan_Template__c, TController__c,
+							 TController__r.Subject__c, Reminder__c, SendEmail__c, Comments__c
 							 FROM APTTaskTemplate__c
 							 WHERE Action_Plan_Template__c = :templateId ORDER BY TaskIndex__c ASC];
 

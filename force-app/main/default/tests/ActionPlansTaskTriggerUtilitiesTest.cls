@@ -71,7 +71,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 			at.Subject__c		 = 'Test ' + i;
 			at.Type__c			 = 'Email';
 			at.Priority__c		 = 'Low';
-			at.APTaskTemplate__c = ( i > 0 ) ? apttList[i-1].Id : null;
+			at.Controller__c = ( i > 0 ) ? apttList[i-1].Id : null;
 			insert at;
 			apttList.add(at);
 			apTTaskIds.add( at.Id );
@@ -127,7 +127,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 			at.Priority__c		 = 'Low';
 			at.Comments__c		 = 'My Comment';
 			at.Reminder__c		 = true;
-			at.APTaskTemplate__c = ( i > 0 ) ? aptt[i-1].Id : null;
+			at.Controller__c = ( i > 0 ) ? aptt[i-1].Id : null;
 			insert at;
 			aptt.add(at);
 			apTTaskIds.add( at.Id );
@@ -178,7 +178,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 			at.Comments__c		 = 'My Comment';
 			at.Reminder__c		 = true;
 			at.Minutes_Reminder__c = '510';
-			at.APTaskTemplate__c = ( i > 0 ) ? aptt[i-1].Id : null;
+			at.Controller__c = ( i > 0 ) ? aptt[i-1].Id : null;
 			insert at;
 			aptt.add(at);
 			apTTaskIds.add( at.Id );
@@ -332,7 +332,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 			at.Subject__c		 = 'Test ' + i;
 			at.Type__c			 = 'Email';
 			at.Priority__c		 = 'Low';
-			at.APTaskTemplate__c = ( i > 0 ) ? aptt[i-1].Id : null;
+			at.Controller__c = ( i > 0 ) ? aptt[i-1].Id : null;
 			insert at;
 			aptt.add(at);
 			apTTaskIds.add( at.Id );
@@ -381,7 +381,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		at.Subject__c			= 'Test1';
 		at.Type__c				= 'Email';
 		at.Priority__c			= 'Low';
-		at.APTaskTemplate__c	= null;
+		at.Controller__c	= null;
 		at.TaskIndex__c			= 0;
 		insert at;
 		//Task Template 2
@@ -393,7 +393,7 @@ private class ActionPlansTaskTriggerUtilitiesTest {
 		at2.Subject__c			= 'Test2';
 		at2.Type__c				= 'Email';
 		at2.Priority__c			= 'Low';
-		at2.APTaskTemplate__c	= at.Id;
+		at2.Controller__c	= at.Id;
 		at2.Dependent__c		= '0';
 		at2.TaskIndex__c		= 1;
 		insert at2;

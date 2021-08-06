@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>End of previous week</fullName>
+        <fullName>End_of_previous_week</fullName>
         <default>false</default>
         <label>End of previous week</label>
     </customValue>
     <customValue>
-        <fullName>Start of next week</fullName>
+        <fullName>Start_of_next_week</fullName>
         <default>false</default>
         <label>Start of next week</label>
     </customValue>

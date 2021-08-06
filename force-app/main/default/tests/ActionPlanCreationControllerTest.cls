@@ -407,8 +407,8 @@ private class ActionPlanCreationControllerTest {
 		ApexPages.currentPage().getParameters().put( 'id', actionPlan.Id );
 		ActionPlanCreationController apCreateController = new ActionPlanCreationController( new Apexpages.StandardController( actionPlan ) );
 		apCreateController.apTasks = [SELECT Type__c, Subject__c, ActivityDate__c, Priority__c, Status__c, Dependent__c,
-											Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, APTaskTemplate__r.Name,
-											APTaskTemplate__r.Subject__c, APTaskTemplate__c, Action_Plan__c, Reminder__c,
+											Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, Controller__r.Name,
+											Controller__r.Subject__c, Controller__c, Action_Plan__c, Reminder__c,
 											SendEmail__c, Comments__c
 											FROM APTaskTemplate__c
 										WHERE Action_Plan__c = :actionPlan.Id ORDER BY createdDate asc];

@@ -43,7 +43,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>APTTaskTemplate__c</field>
+                <field>TController__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -113,15 +113,8 @@
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
-        <excludeButtons>MassChangeOwner</excludeButtons>
-        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
-        <fields>TaskIndex__c</fields>
-        <fields>Type__c</fields>
-        <fields>Priority__c</fields>
-        <relatedList>APTTaskTemplate__c.APTTaskTemplate__c</relatedList>
-        <sortField>TaskIndex__c</sortField>
-        <sortOrder>Asc</sortOrder>
+        <relatedList>APTTaskTemplate__c.TController__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
@@ -129,7 +122,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0R000003wAdX</masterLabel>
+        <masterLabel>00h1h000002XpKt</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

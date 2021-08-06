@@ -119,8 +119,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
                     <apex:column id="columnOne" headerValue="{!$ObjectType.APTaskTemplate__c.fields.Subject__c.label}">
                         <apex:outputText id="subject">{!task.apt.Subject__c}</apex:outputText>
                     </apex:column>
-                    <apex:column id="dependency" headerValue="{!$ObjectType.APTaskTemplate__c.fields.APTaskTemplate__c.label}" headerClass="dependencyColumn">
-                        <apex:outputText >{!task.apt.APTaskTemplate__r.Subject__c}</apex:outputText>
+                    <apex:column id="dependency" headerValue="{!$ObjectType.APTaskTemplate__c.fields.Controller__c.label}" headerClass="dependencyColumn">
+                        <apex:outputText >{!task.apt.Controller__r.Subject__c}</apex:outputText>
                     </apex:column>
                     <apex:column headerValue="{!$ObjectType.APTaskTemplate__c.fields.ActivityDate__c.label}">
                         <apex:outputField value="{!task.apt.ActivityDate__c}" style="{!IF(task.apt.ActivityDate__c != null && task.apt.ActivityDate__c < TODAY() && task.apt.IsClosed__c == false, 'color:#cc0000', '')}" />

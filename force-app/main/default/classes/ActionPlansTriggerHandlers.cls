@@ -355,7 +355,7 @@ global without sharing class ActionPlansTriggerHandlers {
 				Set<Id> APTasksIds = new Set<Id>();
 
 				Map<Id, Task> triggerTasksWithTemplateTaskStatus = new Map<Id, Task>();
-				for(Task ta : [SELECT Id, Status, TaskAPTaskTemplate__r.Status__c, TaskAPTaskTemplate__r.APTaskTemplate__c, TaskAPTaskTemplate__r.APTaskTemplate__r.Status__c FROM Task WHERE Id IN :newRecords AND TaskAPTaskTemplate__c != null]){
+				for(Task ta : [SELECT Id, Status, TaskAPTaskTemplate__r.Status__c, TaskAPTaskTemplate__r.Controller__c, TaskAPTaskTemplate__r.Controller__r.Status__c FROM Task WHERE Id IN :newRecords AND TaskAPTaskTemplate__c != null]){
 					triggerTasksWithTemplateTaskStatus.put(ta.Id, ta);
 				}
 
@@ -421,7 +421,7 @@ global without sharing class ActionPlansTriggerHandlers {
 
 				//Query APTaskTemplate__c objects to update fields
 				if ( !APTasksIds.isEmpty() ){
-					Map<Id,APTaskTemplate__c> mapAPTasks = new Map<Id,APTaskTemplate__c>([SELECT Status__c, Id, APTaskTemplate__r.Status__c, ActivityDate__c, Minutes_Reminder__c,
+					Map<Id,APTaskTemplate__c> mapAPTasks = new Map<Id,APTaskTemplate__c>([SELECT Status__c, Id, Controller__r.Status__c, ActivityDate__c, Minutes_Reminder__c,
 																							Action_Plan__r.Name
 																							FROM APTaskTemplate__c a
 																							WHERE Id IN :APTasksIds ]);
@@ -673,11 +673,11 @@ global without sharing class ActionPlansTriggerHandlers {
 		Map<Id, Boolean> allowTasksMap = new Map<Id, Boolean>();
 		Set<String> openStatuses = ActionPlansUtilities.getOpenTaskStatuses();
 
-		for(APTaskTemplate__c apt : [SELECT Status__c, APTaskTemplate__c, APTaskTemplate__r.Status__c
+		for(APTaskTemplate__c apt : [SELECT Status__c, Controller__c, Controller__r.Status__c
 											FROM APTaskTemplate__c
 											WHERE Id IN :apTaskTemplateIds]){
 
-				allowTasksMap.put(apt.Id, apt.APTaskTemplate__c == null || !openStatuses.contains(apt.APTaskTemplate__r.Status__c) );
+				allowTasksMap.put(apt.Id, apt.Controller__c == null || !openStatuses.contains(apt.Controller__r.Status__c) );
 
 		}
 

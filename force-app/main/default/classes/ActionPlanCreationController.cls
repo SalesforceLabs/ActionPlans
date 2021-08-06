@@ -615,7 +615,7 @@ public with sharing class ActionPlanCreationController{
 			Integer taskIndex       = Integer.valueOf( ApexPages.currentPage().getParameters().get( 'remove' ) );
 
 			//check for dependent children and clear them since the parent is being removed.
-			apTasks[ taskIndex].APTaskTemplate__c    = null;
+			apTasks[ taskIndex].Controller__c    = null;
 			apTasks[ taskIndex].Dependent__c         = null;
 
 			APTaskTemplate__c apTask;
@@ -630,7 +630,7 @@ public with sharing class ActionPlanCreationController{
 						apTask.Dependent__c = String.valueOf( dependentApTask - 1 );
 					} else if( dependentApTask == taskIndex ){
 						apTask.Dependent__c         = 'None';
-						apTask.APTaskTemplate__c    = null;
+						apTask.Controller__c    = null;
 					}
 				}
 			}
@@ -715,7 +715,7 @@ public with sharing class ActionPlanCreationController{
 			if( templateId != null ){
 
 				List<APTTaskTemplate__c>  aptTasks = [SELECT Subject__c, Priority__c, Dependent__c, Name, User__c, User__r.Name, Id, Type__c,
-							DaysFromStart__c, CreatedById, Action_Plan_Template__c, APTTaskTemplate__r.Subject__c,
+							DaysFromStart__c, CreatedById, Action_Plan_Template__c, TController__r.Subject__c,
 							Reminder__c, Minutes_Reminder__c, SendEmail__c, Comments__c, TaskIndex__c, Action_Plan_Template__r.TaskRecordTypeID__c
 							FROM APTTaskTemplate__c
 							WHERE Action_Plan_Template__c = :templateId ORDER BY TaskIndex__c ASC];
@@ -806,8 +806,8 @@ public with sharing class ActionPlanCreationController{
 	public static List<APTaskTemplate__c> retrieveTaskFromExistingActionPlan( Id actionPlanId ){
 
 		List<APTaskTemplate__c> myList = [SELECT Subject__c, ActivityDate__c, Priority__c, Status__c, Dependent__c, Type__c,
-			Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, APTaskTemplate__r.Name,
-			APTaskTemplate__r.Subject__c, APTaskTemplate__c, Action_Plan__c, Reminder__c,
+			Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, Controller__r.Name,
+			Controller__r.Subject__c, Controller__c, Action_Plan__c, Reminder__c,
 			SendEmail__c, Comments__c, Minutes_Reminder__c, TaskIndex__c, Time_Reminder__c,
 			Task_RecordTypeId__c, IsClosed__c
 			FROM APTaskTemplate__c
@@ -963,7 +963,7 @@ public with sharing class ActionPlanCreationController{
 				APTaskTemplate__c link     = this.apTasks[ Integer.valueOf( t.Dependent__c ) ];
 
 				//task can not depend on themselves
-				if( Integer.valueOf( t.Dependent__c ) == index){ //  || t.Id == t.APTaskTemplate__c
+				if( Integer.valueOf( t.Dependent__c ) == index){ //  || t.Id == t.Controller__c
 					this.errorMsg = System.Label.ap_ItselfDependencyError;
 					return true;
 				}

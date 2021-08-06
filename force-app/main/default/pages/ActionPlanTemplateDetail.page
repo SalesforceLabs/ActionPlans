@@ -96,7 +96,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					<apex:variable value="{!task.TaskIndex__c + 1}" var="row" />
 					<apex:outputText value="{!row}" />
 				</apex:column>
-				<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.APTTaskTemplate__c.label}" value="{!task.APTTaskTemplate__r.Subject__c}" rendered="{!TemplateTasks.size > 1}"  style="vertical-align:middle;"/>
+				<apex:column headerValue="{!$ObjectType.APTTaskTemplate__c.fields.TController__c.label}" value="{!task.TController__r.Subject__c}" rendered="{!TemplateTasks.size > 1}"  style="vertical-align:middle;"/>
 				<apex:column value="{!task.DaysFromStart__c}" style="vertical-align:middle;" >
 					<apex:facet name="header">{!$ObjectType.APTTaskTemplate__c.fields.DaysFromStart__c.label}
 						<img class="helpOrb" title="{!$ObjectType.APTTaskTemplate__c.fields.DaysFromStart__c.inlineHelpText}" src="/s.gif" />

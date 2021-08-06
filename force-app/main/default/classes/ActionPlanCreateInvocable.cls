@@ -53,7 +53,7 @@ global without sharing class ActionPlanCreateInvocable {
 		List<ActionPlanTemplate__c> possibleTemplates =
 							[SELECT Id, Description__c, Name, OwnerId, SkipDay__c, SkipWeekends__c, TaskRecordTypeID__c,
 								(SELECT Type__c, Subject__c, Priority__c, Dependent__c, Name, User__c, User__r.Name, Id,
-								DaysFromStart__c, Action_Plan_Template__c, APTTaskTemplate__r.Subject__c, Minutes_Reminder__c,
+								DaysFromStart__c, Action_Plan_Template__c, TController__r.Subject__c, Minutes_Reminder__c,
 								Reminder__c, SendEmail__c, Comments__c, TaskIndex__c, Action_Plan_Template__r.TaskRecordTypeID__c
 								FROM ApTasks__r ORDER BY TaskIndex__c ASC)
 							FROM ActionPlanTemplate__c WHERE Name IN :templateNamesOrIDs OR Id IN :templateNamesOrIDs];
@@ -172,7 +172,7 @@ global without sharing class ActionPlanCreateInvocable {
 
 				else {
 
-					apTask.APTaskTemplate__c = null;
+					apTask.Controller__c = null;
 
 					//set dependency taskId to none if none was selected
 					if (apTask.Dependent__c == null){
@@ -205,7 +205,7 @@ global without sharing class ActionPlanCreateInvocable {
 			String actionPlanPlusIndex = apTask.Action_Plan__c + '' + apTask.Dependent__c;
 			//System.debug('Looking for key ' + actionPlanPlusIndex);
 			if(planTaskIndexToTask.containsKey(actionPlanPlusIndex)){
-				apTask.APTaskTemplate__c = planTaskIndexToTask.get(actionPlanPlusIndex).Id;
+				apTask.Controller__c = planTaskIndexToTask.get(actionPlanPlusIndex).Id;
 				dependentTasksToUpdate.add(apTask);
 			}
 		}

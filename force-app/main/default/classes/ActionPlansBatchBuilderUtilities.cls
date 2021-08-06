@@ -192,12 +192,12 @@ public inherited sharing class ActionPlansBatchBuilderUtilities {
 
 				if( at.Dependent__c != null && at.Dependent__c != 'None' ){
 					Integer tempIndex   = Integer.valueOf( at.Dependent__c );
-					at.APTaskTemplate__c = aptList[tempIndex].Id;
+					at.Controller__c = aptList[tempIndex].Id;
 					at.ActivityDate__c = null;
 				}
 				else {
 
-					at.APTaskTemplate__c = null;
+					at.Controller__c = null;
 
 					//set dependency taskId to none if none was selected
 					if (at.Dependent__c == null){

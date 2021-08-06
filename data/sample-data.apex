@@ -1,7 +1,7 @@
 ActionPlanTemplate__c apt = new ActionPlanTemplate__c();
 apt.Name = 'New Customer Onboarding';
-apt.Description__c = 'When a Prospect -> Customer, do these tasks';
-apt.SkipDay__c = 'Start of next week';
+apt.Description__c = 'When Prospect -> Customer, do these tasks';
+apt.SkipDay__c = 'Start_of_next_week';
 apt.SkipWeekends__c = true;
 apt.TaskRecordTypeID__c = '';
 
@@ -28,7 +28,7 @@ a2.Name = 'New Customer Onboarding - Enable Customer Community User';
 a2.TaskIndex__c = 1;
 a2.DaysFromStart__c = 2;
 a2.Action_Plan_Template__c = apt.Id;
-a2.APTTaskTemplate__c = a1.Id;
+a2.TController__c = a1.Id;
 a2.Reminder__c = false;
 a2.SendEmail__c = false;
 insert a2;
@@ -42,7 +42,7 @@ a3.Name = 'New Customer Onboarding - Schedule onboarding call with customer succ
 a3.TaskIndex__c = 2;
 a3.DaysFromStart__c = 1;
 a3.Action_Plan_Template__c = apt.Id;
-a3.APTTaskTemplate__c = a2.Id;
+a3.TController__c = a2.Id;
 a3.Reminder__c = false;
 a3.SendEmail__c = false;
 insert a3;

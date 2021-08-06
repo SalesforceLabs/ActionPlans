@@ -101,7 +101,7 @@ public with sharing class ActionPlanDetailController{
 	public List<TaskWrapper> getActionPlanTasks(){
 		if(apTaskWrapperList == null){
 			apTaskWrapperList = new List<TaskWrapper>();
-			Map<Id, APTaskTemplate__c> apTaskMap = new Map<Id, APTaskTemplate__c>([SELECT Action_Plan__c, ActivityDate__c, APTaskTemplate__c, APTaskTemplate__r.Subject__c,
+			Map<Id, APTaskTemplate__c> apTaskMap = new Map<Id, APTaskTemplate__c>([SELECT Action_Plan__c, ActivityDate__c, Controller__c, Controller__r.Subject__c,
 							Comments__c, DaysFromStart__c, Dependent__c, Id,
 							IsClosed__c, Minutes_Reminder__c, Name, Priority__c, Reminder__c, Time_Reminder__c, SendEmail__c, Status__c, Subject__c, Task_RecordTypeId__c,
 							TaskIndex__c, Type__c, User__c, User__r.Name

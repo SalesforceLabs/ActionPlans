@@ -322,11 +322,11 @@ public inherited sharing class ActionPlanTemplateImport{
 				apTaskAux.TaskIndex__c = Decimal.valueOf( getDecodedString( reader ) );
 			}
 			//handle apttemplate field
-			if( reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'apttemplate' ){
+			if( reader.getEventType() == XMLTag.START_ELEMENT && reader.getLocalName() == 'taskcontroller' ){
 				reader.next();
 				String referenceId = getDecodedString( reader );
 				if( referenceId != 'null' ){
-					apTaskAux.APTTaskTemplate__c = referenceId;
+					apTaskAux.TController__c = referenceId;
 				}
 			}
 			//handle daysFromStart field
@@ -380,7 +380,7 @@ public inherited sharing class ActionPlanTemplateImport{
 		this.importedTasks.put( currentTaskOldId, apTaskAux );
 		//Note: removing APTTaskTemplate__c reference field to be able to insert tasks.
 		APTTaskTemplate__c clonedTask = apTaskAux.clone();
-		clonedTask.APTTaskTemplate__c = null;
+		clonedTask.TController__c = null;
 		this.newTasks.put( currentTaskOldId, clonedTask );
 	}
 
@@ -400,14 +400,14 @@ public inherited sharing class ActionPlanTemplateImport{
 			APTTaskTemplate__c auxOldTask = this.importedTasks.get( key );
 
 			//checks to see if task has a reference to another task
-			if( auxOldTask.APTTaskTemplate__c != null ){
-				if( String.valueOf( auxOldTask.APTTaskTemplate__c ).length() != 0 ){
-					Id auxRefId 				= auxOldTask.APTTaskTemplate__c;
+			if( auxOldTask.TController__c != null ){
+				if( String.valueOf( auxOldTask.TController__c ).length() != 0 ){
+					Id auxRefId = auxOldTask.TController__c;
 					//get dependent task
 					APTTaskTemplate__c auxRefTask 	= this.newTasks.get( auxRefId );
 
 					//Update task reference
-					auxNewTask.APTTaskTemplate__c = auxRefTask.Id;
+					auxNewTask.TController__c = auxRefTask.Id;
 				}
 			}
 			updatedTasks.add( auxNewTask );

@@ -49,6 +49,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ActionPlansSectionHeaderController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ActionPlansTaskTriggerUtilities</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -60,10 +64,6 @@
         <apexClass>ActionPlansUtilities</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <classAccesses>
-        <apexClass>ActionPlansSectionHeaderController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
         <name>Weekend_Day__mdt</name>
@@ -71,7 +71,7 @@
     <description>Users can create Action Plans directly or from Templates</description>
     <fieldPermissions>
         <editable>false</editable>
-        <field>APTTaskTemplate__c.APTTaskTemplate__c</field>
+					<field>APTTaskTemplate__c.TController__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -126,17 +126,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>APTaskTemplate__c.APTaskTemplate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>APTaskTemplate__c.ActivityDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>APTaskTemplate__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APTaskTemplate__c.Controller__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -101,9 +101,9 @@ public without sharing class ActionPlansTaskTriggerUtilities {
 
 		apdependentQuery += ' Action_Plan__r.StartDate__c, Action_Plan__c, Type__c, Subject__c, ActivityDate__c, ' +
 			'Dependent__c, Name, User__c, User__r.Name, Id, DaysFromStart__c, CreatedById, ' +
-			'APTaskTemplate__r.Subject__c, APTaskTemplate__c, SendEmail__c,  APTaskTemplate__r.Name, ' +
+			'Controller__r.Subject__c, Controller__c, SendEmail__c,  Controller__r.Name, ' +
 			'Reminder__c, Priority__c, Status__c, Comments__c, Minutes_Reminder__c, Task_RecordTypeId__c' +
-			' FROM APTaskTemplate__c WHERE APTaskTemplate__c IN :closedTasks';
+			' FROM APTaskTemplate__c WHERE Controller__c IN :closedTasks';
 
 		dependentAptts = Database.query(apdependentQuery);
 		return dependentAptts;
@@ -179,7 +179,7 @@ public without sharing class ActionPlansTaskTriggerUtilities {
 		Set<Id> controllingIDs = new Set<Id>();
 		for(APTaskTemplate__c dAptt : dependentApttList){
 			apIDs.add(dAptt.Action_Plan__c);
-			controllingIDs.add(dAptt.APTaskTemplate__c);
+			controllingIDs.add(dAptt.Controller__c);
 		}
 
 		Map<Id, APTaskTemplate__c> controllingTasks = new Map<Id, APTaskTemplate__c>([SELECT Id, ActivityDate__c FROM APTaskTemplate__c WHERE Id IN :controllingIDs]);
@@ -205,8 +205,8 @@ public without sharing class ActionPlansTaskTriggerUtilities {
 			}
 
 			Date d = Date.today();
-			if(dependentAptt.APTaskTemplate__c != null &&  controllingTasks.containsKey(dependentAptt.APTaskTemplate__c) && controllingTasks.get(dependentAptt.APTaskTemplate__c).ActivityDate__c != null){
-				d = controllingTasks.get(dependentAptt.APTaskTemplate__c).ActivityDate__c;
+			if(dependentAptt.Controller__c != null &&  controllingTasks.containsKey(dependentAptt.Controller__c) && controllingTasks.get(dependentAptt.Controller__c).ActivityDate__c != null){
+				d = controllingTasks.get(dependentAptt.Controller__c).ActivityDate__c;
 			}
 
 			dependentAptt.ActivityDate__c = d.addDays( dependentAptt.DaysFromStart__c.intValue() );
@@ -344,7 +344,7 @@ public without sharing class ActionPlansTaskTriggerUtilities {
 				} else {
 					if( dependentApTaskIndex == taskIndex ){
 						apTask.Dependent__c 		= 'None';
-						apTask.APTaskTemplate__c    = null;
+						apTask.Controller__c    = null;
 					}
 				}
 			}

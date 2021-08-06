@@ -65,7 +65,7 @@ global without sharing class ActionPlansBatchTaskBuilder implements Database.Bat
 			soql += 'Action_Plan__r.' + s + ', ';
 		}
 
-		soql += ' APTaskTemplate__c FROM APTaskTemplate__c WHERE Id IN :aptIds';
+		soql += ' Controller__c FROM APTaskTemplate__c WHERE Id IN :aptIds';
 
 		return Database.getQueryLocator( soql );
 	}

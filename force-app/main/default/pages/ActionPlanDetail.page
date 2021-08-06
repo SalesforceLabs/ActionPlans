@@ -151,8 +151,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<apex:variable value="{!wrap.apt.TaskIndex__c + 1}" var="row" />
 						<apex:outputText value="{!row}" />
 					</apex:column>
-					<apex:column id="dependency" headerValue="{!$ObjectType.APTaskTemplate__c.fields.APTaskTemplate__c.label}" rendered="{!ActionPlanTasks.Size > 1}" style="vertical-align:middle;">
-						<apex:outputField value="{!wrap.apt.APTaskTemplate__r.Subject__c}" />
+					<apex:column id="dependency" headerValue="{!$ObjectType.APTaskTemplate__c.fields.Controller__c.label}" rendered="{!ActionPlanTasks.Size > 1}" style="vertical-align:middle;">
+						<apex:outputField value="{!wrap.apt.Controller__r.Subject__c}" />
 					</apex:column>
 					<apex:column value="{!wrap.apt.DaysFromStart__c}" style="vertical-align:middle;">
 						<apex:facet name="header">
