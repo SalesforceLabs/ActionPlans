@@ -176,12 +176,12 @@
         <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
+        <fields>Controller__c</fields>
+        <fields>Status__c</fields>
         <fields>User__c</fields>
         <fields>ActivityDate__c</fields>
-        <fields>APTaskTemplate__c</fields>
-        <fields>Status__c</fields>
         <fields>SendEmail__c</fields>
-        <fields>Reminder__c</fields>
+        <fields>Time_Reminder__c</fields>
         <relatedList>APTaskTemplate__c.Action_Plan__c</relatedList>
         <sortField>ActivityDate__c</sortField>
         <sortOrder>Desc</sortOrder>
@@ -192,7 +192,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h54000003tDD1</masterLabel>
+        <masterLabel>00h1h000002XpKw</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

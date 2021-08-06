@@ -113,8 +113,15 @@
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
+        <fields>Subject__c</fields>
+        <fields>TaskIndex__c</fields>
+        <fields>User__c</fields>
         <relatedList>APTTaskTemplate__c.TController__c</relatedList>
+        <sortField>TaskIndex__c</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
