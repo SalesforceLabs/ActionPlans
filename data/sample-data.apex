@@ -1,7 +1,7 @@
 ActionPlanTemplate__c apt = new ActionPlanTemplate__c();
 apt.Name = 'New Customer Onboarding';
 apt.Description__c = 'When Prospect -> Customer, do these tasks';
-apt.SkipDay__c = 'Start_of_next_week';
+apt.SkipDay__c = 'Start of next week';
 apt.SkipWeekends__c = true;
 apt.TaskRecordTypeID__c = '';
 
