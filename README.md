@@ -1,7 +1,7 @@
 # Action Plans
 
 ## Badges
-![License: BSD-3](https://img.shields.io/github/license/SalesforceLabs/ActionPlans)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![codecov](https://codecov.io/gh/dschach/ActionPlans/branch/main/graph/badge.svg?token=CRGAI2J4E0)](https://codecov.io/gh/dschach/ActionPlans)
 ![Twitter](https://img.shields.io/twitter/follow/SalesforceLabs.svg?style=social)
 
@@ -192,22 +192,19 @@ This repository contains several files that are relevant if you want to add samp
     sfdx force:data:tree:import -p ./data/action-plan-data-plan.json
     ```
 
-- (Optional) To create a sample Action Plan Template for Account onboarding, run the following:
+- (Optional) To create a sample Action Plan Template for Account onboarding (to use the included Flow), run the following:
 	```
 	sfdx force:apex:execute -f ./data/sample-data.apex
 	```
 
 - Sample Action Plan Template and Flow
-    - This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
+    - This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
 
-	- To use this Template with the included Flow,  edit or create a new Lead.
-		1. Make sure the `Hot Lead Trade Show follow up` Flow is active.
-		1. Create a Lead and set `Rating` to "Hot" and `Lead Source` to "Other".
-		1. Note the auto-created Action Plan.
-
-	- To use this Template with a Process Builder, use the `Create Action Plan From Template` Apex Action
+	- To use this Template with Flow or a Process Builder, use the `Create Action Plan From Template` Apex Action
 
 	- To use this Template with a trigger, see the in-app documentation tab `About Action Plans`
+
+	- Create a Lead and set `Rating` to "Hot" and `Lead Source` to "Other".
 
 ### Code formatting
 

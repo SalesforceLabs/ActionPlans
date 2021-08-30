@@ -37,8 +37,11 @@ Activities.settings
 Security.settings
 TaskStatus.standardValueSet
 TaskPriority.standardValueSet
+TaskType.standardValueSet
 Lead-Lead Layout.layout
+Account-Account Layout.layout
 Global-Global Layout.layout
+Lead.workflow
 
 src
 metadata
