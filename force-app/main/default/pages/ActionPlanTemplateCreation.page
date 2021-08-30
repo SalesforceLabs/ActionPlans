@@ -61,6 +61,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			checkSkipWeekend(j$("[id$=skipWeekendCheckbox]").attr('id'), j$("[id$=skipDayPicklist]").attr('id'));
 			checkAllDependent('{!$Label.ap_ItselfDependencyError}', '{!$Label.ap_Error_Cyclic_Dependency_Found}');
 			showErrors();
+			j$('.helpOrb').css({ 'width': '12px', 'height': '12px' });
 			j$("td [Id*=taskTable]").css("vertical-align", "middle");
 			//checkReminderPicklists();
 		}

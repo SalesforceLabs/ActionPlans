@@ -46,6 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		var j$ = jQuery.noConflict();
 		j$(document).ready(function () {
 			j$("[Id$=theTable]").tablesorter();
+			j$('.helpOrb').css({ 'width': '12px', 'height': '12px' });
 		});
 	</script>
 
