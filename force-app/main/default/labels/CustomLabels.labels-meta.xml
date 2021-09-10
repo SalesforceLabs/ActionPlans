@@ -9,71 +9,6 @@
         <value>Action Plan Template has been modified since this Plan creation.</value>
     </labels>
     <labels>
-        <fullName>ap_About</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>About</shortDescription>
-        <value>Welcome to Action Plans</value>
-    </labels>
-    <labels>
-        <fullName>ap_AboutP1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutP1</shortDescription>
-        <value>&lt;p&gt;Action Plans helps your organization encapsulate best practices into easily sharable, reusable task templates.&lt;/p&gt;
-			&lt;p&gt;You can create Action Plans for the following objects:&lt;/p&gt;
-			&lt;ul&gt;
-				&lt;li&gt;Accounts&lt;/li&gt;
-				&lt;li&gt;Contacts&lt;/li&gt;
-				&lt;li&gt;Leads&lt;/li&gt;
-				&lt;li&gt;Opportunities&lt;/li&gt;
-				&lt;li&gt;Campaigns&lt;/li&gt;
-				&lt;li&gt;Contracts&lt;/li&gt;
-				&lt;li&gt;Cases&lt;/li&gt;
-				&lt;li&gt;Person Accounts&lt;/li&gt;
-				&lt;li&gt;Custom Objects&lt;/li&gt;
-			&lt;/ul&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_AboutP1a</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutP1a</shortDescription>
-        <value>&lt;h3&gt;Getting Help&lt;/h3&gt;
-			&lt;p&gt;Action Plans is unsupported. For community assistance with Action Plans, please visit &lt;a href=&quot;https://trailblazers.salesforce.com/&quot;&gt;Salesforce Trailblazer Community&lt;/a&gt;. 
-	To submit ideas or issues, please visit &lt;a href=&quot;https://github.com/SalesforceLabs/ActionPlans&quot;&gt;Action Plans on Github&lt;/a&gt;.
-	&lt;h3&gt;Community&lt;/h3&gt;
-
-	&lt;p&gt;Action Plans is open source software. We welcome your issue reports, ideas, documentation, code tweaks and all other participation. 
-	&lt;a href=&quot;http://blogs.developerforce.com/labs/2011/08/howto-contribute-to-milestones-pm-code-not-required-opensource.html&quot;&gt;Learn more&lt;/a&gt;.</value>
-    </labels>
-    <labels>
-        <fullName>ap_AboutP1b</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutP1b</shortDescription>
-        <value>&lt;h4&gt;Features :&lt;/h4&gt;
-			&lt;ul&gt;
-				&lt;li&gt;Export and share your Action Plan Templates with other orgs.&lt;/li&gt;
-				&lt;li&gt;Import Action Plan Templates.&lt;/li&gt;
-				&lt;li&gt;Supports Task reminder times.&lt;/li&gt;
-				&lt;li&gt;Action Plans Settings controls behavior around Chatter Notifications, actions when a Lead is converted, and default Task assignment behavior&lt;/li&gt;
-				&lt;li&gt;Invocable Apex allows automatic Action Plan creation from a Template in Process Builder and Flow&lt;/li&gt;
-			&lt;/ul&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_ActionPlansSetup</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ActionPlansSetup</shortDescription>
-        <value>Action Plans Setup</value>
-    </labels>
-    <labels>
         <fullName>ap_Add</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -97,14 +32,7 @@
         <shortDescription>All</shortDescription>
         <value>All</value>
     </labels>
-    <labels>
-        <fullName>ap_Apex</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Apex</shortDescription>
-        <value>Apex</value>
-    </labels>
+
     <labels>
         <fullName>ap_AreYouSureAsk</fullName>
         <categories>Action Plans</categories>
@@ -113,14 +41,7 @@
         <shortDescription>AreYouSureAsk</shortDescription>
         <value>Are you sure?</value>
     </labels>
-    <labels>
-        <fullName>ap_Automation_Title</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Automation_Title</shortDescription>
-        <value>Automate Action Plan Creation</value>
-    </labels>
+
     <labels>
         <fullName>ap_BackgroundCreation</fullName>
         <categories>Action Plans</categories>
@@ -186,84 +107,6 @@
         <value>Action Plans successfully deleted.</value>
     </labels>
     <labels>
-        <fullName>ap_CreateTemplateOlpart1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateTemplateP1</shortDescription>
-        <value>&lt;li&gt;Name - Template Name.&lt;/li&gt;
-			&lt;li&gt;Description - An explanation of how the template should be used.&lt;/li&gt;
-			&lt;li&gt;Skip Weekends - Allows you to automatically reschedule a task that would fall on 
-				a weekend to either the day before or day after the weekend. When checked, a picklist
-				appears, allowing you to select before or after the weekend.&lt;/li&gt;
-			&lt;li&gt;Action - Click &quot;X&quot; to eliminate a step in a template.&lt;/li&gt;
-			&lt;li&gt;Subject - What the task is to do.&lt;/li&gt;
-			&lt;li&gt;Task Dependency - The dependent task will only be created once the controlling task is completed.&lt;/li&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreateTemplateOlpart2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateTemplateP2</shortDescription>
-        <value>&lt;li&gt;Days After- This value determines the due date of the task.
-				&lt;ol&gt;
-				&lt;li&gt;For tasks with no dependency, the task’s due date will be offset from the plan start date.&lt;/li&gt;
-				&lt;li&gt; For tasks with a dependency, the due date will be offset from the expected due date of the task on which it depends.&lt;/li&gt;
-				&lt;/ol&gt; 
-				&lt;/li&gt;
-			&lt;li&gt;
-				Assigned To – Looks up to user. Leave blank if you want to assign the task dynamically. &lt;br /&gt;
-				When assigning dynamically, the default behavior will be to assign the task to the running user. 
-				You can also have the system assign it to the record owner by changing your Action Plan Settings. 
-				See &quot;Post Install Configuration&quot; guide above. 
-			&lt;/li&gt;
-			&lt;li&gt;Category - What type of activity.&lt;/li&gt;
-			&lt;li&gt;Priority - Taken from Task priorities and Record Type (if applicable).&lt;/li&gt;
-			&lt;li&gt;Email - Send a standard New Task email when checked. For Tasks depending on others, the email will be sent when the task is created.&lt;/li&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreateTemplateOlpart3</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateTemplateP3</shortDescription>
-        <value>&lt;li&gt;Reminder – This check box will define the default behaviour for reminders when applying the template to create an Action plan .
-				&lt;ull&gt;
-					&lt;li&gt;If it’s left unchecked, in the Action Plan Creation page the reminders will be initially disabled&lt;/li&gt;
-					&lt;li&gt;If it’s checked the reminders will be available.&lt;/li&gt;
-				&lt;/ul&gt; 
-				Note: Reminders take into consideration:
-			&lt;ul&gt;
-					&lt;li&gt;User org Reminder settings: 
-						Go Personal Setup &gt; My Personal Information &gt; Reminders, if the option &quot;By default, set reminder on Tasks to:&quot; is checked then the selected time will be the default option for task template reminders.
-					&lt;/li&gt;
-					&lt;li&gt;User setting for Activity Object : 
-					 Go App Setup&gt; Feature Settings &gt; Sales &gt; Activity Settings, If &quot;Enable Activity Reminders&quot; is not checked, then reminders column will not be displayed in the Action Plan creation page.
-					&lt;/li&gt;
-				&lt;/ul&gt;
-			&lt;/li&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreateTemplateOlpart4</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateTemplateP4</shortDescription>
-        <value>&lt;li&gt;Comments - Comments supporting a task.&lt;/li&gt;
-			&lt;li&gt;Add New Task - Adds an additional row to the tasks grid.&lt;/li&gt;
-			&lt;li&gt;Save - Saves the template.&lt;/li&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreateTemplateP1andP2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateTemplateP1andP2</shortDescription>
-        <value>&lt;p&gt;Now you&apos;re ready to create your first template. Navigate to the Action Plans Templates tab. Click on the &quot;New Action Plan Template&quot; button.&lt;/p&gt;
-		&lt;p&gt;The template screen looks like this:&lt;/p&gt;</value>
-    </labels>
-    <labels>
         <fullName>ap_CreateTemplateTitle</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -288,93 +131,12 @@
         <value>Created By</value>
     </labels>
     <labels>
-        <fullName>ap_CreatesActionPlans</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreate</shortDescription>
-        <value>Create Action Plans for Several Accounts</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP1</shortDescription>
-        <value>Step 1: Navigate to an Accounts list view. Select the Accounts you want to create Action Plans for. Click on the &quot;Create Account Action Plans&quot; button.</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP2</shortDescription>
-        <value>Step 2: Select the template you want to use by typing the name on the lookup and clicking on it.</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP3</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP3</shortDescription>
-        <value>Step 3: Enter the information specific to this plan. Note that the Accounts you selected earlier are visible and that the &quot;Assign To&quot; has been completed using the current user.</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP4</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP4</shortDescription>
-        <value>Step 4: Save the Action Plan.</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP4_note</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP4Note</shortDescription>
-        <value>Action Plan creation is handled by a batch process. It can take a couple of minutes to be able to view all created records.</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP5</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP5</shortDescription>
-        <value>Step 5: Verify the Action Plan and the tasks.</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP6</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP6</shortDescription>
-        <value>Step 6: Complete the first task on the Action Plan.</value>
-    </labels>
-    <labels>
-        <fullName>ap_CreatesActionPlansP6_note</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutCreateP6Note</shortDescription>
-        <value>Note that the Action Plan is now in the correct related list and that this Account has one open activity and one closed activity. The third activity in the template is dependent and will be created only when its predecessor is complete.</value>
-    </labels>
-    <labels>
         <fullName>ap_CustomMetadata</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>CustomMetadata</shortDescription>
         <value>Custom Metadata</value>
-    </labels>
-    <labels>
-        <fullName>ap_CustomMetadata_Info</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>CustomMetadata_Info</shortDescription>
-        <value>Modify Custom Metadata &quot;Weekend Day&quot; to indicate which days of the week are the weekend and how many days to move a task forward or backwards to move it to the end of the previous week or the start of the next week. This allows you to work with a different weekend, or to avoid assigning any task to be due on any specific day of the week.
-			&lt;br/&gt;All weekdays should have 0 in both numeric fields.</value>
     </labels>
     <labels>
         <fullName>ap_Delete</fullName>
@@ -537,187 +299,12 @@
         <value>Friday</value>
     </labels>
     <labels>
-        <fullName>ap_GettingStartedP1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedP1</shortDescription>
-        <value>Getting started is easy. For each object, you need to add a button to the list view, add a button to the detail page. For Accounts, follow these steps:</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStartedTitle</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedTitle</shortDescription>
-        <value>Post Install Configuration</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section1_pt1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS1_pt1</shortDescription>
-        <value>&lt;ol&gt;
-			&lt;li&gt;Navigate to Setup &gt; Develop &gt; Custom Settings. Click on &apos;Manage&apos; next to &apos;Action Plans Settings&apos;. Click the &apos;New&apos; button near &apos;Default Organizational Level Value&apos;. Check the values that you want to enable.;&lt;/li&gt;	
-			&lt;li&gt;&apos;Enable Chatter Post&apos; places a post in the related record&apos;s Chatter Feed (if Chatter is enabled for that object). If unchecked, Action Plans does not create a Feed Post.;&lt;/li&gt;
-			&lt;li&gt;&apos;Unassigned Task Defaults to Record Owner&apos; ensures that Action Plan Template tasks with a blank &apos;Assigned To&apos; field go to the related record&apos;s owner. If unchecked, tasks with a blank &apos;Assigned To&apos; field are assigned to the running user. Tasks can be assigned to specific people on Action Plan Templates, which overrides this setting.&lt;/li&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section1_pt2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS1_pt2</shortDescription>
-        <value>&lt;li&gt;&apos;Default Object on Lead Conversion&apos; specifies that if an Action Plan is related to a Lead, whether the Action Plan should be moved to the converted Account, Contact, or Opportunity when the Lead is converted. The default is Contact.&lt;/li&gt;
-			&lt;li&gt;&apos;Action Plans Business Hours ID&apos; and &apos;Use Business Hours&apos; are reserved for future functionality.&lt;/li&gt;
-			&lt;/ol&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section1_title</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS1</shortDescription>
-        <value>Update Action Plans Custom Settings</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section2_sub1P1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS2_sub1P1</shortDescription>
-        <value>&lt;h4&gt;Create Action Plans Button&lt;/h4&gt;
-		&lt;p&gt;For each object, you need to add a button to the list view, For Accounts, follow these steps:&lt;/p&gt;
-		&lt;ol&gt;
-			&lt;li&gt;Navigate to Setup &gt; Object Manager &gt; Account &gt; Search Layouts for Salesforce Classic&lt;/li&gt;
-			&lt;li&gt;Click on &quot;Edit&quot; near &quot; List View.&quot;&lt;/li&gt;
-			&lt;li&gt;Move the &quot;Create Account Action Plans&quot; button from &quot;Available Buttons&quot; to &quot;Selected Buttons.&quot;&lt;/li&gt;
-			&lt;li&gt;Click &quot;Save.&quot;&lt;/li&gt;
-			&lt;li&gt;Navigate to Setup &gt; Object Manager &gt; Account &gt; Page Layouts.&lt;/li&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section2_sub1P2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS2_sub1P2</shortDescription>
-        <value>&lt;li&gt;Note: the package includes a default &quot;Action Plan Layout&quot; for your reference. You do not need to use it.&lt;/li&gt;
-			&lt;li&gt;Click on &quot;Edit&quot; near one of your standard Account Page Layouts.&lt;/li&gt;
-			&lt;li&gt;Add &quot;Action Plans&quot; related list to the page.&lt;/li&gt;
-			&lt;li&gt;Edit the properties of the related list by clicking the configuration button above it.&lt;/li&gt; 
-			&lt;li&gt;Expand &quot;Buttons&quot; section, clear the &quot;New&quot; checkbox and move &quot;Create Account Action Plan&quot; to the Selected buttons. &lt;/li&gt;
-			&lt;li&gt;Update the fields in the related list to meet your needs. Recommended fields include Start Date, Action Plan Status, Action Plan Template, Plan Start Date.&lt;/li&gt;
-			&lt;li&gt;Click &quot;Save.&quot;&lt;/li&gt;
-		&lt;/ol&gt;
-		&lt;p&gt;Repeat these steps for the other standard objects Action Plans supports: Contacts, Leads, Opportunities, etc.&lt;/p&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section2_sub2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS2_sub2</shortDescription>
-        <value>&lt;h4&gt;Delete Action Plans Button&lt;/h4&gt;
-		&lt;p&gt;Follow this steps for Action Plan Object:&lt;/p&gt;
-		&lt;ol&gt;
-&lt;li&gt;Navigate to Setup &gt; Object Manager &gt; Action Plan &gt; Search Layouts.&lt;/li&gt;
-&lt;li&gt;Click on &quot;Edit&quot; near &quot;List View.&quot;&lt;/li&gt;
-&lt;li&gt;Move the &quot;Delete Action Plans&quot; button from &quot;Available Buttons&quot; to &quot;Selected Buttons.&quot;&lt;/li&gt;
-&lt;li&gt;Click &quot;Save.&quot;&lt;/li&gt;
-		&lt;/ol&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section2_title</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS2_title</shortDescription>
-        <value>&lt;h3&gt;Update Your Page &amp; Search Layout Configuration&lt;/h3&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section3</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS3</shortDescription>
-        <value>&lt;h3&gt;Update Your Sharing Settings&lt;/h3&gt;
-&lt;p&gt;Action Plans includes two shareable objects: Action Plan and Action Plan Template. You may configure your sharing settings in whatever way works for your organization.&lt;/p&gt;
-&lt;ul&gt;&lt;li&gt;If you want anyone to be able to create and see plans and their templates, use Public Read/Write for Action Plan and Action Plan Template.&lt;/li&gt;
-&lt;li&gt;If you want anyone to be able to see Action Plans and Templates without being able to change them, select &quot;Public Read Only.&quot;&lt;/li&gt;
-&lt;li&gt;If your Org-Wide Default sharing settings are set to Private for Action Plan or Action Plan Template, you may need to implement custom automation to share Action Plan records with the appropriate people. 
-You may do this via Apex sharing, or you may use other automation, to assign ownership of the Action Plan itself to the related record owner or any desired user.&lt;/li&gt;&lt;/ul&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section4P2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS4P2</shortDescription>
-        <value>&lt;h3&gt;Use Permission Sets For Security&lt;/h3&gt;
-&lt;p&gt;Assign the appropriate Permission Set(s) to each user who will need to use Action Plans:&lt;br/&gt;
-&lt;b&gt;Action Plans Admin:&lt;/b&gt; Full permissions for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.&lt;br/&gt;
-&lt;b&gt;Action Plans Template Creator:&lt;/b&gt; Full permissions for Action Plan Templates and AP Template Tasks. No Action Plan access.&lt;br/&gt;
-&lt;b&gt;Action Plans Creator:&lt;/b&gt; Read, Create, Edit, Delete for Action Plans and AP Tasks. Read-only for Action Plan Templates and APT Task Templates.&lt;br/&gt;
-&lt;b&gt;Action Plans User:&lt;/b&gt; Read-only for Action Plans and AP Tasks.&lt;br/&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section4P3</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS4P3</shortDescription>
-        <value>&lt;ul&gt;&lt;li&gt;To use Action Plans, most users require access only to Tasks. They can be assigned Tasks without knowing that these Tasks are part of an Action Plan. Any changes they make to a Task&amp;#39;s Status will be reflected in the related Action Plan Task Template record automatically. No Permission Set is required.&lt;/li&gt;
-&lt;li&gt;Some users may require visibility into the Action Plans related to those Tasks. These users need the &lt;b&gt;Action Plans User&lt;/b&gt;&amp;nbsp;Permission Set. It gives Read-only access to Action Plan.&lt;/li&gt;
-&lt;li&gt;Some users may need to create Action Plans from Templates but not edit the templates themselves. The &lt;b&gt;Action Plans Creator&lt;/b&gt;&amp;nbsp;Permission Set gives read-only access to Action Plan Templates, and Read, Create, Edit, and Delete access to Action Plans.&lt;/li&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_GettingStarted_section4P4</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>AboutGettingStartedS4P4</shortDescription>
-        <value>&lt;li&gt;Users who can create and edit Action Plan Templates require the &lt;b&gt;Action Plans Template Creator&lt;/b&gt;&amp;nbsp;Permission Set. This includes permission to Read, Create, Edit, and Delete all Action Plan Templates only. It does not include any Action Plan or Task permissions. If these users require Action Plan access, other Permission Sets should be used as well. A custom permission allows exporting of Action Plan Templates.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Action Plans Admin&lt;/b&gt;&amp;nbsp;includes Modify All permissions for all four Action Plan objects (Action Plan, Action Plan Task Template, Action Plan Template, and Action Plan Template Task Template). A custom permission allows exporting Action Plan Templates.&lt;/li&gt;
-&lt;li&gt;Note: The Apex used in Flows or invoked directly via triggers does not require special permissions to run.&lt;/li&gt;&lt;/ul&gt;</value>
-    </labels>
-    <labels>
         <fullName>ap_Import</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Import_Template</shortDescription>
         <value>Import Template</value>
-    </labels>
-    <labels>
-        <fullName>ap_ImportExport_1</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ImportExport_1</shortDescription>
-        <value>&lt;p&gt;Action Plans supports the sharing and discovery of best practices using Template Export and Template Import.&lt;/p&gt;
-			&lt;h3&gt;How to Share Your Template&lt;/h3&gt;
-			&lt;p&gt;Export is simple. Navigate to the Template you wish to export. Click on the &quot;Export&quot; button.&lt;/p&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_ImportExport_2</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ImportExport_2</shortDescription>
-        <value>&lt;p&gt;Export creates a simple XML file containing template header and task information. It also includes information about who created the template.&lt;br/&gt;
-			Note: It does not include user information or sensitive data about what objects you might use this template with.&lt;/p&gt;
-			&lt;p&gt;Sharing the file is easy. Email the file to whomever you want to share it with.	Do you want to share it with a broader audience? Email the file to Force.com Labs at &lt;a href=&quot;mailto:labs@salesforce.com&quot;&gt;labs@salesforce.com&lt;/a&gt;. 
-			&lt;h3&gt;Best Practices: How to Import&lt;/h3&gt;
-			&lt;p&gt;Import is also simple. Navigate to the &quot;Import Template&quot; tab.	Select the file you want to import using &quot;Browse&quot; and once you’ve found it click on &quot;Import Template.&quot;</value>
-    </labels>
-    <labels>
-        <fullName>ap_ImportExport_Title</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ImportExport_Title</shortDescription>
-        <value>Share Your Templates and Discover Best Practices using Template Export and Template Import</value>
     </labels>
     <labels>
         <fullName>ap_Information</fullName>
@@ -742,15 +329,6 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <protected>true</protected>
         <shortDescription>LastModifiedBy</shortDescription>
         <value>Last Modified By</value>
-    </labels>
-    <labels>
-        <fullName>ap_LeadConversionSettings</fullName>
-        <categories>ActionPlans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>LeadConversionSettings</shortDescription>
-        <value>&lt;h3&gt;Lead Conversion Settings&lt;/h3&gt;
-&lt;p&gt;If an Action Plan is related to a Lead, then specify if the Action Plan should be moved to the converted Account, Contact, or Opportunity when the Lead is converted. The default is Contact. Change this setting by editing Action Plan Settings at either the organization level, a profile level, or a user level.&lt;/p&gt;</value>
     </labels>
     <labels>
         <fullName>ap_New</fullName>
@@ -817,14 +395,6 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <value>Print</value>
     </labels>
     <labels>
-        <fullName>ap_Process_Builder</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Process_Builder</shortDescription>
-        <value>Process Builder</value>
-    </labels>
-    <labels>
         <fullName>ap_RecordOwner</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -855,39 +425,6 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <protected>true</protected>
         <shortDescription>RelatedObject</shortDescription>
         <value>Related Object</value>
-    </labels>
-    <labels>
-        <fullName>ap_RelatedObjectStart</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>RelatedObjectStart</shortDescription>
-        <value>&lt;h3&gt;To Use a Custom Object with Action Plans&lt;/h3&gt;
-&lt;ol start=&quot;1&quot;&gt;
-	&lt;li&gt;Create the object and be sure to check &amp;quot;Track Activities&amp;quot; for the object attrributes&lt;/li&gt;
-	&lt;li&gt;Create a lookup field from Action Plan to the object. &lt;b&gt;Name the field the same as the object name.&lt;/b&gt; The field label can be anything.&lt;/li&gt;
-	&lt;li&gt;Add the field to the Related Objects fieldset on Action Plan.&lt;/li&gt;
-	&lt;li&gt;The related object will now be available for selection when creating a new Action Plan and relating it to an object.&lt;/li&gt;
-	&lt;li&gt;Add the following code to the object trigger in &lt;b&gt;before delete&lt;/b&gt; and &lt;b&gt;after undelete&lt;/b&gt; contexts:&lt;br/&gt;
-&lt;pre&gt;ActionPlansTriggerHandlers.actionPlansSObjectTriggerHandler( &apos;Custom_Object__c&apos; );&lt;/pre&gt;&lt;/li&gt;&lt;/ol&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_RelatedObjectStop</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>RelatedObjectStop</shortDescription>
-        <value>&lt;h3&gt;To Stop Using an Object with Action Plans&lt;/h3&gt;
-&lt;p&gt;If you want, for example, not to allow relating Action Plans to Contracts, remove the Contract field from the Action Plan Related Objects fieldset.
-&lt;br /&gt;There is no need to delete the field from the Action Plan object.&lt;/p&gt;</value>
-    </labels>
-    <labels>
-        <fullName>ap_RelatedObjectTitle</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>RelatedObjectTitle</shortDescription>
-        <value>Using Action Plans with Custom Objects</value>
     </labels>
     <labels>
         <fullName>ap_Remove</fullName>
@@ -954,15 +491,6 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <value>(Task headers are sortable)</value>
     </labels>
     <labels>
-        <fullName>ap_Task_Record_Types</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Task_Record_Types</shortDescription>
-        <value>&lt;h3&gt;Task Record Types&lt;/h3&gt;
-&lt;p&gt;If your org uses Task Record Types, you must specify which Record Type to use for Tasks. This will affect the Task Status values available for each Action Plan. This cannot be changed once an Action Plan or Template is created.&lt;/p&gt;</value>
-    </labels>
-    <labels>
         <fullName>ap_TasksComplete</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -977,30 +505,6 @@ You may do this via Apex sharing, or you may use other automation, to assign own
         <protected>true</protected>
         <shortDescription>UpdateStatusError</shortDescription>
         <value>This task is part of an Action Plan and it depends on a task that is not completed yet.</value>
-    </labels>
-    <labels>
-        <fullName>ap_ViaApex</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ViaApex</shortDescription>
-        <value>To call the invocable Apex from a Trigger or Apex class, use the following sample code:</value>
-    </labels>
-    <labels>
-        <fullName>ap_ViaFlow</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ViaFlow</shortDescription>
-        <value>Action Plans includes an Invocable Apex class that can be included in a Flow. The Record ID of the triggering record is required, as is the Id OR the Name of the desired template.&lt;br/&gt;Days from trigger to start Action Plan is optional. The first task will be due a certain number of days (specified on the template) from the start date. This date may fall on a weekend, though task due dates will be moved to avoid weekends if set on the template.</value>
-    </labels>
-    <labels>
-        <fullName>ap_ViaProcess</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>ViaProcess</shortDescription>
-        <value>It is recommended NOT to check the Recursion box when creating a Process Builder to work with Action Plans.</value>
     </labels>
     <labels>
         <fullName>ap_View</fullName>
