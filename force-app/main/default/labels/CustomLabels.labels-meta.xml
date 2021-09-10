@@ -282,23 +282,7 @@
         <shortDescription>ExportTitle</shortDescription>
         <value>Template XML Export</value>
     </labels>
-    <labels>
-        <fullName>ap_Flow</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Flow</shortDescription>
-        <value>Flow</value>
-    </labels>
-    <labels>
-        <fullName>ap_Friday</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Friday</shortDescription>
-        <value>Friday</value>
-    </labels>
-    <labels>
+        <labels>
         <fullName>ap_Import</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
@@ -457,14 +441,6 @@
         <protected>true</protected>
         <shortDescription>Search</shortDescription>
         <value>Search</value>
-    </labels>
-    <labels>
-        <fullName>ap_Security</fullName>
-        <categories>Action Plans</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Security</shortDescription>
-        <value>Security</value>
     </labels>
     <labels>
         <fullName>ap_ShareEmail</fullName>
