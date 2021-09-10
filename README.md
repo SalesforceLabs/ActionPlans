@@ -9,6 +9,8 @@
 
 Please follow installation instructions, shown on the [Installation page](/INSTALLATION.md)
 
+<!-- ActionPlans is also listed on the AppExchange. -->
+
 # About Action Plans
 
 Action Plans helps your organization encapsulate best practices into easily sharable, reusable task templates.
@@ -49,11 +51,11 @@ Getting started is easy. For each object, you need to add a button to the list v
 
  Change these setting by editing Action Plan Settings, and updating values at either the organization level, profile levels, or user levels.
 
-1.  Navigate to Setup > Develop > Custom Settings. Click on 'Manage' next to 'Action Plans Settings'. Click the 'New' button near 'Default Organizational Level Value'. Check the values that you want to enable.
-1.  'Enable Chatter Post' places a post in the related record's Chatter Feed (if Chatter is enabled for that object). If unchecked, Action Plans does not create a Feed Post.;
-1.  'Unassigned Task Defaults to Record Owner' ensures that Action Plan Template tasks with a blank 'Assigned To' field go to the related record's owner. If unchecked, tasks with a blank 'Assigned To' field are assigned to the running user. Tasks can be assigned to specific people on Action Plan Templates, which overrides this setting.
-1.  'Default Object on Lead Conversion' specifies that if an Action Plan is related to a Lead, whether the Action Plan should be moved to the converted Account, Contact, or Opportunity when the Lead is converted. **The default is Contact**.
-1.  'Action Plans Business Hours ID' and 'Use Business Hours' are reserved for future functionality.
+Navigate to Setup > Develop > Custom Settings. Click on 'Manage' next to `Action Plans Settings`. Click the 'New' button near 'Default Organizational Level Value'. Check the values that you want to enable.
+- `Enable Chatter Post` places a post in the related record's Chatter Feed (if Chatter is enabled for that object). If unchecked, Action Plans does not create a Feed Post.;
+- `Unassigned Task Defaults to Record Owner` ensures that Action Plan Template tasks with a blank 'Assigned To' field go to the related record's owner. If unchecked, tasks with a blank 'Assigned To' field are assigned to the running user. Tasks can be assigned to specific people on Action Plan Templates, which overrides this setting.
+- `Default Object on Lead Conversion` specifies that if an Action Plan is related to a Lead, whether the Action Plan should be moved to the converted Account, Contact, or Opportunity when the Lead is converted. The default is Contact.
+- `Action Plans Business Hours ID` and `Use Business Hours` are reserved for future functionality.
 
 ## Task Record Types
 
@@ -61,7 +63,7 @@ If your org uses Task Record Types, you must specify which Record Type to use fo
 
 ## Weekends: Custom Metadata
 
-Modify Custom Metadata "Weekend Day" to indicate which days of the week are the weekend and how many days to move a task forward or backwards to move it to the end of the previous week or the start of the next week. This allows you to work with a different weekend, or to avoid assigning any task to be due on any specific day of the week.
+Modify Custom Metadata `Weekend Day` to indicate which days of the week are the weekend and how many days to move a task forward or backwards to move it to the end of the previous week or the start of the next week. This allows you to work with a different weekend, or to avoid assigning any task to be due on any specific day of the week.
 All weekdays should have 0 in both numeric fields.
 
 ## Update Your Page & Search Layout Configurations
@@ -98,30 +100,29 @@ Follow this steps for Action Plan Object:
 
 ## Update Your Org-Wide Default Sharing Settings
 
-Action Plans includes two shareable objects: Action Plan and Action Plan Template. You may configure your sharing settings in whatever way works for your organization.
+Action Plans includes two shareable objects: `Action Plan` and `Action Plan Template`. You may configure your sharing settings in whatever way works for your organization.
 
 -   If you want anyone to be able to create and see plans and their templates, use Public Read/Write for Action Plan and Action Plan Template.
 -   If you want anyone to be able to see Action Plans and Templates without being able to change them, select "Public Read Only."
 -   If your Org-Wide Default sharing settings are set to Private for Action Plan or Action Plan Template, you may need to implement custom automation to share Action Plan records with the appropriate people. You may do this via Apex sharing, or you may use other automation, to assign ownership of the Action Plan itself to the related record owner or any desired user.
--   To use Action Plans, most users require access only to ```Tasks```. They can be assigned Tasks without knowing that these Tasks are part of an Action Plan. Any changes they make to a Task's Status will be reflected in the related Action Plan Task Template record automatically. No Permission Set is required.
+-   To use Action Plans, most users require access only to `Tasks`. They can be assigned Tasks without knowing that these Tasks are part of an Action Plan. Any changes they make to a Task's Status will be reflected in the related Action Plan Task Template record automatically. No Permission Set is required.
 
 ## Use Permission Sets For Security
 
 Assign the appropriate Permission Set(s) to each user who will need to use Action Plans:
 
-```Action Plans Admin:``` Full permissions for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.
-```Action Plans Template Creator:``` Full permissions for Action Plan Templates and AP Template Tasks. No Action Plan access.
-```Action Plans Creator:``` Read, Create, Edit, Delete for Action Plans and AP Tasks. Read-only for Action Plan Templates and APT Task Templates.
-```Action Plans User:``` Read-only for Action Plans and AP Tasks.
+- `Action Plans Admin:` Full permissions for Action Plans, Action Plan Templates, AP Tasks and APT Task Templates.
+- `Action Plans Template Creator:` Full permissions for Action Plan Templates and AP Template Tasks. No Action Plan access.
+- `Action Plans Creator:` Read, Create, Edit, Delete for Action Plans and AP Tasks. Read-only for Action Plan Templates and APT Task Templates.
+- `Action Plans User:` Read-only for Action Plans and AP Tasks.
 
+Uses for each Permission Set:
+-   Some users may require visibility into the Action Plans related to those Tasks. These users need the `Action Plans User` Permission Set. It gives Read-only access to Action Plan.
+-   Some users may need to create Action Plans from Templates but not edit the templates themselves. The `Action Plans Creator` Permission Set gives read-only access to Action Plan Templates, and Read, Create, Edit, and Delete access to Action Plans.
+-   Users who can create and edit Action Plan Templates require the `Action Plans Template Creator` Permission Set. This includes permission to Read, Create, Edit, and Delete all Action Plan Templates only. It does not include any Action Plan or Task permissions. If these users require Action Plan access, other Permission Sets should be used as well. A custom permission allows exporting of Action Plan Templates.
+-   `Action Plans Admin` includes Modify All permissions for all four Action Plan objects (Action Plan, Action Plan Task Template, Action Plan Template, and Action Plan Template Task Template). A custom permission allows exporting Action Plan Templates.
 
--   Some users may require visibility into the Action Plans related to those Tasks. These users need the ```Action Plans User``` Permission Set. It gives Read-only access to Action Plan.
-
--   Some users may need to create Action Plans from Templates but not edit the templates themselves. The ```Action Plans Creator``` Permission Set gives read-only access to Action Plan Templates, and Read, Create, Edit, and Delete access to Action Plans.
--   Users who can create and edit Action Plan Templates require the ```Action Plans Template Creator``` Permission Set. This includes permission to Read, Create, Edit, and Delete all Action Plan Templates only. It does not include any Action Plan or Task permissions. If these users require Action Plan access, other Permission Sets should be used as well. A custom permission allows exporting of Action Plan Templates.
--   ```Action Plans Admin``` includes Modify All permissions for all four Action Plan objects (Action Plan, Action Plan Task Template, Action Plan Template, and Action Plan Template Task Template). A custom permission allows exporting Action Plan Templates.
-
-Note: The Apex used in Flows or invoked directly via triggers does not require special permissions to run.
+Note: The Apex used in Flows or via triggers does not require special permissions to run.
 
 # Using Action Plans with Custom Objects
 
@@ -131,7 +132,7 @@ Note: The Apex used in Flows or invoked directly via triggers does not require s
 1.  Create a lookup field from Action Plan to the object. **Name the field the same as the object name.** The field label can be anything.
 1.  Add the field to the Related Objects fieldset on Action Plan.
 1.  The related object will now be available for selection when creating a new Action Plan and relating it to an object.
-1.  Add the following code to the object trigger in ```before delete``` and ```after undelete``` contexts:
+1.  Add the following code to the object trigger in `before delete` and `after undelete` contexts:
 
     <pre>ActionPlansTriggerHandlers.actionPlansSObjectTriggerHandler( 'Custom_Object__c' );</pre>
 
@@ -168,7 +169,7 @@ The template screen looks like this:
 1. If it’s left unchecked, in the Action Plan Creation page the reminders will be initially disabled
 1. If it’s checked the reminders will be available.
 
-    -   User org Reminder settings: Go Personal Setup > My Personal Information > Reminders, if the option "By default, set reminder on Tasks to:" is checked then the selected time will be the default option for task template reminders.
+    -   User Reminder settings: Go Personal Setup > My Personal Information > Reminders, if the option "By default, set reminder on Tasks to:" is checked then the selected time will be the default option for task template reminders.
     -   User setting for Activity Object : Go App Setup> Feature Settings > Sales > Activity Settings, If "Enable Activity Reminders" is not checked, then reminders column will not be displayed in the Action Plan creation page.
 
 1. Comments - Comments supporting a task.
@@ -208,15 +209,16 @@ Action Plans includes an Invocable Apex class that can be included in a Flow. Th
 Days from trigger to start Action Plan is optional (and defaults to 0). The first task will be due the number of days (specified on the template) from the start date. This date may fall on a weekend, though task due dates can be moved to avoid weekends if set on the template.
 
 ![](force-app/main/default/staticresources/ActionPlan_Resources/about_images/FlowAction.png)
-- (Optional) Sample Action Plan Template for Account onboarding, run the following
+### (Optional) Sample Action Plan Template for Account onboarding, run the following
 	```
 	sfdx force:apex:execute -f ./data/sample-data.apex
 	```
-	To use this Template with the included Flow, see the `Create Action Plan From Template` Apex Action in the `New Customer Onboarding Activities` Flow
+
+To use this Template with the included Flow, see the `Create Action Plan From Template` Apex Action in the `New Customer Onboarding Activities` Flow
 
  ![](force-app/main/default/staticresources/ActionPlan_Resources/about_images/FlowActionVariables.png)
 
-    Create an Account and set `Type` to any value that starts with 'Customer'
+Create an Account and set `Type` to any value that starts with 'Customer'
 
 
 ## Process Builder
@@ -230,6 +232,7 @@ It is recommended NOT to check the Recursion box when creating a Process Builder
 To call the invocable Apex from a Trigger or Apex class, adapt the following sample code:
 
 <pre>
+<code>
 String apTemplateName;
 ActionPlanTemplate__c apTemplate;
 SObject a; // can use any object, such as Account, or the generic SObject class
@@ -243,6 +246,7 @@ for(Account a : toInsert){
 	requests.add(req);
 }
 List<Id> resultIDs = ActionPlanCreateInvocable.makeActionPlanFromTemplate(requests);
+</code>
 </pre>
 
 ## ActionPlanCreateInvocable.CreateActionPlanRequest class

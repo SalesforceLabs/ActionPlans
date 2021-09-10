@@ -2,7 +2,12 @@
 
 Follow these instructions to deploy Action Plans to your org.
 
-## Table of Contents
+<!--
+The recommended installation method is via the AppExchange.
+
+[Action Plans](https://appexchange.salesforce.com): This is the best way to install the package, which you can easily upgrade as features are added -->
+
+## Table of Contents for Deployment
 
 -   [Direct deployment to an org](#direct-deployment-to-an-org): Quickest option to install this unmanaged code into your org
 
