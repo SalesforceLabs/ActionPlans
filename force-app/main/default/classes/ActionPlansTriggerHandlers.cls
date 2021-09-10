@@ -537,7 +537,7 @@ global without sharing class ActionPlansTriggerHandlers {
 				}
 
 				for(Lead l : newRecords){
-					if(l.IsConverted && !oldRecordsMap.get(l.Id).IsConverted){
+					if(l.IsConverted && !oldRecordsMap.get(l.Id).IsConverted && apMap.containsKey(l.Id)){
 						ActionPlan__c ap = apMap.get(l.Id);
 
 						switch on destinationObject {

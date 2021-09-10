@@ -1,6 +1,7 @@
 # Action Plans
 
-![License: BSD-3](https://img.shields.io/github/license/SalesforceLabs/ActionPlans)
+## Badges
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![codecov](https://codecov.io/gh/dschach/ActionPlans/branch/main/graph/badge.svg?token=CRGAI2J4E0)](https://codecov.io/gh/dschach/ActionPlans)
 ![Twitter](https://img.shields.io/twitter/follow/SalesforceLabs.svg?style=social)
 
@@ -208,6 +209,17 @@ Action Plans includes an Invocable Apex class that can be included in a Flow. Th
 Days from trigger to start Action Plan is optional. The first task will be due a certain number of days (specified on the template) from the start date. This date may fall on a weekend, though task due dates will be moved to avoid weekends if set on the template.
 
 ![](/resource/1631298921000/ActionPlan_Resources/about_images/FlowAction.png)
+- (Optional) To create a sample Action Plan Template for Account onboarding (to use the included Flow), run the following:
+	```
+	sfdx force:apex:execute -f ./data/sample-data.apex
+	```
+
+- Sample Action Plan Template and Flow
+    - This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
+
+	- To use this Template with Flow or a Process Builder, use the `Create Action Plan From Template` Apex Action
+
+	- Create a Lead and set `Rating` to "Hot" and `Lead Source` to "Other".
 
 ## Process Builder
 

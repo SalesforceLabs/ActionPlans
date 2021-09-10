@@ -6,9 +6,8 @@ sfdx force:user:permset:assign -n Action_Plans_Admin
 
 sfdx force:org:open
 
-#Version Increase Comment
+# To install additional sample Accounts/Contacts
+#sfdx force:data:tree:import -p ./data/action-plan-data-plan.json
 
-
-#Deploy to ActionPlans Dev/Packaging Org: Use -c to check only first
-#
-#sfdx force:source:deploy -u ActionPlansPackagingOrg -w 100 -p force-app/main/default
+# To install sample action plan template
+#sfdx force:apex:execute -f ./data/sample-data.apex
