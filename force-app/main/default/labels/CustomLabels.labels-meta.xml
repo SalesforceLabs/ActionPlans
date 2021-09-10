@@ -515,7 +515,7 @@
         <value>The XML file for your template has been successfully created, and can be found in your personal {0} folder.</value>
     </labels>
     <labels>
-        <fullName>ap_import_file</fullName>
+        <fullName>ap_Import_File</fullName>
         <categories>Action Plans</categories>
         <language>en_US</language>
         <protected>true</protected>
