@@ -220,7 +220,6 @@ To use this Template with the included Flow, see the `Create Action Plan From Te
 
 Create an Account and set `Type` to any value that starts with 'Customer'
 
-
 ## Process Builder
 
 It is recommended NOT to check the Recursion box when creating a Process Builder to work with Action Plans.
@@ -278,4 +277,4 @@ Import is also simple. Navigate to the "Import Template" tab. Select the file yo
 
 ## (Optional) Sample Action Plan Template Import
 
-This repository also includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow up](data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
+This repository also includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org, [Trade show follow up](data/Export%20-%20Trade%20Show%20follow%20up.xml). You may download the file from GitHub, or you can find it in your SFDX project in the `data` folder.

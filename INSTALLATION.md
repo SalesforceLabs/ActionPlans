@@ -7,17 +7,22 @@ The recommended installation method is via the AppExchange.
 
 [Action Plans](https://appexchange.salesforce.com): This is the best way to install the package, which you can easily upgrade as features are added -->
 
-## Table of Contents for Deployment
+## Deployment Methods
 
--   [Direct deployment to an org](#direct-deployment-to-an-org): Quickest option to install this unmanaged code into your org
+[Direct deployment to an org](#direct-deployment-to-an-org): Quickest option to install this unmanaged code into your org
 
--   [Installing the app using a Scratch Org](#installing-the-app-using-a-scratch-org): This is the recommended installation option. Use this option if you are a developer who wants to experience the app and the code.
+[Installing the app using a Scratch Org](#installing-the-app-using-a-scratch-org): This is the recommended installation option. Use this option if you are a developer who wants to experience the app and the code.
 
--   [Installing the App using a Sandbox with source tracking (Developer/Developer Pro Sanbox)](#installing-the-app-using-a-sandbox-with-source-tracking-developerdeveloper-pro-sanbox): For testing prior to installing/updating in your Production environment
+-   [Installing the app using a Scratch Org (option 1)](#installing-the-app-using-a-scratch-org--option-1-): Use the CLI manually, following the instructions below
 
--   [Installing the app using a Developer Edition Org or a Trailhead Playground](#installing-the-app-using-a-developer-edition-org-or-a-trailhead-playground): Useful when tackling Trailhead Badges or if you want the app deployed to a more permanent environment than a scratch org.
+-   [Installing the app using a Scratch Org (option 2)](#installing-the-app-using-a-scratch-org--option-2-): Use the included setup script
 
--   [Optional installation instructions](#optional-installation-instructions): Installing sample Action Plan Template
+[Installing the App using a Sandbox with source tracking (Developer/Developer Pro Sanbox)](#installing-the-app-using-a-sandbox-with-source-tracking-developerdeveloper-pro-sanbox): For testing prior to installing/updating in your Production environment
+
+[Installing the app using a Developer Edition Org or a Trailhead Playground](#installing-the-app-using-a-developer-edition-org-or-a-trailhead-playground): Useful when tackling Trailhead Badges or if you want the app deployed to a more permanent environment than a scratch org.
+
+[Optional installation instructions](#optional-installation-instructions): Installing sample Action Plan Template
+<hr/>
 
 ## Direct deployment to an org
 
@@ -84,20 +89,16 @@ The recommended installation method is via the AppExchange.
     - Install the Visual Studio Code Salesforce extensions
 
 1. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** in the command below):
-
     ```
     sfdx force:auth:web:login -d -a myhuborg
     ```
-
 1. Clone the ActionPlans repository:
-
     ```
     git clone https://github.com/salesforcelabs/ActionPlans
     cd ActionPlans
     ```
-
 1. At the terminal command prompt, run
-    ```
+	```
 	. orginit.sh
 	```
 
@@ -208,34 +209,23 @@ Start from a brand-new environment to avoid conflicts with previous work you may
 
 This repository contains several files that are relevant if you want to add sample data, or integrate modern web development tooling to your Salesforce development processes or to your continuous integration/continuous deployment processes.
 
-### Data Import
+### Data Import (Optional)
 
-- (Optional) This repository creates sample data (Accounts, Contacts, Leads) in the scratch org. To prevent this, go to the [scratch org definition](https://github.com/dschach/ActionPlans/blob/main/config/project-scratch-def.json) and change `hasSampleData` to `false`.
+- This repository creates sample data (Accounts, Contacts, Leads) in the scratch org. To prevent this, go to the [scratch org definition](https://github.com/dschach/ActionPlans/blob/main/config/project-scratch-def.json) and change `hasSampleData` to `false`.
     ```
 	"hasSampleData": false,
 	```
-	You can also create other sample Account and Contact records by running the following command:
+
+- You can also create other sample Account and Contact records by running the following command:
 
     ```
     sfdx force:data:tree:import -p ./data/action-plan-data-plan.json
     ```
 
-- (Optional) To create a sample Action Plan Template for Account onboarding, run the following:
+- To create a sample Action Plan Template for Account onboarding, run the following:
 	```
 	sfdx force:apex:execute -f ./data/sample-data.apex
 	```
-
-- Sample Action Plan Template and Flow
-    - This repository includes a sample Action Plan Template file, which you can import on the appropriate tab (`https://<yourinstance>.lightning.force.com/lightning/n/Action_Plans_Template_Import`) in the org. [Trade show follow-up](https://github.com/SalesforceLabs/ActionPlans/blob/main/data/Export%20-%20Trade%20Show%20follow%20up.xml). You may need to download the file from GitHub, or you can find it in your SFDX project in the `data` folder.
-
-	- To use this Template with the included Flow,  edit or create a new Lead.
-		1. Make sure the `Hot Lead Trade Show follow up` Flow is active.
-		1. Create a Lead and set `Rating` to "Hot" and `Lead Source` to "Other".
-		1. Note the auto-created Action Plan.
-
-	- To use this Template with a Process Builder, use the `Create Action Plan From Template` Apex Action
-
-	- To use this Template with a trigger, see the in-app documentation tab `About Action Plans`
 
 ### Code formatting
 
@@ -252,7 +242,7 @@ This repository also comes with a [package.json](./package.json) file that makes
 To set up the formatting and linting pre-commit hook:
 
 1. Install [Node.js](https://nodejs.org) if you haven't already done so
-2. Run `npm install` in your project's root folder to install the ESLint and Prettier modules (Note: Mac users should verify that Xcode command line tools are installed before running this command.)
+1. Run `npm install` in your project's root folder to install the ESLint and Prettier modules (Note: Mac users should verify that Xcode command line tools are installed before running this command.)
 
 Prettier and ESLint will now run automatically every time you commit changes. The commit will fail if linting errors are detected. You can also run the formatting and linting from the command line using the following commands (check out [package.json](./package.json) for the full list):
 
