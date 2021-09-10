@@ -15,7 +15,7 @@ force-app/main/default/lwc/jsconfig.json
 # LWC Jest
 **/__tests__/**
 
-# Org Metadata
+# Local Metadata
 **quickActions**
 **Custom_Object**
 **/profiles
