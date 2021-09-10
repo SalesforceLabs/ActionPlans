@@ -16,6 +16,5 @@
     <tabs>Action_Plans_Home</tabs>
     <tabs>ActionPlan__c</tabs>
     <tabs>ActionPlanTemplate__c</tabs>
-    <tabs>ActionPlansAbout</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

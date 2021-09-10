@@ -8,5 +8,4 @@
     <tabs>ActionPlan__c</tabs>
     <tabs>ActionPlanTemplate__c</tabs>
     <tabs>Action_Plans_Template_Import</tabs>
-    <tabs>ActionPlansAbout</tabs>
 </CustomApplication>

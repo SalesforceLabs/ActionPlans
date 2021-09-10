@@ -255,10 +255,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ActionPlansAbout</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>ActionPlansHome</apexPage>
         <enabled>true</enabled>
     </pageAccesses>

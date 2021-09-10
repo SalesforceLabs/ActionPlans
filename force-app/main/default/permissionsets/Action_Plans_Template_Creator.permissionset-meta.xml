@@ -207,19 +207,11 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ActionPlansAbout</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>ActionPlansHome</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <tabSettings>
         <tab>ActionPlanTemplate__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>ActionPlansAbout</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

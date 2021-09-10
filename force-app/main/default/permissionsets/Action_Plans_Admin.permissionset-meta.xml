@@ -481,10 +481,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ActionPlansAbout</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>ActionPlansCreateMultipleAccount</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -522,10 +518,6 @@
     </tabSettings>
     <tabSettings>
         <tab>ActionPlan__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>ActionPlansAbout</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
