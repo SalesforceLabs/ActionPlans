@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 global without sharing class ActionPlanCreateInvocable {
 
-	@InvocableMethod(label='Create Action Plan From Template' description='Takes a Template Name and Record Id and makes an Action Plan for that record.' category='ActionPlans')
+	@InvocableMethod(label='Create Action Plan From Template' description='Takes a Template Name/Id and Record Id and makes an Action Plan for that record.' category='ActionPlans')
 	global static List<Id> makeActionPlanFromTemplate(List<CreateActionPlanRequest> requests) {
 
 		List<Id> resultIDs = new List<Id>();
@@ -115,9 +115,9 @@ global without sharing class ActionPlanCreateInvocable {
 			actionPlansToInsert.put(r.relatedRecordID, ap);
 		}
 
-		if(ActionPlansCanTheUser.create(actionPlansToInsert.values())){
+		//if(ActionPlansCanTheUser.create(actionPlansToInsert.values())){
 			insert actionPlansToInsert.values();
-		}
+		//}
 
 		Map<String, APTaskTemplate__c> planTaskIndexToTask = new Map<String, APTaskTemplate__c>();
 
@@ -157,7 +157,6 @@ global without sharing class ActionPlanCreateInvocable {
 				apTask.DaysFromStart__c      = aptTask.DaysFromStart__c;
 				apTask.User__c               = userId;
 				apTask.Comments__c           = aptTask.Comments__c;
-
 				apTask.Reminder__c           = aptTask.Reminder__c;
 				apTask.Minutes_Reminder__c   = aptTask.Minutes_Reminder__c; //ActionPlansUtilities.getDefaultReminderMinutes();
 				apTask.SendEmail__c          = aptTask.SendEmail__c;
@@ -193,9 +192,9 @@ global without sharing class ActionPlanCreateInvocable {
 			}
 		}
 
-		if(ActionPlansCanTheUser.create(planTaskIndexToTask.values())){
+		//if(ActionPlansCanTheUser.create(planTaskIndexToTask.values())){
 			insert planTaskIndexToTask.values();
-		}
+		//}
 
 		// Now we have to update with the controlling/dependent task IDs
 
@@ -328,7 +327,7 @@ global without sharing class ActionPlanCreateInvocable {
 		@InvocableVariable(required=true label='The Template Id or Name to use' description='Name is not unique, so ID is preferred')
 		global String templateNameOrID;
 
-		@InvocableVariable(required=true label='The parent Record ID' description='Must have a relationship from Action Plan object')
+		@InvocableVariable(required=true label='The parent Record ID' description='Must have a relationship named the related record object name from Action Plan object')
 		global Id relatedRecordID;
 
 		@InvocableVariable(required=false label='Days from trigger to start Action Plan' description='Defaults to 0, the day the plan is created')
