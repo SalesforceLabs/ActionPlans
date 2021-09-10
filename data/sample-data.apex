@@ -24,7 +24,7 @@ APTTaskTemplate__c a2 = new APTTaskTemplate__c(Action_Plan_Template__c = apt.Id)
 a2.Subject__c = 'Enable Customer Community User';
 a2.Priority__c = 'Normal';
 a2.Dependent__c = '0';
-a2.Name = 'New Customer Onboarding - Enable Customer Community User';
+a2.Name = 'New Customer Onboarding - Enable Customer Experience User';
 a2.TaskIndex__c = 1;
 a2.DaysFromStart__c = 2;
 a2.Action_Plan_Template__c = apt.Id;
